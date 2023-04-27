@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</div>
 	<div class="wps-overview__content">
 		<div class="wps-overview__content-description">
-			<h2><?php echo esc_html_e( 'What Is wps Standard Plugin?', 'track-orders-for-woocommerce' ); ?></h2>
+			<h2><?php echo esc_html_e( 'What Is Track Orders For Woocommerce?', 'track-orders-for-woocommerce' ); ?></h2>
 			<p>
 				<?php
 				esc_html_e(

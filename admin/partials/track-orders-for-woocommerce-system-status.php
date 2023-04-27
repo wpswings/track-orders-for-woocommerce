@@ -15,8 +15,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 // Template for showing information about system status.
-global $plugin_standard_obj;
-$tofw_default_status    = $plugin_standard_obj->wps_std_plug_system_status();
+global $wps_tofw_obj;
+$tofw_default_status    = $wps_tofw_obj->wps_std_plug_system_status();
 $tofw_wordpress_details = is_array( $tofw_default_status['wp'] ) && ! empty( $tofw_default_status['wp'] ) ? $tofw_default_status['wp'] : array();
 $tofw_php_details       = is_array( $tofw_default_status['php'] ) && ! empty( $tofw_default_status['php'] ) ? $tofw_default_status['php'] : array();
 ?>

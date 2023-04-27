@@ -14,7 +14,7 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-global $plugin_standard_obj;
+global $wps_tofw_obj;
 $tofw_template_settings =
 // desc - filter for trial.
 apply_filters( 'tofw_template_settings_array', array() );
@@ -22,7 +22,7 @@ apply_filters( 'tofw_template_settings_array', array() );
 <!--  template file for admin settings. -->
 <div class="tofw-section-wrap">
 	<?php
-		$tofw_template_html = $plugin_standard_obj->wps_std_plug_generate_html( $tofw_template_settings );
+		$tofw_template_html = $wps_tofw_obj->wps_std_plug_generate_html( $tofw_template_settings );
 		echo esc_html( $tofw_template_html );
 	?>
 	<div class="tofw-datatable-wrap">

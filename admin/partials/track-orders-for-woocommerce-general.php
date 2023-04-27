@@ -14,7 +14,7 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-global $plugin_standard_obj;
+global $wps_tofw_obj;
 $tofw_genaral_settings =
 // desc - filter for trial.
 apply_filters( 'tofw_general_settings_array', array() );
@@ -23,7 +23,7 @@ apply_filters( 'tofw_general_settings_array', array() );
 <form action="" method="POST" class="wps-tofw-gen-section-form">
 	<div class="tofw-secion-wrap">
 		<?php
-		$tofw_general_html = $plugin_standard_obj->wps_std_plug_generate_html( $tofw_genaral_settings );
+		$tofw_general_html = $wps_tofw_obj->wps_std_plug_generate_html( $tofw_genaral_settings );
 		echo esc_html( $tofw_general_html );
 		wp_nonce_field( 'admin_save_data', 'wps_tabs_nonce' );
 		?>

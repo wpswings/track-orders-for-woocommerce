@@ -10,7 +10,7 @@
  * @package    WPSwings_Onboarding
  * @subpackage WPSwings_Onboarding/admin/onboarding
  */
-global $plugin_standard_obj;
+global $wps_tofw_obj;
 $msp_onboarding_form_fields = 
 //desc - filter for trial.
 apply_filters('wps_msp_on_boarding_form_fields', array());
@@ -31,7 +31,7 @@ apply_filters('wps_msp_on_boarding_form_fields', array());
 
 					<form action="#" method="post" class="wps-msp-on-boarding-form">
 						<?php 
-						$tofw_onboarding_html = $plugin_standard_obj->wps_std_plug_generate_html( $msp_onboarding_form_fields );
+						$tofw_onboarding_html = $wps_tofw_obj->wps_std_plug_generate_html( $msp_onboarding_form_fields );
 						echo esc_html( $tofw_onboarding_html );
 						?>
 						<div class="wps-msp-on-boarding-form-btn__wrapper mdc-dialog__actions">

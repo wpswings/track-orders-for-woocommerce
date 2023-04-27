@@ -12,7 +12,7 @@
  * @package Track Orders for WooCommerce
  *
  * @wordpress-plugin
- * Plugin Name:       wps Standard Plugin
+ * Plugin Name:       Track Orders for WooCommerce
  * Plugin URI:        https://wpswings.com/product/track-orders-for-woocommerce/
  * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
  * Version:           1.0.0
@@ -67,7 +67,7 @@ function auto_update_track_orders_for_woocommerce() {
 	}
 	track_orders_for_woocommerce_constants('TRACK_ORDERS_FOR_WOOCOMMERCE_BASE_FILE', __FILE__);
 	track_orders_for_woocommerce_constants('TRACK_ORDERS_FOR_WOOCOMMERCE_LICENSE_KEY', $wps_tofw_license_key);
-	include_once 'track-orders-for-woocommerce-update.php';
+	
 }
 
 if ( !function_exists( 'tofw_wps_standard_check_multistep' ) ) {
@@ -111,13 +111,13 @@ function activate_track_orders_for_woocommerce() {
 	$wps_tofw_active_plugin = get_option('wps_all_plugins_active', false);
 	if (is_array($wps_tofw_active_plugin) && ! empty($wps_tofw_active_plugin) ) {
 		$wps_tofw_active_plugin['track-orders-for-woocommerce'] = array(
-		'plugin_name' => __('wps Standard Plugin', 'track-orders-for-woocommerce'),
+		'plugin_name' => __('Track Orders For Woocommerce', 'track-orders-for-woocommerce'),
 		'active' => '1',
 		);
 	} else {
 		$wps_tofw_active_plugin                        = array();
 		$wps_tofw_active_plugin['track-orders-for-woocommerce'] = array(
-		'plugin_name' => __('wps Standard Plugin', 'track-orders-for-woocommerce'),
+		'plugin_name' => __('Track Orders For Woocommerce', 'track-orders-for-woocommerce'),
 		'active' => '1',
 		);
 	}
@@ -165,9 +165,9 @@ require plugin_dir_path(__FILE__) . 'includes/class-track-orders-for-woocommerce
 function run_track_orders_for_woocommerce() {
 	define_track_orders_for_woocommerce_constants();
 	auto_update_track_orders_for_woocommerce();
-	$plugin_standard = new Track_Orders_For_Woocommerce();
-	$plugin_standard->tofw_run();
-	$GLOBALS['plugin_standard_obj'] = $plugin_standard;
+	$wps_tofw = new Track_Orders_For_Woocommerce();
+	$wps_tofw->tofw_run();
+	$GLOBALS['wps_tofw_obj'] = $wps_tofw;
 
 }
 run_track_orders_for_woocommerce();

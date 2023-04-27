@@ -14,8 +14,8 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit(); // Exit if accessed directly.
 }
-global $plugin_standard_obj;
-$tofw_default_tabs = $plugin_standard_obj->wps_std_plug_default_tabs();
+global $wps_tofw_obj;
+$tofw_default_tabs = $wps_tofw_obj->wps_std_plug_default_tabs();
 $tofw_tab_key = '';
 ?>
 <header>
@@ -60,7 +60,7 @@ $tofw_tab_key = '';
 			<form action="" method="POST" class="wps-tofw-gen-section-form">
 				<div class="tofw-secion-wrap">
 					<?php
-					$tofw_general_html = $plugin_standard_obj->wps_std_plug_generate_html( $tofw_genaral_settings );
+					$tofw_general_html = $wps_tofw_obj->wps_std_plug_generate_html( $tofw_genaral_settings );
 					echo esc_html( $tofw_general_html );
 					wp_nonce_field( 'admin_save_data', 'wps_tabs_nonce' );
 					?>

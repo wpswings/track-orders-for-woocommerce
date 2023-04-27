@@ -11,7 +11,7 @@
  * @subpackage WPSwings_Onboarding/admin/onboarding
  */
 
-global $pagenow, $plugin_standard_obj;
+global $pagenow, $wps_tofw_obj;
 if ( empty( $pagenow ) || 'plugins.php' != $pagenow ) {
 	return false;
 }
@@ -40,7 +40,7 @@ apply_filters('wps_msp_deactivation_form_fields', array());
 					<p class="wps-msp-on-boarding-desc"><?php esc_html_e( 'May we have a little info about why you are deactivating?', 'track-orders-for-woocommerce' ); ?></p>
 					<form action="#" method="post" class="wps-msp-on-boarding-form">
 						<?php 
-						$tofw_onboarding_deactive_html = $plugin_standard_obj->wps_std_plug_generate_html( $msp_onboarding_form_deactivate );
+						$tofw_onboarding_deactive_html = $wps_tofw_obj->wps_std_plug_generate_html( $msp_onboarding_form_deactivate );
 						echo esc_html( $tofw_onboarding_deactive_html );
 						?>
 						<div class="wps-msp-on-boarding-form-btn__wrapper mdc-dialog__actions">

@@ -59,7 +59,8 @@ class Track_Orders_For_Woocommerce_Admin {
 	 */
 	public function tofw_admin_enqueue_styles( $hook ) {
 		$screen = get_current_screen();
-		if ( isset( $screen->id ) && ( 'wpswings_page_home' === $screen->id || 'wpswings_page_track_orders_for_woocommerce_menu' === $screen->id ) ) {
+		
+		if ( isset( $screen->id ) && ( 'wpswings_page_home' === $screen->id || 'wp-swings_page_track_orders_for_woocommerce_menu' === $screen->id ) ) {
 			// multistep form css.
 			if ( ! tofw_wps_standard_check_multistep() ) {
 				$style_url        = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'build/style-index.css';
@@ -72,7 +73,7 @@ class Track_Orders_For_Woocommerce_Admin {
 				);
 				return;
 			}
-
+			
 			wp_enqueue_style( 'track-orders-for-woocommerce-select2-css', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/select-2/track-orders-for-woocommerce-select2.css', array(), time(), 'all' );
 
 			wp_enqueue_style( 'track-orders-for-woocommerce-meterial-css', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/material-design/material-components-web.min.css', array(), time(), 'all' );
@@ -163,14 +164,14 @@ class Track_Orders_For_Woocommerce_Admin {
 	}
 
 	/**
-	 * Adding settings menu for wps Standard Plugin.
+	 * Adding settings menu for Track Orders For Woocommerce.
 	 *
 	 * @since 1.0.0
 	 */
 	public function tofw_options_page() {
 		global $submenu;
 		if ( empty( $GLOBALS['admin_page_hooks']['wps-plugins'] ) ) {
-			add_menu_page( __( 'WPSwings', 'track-orders-for-woocommerce' ), __( 'WPSwings	', 'track-orders-for-woocommerce' ), 'manage_options', 'wps-plugins', array( $this, 'wps_plugins_listing_page' ), TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/image/wps_Grey-01.svg', 15 );
+			add_menu_page( 'WPSwings', 'WPSwings', 'manage_options', 'wps-plugins', array( $this, 'wps_plugins_listing_page' ), TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/image/wps_Grey-01.svg', 15 );
 			if ( tofw_wps_standard_check_multistep() ) {
 				add_submenu_page( 'wps-plugins', 'Home', 'Home', 'manage_options', 'home', array( $this, 'wpswings_welcome_callback_function' ) );
 			}
@@ -227,14 +228,14 @@ class Track_Orders_For_Woocommerce_Admin {
 
 
 	/**
-	 * wps Standard Plugin tofw_admin_submenu_page.
+	 * Track Orders For Woocommerce tofw_admin_submenu_page.
 	 *
 	 * @since 1.0.0
 	 * @param array $menus Marketplace menus.
 	 */
 	public function tofw_admin_submenu_page( $menus = array() ) {
 		$menus[] = array(
-			'name'            => __( 'wps Standard Plugin', 'track-orders-for-woocommerce' ),
+			'name'            => __( 'Track Orders For Woocommerce', 'track-orders-for-woocommerce' ),
 			'slug'            => 'track_orders_for_woocommerce_menu',
 			'menu_link'       => 'track_orders_for_woocommerce_menu',
 			'instance'        => $this,
@@ -244,7 +245,7 @@ class Track_Orders_For_Woocommerce_Admin {
 	}
 
 	/**
-	 * wps Standard Plugin wps_plugins_listing_page.
+	 * Track Orders For Woocommerce wps_plugins_listing_page.
 	 *
 	 * @since 1.0.0
 	 */
@@ -258,7 +259,7 @@ class Track_Orders_For_Woocommerce_Admin {
 	}
 
 	/**
-	 * wps Standard Plugin admin menu page.
+	 * Track Orders For Woocommerce admin menu page.
 	 *
 	 * @since 1.0.0
 	 */
@@ -355,7 +356,7 @@ class Track_Orders_For_Woocommerce_Admin {
 	}
 
 	/**
-	 * wps Standard Plugin admin menu page.
+	 * Track Orders For Woocommerce admin menu page.
 	 *
 	 * @since 1.0.0
 	 * @param array $tofw_settings_general Settings fields.
@@ -397,7 +398,7 @@ class Track_Orders_For_Woocommerce_Admin {
 	}
 
 	/**
-	 * wps Standard Plugin admin menu page.
+	 * Track Orders For Woocommerce admin menu page.
 	 *
 	 * @since 1.0.0
 	 * @param array $tofw_settings_template Settings fields.
@@ -517,12 +518,12 @@ class Track_Orders_For_Woocommerce_Admin {
 	}
 
 	/**
-	 * wps Standard Plugin save tab settings.
+	 * Track Orders For Woocommerce save tab settings.
 	 *
 	 * @since 1.0.0
 	 */
 	public function tofw_admin_save_tab_settings() {
-		global $plugin_standard_obj;
+		global $wps_tofw_obj;
 
 		if ( isset( $_POST['tofw_button_demo'] )
 			&& ( ! empty( $_POST['wps_tabs_nonce'] )
@@ -557,10 +558,10 @@ class Track_Orders_For_Woocommerce_Admin {
 				}
 				if ( $wps_msp_gen_flag ) {
 					$wps_msp_error_text = esc_html__( 'Id of some field is missing', 'track-orders-for-woocommerce' );
-					$plugin_standard_obj->wps_std_plug_admin_notice( $wps_msp_error_text, 'error' );
+					$wps_tofw_obj->wps_std_plug_admin_notice( $wps_msp_error_text, 'error' );
 				} else {
 					$wps_msp_error_text = esc_html__( 'Settings saved !', 'track-orders-for-woocommerce' );
-					$plugin_standard_obj->wps_std_plug_admin_notice( $wps_msp_error_text, 'success' );
+					$wps_tofw_obj->wps_std_plug_admin_notice( $wps_msp_error_text, 'success' );
 				}
 			}
 		}

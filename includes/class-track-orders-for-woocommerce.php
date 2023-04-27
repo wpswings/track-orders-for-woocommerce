@@ -194,7 +194,7 @@ class Track_Orders_For_Woocommerce {
 		$this->loader->add_action( 'admin_enqueue_scripts', $tofw_plugin_admin, 'tofw_admin_enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $tofw_plugin_admin, 'tofw_admin_enqueue_scripts' );
 
-		// Add settings menu for wps Standard Plugin.
+		// Add settings menu for Track Orders For Woocommerce.
 		$this->loader->add_action( 'admin_menu', $tofw_plugin_admin, 'tofw_options_page' );
 		$this->loader->add_action( 'admin_menu', $tofw_plugin_admin, 'wps_tofw_remove_default_submenu', 50 );
 
@@ -210,14 +210,7 @@ class Track_Orders_For_Woocommerce {
 		$this->loader->add_action( 'tofw_developer_admin_hooks_array', $tofw_plugin_admin, 'wps_developer_admin_hooks_listing' );
 		$this->loader->add_action( 'tofw_developer_public_hooks_array', $tofw_plugin_admin, 'wps_developer_public_hooks_listing' );
 
-		// license variables.
-		$callname_lic         = self::$lic_callback_function;
-		$callname_lic_initial = self::$lic_ini_callback_function;
-		$day_count            = self::$callname_lic_initial();
-
-		if ( self::$callname_lic() || 0 < $day_count ) {
-			$this->loader->add_action( 'wps_tofw_check_license_daily', $tofw_plugin_admin, 'wps_tofw_check_license' );
-		}
+		
 
 	}
 
@@ -350,52 +343,42 @@ class Track_Orders_For_Woocommerce {
 	/**
 	 * Predefined default wps_std_plug tabs.
 	 *
-	 * @return Array       An key=>value pair of wps Standard Plugin tabs.
+	 * @return Array       An key=>value pair of Track Orders For Woocommerce tabs.
 	 */
 	public function wps_std_plug_default_tabs() {
 		$tofw_default_tabs     = array();
-		$callname_lic         = self::$lic_callback_function;
-		$callname_lic_initial = self::$lic_ini_callback_function;
-		$day_count            = self::$callname_lic_initial();
-
-		if ( self::$callname_lic() || 0 < $day_count ) {
-			$tofw_default_tabs['track-orders-for-woocommerce-general']       = array(
-				'title'       => esc_html__( 'General Setting', 'track-orders-for-woocommerce' ),
-				'name'        => 'track-orders-for-woocommerce-general',
-				'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-general.php',
-			);
-			$tofw_default_tabs['track-orders-for-woocommerce-system-status'] = array(
-				'title'       => esc_html__( 'System Status', 'track-orders-for-woocommerce' ),
-				'name'        => 'track-orders-for-woocommerce-system-status',
-				'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-system-status.php',
-			);
-			$tofw_default_tabs['track-orders-for-woocommerce-template']      = array(
-				'title'       => esc_html__( 'Templates', 'track-orders-for-woocommerce' ),
-				'name'        => 'track-orders-for-woocommerce-template',
-				'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-template.php',
-			);
-			$tofw_default_tabs['track-orders-for-woocommerce-overview']      = array(
-				'title'       => esc_html__( 'Overview', 'track-orders-for-woocommerce' ),
-				'name'        => 'track-orders-for-woocommerce-overview',
-				'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-overview.php',
-			);
-			$tofw_default_tabs['track-orders-for-woocommerce-developer']     = array(
-				'title'       => esc_html__( 'Developer', 'track-orders-for-woocommerce' ),
-				'name'        => 'track-orders-for-woocommerce-developer',
-				'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-developer.php',
-			);
-		}
-		if ( ! get_option( 'wps_tofw_license_check', 0 ) ) {
-			$tofw_default_tabs['track-orders-for-woocommerce-license'] = array(
-				'title'       => esc_html__( 'License', 'track-orders-for-woocommerce' ),
-				'name'        => 'track-orders-for-woocommerce-license',
-				'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-license.php',
-			);
-		}
+		
+		$tofw_default_tabs['track-orders-for-woocommerce-general']       = array(
+			'title'       => esc_html__( 'General Setting', 'track-orders-for-woocommerce' ),
+			'name'        => 'track-orders-for-woocommerce-general',
+			'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-general.php',
+		);
+		$tofw_default_tabs['track-orders-for-woocommerce-system-status'] = array(
+			'title'       => esc_html__( 'System Status', 'track-orders-for-woocommerce' ),
+			'name'        => 'track-orders-for-woocommerce-system-status',
+			'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-system-status.php',
+		);
+		$tofw_default_tabs['track-orders-for-woocommerce-template']      = array(
+			'title'       => esc_html__( 'Templates', 'track-orders-for-woocommerce' ),
+			'name'        => 'track-orders-for-woocommerce-template',
+			'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-template.php',
+		);
+		$tofw_default_tabs['track-orders-for-woocommerce-overview']      = array(
+			'title'       => esc_html__( 'Overview', 'track-orders-for-woocommerce' ),
+			'name'        => 'track-orders-for-woocommerce-overview',
+			'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-overview.php',
+		);
+		$tofw_default_tabs['track-orders-for-woocommerce-developer']     = array(
+			'title'       => esc_html__( 'Developer', 'track-orders-for-woocommerce' ),
+			'name'        => 'track-orders-for-woocommerce-developer',
+			'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-developer.php',
+		);
+	
+	
 
 		$tofw_default_tabs =
 		// desc - filter for trial.
-		apply_filters( 'wps_plugin_standard_admin_settings_tabs', $tofw_default_tabs );
+		apply_filters( 'track_orders_for_woocmmerce_admin_settings_tabs', $tofw_default_tabs );
 
 		return $tofw_default_tabs;
 	}

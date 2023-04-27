@@ -110,7 +110,7 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 		self::$wps_msp_store_name        = get_bloginfo( 'name' );
 		self::$wps_msp_store_url         = home_url();
 		self::$wps_msp_plugin_name       = 'track-orders-for-woocommerce';
-		self::$wps_msp_plugin_name_label = 'wps STANDARD PLUGIN';
+		self::$wps_msp_plugin_name_label = 'Track Orders For Woocommerce';
 		if ( ! tofw_wps_standard_check_multistep() ) {
 			return;
 		}

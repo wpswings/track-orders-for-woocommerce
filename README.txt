@@ -1,4 +1,4 @@
-=== wps Standard Plugin ===
+=== Track Orders For Woocommerce ===
 Contributors: wpswings
 Tags: comments, spam
 Requires at least: 4.6
