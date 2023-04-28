@@ -252,14 +252,7 @@ class Track_Orders_For_Woocommerce {
 		$this->loader->add_action( 'wp_enqueue_scripts', $tofw_plugin_public, 'tofw_public_enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $tofw_plugin_public, 'tofw_public_enqueue_scripts' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $tofw_plugin_public, 'tofw_public_enqueue_scripts' );
-		// license validation.
-		$callname_lic         = self::$lic_callback_function;
-		$callname_lic_initial = self::$lic_ini_callback_function;
-		$day_count            = self::$callname_lic_initial();
-
-		if ( self::$callname_lic() || 0 < $day_count ) {
-
-		}
+		
 
 	}
 
@@ -771,15 +764,13 @@ class Track_Orders_For_Woocommerce {
 										<div class="mdc-switch__track"></div>
 										<div class="mdc-switch__thumb-underlay">
 											<div class="mdc-switch__thumb"></div>
-											<input name="<?php echo ( isset( $tofw_component['name'] ) ? esc_html( $tofw_component['name'] ) : esc_html( $tofw_component['id'] ) ); ?>" type="checkbox" id="<?php echo esc_html( $tofw_component['id'] ); ?>" value="on" class="mdc-switch__native-control <?php echo ( isset( $tofw_component['class'] ) ? esc_attr( $tofw_component['class'] ) : '' ); ?>" role="switch" aria-checked="
-							<?php
+											<input name="<?php echo ( isset( $tofw_component['name'] ) ? esc_html( $tofw_component['name'] ) : esc_html( $tofw_component['id'] ) ); ?>" type="checkbox" id="<?php echo esc_html( $tofw_component['id'] ); ?>" value="on" class="mdc-switch__native-control <?php echo ( isset( $tofw_component['class'] ) ? esc_attr( $tofw_component['class'] ) : '' ); ?>" role="switch" aria-checked="<?php
 							if ( 'on' == $tofw_component['value'] ) {
 								echo 'true';
 							} else {
 								echo 'false';
 							}
-							?>
-											"
+							?>"
 											<?php checked( $tofw_component['value'], 'on' ); ?>
 											>
 										</div>

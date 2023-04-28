@@ -100,7 +100,7 @@ class Track_Orders_For_Woocommerce_Admin {
 	public function tofw_admin_enqueue_scripts( $hook ) {
 
 		$screen = get_current_screen();
-		if ( isset( $screen->id ) && ( 'wpswings_page_home' === $screen->id || 'wpswings_page_track_orders_for_woocommerce_menu' === $screen->id ) ) {
+		if ( isset( $screen->id ) && ( 'wpswings_page_home' === $screen->id || 'wp-swings_page_track_orders_for_woocommerce_menu' === $screen->id ) ) {
 			if ( ! tofw_wps_standard_check_multistep() ) {
 				// js for the multistep from.
 				$script_path      = '../../build/index.js';
@@ -367,32 +367,91 @@ class Track_Orders_For_Woocommerce_Admin {
 				'title' => __( 'Enable plugin', 'track-orders-for-woocommerce' ),
 				'type'  => 'radio-switch',
 				'description'  => __( 'Enable plugin to start the functionality.', 'track-orders-for-woocommerce' ),
-				'id'    => 'tofw_radio_switch_demo',
-				'value' => get_option( 'tofw_radio_switch_demo' ),
-				'class' => 'tofw-radio-switch-class',
+				'id'    => 'wps_tofw_is_plugin_enable',
+				'value' => get_option( 'wps_tofw_is_plugin_enable' ),
+				'class' => 'wps_tofw_is_plugin_enable',
 				'options' => array(
 					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
 					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
 				),
 			),
 			array(
-				'title' => __( 'Reset License', 'track-orders-for-woocommerce' ),
+				'title' => __( 'Enable Order tracking using order id only', 'track-orders-for-woocommerce' ),
 				'type'  => 'radio-switch',
-				'description'  => __( 'Enable to reset the license on deactivation of the plugin.', 'track-orders-for-woocommerce' ),
-				'id'    => 'tofw_radio_reset_license',
-				'value' => get_option( 'tofw_radio_reset_license' ),
-				'class' => 'tofw-radio-switch-class',
+				'description'  => __( 'In Default case, guest user can track order using email and order id. Enable this to track order using order id only..', 'track-orders-for-woocommerce' ),
+				'id'    => 'wps_tofw_enable_track_with_order_id',
+				'value' => get_option( 'wps_tofw_enable_track_with_order_id' ),
+				'class' => 'wps_tofw_enable_track_with_order_id',
 				'options' => array(
 					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
 					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
 				),
 			),
 			array(
-				'type'  => 'button',
-				'id'    => 'tofw_button_demo',
-				'button_text' => __( 'Button Demo', 'track-orders-for-woocommerce' ),
-				'class' => 'tofw-button-class',
+				'title' => __( 'Enable logged-in user to EXPORT ORDER', 'track-orders-for-woocommerce' ),
+				'type'  => 'radio-switch',
+				'description'  => __( 'Logged-in user can export order from my-account->order sections', 'track-orders-for-woocommerce' ),
+				'id'    => 'wps_tofw_enable_login_export',
+				'value' => get_option( 'wps_tofw_enable_login_export' ),
+				'class' => 'wps_tofw_enable_login_export',
+				'options' => array(
+					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
+					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
+				),
 			),
+			array(
+				'title' => __( 'Enable Guest user to EXPORT ORDER', 'track-orders-for-woocommerce' ),
+				'type'  => 'radio-switch',
+				'description'  => __( 'Guest user can export order from guest tracking page', 'track-orders-for-woocommerce' ),
+				'id'    => 'wps_tofw_enable_guest_export',
+				'value' => get_option( 'wps_tofw_enable_guest_export' ),
+				'class' => 'wps_tofw_enable_guest_export',
+				'options' => array(
+					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
+					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
+				),
+			),
+			array(
+				'title' => __( 'Enable use of icon for order status', 'track-orders-for-woocommerce' ),
+				'type'  => 'radio-switch',
+				'description'  => __( 'Enable this to show icon instead of text for order status in order table.', 'track-orders-for-woocommerce' ),
+				'id'    => 'wps_tofw_enable_use_of_icon',
+				'value' => get_option( 'wps_tofw_enable_use_of_icon' ),
+				'class' => 'wps_tofw_enable_use_of_icon',
+				'options' => array(
+					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
+					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
+				),
+			),
+			array(
+				'title' => __( 'Enable E-mail Notification Feature', 'track-orders-for-woocommerce' ),
+				'type'  => 'radio-switch',
+				'description'  => __( 'Enable to send the e-mail notification to the customer on changing order status', 'track-orders-for-woocommerce' ),
+				'id'    => 'wps_tofw_enable_email_notification',
+				'value' => get_option( 'wps_tofw_enable_email_notification' ),
+				'class' => 'wps_tofw_enable_email_notification',
+				'options' => array(
+					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
+					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
+				),
+			),
+			
+		
+		);
+
+		$tofw_settings_general =
+		/**
+		 * Filter is for returning something.
+		 *
+		 * @since 1.0.0
+		 */
+		apply_filters( 'tofw_general_settings_array_filter', $tofw_settings_general );
+		$tofw_settings_general[] = array(
+			'type'        => 'button',
+			'id'          => 'wps_tofw_general_settings_save',
+			'button_text' => __( 'Save Settings', 'mwb-bookings-for-woocommerce' ),
+			'class'       => 'wps_tofw_general_settings_save',
+			'name'        => 'wps_tofw_general_settings_save',
 		);
 		return $tofw_settings_general;
 	}
@@ -525,7 +584,7 @@ class Track_Orders_For_Woocommerce_Admin {
 	public function tofw_admin_save_tab_settings() {
 		global $wps_tofw_obj;
 
-		if ( isset( $_POST['tofw_button_demo'] )
+		if ( isset( $_POST['wps_tofw_general_settings_save'] )
 			&& ( ! empty( $_POST['wps_tabs_nonce'] )
 			&& wp_verify_nonce( sanitize_text_field( $_POST['wps_tabs_nonce'] ), 'admin_save_data' ) )
 		) {

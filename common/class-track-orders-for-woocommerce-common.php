@@ -204,7 +204,7 @@ class Track_Orders_For_Woocommerce_Common {
 		if ( ! empty( $checked_second_switch ) && $checked_second_switch ) {
 			update_option( 'tofw_radio_reset_license', 'on' );
 		}
-		update_option( 'tofw_plugin_standard_multistep_done', 'yes' );
+		update_option( 'wps_track_orders_for_woocommerce_multistep_done', 'yes' );
 
 		$wps_tofw_purchase_code = ! empty( $_POST['licenseCode'] ) ? sanitize_text_field( wp_unslash( $_POST['licenseCode'] ) ) : '';
 

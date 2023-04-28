@@ -53,20 +53,13 @@ function define_track_orders_for_woocommerce_constants() {
  * @since 1.0.0
  */
 function auto_update_track_orders_for_woocommerce() {
-	$wps_tofw_license_key = get_option('wps_tofw_license_key', '');
-	if (! defined('TRACK_ORDERS_FOR_WOOCOMMERCE_SPECIAL_SECRET_KEY') ) {
-		define('TRACK_ORDERS_FOR_WOOCOMMERCE_SPECIAL_SECRET_KEY', '59f32ad2f20102.74284991');
-	}
-
-	if (! defined('TRACK_ORDERS_FOR_WOOCOMMERCE_LICENSE_SERVER_URL') ) {
-		define('TRACK_ORDERS_FOR_WOOCOMMERCE_LICENSE_SERVER_URL', 'https://wpswings.com');
-	}
 
 	if (! defined('TRACK_ORDERS_FOR_WOOCOMMERCE_ITEM_REFERENCE') ) {
 		define('TRACK_ORDERS_FOR_WOOCOMMERCE_ITEM_REFERENCE', 'Track Orders For WooCommerce');
 	}
 	track_orders_for_woocommerce_constants('TRACK_ORDERS_FOR_WOOCOMMERCE_BASE_FILE', __FILE__);
-	track_orders_for_woocommerce_constants('TRACK_ORDERS_FOR_WOOCOMMERCE_LICENSE_KEY', $wps_tofw_license_key);
+	track_orders_for_woocommerce_constants('TRACK_ORDERS_FOR_WOOCOMMERCE_SERVER_URL', 'https://wpswings.com');
+	
 	
 }
 
