@@ -462,103 +462,24 @@ class Track_Orders_For_Woocommerce_Admin {
 	 * @since 1.0.0
 	 * @param array $tofw_settings_template Settings fields.
 	 */
-	public function tofw_admin_template_settings_page( $tofw_settings_template ) {
-		$tofw_settings_template = array(
-			array(
-				'title' => __( 'Text Field Demo', 'track-orders-for-woocommerce' ),
-				'type'  => 'text',
-				'description'  => __( 'This is text field demo follow same structure for further use.', 'track-orders-for-woocommerce' ),
-				'id'    => 'tofw_text_demo',
-				'value' => '',
-				'class' => 'tofw-text-class',
-				'placeholder' => __( 'Text Demo', 'track-orders-for-woocommerce' ),
-			),
-			array(
-				'title' => __( 'Number Field Demo', 'track-orders-for-woocommerce' ),
-				'type'  => 'number',
-				'description'  => __( 'This is number field demo follow same structure for further use.', 'track-orders-for-woocommerce' ),
-				'id'    => 'tofw_number_demo',
-				'value' => '',
-				'class' => 'tofw-number-class',
-				'placeholder' => '',
-			),
-			array(
-				'title' => __( 'Password Field Demo', 'track-orders-for-woocommerce' ),
-				'type'  => 'password',
-				'description'  => __( 'This is password field demo follow same structure for further use.', 'track-orders-for-woocommerce' ),
-				'id'    => 'tofw_password_demo',
-				'value' => '',
-				'class' => 'tofw-password-class',
-				'placeholder' => '',
-			),
-			array(
-				'title' => __( 'Textarea Field Demo', 'track-orders-for-woocommerce' ),
-				'type'  => 'textarea',
-				'description'  => __( 'This is textarea field demo follow same structure for further use.', 'track-orders-for-woocommerce' ),
-				'id'    => 'tofw_textarea_demo',
-				'value' => '',
-				'class' => 'tofw-textarea-class',
-				'rows' => '5',
-				'cols' => '10',
-				'placeholder' => __( 'Textarea Demo', 'track-orders-for-woocommerce' ),
-			),
-			array(
-				'title' => __( 'Select Field Demo', 'track-orders-for-woocommerce' ),
-				'type'  => 'select',
-				'description'  => __( 'This is select field demo follow same structure for further use.', 'track-orders-for-woocommerce' ),
-				'id'    => 'tofw_select_demo',
-				'value' => '',
-				'class' => 'tofw-select-class',
-				'placeholder' => __( 'Select Demo', 'track-orders-for-woocommerce' ),
-				'options' => array(
-					'' => __( 'Select option', 'track-orders-for-woocommerce' ),
-					'INR' => __( 'Rs.', 'track-orders-for-woocommerce' ),
-					'USD' => __( '$', 'track-orders-for-woocommerce' ),
-				),
-			),
-			array(
-				'title' => __( 'Multiselect Field Demo', 'track-orders-for-woocommerce' ),
-				'type'  => 'multiselect',
-				'description'  => __( 'This is multiselect field demo follow same structure for further use.', 'track-orders-for-woocommerce' ),
-				'id'    => 'tofw_multiselect_demo',
-				'value' => '',
-				'class' => 'tofw-multiselect-class wps-defaut-multiselect',
-				'placeholder' => '',
-				'options' => array(
-					'default' => __( 'Select currency code from options', 'track-orders-for-woocommerce' ),
-					'INR' => __( 'Rs.', 'track-orders-for-woocommerce' ),
-					'USD' => __( '$', 'track-orders-for-woocommerce' ),
-				),
-			),
-			array(
-				'title' => __( 'Checkbox Field Demo', 'track-orders-for-woocommerce' ),
-				'type'  => 'checkbox',
-				'description'  => __( 'This is checkbox field demo follow same structure for further use.', 'track-orders-for-woocommerce' ),
-				'id'    => 'tofw_checkbox_demo',
-				'value' => '',
-				'class' => 'tofw-checkbox-class',
-				'placeholder' => __( 'Checkbox Demo', 'track-orders-for-woocommerce' ),
-			),
+	public function tofw_track_order_settings_page( $tofw_settings_template ) {
+		$custom_order_status = get_option( 'mwb_tyo_new_custom_order_status', array() );
 
+		$order_status = array(
+			'wc-packed' => __( 'Order Packed', 'woocommerce-order-tracker' ),
+			'wc-dispatched' => __( 'Order Dispatched', 'woocommerce-order-tracker' ),
+			'wc-shipped' => __( 'Order Shipped', 'woocommerce-order-tracker' ),
+		);
+		$custom_order_status = array_merge($order_status,$custom_order_status);
+
+		$tofw_track_order_settings = array(
+			
 			array(
-				'title' => __( 'Radio Field Demo', 'track-orders-for-woocommerce' ),
-				'type'  => 'radio',
-				'description'  => __( 'This is radio field demo follow same structure for further use.', 'track-orders-for-woocommerce' ),
-				'id'    => 'tofw_radio_demo',
-				'value' => '',
-				'class' => 'tofw-radio-class',
-				'placeholder' => __( 'Radio Demo', 'track-orders-for-woocommerce' ),
-				'options' => array(
-					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
-					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
-				),
-			),
-			array(
-				'title' => __( 'Enable', 'track-orders-for-woocommerce' ),
+				'title' => __( 'Enable track orders Feature', 'track-orders-for-woocommerce' ),
 				'type'  => 'radio-switch',
-				'description'  => __( 'This is switch field demo follow same structure for further use.', 'track-orders-for-woocommerce' ),
-				'id'    => 'tofw_radio_switch_demo',
-				'value' => '',
+				'description'  => __( 'Enable Track Your Order Feature.', 'track-orders-for-woocommerce' ),
+				'id'    => 'tofw_enable_track_order',
+				'value' => get_option( 'tofw_enable_track_order' ),
 				'class' => 'tofw-radio-switch-class',
 				'options' => array(
 					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
@@ -567,13 +488,46 @@ class Track_Orders_For_Woocommerce_Admin {
 			),
 
 			array(
-				'type'  => 'button',
-				'id'    => 'tofw_button_demo',
-				'button_text' => __( 'Button Demo', 'track-orders-for-woocommerce' ),
-				'class' => 'tofw-button-class',
+				'title' => __( 'Enable Use Of Custom Order Status', 'track-orders-for-woocommerce' ),
+				'type'  => 'radio-switch',
+				'description'  => __( 'Enable this setting to use custom status to enhance order tracking.', 'track-orders-for-woocommerce' ),
+				'id'    => 'tofw_enable_use_custom_status',
+				'value' => get_option( 'tofw_enable_use_custom_status' ),
+				'class' => 'tofw-radio-switch-class',
+				'options' => array(
+					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
+					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
+				),
 			),
+			
+			array(
+				'title' => __( 'Custom Order Statuses', 'track-orders-for-woocommerce' ),
+				'type'  => 'multiselect',
+				'description'  => __( 'Select Custom status to enhance tracking.', 'track-orders-for-woocommerce' ),
+				'id'    => 'tofw_custom_order_status',
+				'value' => get_option( 'tofw_custom_order_status' ),
+				'class' => 'tofw-multiselect-class wps-defaut-multiselect',
+				'placeholder' => '',
+				'options' => $custom_order_status,
+			),
+			
 		);
-		return $tofw_settings_template;
+
+		$tofw_track_order_settings =
+		/**
+		 * Filter is for returning something.
+		 *
+		 * @since 1.0.0
+		 */
+		apply_filters( 'tofw_general_settings_array_filter', $tofw_track_order_settings );
+
+		$tofw_track_order_settings[] = array(
+			'type'  => 'button',
+			'id'    => 'wps_tofw_track-order_setting',
+			'button_text' => __( 'Save Settings', 'track-orders-for-woocommerce' ),
+			'class' => 'tofw-button-class',
+		);
+		return $tofw_track_order_settings;
 	}
 
 	/**

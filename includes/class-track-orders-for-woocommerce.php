@@ -200,7 +200,7 @@ class Track_Orders_For_Woocommerce {
 
 		// All admin actions and filters after License Validation goes here.
 		$this->loader->add_filter( 'wps_add_plugins_menus_array', $tofw_plugin_admin, 'tofw_admin_submenu_page', 15 );
-		$this->loader->add_filter( 'tofw_template_settings_array', $tofw_plugin_admin, 'tofw_admin_template_settings_page', 10 );
+		$this->loader->add_filter( 'tofw_track_order_array', $tofw_plugin_admin, 'tofw_track_order_settings_page', 10 );
 		$this->loader->add_filter( 'tofw_general_settings_array', $tofw_plugin_admin, 'tofw_admin_general_settings_page', 10 );
 
 		// Saving tab settings.
@@ -346,10 +346,10 @@ class Track_Orders_For_Woocommerce {
 			'name'        => 'track-orders-for-woocommerce-general',
 			'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-general.php',
 		);
-		$tofw_default_tabs['track-orders-for-woocommerce-system-status'] = array(
-			'title'       => esc_html__( 'System Status', 'track-orders-for-woocommerce' ),
-			'name'        => 'track-orders-for-woocommerce-system-status',
-			'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-system-status.php',
+		$tofw_default_tabs['track-orders-for-woocommerce-track-order'] = array(
+			'title'       => esc_html__( 'Track Order', 'track-orders-for-woocommerce' ),
+			'name'        => 'track-orders-for-woocommerce-track-order.php',
+			'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-track-order.php',
 		);
 		$tofw_default_tabs['track-orders-for-woocommerce-template']      = array(
 			'title'       => esc_html__( 'Templates', 'track-orders-for-woocommerce' ),
