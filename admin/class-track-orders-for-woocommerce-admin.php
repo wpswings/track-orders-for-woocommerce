@@ -60,7 +60,7 @@ class Track_Orders_For_Woocommerce_Admin {
 	public function tofw_admin_enqueue_styles( $hook ) {
 		$screen = get_current_screen();
 		
-		if ( isset( $screen->id ) && ( 'wpswings_page_home' === $screen->id || 'wp-swings_page_track_orders_for_woocommerce_menu' === $screen->id ) ) {
+		if ( isset( $screen->id ) && ( 'wpswings_page_home' === $screen->id || 'wpswings_page_track_orders_for_woocommerce_menu' === $screen->id ) ) {
 			// multistep form css.
 			if ( ! tofw_wps_standard_check_multistep() ) {
 				$style_url        = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'build/style-index.css';
@@ -100,7 +100,7 @@ class Track_Orders_For_Woocommerce_Admin {
 	public function tofw_admin_enqueue_scripts( $hook ) {
 
 		$screen = get_current_screen();
-		if ( isset( $screen->id ) && ( 'wpswings_page_home' === $screen->id || 'wp-swings_page_track_orders_for_woocommerce_menu' === $screen->id ) ) {
+		if ( isset( $screen->id ) && ( 'wpswings_page_home' === $screen->id || 'wpswings_page_track_orders_for_woocommerce_menu' === $screen->id ) ) {
 			if ( ! tofw_wps_standard_check_multistep() ) {
 				// js for the multistep from.
 				$script_path      = '../../build/index.js';
@@ -464,13 +464,20 @@ class Track_Orders_For_Woocommerce_Admin {
 	 */
 	public function tofw_track_order_settings_page( $tofw_settings_template ) {
 		$custom_order_status = get_option( 'mwb_tyo_new_custom_order_status', array() );
-
 		$order_status = array(
 			'wc-packed' => __( 'Order Packed', 'woocommerce-order-tracker' ),
 			'wc-dispatched' => __( 'Order Dispatched', 'woocommerce-order-tracker' ),
 			'wc-shipped' => __( 'Order Shipped', 'woocommerce-order-tracker' ),
 		);
-		$custom_order_status = array_merge($order_status,$custom_order_status);
+		if ( is_array( $custom_order_status ) && ! empty( $custom_order_status ) ) {
+			foreach ( $custom_order_status as $key => $value ) {
+				foreach ( $value as $status_key => $status_value ) {
+					$order_status[ 'wc-' . $status_key ] = $status_value;
+				}
+			}
+		}
+
+		
 
 		$tofw_track_order_settings = array(
 			
@@ -508,7 +515,38 @@ class Track_Orders_For_Woocommerce_Admin {
 				'value' => get_option( 'tofw_custom_order_status' ),
 				'class' => 'tofw-multiselect-class wps-defaut-multiselect',
 				'placeholder' => '',
-				'options' => $custom_order_status,
+				'options' => $order_status,
+			),
+
+			array(
+				'title' => __( 'Approval', 'track-orders-for-woocommerce' ),
+				'type'  => 'multiselect',
+				'description'  => __( 'Select Custom status to enhance tracking.', 'track-orders-for-woocommerce' ),
+				'id'    => 'tofw_approval_order_status',
+				'value' => get_option( 'tofw_approval_order_status' ),
+				'class' => 'tofw-multiselect-class wps-defaut-multiselect',
+				'placeholder' => '',
+				'options' => $order_status,
+			),
+			array(
+				'title' => __( 'Processing', 'track-orders-for-woocommerce' ),
+				'type'  => 'multiselect',
+				'description'  => __( 'Select Custom status to enhance tracking.', 'track-orders-for-woocommerce' ),
+				'id'    => 'tofw_processing_order_status',
+				'value' => get_option( 'tofw_processing_order_status' ),
+				'class' => 'tofw-multiselect-class wps-defaut-multiselect',
+				'placeholder' => '',
+				'options' => $order_status,
+			),
+			array(
+				'title' => __( 'Shipping', 'track-orders-for-woocommerce' ),
+				'type'  => 'multiselect',
+				'description'  => __( 'Select Custom status to enhance tracking.', 'track-orders-for-woocommerce' ),
+				'id'    => 'tofw_shipping_order_status',
+				'value' => get_option( 'tofw_shipping_order_status' ),
+				'class' => 'tofw-multiselect-class wps-defaut-multiselect',
+				'placeholder' => '',
+				'options' => $order_status,
 			),
 			
 		);
@@ -523,7 +561,7 @@ class Track_Orders_For_Woocommerce_Admin {
 
 		$tofw_track_order_settings[] = array(
 			'type'  => 'button',
-			'id'    => 'wps_tofw_track-order_setting',
+			'id'    => 'wps_tofw_track-order_setting_save',
 			'button_text' => __( 'Save Settings', 'track-orders-for-woocommerce' ),
 			'class' => 'tofw-button-class',
 		);
@@ -537,19 +575,40 @@ class Track_Orders_For_Woocommerce_Admin {
 	 */
 	public function tofw_admin_save_tab_settings() {
 		global $wps_tofw_obj;
+		$wps_settings_save_progress = false;
+		if ( wp_doing_ajax() ) {
+			return;
+		}
+		if (  ! isset( $_POST['wps_tabs_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( $_POST['wps_tabs_nonce'] ), 'admin_save_data' ) )  {
+			return;
+		}
+		
+		if ( isset( $_POST['tofw_button_demo'] ) ) {
+			
+			$screen = get_current_screen();
+			if ( isset( $screen->id ) && 'wp-swings_page_home' === $screen->id ) { 
 
-		if ( isset( $_POST['wps_tofw_general_settings_save'] )
-			&& ( ! empty( $_POST['wps_tabs_nonce'] )
-			&& wp_verify_nonce( sanitize_text_field( $_POST['wps_tabs_nonce'] ), 'admin_save_data' ) )
-		) {
-
-			$enable_tracking = ! empty( $_POST['tofw_enable_tracking'] ) ? sanitize_text_field( wp_unslash( $_POST['tofw_enable_tracking'] ) ) : '';
-			update_option( 'tofw_enable_tracking', $enable_tracking );
-
+				$enable_tracking = ! empty( $_POST['tofw_enable_tracking'] ) ? sanitize_text_field( wp_unslash( $_POST['tofw_enable_tracking'] ) ) : '';
+				update_option( 'tofw_enable_tracking', $enable_tracking );
+			}
+		}
+		if ( isset( $_POST['wps_tofw_general_settings_save'] ) ) {
 			$wps_msp_gen_flag     = false;
 			$tofw_genaral_settings =
 			// desc - filter for trial.
 			apply_filters( 'tofw_general_settings_array', array() );
+			$wps_settings_save_progress = true;
+		}
+		if ( isset( $_POST['wps_tofw_track-order_setting_save'] ) ) {
+			$wps_msp_gen_flag     = false;
+			$tofw_genaral_settings =
+			// desc - filter for trial.
+			apply_filters( 'tofw_track_order_array', array() );
+			$wps_settings_save_progress = true;
+		}
+		
+		if( $wps_settings_save_progress ){
+			
 			$tofw_button_index = array_search( 'submit', array_column( $tofw_genaral_settings, 'type' ) );
 			if ( isset( $tofw_button_index ) && ( null == $tofw_button_index || '' == $tofw_button_index ) ) {
 				$tofw_button_index = array_search( 'button', array_column( $tofw_genaral_settings, 'type' ) );

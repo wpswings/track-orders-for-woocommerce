@@ -130,7 +130,7 @@ class Track_Orders_For_Woocommerce {
 
 			// The class responsible for on-boarding steps for plugin.
 			if ( is_dir( plugin_dir_path( dirname( __FILE__ ) ) . 'onboarding' ) && ! class_exists( 'Track_Orders_For_Woocommerce_Onboarding_Steps' ) ) {
-				include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-track-orders-for-woocommerce-onboarding-steps.php';
+				// include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-track-orders-for-woocommerce-onboarding-steps.php';
 			}
 
 			if ( class_exists( 'Track_Orders_For_Woocommerce_Onboarding_Steps' ) ) {
@@ -674,7 +674,7 @@ class Track_Orders_For_Woocommerce {
 							}
 							?>
 									</select>
-									<label class="mdl-textfield__label" for="<?php echo esc_attr( $tofw_component['id'] ); ?>"><?php echo esc_html( $tofw_component['description'] ); ?><?php echo ( isset( $tofw_component['description'] ) ? esc_attr( $tofw_component['description'] ) : '' ); ?></label>
+									<label class="mdl-textfield__label" for="<?php echo esc_attr( $tofw_component['id'] ); ?>"><?php echo ( isset( $tofw_component['description'] ) ? esc_attr( $tofw_component['description'] ) : '' ); ?></label>
 								</div>
 							</div>
 						</div>
