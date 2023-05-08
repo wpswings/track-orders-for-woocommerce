@@ -462,22 +462,10 @@ class Track_Orders_For_Woocommerce_Admin {
 	 * @since 1.0.0
 	 * @param array $tofw_settings_template Settings fields.
 	 */
-	public function tofw_track_order_settings_page( $tofw_settings_template ) {
-		$custom_order_status = get_option( 'mwb_tyo_new_custom_order_status', array() );
-		$order_status = array(
-			'wc-packed' => __( 'Order Packed', 'woocommerce-order-tracker' ),
-			'wc-dispatched' => __( 'Order Dispatched', 'woocommerce-order-tracker' ),
-			'wc-shipped' => __( 'Order Shipped', 'woocommerce-order-tracker' ),
-		);
-		if ( is_array( $custom_order_status ) && ! empty( $custom_order_status ) ) {
-			foreach ( $custom_order_status as $key => $value ) {
-				foreach ( $value as $status_key => $status_value ) {
-					$order_status[ 'wc-' . $status_key ] = $status_value;
-				}
-			}
-		}
+	public function tofw_track_order_settings_page( $tofw_track_order_settings ) {
+	
 
-		
+		$order_status = array();
 
 		$tofw_track_order_settings = array(
 			
@@ -507,16 +495,6 @@ class Track_Orders_For_Woocommerce_Admin {
 				),
 			),
 			
-			array(
-				'title' => __( 'Custom Order Statuses', 'track-orders-for-woocommerce' ),
-				'type'  => 'multiselect',
-				'description'  => __( 'Select Custom status to enhance tracking.', 'track-orders-for-woocommerce' ),
-				'id'    => 'tofw_custom_order_status',
-				'value' => get_option( 'tofw_custom_order_status' ),
-				'class' => 'tofw-multiselect-class wps-defaut-multiselect',
-				'placeholder' => '',
-				'options' => $order_status,
-			),
 
 			array(
 				'title' => __( 'Approval', 'track-orders-for-woocommerce' ),
@@ -566,6 +544,68 @@ class Track_Orders_For_Woocommerce_Admin {
 			'class' => 'tofw-button-class',
 		);
 		return $tofw_track_order_settings;
+	}
+
+	/**
+	 * Function for custom order status setting.
+	 *
+	 * @param array $tofw_custom_order_status_settings contains array of settings
+	 * @return void
+	 */
+	public function tofw_custom_order_status_setting_page($tofw_custom_order_status_settings){
+		$custom_order_status = get_option( 'mwb_tyo_new_custom_order_status', array() );
+		$order_status = array(
+			'wc-packed' => __( 'Order Packed', 'woocommerce-order-tracker' ),
+			'wc-dispatched' => __( 'Order Dispatched', 'woocommerce-order-tracker' ),
+			'wc-shipped' => __( 'Order Shipped', 'woocommerce-order-tracker' ),
+		);
+		if ( is_array( $custom_order_status ) && ! empty( $custom_order_status ) ) {
+			foreach ( $custom_order_status as $key => $value ) {
+				foreach ( $value as $status_key => $status_value ) {
+					$order_status[ 'wc-' . $status_key ] = $status_value;
+				}
+			}
+		}
+		$tofw_custom_order_status_settings = array(
+			array(
+				'title' => __( 'Custom Order Statuses', 'track-orders-for-woocommerce' ),
+				'type'  => 'multiselect',
+				'description'  => __( 'Select Custom status to enhance tracking.', 'track-orders-for-woocommerce' ),
+				'id'    => 'tofw_custom_order_status',
+				'value' => get_option( 'tofw_custom_order_status' ),
+				'class' => 'tofw-multiselect-class wps-defaut-multiselect',
+				'placeholder' => '',
+				'options' => $order_status,
+			),
+			array(
+				'title' =>'' ,
+				'type'  => 'custom_status',
+				'description'  =>'',
+				'id'    => 'custom_staus',
+				'value' =>'',
+				'class' => '',
+				'placeholder' => '',
+				'options' => '',
+			),
+
+		);
+
+		$tofw_custom_order_status_settings =
+		/**
+		 * Filter is for returning something.
+		 *
+		 * @since 1.0.0
+		 */
+		apply_filters( 'tofw_custom_order_status_array_filter', $tofw_custom_order_status_settings );
+
+		$tofw_custom_order_status_settings[] = array(
+			'type'  => 'button',
+			'id'    => 'wps_tofw_custom_order_status_setting_save',
+			'button_text' => __( 'Save Settings', 'track-orders-for-woocommerce' ),
+			'class' => 'tofw-button-class',
+		);
+		return $tofw_custom_order_status_settings;
+
 	}
 
 	/**

@@ -201,7 +201,8 @@ class Track_Orders_For_Woocommerce {
 		// All admin actions and filters after License Validation goes here.
 		$this->loader->add_filter( 'wps_add_plugins_menus_array', $tofw_plugin_admin, 'tofw_admin_submenu_page', 15 );
 		$this->loader->add_filter( 'tofw_track_order_array', $tofw_plugin_admin, 'tofw_track_order_settings_page', 10 );
-		$this->loader->add_filter( 'tofw_general_settings_array', $tofw_plugin_admin, 'tofw_admin_general_settings_page', 10 );
+		$this->loader->add_filter( 'tofw_general_settings_array', $tofw_plugin_admin, 'tofw_admin_general_settings_page', 10 ); 
+		$this->loader->add_filter( 'tofw_custom_order_status_array', $tofw_plugin_admin, 'tofw_custom_order_status_setting_page', 10 );
 
 		// Saving tab settings.
 		$this->loader->add_action( 'wps_tofw_settings_saved_notice', $tofw_plugin_admin, 'tofw_admin_save_tab_settings' );
@@ -351,10 +352,10 @@ class Track_Orders_For_Woocommerce {
 			'name'        => 'track-orders-for-woocommerce-track-order.php',
 			'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-track-order.php',
 		);
-		$tofw_default_tabs['track-orders-for-woocommerce-template']      = array(
-			'title'       => esc_html__( 'Templates', 'track-orders-for-woocommerce' ),
-			'name'        => 'track-orders-for-woocommerce-template',
-			'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-template.php',
+		$tofw_default_tabs['track-orders-for-woocommerce-custom-orders-status']      = array(
+			'title'       => esc_html__( 'Custom Order Status', 'track-orders-for-woocommerce' ),
+			'name'        => 'track-orders-for-woocommerce-custom-orders-status',
+			'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-custom-order-status.php',
 		);
 		$tofw_default_tabs['track-orders-for-woocommerce-overview']      = array(
 			'title'       => esc_html__( 'Overview', 'track-orders-for-woocommerce' ),
@@ -589,7 +590,9 @@ class Track_Orders_For_Woocommerce {
 						</div>
 							<?php
 							break;
-
+						case 'custom_status':
+							require_once TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/class-wps-custom-order-status.php';
+							break;
 						case 'password':
 							?>
 						<div class="wps-form-group">

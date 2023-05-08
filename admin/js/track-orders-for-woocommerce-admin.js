@@ -70,48 +70,67 @@
     }
   });
 })(jQuery);
-// License.
+
 jQuery(document).ready(function($) {
-  $("#wps_tofw_license_key").on("click", function(e) {
-    $("#wps_tofw_license_activation_status").html("");
+  jQuery(document).on('click','input#mwb_mwb_create_role_box',function(){
+    jQuery(this).toggleClass('role_box_open');
+    jQuery("div#mwb_mwb_create_box").slideToggle();
+    if(jQuery(this).hasClass('role_box_open')) {
+      jQuery(this).val(global_tyo_admin.mwb_tyo_close_button);
+    }
+    else {
+      jQuery(this).val('Create Custom Order Status');
+    }
   });
-
-  $("form#wps_tofw_license_form").on("submit", function(e) {
-    e.preventDefault();
-
-    //   $("#wps_license_ajax_loader").show();
-    var license_key = $("#wps_tofw_license_key").val();
-    wps_tofw_send_license_request(license_key);
+  
+  
+  jQuery(document).on('click','input#mwb_mwb_create_custom_order_status',function(){
+    jQuery('#mwb_mwb_send_loading').show();
+    var mwb_mwb_create_order_status = jQuery('#mwb_mwb_create_order_name').val().trim();
+    var mwb_order_image_url = jQuery(document).find('#mwb_tyo_other_setting_upload_logo').val();
+    if(mwb_mwb_create_order_status != "" && mwb_mwb_create_order_status != null) 
+    {
+      if( /^[a-zA-Z0-9- ]*$/.test(mwb_mwb_create_order_status) )
+      {
+        mwb_mwb_create_order_status = mwb_mwb_create_order_status
+  
+        jQuery.ajax({
+          url : global_tyo_admin.ajaxurl,
+          type : 'post',
+          data : {
+            action : 'mwb_mwb_create_custom_order_status',
+            mwb_mwb_new_role_name : mwb_mwb_create_order_status,
+            mwb_custom_order_image_url : mwb_order_image_url,
+            nonce : global_tyo_admin.mwb_tyo_nonce,
+          },
+          success : function( response ) {
+            jQuery('#mwb_mwb_send_loading').hide();
+  
+            if(response == "success") {
+              jQuery('#mwb_tyo_other_setting_upload_logo').val('');
+              jQuery('input#mwb_mwb_create_role_box').trigger('click');
+              jQuery("div.mwb_notices_order_tracker").html('<div id="message" class="notice notice-success"><p><strong>'+global_tyo_admin.message_success+'</strong></p></div>');
+              jQuery('#mwb_mwb_create_order_name').val('');
+              location.reload();
+            }
+            else {
+              jQuery("div.mwb_notices_order_tracker").html('<div id="message" class="notice notice-error"><p><strong>'+global_tyo_admin.message_error_save+'</strong></p></div>').delay(2000).fadeOut(function(){});
+            }	
+          }
+        });
+      }
+      else{
+        jQuery('#mwb_mwb_send_loading').hide();
+        jQuery("div.mwb_notices_order_tracker").html( '<div id="message" class="notice notice-error"><p><strong>'+global_tyo_admin.message_invalid_input+'</strong></p></div>' ).delay(4000).fadeOut(function(){});
+        return;
+      }	
+    }else{
+      jQuery('#mwb_mwb_send_loading').hide();
+      jQuery("div.mwb_notices_order_tracker").html( '<div id="message" class="notice notice-error"><p><strong>'+global_tyo_admin.message_empty_data+'</strong></p></div>' ).delay(4000).fadeOut(function(){});
+      return;
+    }
+    jQuery('#mwb_mwb_send_loading').hide();
+  
   });
-
-  function wps_tofw_send_license_request(license_key) {
-    $.ajax({
-      type: "POST",
-      dataType: "JSON",
-      url: tofw_admin_param.ajaxurl,
-      data: {
-        action: "wps_tofw_validate_license_key",
-        purchase_code: license_key,
-        nonce: tofw_admin_param.wps_standard_nonce,
-      },
-
-      success: function(data) {
-        //   $("#wps_upsell_license_ajax_loader").hide();
-
-        if (data.status == true) {
-          $("#wps_tofw_license_activation_status").css("color", "#42b72a");
-
-          jQuery("#wps_tofw_license_activation_status").html(data.msg);
-
-          location = tofw_admin_param.tofw_admin_param_location;
-        } else {
-          $("#wps_tofw_license_activation_status").css("color", "#ff3333");
-
-          jQuery("#wps_tofw_license_activation_status").html(data.msg);
-
-          jQuery("#wps_tofw_license_key").val("");
-        }
-      },
-    });
-  }
+  
 });
