@@ -19,7 +19,7 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 /**
  * Extending wp list table.
  */
-class MWB_Custom_Order_Status extends WP_List_Table {
+class WPS_Custom_Order_Status extends WP_List_Table {
 
 	/** Class constructor. */
 	public function __construct() {
@@ -42,7 +42,7 @@ class MWB_Custom_Order_Status extends WP_List_Table {
 		$custom_order_status = array();
 		$custom_order_image = array();
 
-		$previous_status = get_option( 'mwb_tyo_new_custom_order_status', false );
+		$previous_status = get_option( 'wps_tofw_new_custom_order_status', false );
 		if ( is_array( $previous_status ) && ! empty( $previous_status ) ) {
 			$custom_order_status = $previous_status;
 		}
@@ -58,7 +58,7 @@ class MWB_Custom_Order_Status extends WP_List_Table {
 	public function get_count() {
 
 		$custom_order_status = array();
-		$previous_status = get_option( 'mwb_tyo_new_custom_order_status', false );
+		$previous_status = get_option( 'wps_tofw_new_custom_order_status', false );
 		if ( is_array( $previous_status ) && ! empty( $previous_status ) ) {
 			$custom_order_status = $previous_status;
 		}
@@ -100,7 +100,7 @@ class MWB_Custom_Order_Status extends WP_List_Table {
 		foreach ( $item as $key => $value ) {
 
 				return sprintf(
-					'<input type="checkbox" name="mwb_mwb_custom_order[]" value="%s" />',
+					'<input type="checkbox" name="wps_tofw_custom_order[]" value="%s" />',
 					$item[ $key ]
 				);
 
@@ -119,7 +119,7 @@ class MWB_Custom_Order_Status extends WP_List_Table {
 		foreach ( $item as $custom_order_key => $custom_order_status ) {
 			$title = '<strong>' . $custom_order_status . '</strong>';
 			$actions = array(
-				'delete' => sprintf( '<a href="javascript:void(0);" data-action="%s" data-key="%s" class="mwb_delete_costom_order">' . __( 'Delete', 'woocommerce-order-tracker' ) . '</a>', 'delete', $custom_order_key ),
+				'delete' => sprintf( '<a href="javascript:void(0);" data-action="%s" data-key="%s" class="wps_delete_costom_order">' . __( 'Delete', 'woocommerce-order-tracker' ) . '</a>', 'delete', $custom_order_key ),
 			);
 			return $title . $this->row_actions( $actions );
 		}
@@ -133,12 +133,12 @@ class MWB_Custom_Order_Status extends WP_List_Table {
 	 * @return string
 	 */
 	public function column_image( $item ) {
-		$mwbimageurl = get_option( 'mwb_tyo_new_custom_order_image', false );
+		$wpsimageurl = get_option( 'wps_tofw_new_custom_order_image', false );
 		foreach ( $item as $key => $value ) {
-			$mwb_image = $mwbimageurl[ $key ];
+			$wps_image = $wpsimageurl[ $key ];
 			return sprintf(
 				'<img src="%s" height="100px" width="100px"/>',
-				$mwb_image
+				$wps_image
 			);
 		}
 	}
@@ -186,7 +186,7 @@ class MWB_Custom_Order_Status extends WP_List_Table {
 	 */
 	public function prepare_items() {
 
-		$per_page = apply_filters( 'mwb_mwb_alter_custom_order_status_per_page', 10 );
+		$per_page = apply_filters( 'wps_tofw_alter_custom_order_status_per_page', 10 );
 		$columns  = $this->get_columns();
 		$hidden   = array();
 		$sortable = $this->get_sortable_columns();
@@ -203,7 +203,7 @@ class MWB_Custom_Order_Status extends WP_List_Table {
 
 		if ( ! $this->current_action() ) {
 			if ( is_array( $_POST ) && ! empty( $_POST ) ) {
-				$redirect_url = get_admin_url() . 'admin.php?page=wc-settings&tab=mwb_tyo_settings&section=custom_status';
+				$redirect_url = get_admin_url() . 'admin.php?page=track_orders_for_woocommerce_menu&tofw_tab=track-orders-for-woocommerce-custom-orders-status';
 				wp_redirect( $redirect_url );
 			}
 			$this->items = self::get_feeds();
@@ -221,28 +221,28 @@ class MWB_Custom_Order_Status extends WP_List_Table {
 	 */
 	public function renderHTML() {
 		?>
-		<div class="mwb_mwb_rows_wrap">
+		<div class="wps_tofw_rows_wrap">
 			<input id="wps_tofw_create_role_box" value="<?php esc_attr_e( 'Create Custom Order Status', 'woocommerce-order-tracker' ); ?>" class="button-primary" type="button">
 		</div>
 		<!-- messages :: start -->
-		<div class="mwb_notices_order_tracker">
+		<div class="wps_notices_order_tracker">
 			
 		</div>
 		<!-- messages :: end -->
-		<div id="mwb_mwb_create_box">
+		<div id="wps_tofw_create_box">
 			<h3 align="center"><?php esc_html_e( 'Create New Custom Order Status', 'woocommerce-order-tracker' ); ?></h3>
 			<table class="wp-list-table widefat fixed striped">
 				<tr>
 					<th>
-						<label for="mwb__new_role_name"><?php esc_html_e( 'Custom Order Status Name', 'woocommerce-order-tracker' ); ?><label>
+						<label for="wps__new_role_name"><?php esc_html_e( 'Custom Order Status Name', 'woocommerce-order-tracker' ); ?><label>
 						</th>
 						<td>
-							<input type="text" name="mwb_mwb_create_order_name" pattern = '[A-Za-z0-9]' id="mwb_mwb_create_order_name" placeholder="<?php esc_attr_e( 'Type Custom Order Status Name Here', 'woocommerce-order-tracker' ); ?>">	
+							<input type="text" name="wps_tofw_create_order_name" pattern = '[A-Za-z0-9]' id="wps_tofw_create_order_name" placeholder="<?php esc_attr_e( 'Type Custom Order Status Name Here', 'woocommerce-order-tracker' ); ?>">	
 						</td>
 					</tr>
 					 <tr valign="top">
 						<th scope="row" class="titledesc">
-							<label for="mwb_tyo_other_setting_upload_logo"><?php esc_html_e( 'Upload Default Logo', 'woocommerce-order-tracker' ); ?></label>
+							<label for="wps_tofw_other_setting_upload_logo"><?php esc_html_e( 'Upload Default Logo', 'woocommerce-order-tracker' ); ?></label>
 						</th>
 						<td class="forminp forminp-text">
 							<?php
@@ -250,20 +250,20 @@ class MWB_Custom_Order_Status extends WP_List_Table {
 							echo wp_kses_post( wc_help_tip( $attribute_description ) );
 
 							?>
-							<input type="text" readonly class="mwb_tyo_other_setting_upload_logo_value" id="mwb_tyo_other_setting_upload_logo" name="mwb_tyo_other_setting_upload_logo" value=""/>
-							<input class="mwb_tyo_other_setting_upload_logo button"  type="button" value=<?php esc_attr_e( 'Upload Logo', 'woocommerce-order-tracker' ); ?> />
+							<input type="text" readonly class="wps_tofw_other_setting_upload_logo_value" id="wps_tofw_other_setting_upload_logo" name="wps_tofw_other_setting_upload_logo" value=""/>
+							<input class="wps_tofw_other_setting_upload_logo button"  type="button" value=<?php esc_attr_e( 'Upload Logo', 'woocommerce-order-tracker' ); ?> />
 							
-							<p id="mwb_tyo_other_setting_remove_logo">
-								<span class="mwb_tyo_other_setting_remove_logo">
-									<img src="" width="50px" height="50px" id="mwb_tyo_other_setting_upload_image">
+							<p id="wps_tofw_other_setting_remove_logo">
+								<span class="wps_tofw_other_setting_remove_logo">
+									<img src="" width="50px" height="50px" id="wps_tofw_other_setting_upload_image">
 								</span>
 							</p>
 						</td>
 					</tr>
 				</table>
 				<p class="save_section">
-					<input type="button" id="mwb_mwb_create_custom_order_status" value="<?php esc_attr_e( 'Create Order Status', 'woocommerce-order-tracker' ); ?>" class="button-primary">	
-					<img id="mwb_mwb_send_loading" src="<?php echo esc_attr( MWB_TRACK_YOUR_ORDER_URL ) . 'assets/images/clock-loading.gif'; ?>">
+					<input type="button" id="wps_tofw_create_custom_order_status" value="<?php esc_attr_e( 'Create Order Status', 'woocommerce-order-tracker' ); ?>" class="button-primary">	
+					<img id="wps_tofw_send_loading" src="<?php echo esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/clock-loading.gif'; ?>">
 				</p>
 			</div>
 			<?php
@@ -279,23 +279,23 @@ class MWB_Custom_Order_Status extends WP_List_Table {
 		
 		if ( 'bulk-delete' === $this->current_action() ) {
 			
-			$mwb_tyo_old_selected_statuses = get_option( 'mwb_tyo_new_settings_custom_statuses_for_order_tracking', false );
+			$wps_tofw_old_selected_statuses = get_option( 'wps_tofw_new_settings_custom_statuses_for_order_tracking', false );
 
-			$mwb_data = isset( $_POST['mwb_mwb_custom_order'] ) ? map_deep( wp_unslash( $_POST['mwb_mwb_custom_order'] ) , 'sanitize_text_field' ) : array();
-			$mwb_data_exist_db = get_option( 'mwb_tyo_new_custom_order_status', array() );
-			if ( is_array( $mwb_data ) && ! empty( $mwb_data ) ) {
+			$wps_data = isset( $_POST['wps_tofw_custom_order'] ) ? map_deep( wp_unslash( $_POST['wps_tofw_custom_order'] ) , 'sanitize_text_field' ) : array();
+			$wps_data_exist_db = get_option( 'wps_tofw_new_custom_order_status', array() );
+			if ( is_array( $wps_data ) && ! empty( $wps_data ) ) {
 
-				if ( is_array( $mwb_data_exist_db ) && ! empty( $mwb_data_exist_db ) ) {
-					foreach ( $mwb_data_exist_db as $key1 => $value1 ) {
-						foreach ( $value1 as $mwb_order_key => $mwb_order_value ) {
-							foreach ( $mwb_data as $key2 => $value2 ) {
-								if ( $mwb_order_value == $value2 ) {
-									unset( $mwb_data_exist_db[ $key1 ] );
+				if ( is_array( $wps_data_exist_db ) && ! empty( $wps_data_exist_db ) ) {
+					foreach ( $wps_data_exist_db as $key1 => $value1 ) {
+						foreach ( $value1 as $wps_order_key => $wps_order_value ) {
+							foreach ( $wps_data as $key2 => $value2 ) {
+								if ( $wps_order_value == $value2 ) {
+									unset( $wps_data_exist_db[ $key1 ] );
 								}
-								if ( is_array( $mwb_tyo_old_selected_statuses ) && ! empty( $mwb_tyo_old_selected_statuses ) ) {
-									foreach ( $mwb_tyo_old_selected_statuses as $remove_key => $remove_value ) {
+								if ( is_array( $wps_tofw_old_selected_statuses ) && ! empty( $wps_tofw_old_selected_statuses ) ) {
+									foreach ( $wps_tofw_old_selected_statuses as $remove_key => $remove_value ) {
 										if ( substr( $remove_value, 3 ) == $value2 ) {
-											unset( $mwb_tyo_old_selected_statuses[ $remove_key ] );
+											unset( $wps_tofw_old_selected_statuses[ $remove_key ] );
 										}
 									}
 								}
@@ -303,23 +303,23 @@ class MWB_Custom_Order_Status extends WP_List_Table {
 						}
 					}
 				}
-				update_option( 'mwb_tyo_new_settings_custom_statuses_for_order_tracking', $mwb_tyo_old_selected_statuses );
+				update_option( 'wps_tofw_new_settings_custom_statuses_for_order_tracking', $wps_tofw_old_selected_statuses );
 
-				update_option( 'mwb_tyo_new_custom_order_status', $mwb_data_exist_db );
+				update_option( 'wps_tofw_new_custom_order_status', $wps_data_exist_db );
 
-				$redirect_url = get_admin_url() . 'admin.php?page=wc-settings&tab=mwb_tyo_settings&section=custom_status';
+				$redirect_url = get_admin_url() . 'admin.php?page=track_orders_for_woocommerce_menu&tofw_tab=track-orders-for-woocommerce-custom-orders-status';
 				wp_redirect( $redirect_url );
 			} else {
-				$redirect_url = get_admin_url() . 'admin.php?page=wc-settings&tab=mwb_tyo_settings&section=custom_status';
+				$redirect_url = get_admin_url() . 'admin.php?page=track_orders_for_woocommerce_menu&tofw_tab=track-orders-for-woocommerce-custom-orders-status';
 				wp_redirect( $redirect_url );
 			}
 		} else {
-			$redirect_url = get_admin_url() . 'admin.php?page=wc-settings&tab=mwb_tyo_settings&section=custom_status';
+			$redirect_url = get_admin_url() . 'admin.php?page=track_orders_for_woocommerce_menu&tofw_tab=track-orders-for-woocommerce-custom-orders-status';
 			wp_redirect( $redirect_url );
 		}
 	}
 }
-	$mwb_mwb_user_role_table_list = new MWB_Custom_Order_Status();
-	$mwb_mwb_user_role_table_list->prepare_items();
+	$wps_tofw_user_role_table_list = new WPS_Custom_Order_Status();
+	$wps_tofw_user_role_table_list->prepare_items();
 
 

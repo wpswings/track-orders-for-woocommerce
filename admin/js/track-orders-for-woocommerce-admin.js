@@ -71,12 +71,42 @@
   });
 })(jQuery);
 
-jQuery(document).ready(function($) {
-  jQuery(document).on('click','input#mwb_mwb_create_role_box',function(){
+jQuery(document).ready(function ($) {
+  
+  // for custom order status image icons 
+	jQuery('.wps_tofw_other_setting_upload_logo').click(function(){
+    var imageurl = jQuery("#wps_tofw_other_setting_upload_logo").val();
+
+        tb_show('', 'media-upload.php?TB_iframe=true');
+
+        window.send_to_editor = function(html)
+        {
+           var imageurl = jQuery(html).attr('href');
+          
+           if(typeof imageurl == 'undefined')
+           {
+             imageurl = jQuery(html).attr('src');
+           }
+           var last_index = imageurl.lastIndexOf('/');
+            var url_last_part = imageurl.substr(last_index+1);
+            if( url_last_part == '' ){
+              
+              imageurl = jQuery(html).children("img").attr("src");  
+            }   
+           jQuery("#wps_tofw_other_setting_upload_logo").val(imageurl);
+           jQuery("#wps_tofw_other_setting_upload_image").attr("src",imageurl);
+           jQuery("#wps_tofw_other_setting_remove_logo").show();
+           tb_remove();
+        };
+        return false;
+  });
+
+
+  jQuery(document).on('click','input#wps_tofw_create_role_box',function(){
     jQuery(this).toggleClass('role_box_open');
-    jQuery("div#mwb_mwb_create_box").slideToggle();
+    jQuery("div#wps_tofw_create_box").slideToggle();
     if(jQuery(this).hasClass('role_box_open')) {
-      jQuery(this).val(global_tyo_admin.mwb_tyo_close_button);
+      jQuery(this).val(tofw_admin_param.wps_tofw_close_button);
     }
     else {
       jQuery(this).val('Create Custom Order Status');
@@ -84,53 +114,82 @@ jQuery(document).ready(function($) {
   });
   
   
-  jQuery(document).on('click','input#mwb_mwb_create_custom_order_status',function(){
-    jQuery('#mwb_mwb_send_loading').show();
-    var mwb_mwb_create_order_status = jQuery('#mwb_mwb_create_order_name').val().trim();
-    var mwb_order_image_url = jQuery(document).find('#mwb_tyo_other_setting_upload_logo').val();
-    if(mwb_mwb_create_order_status != "" && mwb_mwb_create_order_status != null) 
+  jQuery(document).on('click','input#wps_tofw_create_custom_order_status',function(){
+    jQuery('#wps_tofw_send_loading').show();
+    var wps_tofw_create_order_status = jQuery('#wps_tofw_create_order_name').val().trim();
+    var wps_order_image_url = jQuery(document).find('#wps_tofw_other_setting_upload_logo').val();
+    if(wps_tofw_create_order_status != "" && wps_tofw_create_order_status != null) 
     {
-      if( /^[a-zA-Z0-9- ]*$/.test(mwb_mwb_create_order_status) )
+      if( /^[a-zA-Z0-9- ]*$/.test(wps_tofw_create_order_status) )
       {
-        mwb_mwb_create_order_status = mwb_mwb_create_order_status
+        wps_tofw_create_order_status = wps_tofw_create_order_status;
   
         jQuery.ajax({
-          url : global_tyo_admin.ajaxurl,
+          url : tofw_admin_param.ajaxurl,
           type : 'post',
           data : {
-            action : 'mwb_mwb_create_custom_order_status',
-            mwb_mwb_new_role_name : mwb_mwb_create_order_status,
-            mwb_custom_order_image_url : mwb_order_image_url,
-            nonce : global_tyo_admin.mwb_tyo_nonce,
+            action : 'wps_tofw_create_custom_order_status',
+            wps_tofw_new_role_name : wps_tofw_create_order_status,
+            wps_custom_order_image_url : wps_order_image_url,
+            nonce : tofw_admin_param.wps_tofw_nonce,
           },
           success : function( response ) {
-            jQuery('#mwb_mwb_send_loading').hide();
+            jQuery('#wps_tofw_send_loading').hide();
   
             if(response == "success") {
-              jQuery('#mwb_tyo_other_setting_upload_logo').val('');
-              jQuery('input#mwb_mwb_create_role_box').trigger('click');
-              jQuery("div.mwb_notices_order_tracker").html('<div id="message" class="notice notice-success"><p><strong>'+global_tyo_admin.message_success+'</strong></p></div>');
-              jQuery('#mwb_mwb_create_order_name').val('');
+              jQuery('#wps_tofw_other_setting_upload_logo').val('');
+              jQuery('input#wps_tofw_create_role_box').trigger('click');
+              jQuery("div.wps_notices_order_tracker").html('<div id="message" class="notice notice-success"><p><strong>'+global_tyo_admin.message_success+'</strong></p></div>');
+              jQuery('#wps_tofw_create_order_name').val('');
               location.reload();
             }
             else {
-              jQuery("div.mwb_notices_order_tracker").html('<div id="message" class="notice notice-error"><p><strong>'+global_tyo_admin.message_error_save+'</strong></p></div>').delay(2000).fadeOut(function(){});
+              jQuery("div.wps_notices_order_tracker").html('<div id="message" class="notice notice-error"><p><strong>'+global_tyo_admin.message_error_save+'</strong></p></div>').delay(2000).fadeOut(function(){});
             }	
           }
         });
       }
       else{
-        jQuery('#mwb_mwb_send_loading').hide();
-        jQuery("div.mwb_notices_order_tracker").html( '<div id="message" class="notice notice-error"><p><strong>'+global_tyo_admin.message_invalid_input+'</strong></p></div>' ).delay(4000).fadeOut(function(){});
+        jQuery('#wps_tofw_send_loading').hide();
+        jQuery("div.wps_notices_order_tracker").html( '<div id="message" class="notice notice-error"><p><strong>'+global_tyo_admin.message_invalid_input+'</strong></p></div>' ).delay(4000).fadeOut(function(){});
         return;
       }	
     }else{
-      jQuery('#mwb_mwb_send_loading').hide();
-      jQuery("div.mwb_notices_order_tracker").html( '<div id="message" class="notice notice-error"><p><strong>'+global_tyo_admin.message_empty_data+'</strong></p></div>' ).delay(4000).fadeOut(function(){});
+      jQuery('#wps_tofw_send_loading').hide();
+      jQuery("div.wps_notices_order_tracker").html( '<div id="message" class="notice notice-error"><p><strong>'+global_tyo_admin.message_empty_data+'</strong></p></div>' ).delay(4000).fadeOut(function(){});
       return;
     }
-    jQuery('#mwb_mwb_send_loading').hide();
+    jQuery('#wps_tofw_send_loading').hide();
   
   });
+
+
+
+
+  // delete custom status
+  jQuery(document.body).on('click','.wps_delete_costom_order',function(){
+		var wps_action=jQuery(this).data('action');
+		var wps_key=jQuery(this).data('key');
+		jQuery.ajax({
+			url: global_tyo_admin.ajaxurl,
+			type : 'post',
+			data:{
+				action : 'wps_tofw_delete_custom_order_status',
+				wps_custom_action : wps_action,
+				wps_custom_key	: wps_key,
+				nonce : tofw_admin_param.wps_tofw_nonce,
+			},
+			success: function(response){
+				if(response=='success')
+				{
+					location.reload();
+				}
+
+			}
+
+    });
+    
+
+	});
   
 });

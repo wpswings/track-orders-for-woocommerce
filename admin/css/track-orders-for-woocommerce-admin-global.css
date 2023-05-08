@@ -2,3 +2,43 @@
     background-color:#2196f3;
     color: white;
 }
+
+input.role_box_open {
+    background-color: #D3394C!important;
+  }
+  .button-primary.woocommerce-save-button.role_box_open{
+    border: 0 none !important;
+    box-shadow: none;
+    font-size: 12px;
+    font-weight: normal;
+    padding: 0 15px;
+    text-shadow: none;
+    text-transform: uppercase;
+  }
+
+
+  #wps_tofw_create_box {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    margin-top: 10px;
+    padding: 10px;
+  }
+  #wps_tofw_create_box h3 {
+    font-weight: normal;
+    margin: 0;
+    padding: 5px 0 15px;
+    text-transform: uppercase;
+  }
+  #wps_tofw_create_box table tr td input {
+    min-height: 35px;
+    width: 100%;
+  }
+  .wps_tofw_rows_wrap h3 {
+    display: inline-block;
+    font-weight: normal;
+    margin: 0;
+  }
+  div#wps_tofw_create_box,
+  img#wps_tofw_send_loading {
+    display: none;
+  }

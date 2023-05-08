@@ -211,7 +211,8 @@ class Track_Orders_For_Woocommerce {
 		$this->loader->add_action( 'tofw_developer_admin_hooks_array', $tofw_plugin_admin, 'wps_developer_admin_hooks_listing' );
 		$this->loader->add_action( 'tofw_developer_public_hooks_array', $tofw_plugin_admin, 'wps_developer_public_hooks_listing' );
 
-		
+		$this->loader->add_action( 'wp_ajax_wps_tofw_create_custom_order_status', $tofw_plugin_admin, 'wps_tofw_create_custom_order_status_callback' );
+		$this->loader->add_action( 'wp_ajax_wps_tofw_delete_custom_order_status', $tofw_plugin_admin,'wps_tofw_delete_custom_order_status_callback' );
 
 	}
 

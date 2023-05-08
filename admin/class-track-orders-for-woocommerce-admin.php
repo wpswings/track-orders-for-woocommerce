@@ -151,10 +151,15 @@ class Track_Orders_For_Woocommerce_Admin {
 				'tofw_admin_param',
 				array(
 					'ajaxurl' => admin_url( 'admin-ajax.php' ),
-					'wps_standard_nonce' => wp_create_nonce( 'ajax-nonce' ),
+					'wps_tofw_nonce' => wp_create_nonce( 'ajax-nonce' ),
 					'reloadurl' => admin_url( 'admin.php?page=track_orders_for_woocommerce_menu' ),
 					'msp_gen_tab_enable' => get_option( 'tofw_radio_switch_demo' ),
 					'tofw_admin_param_location' => ( admin_url( 'admin.php' ) . '?page=track_orders_for_woocommerce_menu&tofw_tab=track-orders-for-woocommerce-general' ),
+					'wps_tofw_close_button' => __( 'Close', 'track-orders-for-woocommerce' ),
+					'message_success'  => __( 'Order Status successfully saved.', 'track-orders-for-woocommerce' ),
+					'message_invalid_input'  => __( 'Please enter a Valid Status Name.', 'track-orders-for-woocommerce' ),
+					'message_error_save'  => __( 'Unable to save Order Status.', 'track-orders-for-woocommerce' ),
+					'message_empty_data'  => __( 'Please enter the status name .', 'track-orders-for-woocommerce' ),
 				)
 			);
 			wp_enqueue_script( $this->plugin_name . 'admin-js' );
@@ -553,7 +558,7 @@ class Track_Orders_For_Woocommerce_Admin {
 	 * @return void
 	 */
 	public function tofw_custom_order_status_setting_page($tofw_custom_order_status_settings){
-		$custom_order_status = get_option( 'mwb_tyo_new_custom_order_status', array() );
+		$custom_order_status = get_option( 'wps_tofw_new_custom_order_status', array() );
 		$order_status = array(
 			'wc-packed' => __( 'Order Packed', 'woocommerce-order-tracker' ),
 			'wc-dispatched' => __( 'Order Dispatched', 'woocommerce-order-tracker' ),
@@ -694,42 +699,87 @@ class Track_Orders_For_Woocommerce_Admin {
 		return $wps_input_array;
 	}
 
+
+
 	/**
-	 * Checking wpswings license on daily basis
+	 * Function for ajax callback.
 	 *
-	 * @since 1.0.0
+	 * @return void
 	 */
+	public function wps_tofw_create_custom_order_status_callback(){
+		check_ajax_referer( 'ajax-nonce', 'nonce' );
+		$create_custom_order_status = array();
+		$value = array();
+		$custom_order_image_url = array();
+		$wps_image_url = array();
+		$value = get_option( 'wps_tofw_new_custom_order_status', false );
+		$custom_order_image_url = get_option( 'wps_tofw_new_custom_order_image', false );
+		if ( is_array( $value ) && ! empty( $value ) ) {
+			$create_custom_order_status = isset( $_POST['wps_tofw_new_role_name'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_new_role_name'] ) ) : '';
+			$create_custom_order_image_url = isset( $_POST['wps_custom_order_image_url'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_custom_order_image_url'] ) ) : '';
+			$key_custom_order_status = str_replace( ' ', '', $create_custom_order_status );
+			$key_custom_order_status = strtolower( $key_custom_order_status );
+			$value[] = array( $key_custom_order_status => $create_custom_order_status );
+			$custom_order_image_url[ $key_custom_order_status ] = $create_custom_order_image_url;
 
-	public function wps_tofw_check_license() {
-
-		$user_license_key = get_option( 'wps_tofw_license_key', '' );
-
-		$api_params = array(
-			'slm_action'        => 'slm_check',
-			'secret_key'        => TRACK_ORDERS_FOR_WOOCOMMERCE_SPECIAL_SECRET_KEY,
-			'license_key'       => $user_license_key,
-			'_registered_domain' => $_SERVER['SERVER_NAME'],
-			'item_reference'    => urlencode( TRACK_ORDERS_FOR_WOOCOMMERCE_ITEM_REFERENCE ),
-			'product_reference' => 'wpsPK-2965',
-		);
-
-		$query = esc_url_raw( add_query_arg( $api_params, TRACK_ORDERS_FOR_WOOCOMMERCE_LICENSE_SERVER_URL ) );
-		$wps_response = wp_remote_get(
-			$query,
-			array(
-				'timeout' => 20,
-				'sslverify' => false,
-			)
-		);
-		$license_data = json_decode( wp_remote_retrieve_body( $wps_response ) );
-
-		if ( isset( $license_data->result ) && 'success' === $license_data->result && isset( $license_data->status ) && 'active' === $license_data->status ) {
-
-			update_option( 'wps_tofw_license_check', true );
+			update_option( 'wps_tofw_new_custom_order_status', $value );
+			update_option( 'wps_tofw_new_custom_order_image', $custom_order_image_url );
 
 		} else {
 
-			delete_option( 'wps_tofw_license_check' );
+			$create_custom_order_status = isset( $_POST['wps_tofw_new_role_name'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_new_role_name'] ) ) : '';
+			$create_custom_order_image_url = isset( $_POST['wps_custom_order_image_url'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_custom_order_image_url'] ) ) : '';
+			$key_custom_order_status = str_replace( ' ', '', $create_custom_order_status );
+			$key_custom_order_status = strtolower( $key_custom_order_status );
+			$value[] = array( $key_custom_order_status => $create_custom_order_status );
+			$custom_order_image_url[ $key_custom_order_status ] = $create_custom_order_image_url;
+
+			update_option( 'wps_tofw_new_custom_order_status', $value );
+			update_option( 'wps_tofw_new_custom_order_image', $custom_order_image_url );
+		}
+
+		esc_html_e( 'success', 'woocommerce-order-tracker' );
+		wp_die();
+	}
+
+	/**
+	 * This function delete the Custom order status on the backend
+	 *
+	 * @link http://www.wpswings.com/
+	 */
+	public function wps_tofw_delete_custom_order_status_callback() {
+		check_ajax_referer( 'ajax-nonce', 'nonce' );
+		$wps_tofw_old_selected_statuses = get_option( 'wps_tofw_new_settings_custom_statuses_for_order_tracking', false );
+		$wps_custom_action = isset( $_POST['wps_custom_action'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_custom_action'] ) ) : '';
+		$wps_custom_key = isset( $_POST['wps_custom_key'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_custom_key'] ) ) : '';
+		if ( isset( $wps_custom_key ) && ! empty( $wps_custom_key ) ) {
+			$custom_order_status_exist = get_option( 'wps_tofw_new_custom_order_status', array() );
+			if ( is_array( $custom_order_status_exist ) && ! empty( $custom_order_status_exist ) ) {
+				foreach ( $custom_order_status_exist as $key => $value ) {
+					foreach ( $value as $wps_order_key => $wps_order_status ) {
+						if ( $wps_order_key === $wps_custom_key ) {
+							unset( $custom_order_status_exist[ $key ] );
+
+						}
+					}
+				}
+				update_option( 'wps_tofw_new_custom_order_status', $custom_order_status_exist );
+
+				if ( is_array( $wps_tofw_old_selected_statuses ) && ! empty( $wps_tofw_old_selected_statuses ) ) {
+					foreach ( $wps_tofw_old_selected_statuses as $old_key => $old_value ) {
+						if ( substr( $old_value, 3 ) == $wps_custom_key ) {
+							unset( $wps_tofw_old_selected_statuses[ $old_key ] );
+							update_option( 'wps_tofw_new_settings_custom_statuses_for_order_tracking', $wps_tofw_old_selected_statuses );
+						}
+					}
+				}
+				esc_html_e( 'success', 'woocommerce-order-tracker' );
+			} else {
+				esc_html_e( 'failed', 'woocommerce-order-tracker' );
+			}
+
+			wp_die();
 		}
 	}
+
 }
