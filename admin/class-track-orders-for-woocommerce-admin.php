@@ -469,8 +469,32 @@ class Track_Orders_For_Woocommerce_Admin {
 	 */
 	public function tofw_track_order_settings_page( $tofw_track_order_settings ) {
 	
-
-		$order_status = array();
+		$custom_order_status = get_option( 'wps_tofw_new_custom_order_status', array() );
+		$selected_order_status = get_option( 'tofw_selected_custom_order_status' );
+		$new_order_statues = array();
+		$order_status = array(
+			'wc-packed' => __( 'Order Packed', 'woocommerce-order-tracker' ),
+			'wc-dispatched' => __( 'Order Dispatched', 'woocommerce-order-tracker' ),
+			'wc-shipped' => __( 'Order Shipped', 'woocommerce-order-tracker' ),
+		);
+		if ( is_array( $custom_order_status ) && ! empty( $custom_order_status ) ) {
+			foreach ( $custom_order_status as $key => $value ) {
+				foreach ( $value as $status_key => $status_value ) {
+					$order_status[ 'wc-' . $status_key ] = $status_value;
+				}
+			}
+		}
+		if ( is_array( $selected_order_status ) && ! empty( $selected_order_status ) ) {
+			foreach ( $selected_order_status as $key => $value ) {
+				if(key_exists( $value,$order_status  ) ) {
+					$new_order_statues[$value] = $order_status[$value];
+				}
+				
+			}
+		}
+		$wc_get_order_statuses = wc_get_order_statuses();
+		unset($wc_get_order_statuses['wc-completed']);
+		$order_status = array_merge( $new_order_statues, $wc_get_order_statuses  );
 
 		$tofw_track_order_settings = array(
 			
@@ -575,9 +599,9 @@ class Track_Orders_For_Woocommerce_Admin {
 			array(
 				'title' => __( 'Custom Order Statuses', 'track-orders-for-woocommerce' ),
 				'type'  => 'multiselect',
-				'description'  => __( 'Select Custom status to enhance tracking.', 'track-orders-for-woocommerce' ),
-				'id'    => 'tofw_custom_order_status',
-				'value' => get_option( 'tofw_custom_order_status' ),
+				'description'  => __( 'Select Custom status to use in tracking.', 'track-orders-for-woocommerce' ),
+				'id'    => 'tofw_selected_custom_order_status',
+				'value' => get_option( 'tofw_selected_custom_order_status' ),
 				'class' => 'tofw-multiselect-class wps-defaut-multiselect',
 				'placeholder' => '',
 				'options' => $order_status,
@@ -649,6 +673,13 @@ class Track_Orders_For_Woocommerce_Admin {
 			$tofw_genaral_settings =
 			// desc - filter for trial.
 			apply_filters( 'tofw_track_order_array', array() );
+			$wps_settings_save_progress = true;
+		}
+		if ( isset( $_POST['wps_tofw_custom_order_status_setting_save'] ) ) {
+			$wps_msp_gen_flag     = false;
+			$tofw_genaral_settings =
+			// desc - filter for trial.
+			apply_filters( 'tofw_custom_order_status_array', array() );
 			$wps_settings_save_progress = true;
 		}
 		
