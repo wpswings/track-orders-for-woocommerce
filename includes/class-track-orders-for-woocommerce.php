@@ -358,6 +358,11 @@ class Track_Orders_For_Woocommerce {
 			'name'        => 'track-orders-for-woocommerce-custom-orders-status',
 			'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-custom-order-status.php',
 		);
+		$tofw_default_tabs['track-orders-for-woocommerce-template']      = array(
+			'title'       => esc_html__( 'Template', 'track-orders-for-woocommerce' ),
+			'name'        => 'track-orders-for-woocommerce-template',
+			'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-template.php',
+		);
 		$tofw_default_tabs['track-orders-for-woocommerce-overview']      = array(
 			'title'       => esc_html__( 'Overview', 'track-orders-for-woocommerce' ),
 			'name'        => 'track-orders-for-woocommerce-overview',

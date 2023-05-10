@@ -72,6 +72,51 @@
 })(jQuery);
 
 jQuery(document).ready(function ($) {
+
+  jQuery('body').on('click','.wps_enhanced_tyo_remove',function(e){
+    e.preventDefault();
+    var wps_enhanced_tyo_remove=jQuery(this).data("id");
+    jQuery("#wps_enhanced_tyo_class"+wps_enhanced_tyo_remove).remove();
+      jQuery.ajax({
+      url:ajax_url,
+      type:"POST",
+      data: {
+        action : 'wps_provider_remove_company_data_from_plugin',
+        wps_company_name:wps_enhanced_tyo_remove,
+        nonce : global_tyo_admin.wps_tofw_nonce,
+      },success:function(response){
+        // console.log( response );
+      
+      }	
+
+      });
+  });
+  //jquery add buttton
+    jQuery('#wps_tofw_enhanced_woocommerce_shipment_tracking_add_providers').on('click',function(e){
+        var wps_company_name=jQuery('.wps_toy_enhanced_provider').val();
+        var wps_company_url=jQuery('.wps_toy_enhanced_provider_url').val();
+        jQuery.ajax({
+        url:ajax_url,
+        type:"POST",
+        data: {
+          action : 'wps_provider_subbmission_data_from_plugin',
+          nonce : global_tyo_admin.wps_tofw_nonce,
+          wps_company_name : wps_company_name,
+          wps_company_url : wps_company_url
+        },success:function(response){
+          jQuery('.wps_toy_enhanced_provider').val("");
+          jQuery('.wps_toy_enhanced_provider_url').val("");
+          var  wps_append="<div class='mwb-tyo-courier-data' id='wps_enhanced_tyo_class"+wps_company_name+"'>";
+            wps_append+="<input type='checkbox' id='wps_enhanced_checkbox"+wps_company_name+"' name='wps_tofw_courier_url["+wps_company_name+"]' value='"+wps_company_url+"'>";
+                wps_append+="<label for='wps_enhanced_checkbox"+wps_company_name+"'>"+wps_company_name+"</label>";
+                  wps_append+='<a href="#" id="wps_enhanced_cross'+wps_company_name+'" class="wps_enhanced_tyo_remove" data-id="'+wps_company_name+'">X</a></div>';
+          jQuery(wps_append).appendTo(".wps_tofw_courier_content");
+          
+        }	
+
+      });
+      
+    });
   
   // for custom order status image icons 
 	jQuery('.wps_tofw_other_setting_upload_logo').click(function(){
