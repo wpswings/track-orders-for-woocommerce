@@ -160,6 +160,7 @@ class Track_Orders_For_Woocommerce_Admin {
 					'message_invalid_input'  => __( 'Please enter a Valid Status Name.', 'track-orders-for-woocommerce' ),
 					'message_error_save'  => __( 'Unable to save Order Status.', 'track-orders-for-woocommerce' ),
 					'message_empty_data'  => __( 'Please enter the status name .', 'track-orders-for-woocommerce' ),
+					'message_template_activated' => __( 'Template Activated sucessfully.', 'track-orders-for-woocommerce' ),
 				)
 			);
 			wp_enqueue_script( $this->plugin_name . 'admin-js' );
@@ -811,6 +812,15 @@ class Track_Orders_For_Woocommerce_Admin {
 
 			wp_die();
 		}
+	}
+
+
+	public function wps_selected_template_callback(){
+		check_ajax_referer( 'ajax-nonce', 'nonce' );
+		$selected_template_name = isset( $_POST['template_name'] ) ? sanitize_text_field( wp_unslash( $_POST['template_name'] ) ) : '';
+		update_option( 'wps_tofw_activated_template', $selected_template_name );
+		esc_html_e( 'success', 'woocommerce-order-tracker' );
+		wp_die();
 	}
 
 }
