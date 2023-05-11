@@ -72,15 +72,16 @@ if ( 'template1' == $activated_template ) {
 			</div>
 		</div>
 	</div>
+</div>
 	
 <div class="hidden_wrapper">
-	<div id="wps_template_2" class="wps_hide_template" >
+	<div id="wps_template_1" class="wps_hide_template" >
 		<img src="<?php echo esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/ot02.png'; ?>">
 	</div>
-	<div id="wps_template_3" class="wps_hide_template">
+	<div id="wps_template_2" class="wps_hide_template">
 		<img src="<?php echo esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/ot03.png'; ?>">
 	</div>
-	<div id="wps_template_1" class="wps_hide_template">
+	<div id="wps_template_3" class="wps_hide_template">
 		<img src="<?php echo esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/ot01.jpg'; ?>">
 	</div>
 	</div>
