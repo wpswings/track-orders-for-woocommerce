@@ -161,6 +161,9 @@ class Track_Orders_For_Woocommerce_Admin {
 					'message_error_save'  => __( 'Unable to save Order Status.', 'track-orders-for-woocommerce' ),
 					'message_empty_data'  => __( 'Please enter the status name .', 'track-orders-for-woocommerce' ),
 					'message_template_activated' => __( 'Template Activated sucessfully.', 'track-orders-for-woocommerce' ),
+					'address_validation' => __( 'Please Enter Address First', 'track-orders-for-woocommerce' ),
+					'address_validation_success' => __( 'Address Successfully Added', 'track-orders-for-woocommerce' ),
+					'selec_address_placeholder' => __( 'Select Your Hubpoint Addresses', 'track-orders-for-woocommerce' ),
 				)
 			);
 			wp_enqueue_script( $this->plugin_name . 'admin-js' );
@@ -639,6 +642,92 @@ class Track_Orders_For_Woocommerce_Admin {
 	}
 
 	/**
+	 * Function for track order settings.
+	 *
+	 * @param array $tofw_track_order_gmap_settings contains array.
+	 * @return array
+	 */
+	public function tofw_track_order_gmap_settings_callback($tofw_track_order_gmap_settings){
+		$tofw_track_order_gmap_settings = array(
+				array(
+					'title' => __( 'Enable Google Map For Tracking', 'track-orders-for-woocommerce' ),
+					'type'  => 'radio-switch',
+					'description'  => __( 'Enable Tracking Your Order With Google Map Api.', 'track-orders-for-woocommerce' ),
+					'id'    => 'wps_tofw_trackorder_with_google_map',
+					'value' => get_option( 'wps_tofw_trackorder_with_google_map' ),
+					'class' => 'tofw-radio-switch-class',
+					'options' => array(
+						'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
+						'no' => __( 'NO', 'track-orders-for-woocommerce' ),
+					),
+				),
+				array(
+					'title' => __( 'Enter Google Map Api Key', 'track-orders-for-woocommerce' ),
+					'type'  => 'text',
+					'description'  => __( 'Enter Google Map Api Key.', 'track-orders-for-woocommerce' ),
+					'id'    => 'wps_tofw_track_order_google_map_api_key',
+					'value' => get_option( 'wps_tofw_track_order_google_map_api_key' ),
+					'class' => '',
+					'style' => 'width:10em;',
+					
+				),
+				array(
+					'title' => __( 'Enter Order Production House Address', 'track-orders-for-woocommerce' ),
+					'type'  => 'text',
+					'description'  => __( 'Enter your order production house address.', 'track-orders-for-woocommerce' ),
+					'id'    => 'wps_tofw_track_order_production_address',
+					'value' => get_option( 'wps_tofw_track_order_production_address' ),
+					'class' => '',
+					'style' => 'width:10em;',
+					
+				),
+				array(
+					'title' => __( 'Enter Addresses From Where Your Order Has Gone Through', 'track-orders-for-woocommerce' ),
+					'type'  => 'text',
+					'description'  => __( 'Enter the addresses one by one from where your order has gone through.', 'track-orders-for-woocommerce' ),
+					'id'    => 'wps_tofw_track_order_addresses',
+					'value' => '',
+					'class' => '',
+					'style' => 'width:10em;',
+					
+				),
+				array(
+					'type'  => 'button',
+					'id'    => 'wps_tofw_add_address',
+					'button_text' => __( 'Add Address', 'track-orders-for-woocommerce' ),
+					'class' => 'tofw-button-class',
+				),
+
+				array(
+					'title' => __( 'Selected Addresses', 'track-orders-for-woocommerce' ),
+					'type'  => 'multiselect',
+					'description'  => __( 'Select Custom status to enhance tracking.', 'track-orders-for-woocommerce' ),
+					'id'    => 'wps_tofw_selected_address',
+					'value' => get_option( 'wps_tofw_selected_address' ),
+					'class' => 'tofw-multiselect-class wps-defaut-multiselect',
+					'placeholder' => 'Select Your Hubpoint Addresses',
+					'options' => get_option( 'wps_tofw_old_addresses') ,
+				),
+		);
+
+		$tofw_track_order_gmap_settings =
+		/**
+		 * Filter is for returning something.
+		 *
+		 * @since 1.0.0
+		 */
+		apply_filters( 'tofw_track_order_gmap_settings_array_filter', $tofw_track_order_gmap_settings );
+
+		$tofw_track_order_gmap_settings[] = array(
+			'type'  => 'button',
+			'id'    => 'wps_tofw_track_order_gmap_settings_save',
+			'button_text' => __( 'Save Settings', 'track-orders-for-woocommerce' ),
+			'class' => 'tofw-button-class',
+		);
+		return $tofw_track_order_gmap_settings;
+	}
+
+	/**
 	 * Track Orders For Woocommerce save tab settings.
 	 *
 	 * @since 1.0.0
@@ -681,6 +770,13 @@ class Track_Orders_For_Woocommerce_Admin {
 			$tofw_genaral_settings =
 			// desc - filter for trial.
 			apply_filters( 'tofw_custom_order_status_array', array() );
+			$wps_settings_save_progress = true;
+		}
+		if ( isset( $_POST['wps_tofw_track_order_gmap_settings_save'] ) ) {
+			$wps_msp_gen_flag     = false;
+			$tofw_genaral_settings =
+			// desc - filter for trial.
+			apply_filters( 'tofw_track_order_gmap_settings_array', array() );
 			$wps_settings_save_progress = true;
 		}
 		
@@ -814,12 +910,36 @@ class Track_Orders_For_Woocommerce_Admin {
 		}
 	}
 
-
+	/**
+	 * Function for ajax select template.
+	 *
+	 * @return void
+	 */
 	public function wps_selected_template_callback(){
 		check_ajax_referer( 'ajax-nonce', 'nonce' );
 		$selected_template_name = isset( $_POST['template_name'] ) ? sanitize_text_field( wp_unslash( $_POST['template_name'] ) ) : '';
 		update_option( 'wps_tofw_activated_template', $selected_template_name );
 		esc_html_e( 'success', 'woocommerce-order-tracker' );
+		wp_die();
+	}
+
+	/**
+	 * Function for ajax insert address.
+	 *
+	 * @return void
+	 */
+	public function wps_tofw_insert_address_for_tracking(){
+		check_ajax_referer( 'ajax-nonce', 'nonce' );
+		$wps_tofw_address_collections = isset( $_POST['wps_tofw_addresses'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_addresses'] ) ) : '';
+		$wps_tofw_previous_address = get_option( 'wps_tofw_old_addresses', array() );
+		if ( is_array( $wps_tofw_previous_address ) ) {
+
+			$wps_tofw_previous_address[ 'wps_address_' . $wps_tofw_address_collections ] = $wps_tofw_address_collections;
+			update_option( 'wps_tofw_old_addresses', $wps_tofw_previous_address );
+		}
+
+		$wps_tofw_address_array_value = get_option( 'wps_tofw_old_addresses', false );
+		echo json_encode( $wps_tofw_address_array_value );
 		wp_die();
 	}
 
