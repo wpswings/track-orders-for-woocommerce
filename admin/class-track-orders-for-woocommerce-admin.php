@@ -728,6 +728,98 @@ class Track_Orders_For_Woocommerce_Admin {
 	}
 
 	/**
+	 * Function for shipping services settings
+	 *
+	 * @return void
+	 */
+	public function tofw_shipping_services_settings_callback($tofw_shipping_services_settings){
+
+		$tofw_shipping_services_settings = array(
+			array(
+				'title' => __( 'Enable Third Party Tracking Api', 'track-orders-for-woocommerce' ),
+				'type'  => 'radio-switch',
+				'description'  => __( 'Enable Third Party Tracking Api.', 'track-orders-for-woocommerce' ),
+				'id'    => 'wps_tofw_enable_third_party_tracking_api',
+				'value' => get_option( 'wps_tofw_enable_third_party_tracking_api' ),
+				'class' => 'tofw-radio-switch-class',
+				'options' => array(
+					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
+					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
+				),
+			),
+			array(
+				'title' => __( 'Enter The Shop Address ', 'track-orders-for-woocommerce' ),
+				'type'  => 'text',
+				'description'  => __( 'Enter The Shop Address for the customer easiness.', 'track-orders-for-woocommerce' ),
+				'id'    => 'wps_tofw_shop_address',
+				'value' => get_option( 'wps_tofw_shop_address' ),
+				'class' => '',
+				'style' => 'width:10em;',
+				
+			),
+			array(
+				'title' => __( 'Enable FedEx Shipment Tracking', 'track-orders-for-woocommerce' ),
+				'type'  => 'radio-switch',
+				'description'  => __( 'Enable FedEx Shipment Tracking Api.', 'track-orders-for-woocommerce' ),
+				'id'    => 'wps_tofw_enable_track_order_using_api',
+				'value' => get_option( 'wps_tofw_enable_track_order_using_api' ),
+				'class' => 'tofw-radio-switch-class',
+				'options' => array(
+					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
+					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
+				),
+			),
+			array(
+				'title' => __( 'Enter Your FedEx User Key  ', 'track-orders-for-woocommerce' ),
+				'type'  => 'text',
+				'description'  => __( 'Enable FedEx Shipment Tracking Api.', 'track-orders-for-woocommerce' ),
+				'id'    => 'wps_fedex_userkey',
+				'value' => get_option( 'wps_fedex_userkey' ),
+				'class' => '',
+				'style' => 'width:10em;',
+				
+			),
+			array(
+				'title' => __( 'Enter Your FedEx User Password   ', 'track-orders-for-woocommerce' ),
+				'type'  => 'text',
+				'description'  => __( 'Enter Your FedEx User Password .', 'track-orders-for-woocommerce' ),
+				'id'    => 'wps_fedex_account_number',
+				'value' => get_option( 'wps_fedex_account_number' ),
+				'class' => '',
+				'style' => 'width:10em;',
+				
+			),
+			array(
+				'title' => __( 'Enter Your FedEx Meter Number    ', 'track-orders-for-woocommerce' ),
+				'type'  => 'text',
+				'description'  => __( 'Enter Your FedEx Meter Number  .', 'track-orders-for-woocommerce' ),
+				'id'    => 'wps_fedex_meter_number',
+				'value' => get_option( 'wps_fedex_meter_number' ),
+				'class' => '',
+				'style' => 'width:10em;',
+				
+			),
+		);
+
+		$tofw_shipping_services_settings =
+		/**
+		 * Filter is for returning something.
+		 *
+		 * @since 1.0.0
+		 */
+		apply_filters( 'tofw_shipping_services_settings_array_filter', $tofw_shipping_services_settings );
+
+		$tofw_shipping_services_settings[] = array(
+			'type'  => 'button',
+			'id'    => 'wps_tofw_shipping_services_settings_save',
+			'button_text' => __( 'Save Settings', 'track-orders-for-woocommerce' ),
+			'class' => 'tofw-button-class',
+		);
+		return $tofw_shipping_services_settings;
+	}
+
+
+	/**
 	 * Track Orders For Woocommerce save tab settings.
 	 *
 	 * @since 1.0.0
@@ -777,6 +869,13 @@ class Track_Orders_For_Woocommerce_Admin {
 			$tofw_genaral_settings =
 			// desc - filter for trial.
 			apply_filters( 'tofw_track_order_gmap_settings_array', array() );
+			$wps_settings_save_progress = true;
+		}
+		if ( isset( $_POST['wps_tofw_shipping_services_settings_save'] ) ) {
+			$wps_msp_gen_flag     = false;
+			$tofw_genaral_settings =
+			// desc - filter for trial.
+			apply_filters( 'tofw_shipping_services_settings_array', array() );
 			$wps_settings_save_progress = true;
 		}
 		
@@ -942,5 +1041,8 @@ class Track_Orders_For_Woocommerce_Admin {
 		echo json_encode( $wps_tofw_address_array_value );
 		wp_die();
 	}
+
+
+	
 
 }

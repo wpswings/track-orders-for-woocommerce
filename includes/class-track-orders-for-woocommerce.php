@@ -204,6 +204,7 @@ class Track_Orders_For_Woocommerce {
 		$this->loader->add_filter( 'tofw_general_settings_array', $tofw_plugin_admin, 'tofw_admin_general_settings_page', 10 ); 
 		$this->loader->add_filter( 'tofw_custom_order_status_array', $tofw_plugin_admin, 'tofw_custom_order_status_setting_page', 10 );
 		$this->loader->add_action( 'tofw_track_order_gmap_settings_array', $tofw_plugin_admin, 'tofw_track_order_gmap_settings_callback' );
+		$this->loader->add_action('tofw_shipping_services_settings_array',  $tofw_plugin_admin, 'tofw_shipping_services_settings_callback' );
 
 		// Saving tab settings.
 		$this->loader->add_action( 'wps_tofw_settings_saved_notice', $tofw_plugin_admin, 'tofw_admin_save_tab_settings' );
@@ -373,6 +374,11 @@ class Track_Orders_For_Woocommerce {
 			'title'       => esc_html__( 'Track Order with Google Map', 'track-orders-for-woocommerce' ),
 			'name'        => 'track-orders-for-woocommerce-track-your-your-order-with-google-map',
 			'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-track-your-order-with-google-map.php',
+		);
+		$tofw_default_tabs['track-orders-for-woocommerce-shipping-services']      = array(
+			'title'       => esc_html__( 'Shipping Services', 'track-orders-for-woocommerce' ),
+			'name'        => 'track-orders-for-woocommerce-shipping-services',
+			'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-shipping-services.php',
 		);
 		$tofw_default_tabs['track-orders-for-woocommerce-overview']      = array(
 			'title'       => esc_html__( 'Overview', 'track-orders-for-woocommerce' ),
