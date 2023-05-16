@@ -75,4 +75,32 @@ class Track_Orders_For_Woocommerce_Public {
 
 	}
 
+
+	/**
+	 * This function is for rendering track order button
+	 *
+	 * @link http://www.wpswings.com/
+	 * @param object $order is a object.
+	 */
+	public function wps_tofw_track_order_button( $order ) {
+		if ( '3.0.0' > WC()->version ) {
+			$order_id = $order->id;
+		} else {
+			$order_id = $order->get_id();
+		}
+		$wps_tofw_enable_track_order_feature = get_option( 'tofw_enable_track_order', 'no' );
+		if ( 'on' != $wps_tofw_enable_track_order_feature ) {
+			return;
+		}
+		$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
+		$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
+		$track_order_url = get_permalink( $page_id );
+		?>
+		<p><label class="wps_enhanced_order_note"><?php esc_html_e( 'Note:', 'woocommerce-order-tracker' ); ?></label><span class="wps_order_note_text"><?php esc_html_e( 'Click The Below To Track Your Order', 'woocommerce-order-tracker' ); ?></span></p>
+			<a href="<?php echo esc_attr( $track_order_url ) . '?' . esc_attr( $order_id ); ?>" class="button button-primary"><?php esc_html_e( 'TRACK ORDER', 'woocommerce-order-tracker' ); ?></a>
+		<?php
+		
+	}
+
+
 }
