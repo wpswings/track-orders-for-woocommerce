@@ -263,6 +263,7 @@ class Track_Orders_For_Woocommerce {
 		$this->loader->add_action( 'wp_enqueue_scripts', $tofw_plugin_public, 'tofw_public_enqueue_scripts' );
 
 		$this->loader->	add_action( 'woocommerce_order_details_after_order_table', $tofw_plugin_public, 'wps_tofw_track_order_button' );
+		$this->loader->add_action('woocommerce_my_account_my_orders_actions', $tofw_plugin_public, 'wps_tofw_add_track_order_button_on_orderpage', 10, 2 );
 		
 
 	}

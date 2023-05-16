@@ -102,5 +102,35 @@ class Track_Orders_For_Woocommerce_Public {
 		
 	}
 
+	/**
+	 * Function to add track order button.
+	 *
+	 * @param array $actions is an array.
+	 * @param object $order is the object.
+	 * @return void
+	 */
+	public function wps_tofw_add_track_order_button_on_orderpage($actions, $order){
+		$wps_tofw_enable_track_order_feature = get_option( 'tofw_enable_track_order', 'no' );
+		if ( 'on' != $wps_tofw_enable_track_order_feature ) {
+			return $actions;
+		}
+		$wps_tofw_enable_track_order_popup = get_option( 'wps_tofw_enable_track_order_popup', 'no' );
+		$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
+		$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
+		if ( '3.0.0' > WC()->version ) {
+			$order_id = $order->id;
+			$track_order_url = get_permalink( $page_id );
+			$actions['wps_track_order']['url']  = $track_order_url . '?' . $order_id;
+			$actions['wps_track_order']['name']     = __( 'Track Order', 'woocommerce-order-tracker' );
+		} else {
+			$order_id = $order->get_id();
+			$track_order_url = get_permalink( $page_id );
+			$actions['wps_track_order']['url']  = $track_order_url . '?' . $order_id;
+			$actions['wps_track_order']['name']     = __( 'Track Order', 'woocommerce-order-tracker' );
+		}
+
+		return $actions;
+	}
+
 
 }
