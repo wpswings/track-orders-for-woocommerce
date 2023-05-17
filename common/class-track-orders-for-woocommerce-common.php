@@ -55,6 +55,7 @@ class Track_Orders_For_Woocommerce_Common {
 	 */
 	public function tofw_common_enqueue_styles() {
 		wp_enqueue_style( $this->plugin_name . 'common', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'common/css/track-orders-for-woocommerce-common.css', array(), $this->version, 'all' );
+		wp_enqueue_style( 'bootstrap', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'common/css/bootstrap.css', array(), $this->version, 'all' );
 	}
 
 	/**
@@ -221,33 +222,35 @@ class Track_Orders_For_Woocommerce_Common {
 		wp_send_json( 'yes' );
 	}
 
-	/**
-	 * Function is used to verify the license code.
-	 * 
-	 * @name track_orders_for_woocommerce_license_code_update
-	 * @since 1.0.0
-	 * @param String $license_code.
-	*/
-	public static function track_orders_for_woocommerce_license_code_update( $license_code ) {
-		$wps_server_name = ( !empty( $_SERVER['SERVER_NAME'] ) ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_NAME'] ) ) : '';
-		$api_params = array(
-			'slm_action'        => 'slm_activate',
-			'secret_key'        => TRACK_ORDERS_FOR_WOOCOMMERCE_SPECIAL_SECRET_KEY,
-			'license_key'       => $license_code,
-			'_registered_domain' => $wps_server_name,
-			'item_reference'    => urlencode( TRACK_ORDERS_FOR_WOOCOMMERCE_ITEM_REFERENCE ),
-			'product_reference' => 'wpsPK-2965',
-		);
+	public function wps_tofw_include_track_order_page( $template ){
+		$selected_template = get_option( 'wps_tofw_activated_template' );
+		$wps_tofw_google_map_setting = get_option( 'wps_tofw_trackorder_with_google_map', false );
+		$wps_tofw_enable_track_order_feature = get_option( 'tofw_enable_track_order', 'no' );
+		if ( 'on' != $wps_tofw_enable_track_order_feature ) {
+			return $template;
+		}
+		if ( 'on' == $wps_tofw_enable_track_order_feature && 'on' == $wps_tofw_google_map_setting ) {
+			$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
+			$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
+			if ( is_page( $page_id ) ) {
+				$new_template = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'template/wps-map-new-template.php';
+				$template = $new_template;
+			}
+		} else {
 
-		$query = esc_url_raw( add_query_arg( $api_params, TRACK_ORDERS_FOR_WOOCOMMERCE_LICENSE_SERVER_URL ) );
+			$wps_tofw_pages = get_option( 'wps_tofw_tracking_page', false );
+			$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
+			if ( is_page( $page_id ) ) {
+				if ( ' ' != $selected_template && null != $selected_template ) {
+					$new_template = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'template/wps-track-order-myaccount-page-' . $selected_template . '.php';
+					$template = $new_template;
+				} else {
+					$new_template = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'template/wps-track-order-myaccount-page-template1.php';
+					$template = $new_template;
+				}
+			}
+		}
 
-		$wps_tofw_response = wp_remote_get(
-			$query,
-			array(
-				'timeout' => 20,
-				'sslverify' => false,
-			)
-		);
-		return $wps_tofw_response;
+		return $template;
 	}
 }

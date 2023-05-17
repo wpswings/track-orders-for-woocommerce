@@ -12,17 +12,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $activated_template = get_option( 'wps_tofw_activated_template', '' );
-$template1 = __( 'Activate', 'woocommerce-order-tracker' );
-$template2 = __( 'Activate', 'woocommerce-order-tracker' );
-$template3 = __( 'Activate', 'woocommerce-order-tracker' );
+$template1 = __( 'Activate', 'track-orders-for-woocommerce' );
+$template2 = __( 'Activate', 'track-orders-for-woocommerce' );
+$template3 = __( 'Activate', 'track-orders-for-woocommerce' );
 
 
 if ( 'template1' == $activated_template ) {
-	$template1 = __( 'Activated', 'woocommerce-order-tracker' );
+	$template1 = __( 'Activated', 'track-orders-for-woocommerce' );
 } else if ( 'template2' == $activated_template ) {
-	$template2 = __( 'Activated', 'woocommerce-order-tracker' );
+	$template2 = __( 'Activated', 'track-orders-for-woocommerce' );
 } else if ( 'template3' == $activated_template ) {
-	$template3 = __( 'Activated', 'woocommerce-order-tracker' );
+	$template3 = __( 'Activated', 'track-orders-for-woocommerce' );
 }
 ?>
 
@@ -35,11 +35,11 @@ if ( 'template1' == $activated_template ) {
 		</div>
 		<div class="wps_tofw_temlate_main_wrapper">
 			<div class="wps_tofw_temlate_name">
-				<h4><?php esc_html_e( 'Template-1', 'woocommerce-order-tracker' ); ?></h4>
+				<h4><?php esc_html_e( 'Template-1', 'track-orders-for-woocommerce' ); ?></h4>
 			</div>
 			<div class="wps_tofw_temlate_wrapper">
 				<input type="button" class="activate_button" id="wps_tofw_activate_third" value=<?php echo esc_attr( $template1 ); ?> data-id='template1'>
-				<input type="button" class="preview_button" id="wps_tofw_preview_third" value=<?php esc_attr_e( 'Preview', 'woocommerce-order-tracker' ); ?> >
+				<input type="button" class="preview_button" id="wps_tofw_preview_third" value=<?php esc_attr_e( 'Preview', 'track-orders-for-woocommerce' ); ?> >
 			</div>
 		</div>
 	</div>
@@ -50,11 +50,11 @@ if ( 'template1' == $activated_template ) {
 		</div>
 		<div class="wps_tofw_temlate_main_wrapper">
 			<div class="wps_tofw_temlate_name">
-				<h4><?php esc_html_e( 'Template-2', 'woocommerce-order-tracker' ); ?></h4>
+				<h4><?php esc_html_e( 'Template-2', 'track-orders-for-woocommerce' ); ?></h4>
 			</div>
 			<div class="wps_tofw_temlate_wrapper">
 				<input type="button" class="activate_button" id="wps_tofw_activate_first" value=<?php echo esc_attr( $template2 ); ?> data-id='template2'>
-				<input type="button" class="preview_button" id="wps_tofw_preview_first" value=<?php esc_attr_e( 'Preview', 'woocommerce-order-tracker' ); ?> >
+				<input type="button" class="preview_button" id="wps_tofw_preview_first" value=<?php esc_attr_e( 'Preview', 'track-orders-for-woocommerce' ); ?> >
 			</div>
 		</div>
 	</div>
@@ -64,11 +64,11 @@ if ( 'template1' == $activated_template ) {
 		</div>
 		<div class="wps_tofw_temlate_main_wrapper">
 			<div class="wps_tofw_temlate_name">
-				<h4><?php esc_html_e( 'Template-3', 'woocommerce-order-tracker' ); ?></h4>
+				<h4><?php esc_html_e( 'Template-3', 'track-orders-for-woocommerce' ); ?></h4>
 			</div>
 			<div class="wps_tofw_temlate_wrapper">
 				<input type="button" class="activate_button" id="wps_tofw_activate_second" value=<?php echo esc_attr( $template3 ); ?> data-id='template3'>
-				<input type="button" class="preview_button" id="wps_tofw_preview_second" value=<?php esc_attr_e( 'Preview', 'woocommerce-order-tracker' ); ?> >
+				<input type="button" class="preview_button" id="wps_tofw_preview_second" value=<?php esc_attr_e( 'Preview', 'track-orders-for-woocommerce' ); ?> >
 			</div>
 		</div>
 	</div>

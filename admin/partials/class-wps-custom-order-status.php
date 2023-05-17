@@ -25,8 +25,8 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 	public function __construct() {
 		parent::__construct(
 			array(
-				'singular' => __( 'Custom Order Creation', 'woocommerce-order-tracker' ), // singular name of the listed records.
-				'plural'   => __( 'Custom Order Creation', 'woocommerce-order-tracker' ), // plural name of the listed records.
+				'singular' => __( 'Custom Order Creation', 'track-orders-for-woocommerce' ), // singular name of the listed records.
+				'plural'   => __( 'Custom Order Creation', 'track-orders-for-woocommerce' ), // plural name of the listed records.
 				'ajax'     => false, // does this table support ajax.
 			)
 		);
@@ -69,7 +69,7 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 
 	/** Text displayed when no customer data is available */
 	public function no_items() {
-		esc_html_e( 'No any Custom Order Created.', 'woocommerce-order-tracker' );
+		esc_html_e( 'No any Custom Order Created.', 'track-orders-for-woocommerce' );
 	}
 
 
@@ -119,7 +119,7 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 		foreach ( $item as $custom_order_key => $custom_order_status ) {
 			$title = '<strong>' . $custom_order_status . '</strong>';
 			$actions = array(
-				'delete' => sprintf( '<a href="javascript:void(0);" data-action="%s" data-key="%s" class="wps_delete_costom_order">' . __( 'Delete', 'woocommerce-order-tracker' ) . '</a>', 'delete', $custom_order_key ),
+				'delete' => sprintf( '<a href="javascript:void(0);" data-action="%s" data-key="%s" class="wps_delete_costom_order">' . __( 'Delete', 'track-orders-for-woocommerce' ) . '</a>', 'delete', $custom_order_key ),
 			);
 			return $title . $this->row_actions( $actions );
 		}
@@ -151,8 +151,8 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 	public function get_columns() {
 		$columns = array(
 			'cb'      => '<input type="checkbox" />',
-			'name'    => __( 'Custom Order Status Name', 'woocommerce-order-tracker' ),
-			'image' => __( 'Custom Order Status Image', 'woocommerce-order-tracker' ),
+			'name'    => __( 'Custom Order Status Name', 'track-orders-for-woocommerce' ),
+			'image' => __( 'Custom Order Status Image', 'track-orders-for-woocommerce' ),
 		);
 		return $columns;
 	}
@@ -175,7 +175,7 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 	 */
 	public function get_bulk_actions() {
 		$actions = array(
-			'bulk-delete' => __( 'Delete', 'woocommerce-order-tracker' ),
+			'bulk-delete' => __( 'Delete', 'track-orders-for-woocommerce' ),
 		);
 		return $actions;
 	}
@@ -222,7 +222,7 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 	public function renderHTML() {
 		?>
 		<div class="wps_tofw_rows_wrap">
-			<input id="wps_tofw_create_role_box" value="<?php esc_attr_e( 'Create Custom Order Status', 'woocommerce-order-tracker' ); ?>" class="button-primary" type="button">
+			<input id="wps_tofw_create_role_box" value="<?php esc_attr_e( 'Create Custom Order Status', 'track-orders-for-woocommerce' ); ?>" class="button-primary" type="button">
 		</div>
 		<!-- messages :: start -->
 		<div class="wps_notices_order_tracker">
@@ -230,28 +230,28 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 		</div>
 		<!-- messages :: end -->
 		<div id="wps_tofw_create_box">
-			<h3 align="center"><?php esc_html_e( 'Create New Custom Order Status', 'woocommerce-order-tracker' ); ?></h3>
+			<h3 align="center"><?php esc_html_e( 'Create New Custom Order Status', 'track-orders-for-woocommerce' ); ?></h3>
 			<table class="wp-list-table widefat fixed striped">
 				<tr>
 					<th>
-						<label for="wps__new_role_name"><?php esc_html_e( 'Custom Order Status Name', 'woocommerce-order-tracker' ); ?><label>
+						<label for="wps__new_role_name"><?php esc_html_e( 'Custom Order Status Name', 'track-orders-for-woocommerce' ); ?><label>
 						</th>
 						<td>
-							<input type="text" name="wps_tofw_create_order_name" pattern = '[A-Za-z0-9]' id="wps_tofw_create_order_name" placeholder="<?php esc_attr_e( 'Type Custom Order Status Name Here', 'woocommerce-order-tracker' ); ?>">	
+							<input type="text" name="wps_tofw_create_order_name" pattern = '[A-Za-z0-9]' id="wps_tofw_create_order_name" placeholder="<?php esc_attr_e( 'Type Custom Order Status Name Here', 'track-orders-for-woocommerce' ); ?>">	
 						</td>
 					</tr>
 					 <tr valign="top">
 						<th scope="row" class="titledesc">
-							<label for="wps_tofw_other_setting_upload_logo"><?php esc_html_e( 'Upload Default Logo', 'woocommerce-order-tracker' ); ?></label>
+							<label for="wps_tofw_other_setting_upload_logo"><?php esc_html_e( 'Upload Default Logo', 'track-orders-for-woocommerce' ); ?></label>
 						</th>
 						<td class="forminp forminp-text">
 							<?php
-							$attribute_description = __( 'Upload the image which is used as logo for your custom order statuses.', 'woocommerce-order-tracker' );
+							$attribute_description = __( 'Upload the image which is used as logo for your custom order statuses.', 'track-orders-for-woocommerce' );
 							echo wp_kses_post( wc_help_tip( $attribute_description ) );
 
 							?>
 							<input type="text" readonly class="wps_tofw_other_setting_upload_logo_value" id="wps_tofw_other_setting_upload_logo" name="wps_tofw_other_setting_upload_logo" value=""/>
-							<input class="wps_tofw_other_setting_upload_logo button"  type="button" value=<?php esc_attr_e( 'Upload Logo', 'woocommerce-order-tracker' ); ?> />
+							<input class="wps_tofw_other_setting_upload_logo button"  type="button" value=<?php esc_attr_e( 'Upload Logo', 'track-orders-for-woocommerce' ); ?> />
 							
 							<p id="wps_tofw_other_setting_remove_logo">
 								<span class="wps_tofw_other_setting_remove_logo">
@@ -262,7 +262,7 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 					</tr>
 				</table>
 				<p class="save_section">
-					<input type="button" id="wps_tofw_create_custom_order_status" value="<?php esc_attr_e( 'Create Order Status', 'woocommerce-order-tracker' ); ?>" class="button-primary">	
+					<input type="button" id="wps_tofw_create_custom_order_status" value="<?php esc_attr_e( 'Create Order Status', 'track-orders-for-woocommerce' ); ?>" class="button-primary">	
 					<img id="wps_tofw_send_loading" src="<?php echo esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/clock-loading.gif'; ?>">
 				</p>
 			</div>

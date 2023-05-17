@@ -458,7 +458,7 @@ class Track_Orders_For_Woocommerce_Admin {
 		$tofw_settings_general[] = array(
 			'type'        => 'button',
 			'id'          => 'wps_tofw_general_settings_save',
-			'button_text' => __( 'Save Settings', 'mwb-bookings-for-woocommerce' ),
+			'button_text' => __( 'Save Settings', 'track-orders-for-woocommerce' ),
 			'class'       => 'wps_tofw_general_settings_save',
 			'name'        => 'wps_tofw_general_settings_save',
 		);
@@ -477,9 +477,9 @@ class Track_Orders_For_Woocommerce_Admin {
 		$selected_order_status = get_option( 'tofw_selected_custom_order_status' );
 		$new_order_statues = array();
 		$order_status = array(
-			'wc-packed' => __( 'Order Packed', 'woocommerce-order-tracker' ),
-			'wc-dispatched' => __( 'Order Dispatched', 'woocommerce-order-tracker' ),
-			'wc-shipped' => __( 'Order Shipped', 'woocommerce-order-tracker' ),
+			'wc-packed' => __( 'Order Packed', 'track-orders-for-woocommerce' ),
+			'wc-dispatched' => __( 'Order Dispatched', 'track-orders-for-woocommerce' ),
+			'wc-shipped' => __( 'Order Shipped', 'track-orders-for-woocommerce' ),
 		);
 		if ( is_array( $custom_order_status ) && ! empty( $custom_order_status ) ) {
 			foreach ( $custom_order_status as $key => $value ) {
@@ -588,9 +588,9 @@ class Track_Orders_For_Woocommerce_Admin {
 	public function tofw_custom_order_status_setting_page($tofw_custom_order_status_settings){
 		$custom_order_status = get_option( 'wps_tofw_new_custom_order_status', array() );
 		$order_status = array(
-			'wc-packed' => __( 'Order Packed', 'woocommerce-order-tracker' ),
-			'wc-dispatched' => __( 'Order Dispatched', 'woocommerce-order-tracker' ),
-			'wc-shipped' => __( 'Order Shipped', 'woocommerce-order-tracker' ),
+			'wc-packed' => __( 'Order Packed', 'track-orders-for-woocommerce' ),
+			'wc-dispatched' => __( 'Order Dispatched', 'track-orders-for-woocommerce' ),
+			'wc-shipped' => __( 'Order Shipped', 'track-orders-for-woocommerce' ),
 		);
 		if ( is_array( $custom_order_status ) && ! empty( $custom_order_status ) ) {
 			foreach ( $custom_order_status as $key => $value ) {
@@ -965,7 +965,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			update_option( 'wps_tofw_new_custom_order_image', $custom_order_image_url );
 		}
 
-		esc_html_e( 'success', 'woocommerce-order-tracker' );
+		esc_html_e( 'success', 'track-orders-for-woocommerce' );
 		wp_die();
 	}
 
@@ -1000,9 +1000,9 @@ class Track_Orders_For_Woocommerce_Admin {
 						}
 					}
 				}
-				esc_html_e( 'success', 'woocommerce-order-tracker' );
+				esc_html_e( 'success', 'track-orders-for-woocommerce' );
 			} else {
-				esc_html_e( 'failed', 'woocommerce-order-tracker' );
+				esc_html_e( 'failed', 'track-orders-for-woocommerce' );
 			}
 
 			wp_die();
@@ -1018,7 +1018,7 @@ class Track_Orders_For_Woocommerce_Admin {
 		check_ajax_referer( 'ajax-nonce', 'nonce' );
 		$selected_template_name = isset( $_POST['template_name'] ) ? sanitize_text_field( wp_unslash( $_POST['template_name'] ) ) : '';
 		update_option( 'wps_tofw_activated_template', $selected_template_name );
-		esc_html_e( 'success', 'woocommerce-order-tracker' );
+		esc_html_e( 'success', 'track-orders-for-woocommerce' );
 		wp_die();
 	}
 

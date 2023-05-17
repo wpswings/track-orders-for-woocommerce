@@ -96,8 +96,8 @@ class Track_Orders_For_Woocommerce_Public {
 		$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
 		$track_order_url = get_permalink( $page_id );
 		?>
-		<p><label class="wps_enhanced_order_note"><?php esc_html_e( 'Note:', 'woocommerce-order-tracker' ); ?></label><span class="wps_order_note_text"><?php esc_html_e( 'Click The Below To Track Your Order', 'woocommerce-order-tracker' ); ?></span></p>
-			<a href="<?php echo esc_attr( $track_order_url ) . '?' . esc_attr( $order_id ); ?>" class="button button-primary"><?php esc_html_e( 'TRACK ORDER', 'woocommerce-order-tracker' ); ?></a>
+		<p><label class="wps_enhanced_order_note"><?php esc_html_e( 'Note:', 'track-orders-for-woocommerce' ); ?></label><span class="wps_order_note_text"><?php esc_html_e( 'Click The Below To Track Your Order', 'track-orders-for-woocommerce' ); ?></span></p>
+			<a href="<?php echo esc_attr( $track_order_url ) . '?' . esc_attr( $order_id ); ?>" class="button button-primary"><?php esc_html_e( 'TRACK ORDER', 'track-orders-for-woocommerce' ); ?></a>
 		<?php
 		
 	}
@@ -121,12 +121,12 @@ class Track_Orders_For_Woocommerce_Public {
 			$order_id = $order->id;
 			$track_order_url = get_permalink( $page_id );
 			$actions['wps_track_order']['url']  = $track_order_url . '?' . $order_id;
-			$actions['wps_track_order']['name']     = __( 'Track Order', 'woocommerce-order-tracker' );
+			$actions['wps_track_order']['name']     = __( 'Track Order', 'track-orders-for-woocommerce' );
 		} else {
 			$order_id = $order->get_id();
 			$track_order_url = get_permalink( $page_id );
 			$actions['wps_track_order']['url']  = $track_order_url . '?' . $order_id;
-			$actions['wps_track_order']['name']     = __( 'Track Order', 'woocommerce-order-tracker' );
+			$actions['wps_track_order']['name']     = __( 'Track Order', 'track-orders-for-woocommerce' );
 		}
 
 		return $actions;
