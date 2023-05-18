@@ -924,5 +924,36 @@ jQuery(document).ready(function ($) {
 	});
 
 
+
+	// JS for gmap tracking
+	jQuery('#wps_tofw_selected_address').select2({
+		placeholder: wps_tofw_new_param.selec_address_placeholder,
+		});
+	jQuery('#wps_tofw_custom_shipping_cities').select2();
+	jQuery('#wps_tofw_add_address').on('click',function(e){
+		e.preventDefault();
+		var wps_tofw_address_collection = jQuery('#wps_tofw_track_order_addresses').val();
+		if(wps_tofw_address_collection != ''){
+			jQuery.ajax({
+				url : ajaxurl,
+				type : 'POST',
+				cache : false,
+				dataType: 'json',
+				data :{
+					action : 'wps_tofw_insert_address_for_tracking',
+					nonce : nonce,
+					wps_tofw_addresses : wps_tofw_address_collection 
+				},success : function(response){
+					window.location.reload();
+					jQuery('.wps_tofw_empty_adrress_validation').html('<span>'+wps_tofw_new_param.address_validation_success+'</span>');
+				},complete : function(){
+					jQuery('#wps_tofw_track_order_addresses').val('');
+				}
+			});
+		}
+		else{
+			jQuery('.wps_tofw_empty_adrress_validation').html('<span>'+wps_tofw_new_param.address_validation+'</span>');
+		}
+	});
   
 });
