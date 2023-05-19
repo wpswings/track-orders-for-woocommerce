@@ -164,12 +164,14 @@ class Track_Orders_For_Woocommerce_Admin {
 					'address_validation' => __( 'Please Enter Address First', 'track-orders-for-woocommerce' ),
 					'address_validation_success' => __( 'Address Successfully Added', 'track-orders-for-woocommerce' ),
 					'selec_address_placeholder' => __( 'Select Your Hubpoint Addresses', 'track-orders-for-woocommerce' ),
+					'site_url' => site_url(),
 				)
 			);
 			wp_enqueue_script( $this->plugin_name . 'admin-js' );
-			wp_enqueue_script( 'wps-admin-min-js', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/js/wps-admin.min.js', array(), time(), false );
-
+			
 		}
+		wp_enqueue_script( 'jquery-ui-timepicker-js', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/js/jquery.ui.timepicker.js', array(), time(), false );
+		wp_enqueue_script( 'wps-admin-js', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/js/wps-admin.js', array(), time(), false );
 	}
 
 	/**
@@ -665,8 +667,8 @@ class Track_Orders_For_Woocommerce_Admin {
 					'title' => __( 'Enter Google Map Api Key', 'track-orders-for-woocommerce' ),
 					'type'  => 'text',
 					'description'  => __( 'Enter Google Map Api Key.', 'track-orders-for-woocommerce' ),
-					'id'    => 'wps_tofw_track_order_google_map_api_key',
-					'value' => get_option( 'wps_tofw_track_order_google_map_api_key' ),
+					'id'    => 'wps_tofw_google_api_key',
+					'value' => get_option( 'wps_tofw_google_api_key' ),
 					'class' => '',
 					'style' => 'width:10em;',
 					
@@ -675,8 +677,8 @@ class Track_Orders_For_Woocommerce_Admin {
 					'title' => __( 'Enter Order Production House Address', 'track-orders-for-woocommerce' ),
 					'type'  => 'text',
 					'description'  => __( 'Enter your order production house address.', 'track-orders-for-woocommerce' ),
-					'id'    => 'wps_tofw_track_order_production_address',
-					'value' => get_option( 'wps_tofw_track_order_production_address' ),
+					'id'    => 'wps_tofw_order_production_address',
+					'value' => get_option( 'wps_tofw_order_production_address' ),
 					'class' => '',
 					'style' => 'width:10em;',
 					
@@ -1045,14 +1047,14 @@ class Track_Orders_For_Woocommerce_Admin {
 
 	public function wps_tofw_tracking_order_meta_box(){
 		$wps_tofw_enable_track_order_feature = get_option( 'tofw_enable_track_order', 'no' );
-		$wps_tofw_enable_track_17track_feature = get_option( 'wps_tofw_enable_17track_integration', 'no' );
+		
 
 		if ( 'on' != $wps_tofw_enable_track_order_feature ) {
 			return;
 		}
 		add_meta_box( 'wps_tofw_track_order', __( 'Enter Estimated Delivery Date', 'woocommerce-order-tracker' ), array( $this, 'wps_tofw_track_order_metabox' ) , 'shop_order', 'side' );
 		$wps_tofw_enable_track_order_api = get_option( 'wps_tofw_enable_third_party_tracking_api', 'no' );
-		if ( 'on' == $wps_tofw_enable_track_order_api || 'yes' == $wps_tofw_enable_track_17track_feature ) {
+		if ( 'on' == $wps_tofw_enable_track_order_api  ) {
 			add_meta_box( 'wps_tofw_tracking_services', __( 'Select Service For Tracking Your Package', 'woocommerce-order-tracker' ), array( $this, 'wps_tofw_track_order_services_metabox' ) , 'shop_order', 'side' );
 		}
 		$wps_tofw_google_map_setting = get_option( 'wps_tofw_trackorder_with_google_map', false );
@@ -1075,7 +1077,7 @@ class Track_Orders_For_Woocommerce_Admin {
 				$order_id = $theorder->get_id();
 			}
 			$wps_tofw_saved_selected_cities = get_post_meta( $post->ID, 'wps_tofw_save_selected_city', true );
-			$wps_tofw_all_selected_cities = get_option( 'wps_tofw_all_tracking_address', false );
+			$wps_tofw_all_selected_cities = get_option( 'wps_tofw_selected_address', false );
 			?>
 			<div class="wps_tofw_shipping_service_wrapper">
 				<select name="wps_tofw_custom_shipping_cities" id="wps_tofw_custom_shipping_cities">
@@ -1102,8 +1104,8 @@ class Track_Orders_For_Woocommerce_Admin {
 
 	public function wps_tofw_track_order_metabox(){
 		global $post, $thepostid, $theorder;
-		$wps_tofw_enable_track_order_feature = get_option( 'wps_tofw_enable_track_order_feature', 'no' );
-		if ( 'yes' != $wps_tofw_enable_track_order_feature ) {
+		$wps_tofw_enable_track_order_feature = get_option( 'tofw_enable_track_order', 'no' );
+		if ( 'on' != $wps_tofw_enable_track_order_feature ) {
 			return;
 		}
 		if ( '3.0.0' > WC()->version ) {
@@ -1117,10 +1119,10 @@ class Track_Orders_For_Woocommerce_Admin {
 		?>
 		<div class="wps_tofw_estimated_delivery_datails_wrapper">
 			<input type="hidden" name="wps_tofw_delivery_nonce_name" value="<?php wp_create_nonce( 'wps_tofw_delivery_nonce' ); ?>">
-			<label for="wps_tofw_est_delivery_date"><?php esc_html_e( 'Delivery Date', 'woocommerce-order-tracker' ); ?></label>
-			<input type="text" class="wps_tofw_est_delivery_date" id="wps_tofw_est_delivery_date" name="wps_tofw_est_delivery_date" value="<?php echo esc_attr( $expected_delivery_date ); ?>" placeholder="<?php esc_attr_e( 'Enter Delivery Date', 'woocommerce-order-tracker' ); ?>"></input>
-			<label for="wps_tofw_est_delivery_time"><?php esc_html_e( 'Delivery Time', 'woocommerce-order-tracker' ); ?></label>				
-			<input type="text" class="wps_tofw_est_delivery_time" name="wps_tofw_est_delivery_time" id="wps_tofw_est_delivery_time" value="<?php echo esc_attr( $expected_delivery_time ); ?>" placeholder="<?php esc_attr_e( 'Enter Delivery time', 'woocommerce-order-tracker' ); ?>"></input>
+			<label for="wps_tofw_est_delivery_date"><?php esc_html_e( 'Delivery Date', 'track-orders-for-woocommerce' ); ?></label>
+			<input type="text" class="wps_tofw_est_delivery_date" id="wps_tofw_est_delivery_date" name="wps_tofw_est_delivery_date" value="<?php echo esc_attr( $expected_delivery_date ); ?>" placeholder="<?php esc_attr_e( 'Enter Delivery Date', 'track-orders-for-woocommerce' ); ?>"></input>
+			<label for="wps_tofw_est_delivery_time"><?php esc_html_e( 'Delivery Time', 'track-orders-for-woocommerce' ); ?></label>				
+			<input type="text" class="wps_tofw_est_delivery_time" name="wps_tofw_est_delivery_time" id="wps_tofw_est_delivery_time" value="<?php echo esc_attr( $expected_delivery_time ); ?>" placeholder="<?php esc_attr_e( 'Enter Delivery time', 'track-orders-for-woocommerce' ); ?>"></input>
 		</div>
 		<?php
 	}
@@ -1186,6 +1188,244 @@ class Track_Orders_For_Woocommerce_Admin {
 			</div>
 				<?php
 			}
+	}
+
+	public function wps_tofw_save_delivery_date_meta(){
+		global $post;
+		if ( isset( $post->ID ) ) {
+			$wps_track_order_status = array();
+			$post_id = $post->ID;
+			$value_check = isset( $_POST['wps_tofw_delivery_nonce_name'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_delivery_nonce_name'] ) ) : '';
+			wp_verify_nonce( $value_check, 'wps_tofw_delivery_nonce' );
+			if ( isset( $_POST['wps_tofw_est_delivery_date'] ) && sanitize_text_field( wp_unslash( $_POST['wps_tofw_est_delivery_date'] ) ) != '' ) {
+				update_post_meta( $post_id, 'wps_tofw_estimated_delivery_date', sanitize_text_field( wp_unslash( $_POST['wps_tofw_est_delivery_date'] ) ) );
+			} else {
+				update_post_meta( $post_id, 'wps_tofw_estimated_delivery_date', false );
+			}
+
+			if ( isset( $_POST['wps_tofw_est_delivery_time'] ) && sanitize_text_field( wp_unslash( $_POST['wps_tofw_est_delivery_time'] ) ) != '' ) {
+				update_post_meta( $post_id, 'wps_tofw_estimated_delivery_time', sanitize_text_field( wp_unslash( $_POST['wps_tofw_est_delivery_time'] ) ) );
+			} else {
+				update_post_meta( $post_id, 'wps_tofw_estimated_delivery_time', false );
+			}
+			}
+	}
+
+	public function wps_tofw_save_shipping_services_meta(){
+		global $post;
+		if ( isset( $post->ID ) ) {
+			$post_id = $post->ID;
+			$value_check = isset( $_POST['wps_tofw_selected_shipping_services_nonce_name'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_selected_shipping_services_nonce_name'] ) ) : '';
+			wp_verify_nonce( $value_check, 'wps_tofw_selected_shipping_services_nonce' );
+			if ( isset( $_POST['wps_tofw_selected_shipping_services'] ) && isset( $_POST['wps_tofw_tracking_number'] ) && sanitize_text_field( wp_unslash( $_POST['wps_tofw_tracking_number'] ) ) != '' && ! empty( sanitize_text_field( wp_unslash( $_POST['wps_tofw_selected_shipping_services'] ) ) ) ) {
+				update_post_meta( $post_id, 'wps_tofw_selected_shipping_service', sanitize_text_field( wp_unslash( $_POST['wps_tofw_selected_shipping_services'] ) ) );
+				update_post_meta( $post_id, 'wps_tofw_package_tracking_number', sanitize_text_field( wp_unslash( $_POST['wps_tofw_tracking_number'] ) ) );
+
+				$headers = array();
+				$order = wc_get_order( $post_id );
+				$headers[] = 'Content-Type: text/html; charset=UTF-8';
+				$wps_tracking_url = get_post_meta( $order_id, 'wps_tofw_enhanced_order_company', true );
+				$wps_tracking_number = get_post_meta( $order_id, 'wps_tofw_enhanced_tracking_no', true );
+				if ( '3.0.0' > WC()->version ) {
+					$fname = get_post_meta( $post_id, '_billing_first_name', true );
+					$lname = get_post_meta( $post_id, '_billing_last_name', true );
+					$to = get_post_meta( $post_id, '_billing_email', true );
+				} else {
+					$wps_all_data = $order->get_data();
+					$billing_address = $wps_all_data['billing'];
+					$shipping_address = $wps_all_data['shipping'];
+					$to = $billing_address['email'];
+				}
+				$subject = __( 'Your Order Status for Order #', 'woocommerce-order-tracker' ) . $post_id;
+				$message = __( 'Your Order Status is ', 'woocommerce-order-tracker' ) . $statuses[ $new_status ];
+				$mail_header = __( 'Current Order Status is ', 'woocommerce-order-tracker' ) . $statuses[ $new_status ];
+				$mail_footer = '';
+				$message = '<html>
+				<body>
+					<style>
+						body {
+							box-shadow: 2px 2px 10px #ccc;
+							color: #767676;
+							font-family: Arial,sans-serif;
+							margin: 80px auto;
+							max-width: 700px;
+							padding-bottom: 30px;
+							width: 100%;
+						}
+
+						h2 {
+							font-size: 30px;
+							margin-top: 0;
+							color: #fff;
+							padding: 40px;
+							background-color: #557da1;
+						}
+
+						h4 {
+							color: #557da1;
+							font-size: 20px;
+							margin-bottom: 10px;
+						}
+
+						.content {
+							padding: 0 40px;
+						}
+
+						.Customer-detail ul li p {
+							margin: 0;
+						}
+
+						.details .Shipping-detail {
+							width: 40%;
+							float: right;
+						}
+
+						.details .Billing-detail {
+							width: 60%;
+							float: left;
+						}
+
+						.details .Shipping-detail ul li,.details .Billing-detail ul li {
+							list-style-type: none;
+							margin: 0;
+						}
+
+						.details .Billing-detail ul,.details .Shipping-detail ul {
+							margin: 0;
+							padding: 0;
+						}
+
+						.clear {
+							clear: both;
+						}
+
+						table,td,th {
+							border: 2px solid #ccc;
+							padding: 15px;
+							text-align: left;
+						}
+
+						table {
+							border-collapse: collapse;
+							width: 100%;
+						}
+
+						.info {
+							display: inline-block;
+						}
+
+						.bold {
+							font-weight: bold;
+						}
+
+						.footer {
+							margin-top: 30px;
+							text-align: center;
+							color: #99B1D8;
+							font-size: 12px;
+						}
+						dl.variation dd {
+							font-size: 12px;
+							margin: 0;
+						}
+					</style>
+
+					<div style="padding: 36px 48px; background-color:#557DA1;color: #fff; font-size: 30px; font-weight: 300; font-family:helvetica;" class="header">
+						' . $mail_header . '
+					</div>		
+
+					<div class="content">
+
+						<div class="Order">
+							<h4>Order #' . $post_id . '</h4>
+							<table>
+								<tbody>
+									<tr>
+										<th>' . __( 'Order Id', 'woocommerce-order-tracker' ) . '</th>
+										<th>' . __( 'Tracking Number ', 'woocommerce-order-tracker' ) . '</th>
+									</tr>';
+									$wps_user_tracking_number = get_post_meta( $post_id, 'wps_tofw_package_tracking_number', true );
+									$message .= '<tr>
+									<td>' . $wps_user_tracking_number . '</td>
+								</tr>';
+								$message .= '</tbody>
+							</table>
+							<div>
+								<a href=' . $wps_tracking_url . '>' . $wps_tracking_number . '</a>
+							</div>
+						</div>
+					</div>
+					<div style="text-align: center; padding: 10px;" class="footer">
+						' . $mail_footer . '
+					</div>
+				</body>
+				</html>';
+				$wps_mail_already_send = get_post_meta( $post_id, 'wps_tofw_tracking_id_sent', true );
+				if ( 1 != $wps_mail_already_send ) {
+					wc_mail( $to, $subject, $message, $headers );
+					update_post_meta( $post_id, 'wps_tofw_tracking_id_sent', 1 );
+				}
+			} elseif ( isset( $_POST['wps_tofw_tracking_number'] ) && '' != $_POST['wps_tofw_tracking_number'] ) {
+				update_post_meta( $post_id, 'wps_tofw_package_tracking_number', sanitize_text_field( wp_unslash( $_POST['wps_tofw_tracking_number'] ) ) );
+			} else {
+				update_post_meta( $post_id, 'wps_tofw_selected_shipping_service', '' );
+				update_post_meta( $post_id, 'wps_tofw_package_tracking_number', '' );
+			}
+		}
+
+	}
+
+	public function wps_tofw_save_custom_shipping_cities_meta(){
+		global $post;
+			if ( isset( $post->ID ) ) {
+				$order = wc_get_order( $post->ID );
+				if ( isset( $order ) && ! empty( $order ) ) {
+
+					$orderdata = $order->get_data();
+					$order_modified_date = $orderdata['date_modified'];
+					$converted_order_modified_date = date_i18n( 'F d, Y g:i a', strtotime( $order_modified_date ) );
+					$current_order_status = $order->get_status();
+
+					$wps_tofw_all_selected_cities = get_option( 'wps_tofw_old_addresses', false );
+
+					if ( is_array( get_post_meta( $post->ID, 'wps_tofw_track_custom_cities', true ) ) ) {
+						$wps_tofw_previous_saved_cities = get_post_meta( $post->ID, 'wps_tofw_track_custom_cities', true );
+					} else {
+						$wps_tofw_previous_saved_cities = array();
+					}
+
+					if ( is_array( get_post_meta( $post->ID, 'wps_tofw_custom_change_time', true ) ) ) {
+						$wps_tofw_previous_saved_changed_time = get_post_meta( $post->ID, 'wps_tofw_custom_change_time', true );
+					} else {
+						$wps_tofw_previous_saved_changed_time = array();
+					}
+
+					$value_check = isset( $_POST['wps_tofw_custom_shipping_cities_nonce_name'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_custom_shipping_cities_nonce_name'] ) ) : '';
+					wp_verify_nonce( $value_check, 'wps_tofw_custom_shipping_cities_nonce' );
+					if ( isset( $_POST['wps_tofw_custom_shipping_cities'] ) && sanitize_text_field( wp_unslash( $_POST['wps_tofw_custom_shipping_cities'] ) ) != '' ) {
+						if ( isset( $wps_tofw_previous_saved_cities ) && '' == $wps_tofw_previous_saved_cities ) {
+							if ( array_key_exists( isset( $_POST['wps_tofw_custom_shipping_cities'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_custom_shipping_cities'] ) ) : '', $wps_tofw_all_selected_cities ) ) {
+
+								$wps_tofw_previous_saved_cities[ $current_order_status ][] = $wps_tofw_all_selected_cities[ sanitize_text_field( wp_unslash( $_POST['wps_tofw_custom_shipping_cities'] ) ) ];
+								$wps_tofw_previous_saved_changed_time[ $current_order_status ][] = $converted_order_modified_date;
+								update_post_meta( $post->ID, 'wps_tofw_track_custom_cities', $wps_tofw_previous_saved_cities );
+								update_post_meta( $post->ID, 'wps_tofw_custom_change_time', $wps_tofw_previous_saved_changed_time );
+							}
+						} else {
+							if ( array_key_exists( isset( $_POST['wps_tofw_custom_shipping_cities'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_custom_shipping_cities'] ) ) : '', $wps_tofw_all_selected_cities ) ) {
+
+								$wps_tofw_previous_saved_cities[ $current_order_status ][] = $wps_tofw_all_selected_cities[ sanitize_text_field( wp_unslash( $_POST['wps_tofw_custom_shipping_cities'] ) ) ];
+								$wps_tofw_previous_saved_changed_time[ $current_order_status ][] = $converted_order_modified_date;
+								update_post_meta( $post->ID, 'wps_tofw_track_custom_cities', $wps_tofw_previous_saved_cities );
+								update_post_meta( $post->ID, 'wps_tofw_custom_change_time', $wps_tofw_previous_saved_changed_time );
+							}
+						}
+
+						update_post_meta( $post->ID, 'wps_tofw_save_selected_city', isset( $_POST['wps_tofw_custom_shipping_cities'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_custom_shipping_cities'] ) ) : '' );
+					}
+				}
+			}
+
 	}
 
 }

@@ -641,10 +641,10 @@ input.role_box_open {
 .wps_tofw_field_details #wps_tofw_track_order_addresses {
   width: 300px;
 }
-.wps_tofw_field_details #wps_tofw_track_order_production_address {
+.wps_tofw_field_details #wps_tofw_order_production_address {
   width: 300px;
 }
-.wps_tofw_field_details #wps_tofw_track_order_google_map_api_key {
+.wps_tofw_field_details #wps_tofw_google_api_key {
   width: 300px;
 }
 /*=============================================

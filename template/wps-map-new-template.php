@@ -114,7 +114,7 @@ if ( $allowed ) {
 		$tyo_order = wc_get_order( $order_id );
 		$order_data = $tyo_order->get_data();
 
-		$wps_tofw_all_saved_cities = get_option( 'wps_tofw_all_tracking_address', false );
+		$wps_tofw_all_saved_cities = get_option( 'wps_tofw_save_selected_city', false );
 		if ( is_array( $wps_tofw_all_saved_cities ) && ! empty( $wps_tofw_all_saved_cities ) ) {
 			foreach ( $wps_tofw_all_saved_cities as $saved_key => $saved_value ) {
 
@@ -278,7 +278,7 @@ if ( $allowed ) {
 								</div>
 							</div>
 							<div class="price-product">
-								<p class="price-bold"><?php echo wp_kses_post( wps_tofw_format_price( $product->get_price() ) ); ?></p>
+								<p class="price-bold"><?php echo wp_kses_post( wc_price( $product->get_price() ) ); ?></p>
 								<div class="wps-tofw-quantity">
 									<label><?php esc_html_e( 'Quantity : ', 'track-orders-for-woocommerce' ); ?><?php echo esc_html( $ordervalue['qty'] ); ?></label> 
 								</div>
@@ -345,7 +345,7 @@ if ( $allowed ) {
 								</div>
 							</div>
 							<div class="price-product">
-								<p class="price-bold"><?php echo wp_kses_post( wps_tofw_format_price( $product->get_price() ) ); ?></p>
+								<p class="price-bold"><?php echo wp_kses_post( wc_price( $product->get_price() ) ); ?></p>
 								<div class="wps-tofw-quantity">
 									<label><?php esc_html_e( 'Quantity : ', 'track-orders-for-woocommerce' ); ?><?php echo esc_html( $ordervalue['qty'] ); ?></label> 
 								</div>
@@ -390,7 +390,6 @@ if ( $allowed ) {
 	$wps_tofw_billing_add = $order_data['billing']['city'] . '+' . $order_data['billing']['state'];
 
 	$wps_tofw_origin_location = get_option( 'wps_tofw_address_get_correct', false );
-
 	if ( isset( $wps_tofw_origin_location ) && ( '' != $wps_tofw_origin_location || null != $wps_tofw_origin_location ) ) {
 		$lat = get_option( 'wps_tofw_address_latitude', false );
 		$long = get_option( 'wps_tofw_address_longitude', false );
@@ -401,8 +400,10 @@ if ( $allowed ) {
 		<?php
 	} else {
 		if( ! empty( $address ) ) {
+			
 
 			$geocode = file_get_contents( 'https://maps.google.com/maps/api/geocode/json?address=' . urlencode( $address ) . '&key=' . $wps_tofw_google_api_key );
+			
 			$output = json_decode( $geocode );
 	
 	
