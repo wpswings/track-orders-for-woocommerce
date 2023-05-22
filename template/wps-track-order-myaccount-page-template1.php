@@ -494,7 +494,7 @@ $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 			<section class="wps_tofw_order_tracker_content approval" id="wps_approval">
 				<div class="wps-deliver-msg wps-tofw-wps-msg">
 					<h3><?php esc_html_e( 'Approval', 'track-orders-for-woocommerce' ); ?></h3>
-										<ul class="wps-tofw-order-info">
+					<ul class="wps-tofw-order-info">
 						<li><?php esc_html_e( 'placed', 'track-orders-for-woocommerce' ); ?></li>
 						<li><?php echo esc_html( $tofw_order->get_date_created()->date('F d, Y H:i ') ) ; ?></li>
 						<li><?php esc_html_e( 'Your Order is Successfully Placed', 'track-orders-for-woocommerce' ); ?></li></ul>

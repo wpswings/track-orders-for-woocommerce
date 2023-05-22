@@ -529,14 +529,24 @@ class Track_Orders_For_Woocommerce_Admin {
 					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
 				),
 			),
-			
+
+			array(
+				'title' => __( 'hidden_status', 'track-orders-for-woocommerce' ),
+				'type'  => 'multiselect',
+				'description'  => __( 'Select Custom status to enhance tracking.', 'track-orders-for-woocommerce' ),
+				'id'    => 'wps_tofw_order_status_in_hidden',
+				'value' => '',
+				'class' => 'tofw-multiselect-class wps-defaut-multiselect',
+				'placeholder' => '',
+				'options' => $order_status,
+			),
 
 			array(
 				'title' => __( 'Approval', 'track-orders-for-woocommerce' ),
 				'type'  => 'multiselect',
 				'description'  => __( 'Select Custom status to enhance tracking.', 'track-orders-for-woocommerce' ),
-				'id'    => 'tofw_approval_order_status',
-				'value' => get_option( 'tofw_approval_order_status' ),
+				'id'    => 'wps_tofw_order_status_in_approval',
+				'value' => get_option( 'wps_tofw_order_status_in_approval' ),
 				'class' => 'tofw-multiselect-class wps-defaut-multiselect',
 				'placeholder' => '',
 				'options' => $order_status,
@@ -545,8 +555,8 @@ class Track_Orders_For_Woocommerce_Admin {
 				'title' => __( 'Processing', 'track-orders-for-woocommerce' ),
 				'type'  => 'multiselect',
 				'description'  => __( 'Select Custom status to enhance tracking.', 'track-orders-for-woocommerce' ),
-				'id'    => 'tofw_processing_order_status',
-				'value' => get_option( 'tofw_processing_order_status' ),
+				'id'    => 'wps_tofw_order_status_in_processing',
+				'value' => get_option( 'wps_tofw_order_status_in_processing' ),
 				'class' => 'tofw-multiselect-class wps-defaut-multiselect',
 				'placeholder' => '',
 				'options' => $order_status,
@@ -555,8 +565,8 @@ class Track_Orders_For_Woocommerce_Admin {
 				'title' => __( 'Shipping', 'track-orders-for-woocommerce' ),
 				'type'  => 'multiselect',
 				'description'  => __( 'Select Custom status to enhance tracking.', 'track-orders-for-woocommerce' ),
-				'id'    => 'tofw_shipping_order_status',
-				'value' => get_option( 'tofw_shipping_order_status' ),
+				'id'    => 'wps_tofw_order_status_in_shipping',
+				'value' => get_option( 'wps_tofw_order_status_in_shipping' ),
 				'class' => 'tofw-multiselect-class wps-defaut-multiselect',
 				'placeholder' => '',
 				'options' => $order_status,
@@ -600,7 +610,8 @@ class Track_Orders_For_Woocommerce_Admin {
 					$order_status[ 'wc-' . $status_key ] = $status_value;
 				}
 			}
-		}
+		} 
+		
 		$tofw_custom_order_status_settings = array(
 			array(
 				'title' => __( 'Custom Order Statuses', 'track-orders-for-woocommerce' ),
@@ -1052,15 +1063,15 @@ class Track_Orders_For_Woocommerce_Admin {
 		if ( 'on' != $wps_tofw_enable_track_order_feature ) {
 			return;
 		}
-		add_meta_box( 'wps_tofw_track_order', __( 'Enter Estimated Delivery Date', 'woocommerce-order-tracker' ), array( $this, 'wps_tofw_track_order_metabox' ) , 'shop_order', 'side' );
+		add_meta_box( 'wps_tofw_track_order', __( 'Enter Estimated Delivery Date', 'track-orders-for-woocommerce' ), array( $this, 'wps_tofw_track_order_metabox' ) , 'shop_order', 'side' );
 		$wps_tofw_enable_track_order_api = get_option( 'wps_tofw_enable_third_party_tracking_api', 'no' );
 		if ( 'on' == $wps_tofw_enable_track_order_api  ) {
-			add_meta_box( 'wps_tofw_tracking_services', __( 'Select Service For Tracking Your Package', 'woocommerce-order-tracker' ), array( $this, 'wps_tofw_track_order_services_metabox' ) , 'shop_order', 'side' );
+			add_meta_box( 'wps_tofw_tracking_services', __( 'Select Service For Tracking Your Package', 'track-orders-for-woocommerce' ), array( $this, 'wps_tofw_track_order_services_metabox' ) , 'shop_order', 'side' );
 		}
 		$wps_tofw_google_map_setting = get_option( 'wps_tofw_trackorder_with_google_map', false );
 
 		if ( 'on' == $wps_tofw_google_map_setting ) {
-			add_meta_box( 'wps_tofw_custom_tracking_services', __( 'Select City When Your Package Reaches The Desire City', 'woocommerce-order-tracker' ), array( $this, 'wps_tofw_track_order_custom_services_metabox' ), 'shop_order', 'side' );
+			add_meta_box( 'wps_tofw_custom_tracking_services', __( 'Select City When Your Package Reaches The Desire City', 'track-orders-for-woocommerce' ), array( $this, 'wps_tofw_track_order_custom_services_metabox' ), 'shop_order', 'side' );
 		}
 	}
 
@@ -1081,7 +1092,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			?>
 			<div class="wps_tofw_shipping_service_wrapper">
 				<select name="wps_tofw_custom_shipping_cities" id="wps_tofw_custom_shipping_cities">
-					<option value="<?php esc_attr_e( 'none', 'woocommerce-order-tracker' ); ?>"><?php esc_attr_e( 'Select shipping Cities', 'woocommerce-order-tracker' ); ?></option>
+					<option value="<?php esc_attr_e( 'none', 'track-orders-for-woocommerce' ); ?>"><?php esc_attr_e( 'Select shipping Cities', 'track-orders-for-woocommerce' ); ?></option>
 					<?php
 					if ( is_array( $wps_tofw_all_selected_cities ) && ! empty( $wps_tofw_all_selected_cities ) ) {
 						foreach ( $wps_tofw_all_selected_cities as $custom_key => $custom_value ) {
@@ -1157,7 +1168,7 @@ class Track_Orders_For_Woocommerce_Admin {
 				?>
 				<div class="wps_tofw_shipping_service_wrapper">
 					<select name="wps_tofw_selected_shipping_services">
-						<option><?php esc_html_e( '---Select shipping Services---', 'woocommerce-order-tracker' ); ?></option>
+						<option><?php esc_html_e( '---Select shipping Services---', 'track-orders-for-woocommerce' ); ?></option>
 						<?php
 						if ( isset( $wps_diffrent_shipping_services ) && ! empty( $wps_diffrent_shipping_services ) ) {
 							foreach ( $wps_diffrent_shipping_services as $key => $value ) {
@@ -1176,15 +1187,15 @@ class Track_Orders_For_Woocommerce_Admin {
 				<input type="hidden" name="wps_tofw_selected_shipping_services_nonce_name" value="<?php wp_create_nonce( 'wps_tofw_selected_shipping_services_nonce' ); ?>">
 			</div>
 			<div class="wps_tofw_ship_tracking_wrapper">
-				<label for="wps_tofw_user_tracking_number"><?php esc_html_e( 'Tracking Number', 'woocommerce-order-tracker' ); ?></label>
-				<input type="text" name="wps_tofw_tracking_number" id="wps_tofw_tracking_number" value="<?php echo esc_attr( $wps_tofw_track_id ); ?>" placeholder="<?php esc_attr_e( 'Enter Tracking Number', 'woocommerce-order-tracker' ); ?>"></input>
+				<label for="wps_tofw_user_tracking_number"><?php esc_html_e( 'Tracking Number', 'track-orders-for-woocommerce' ); ?></label>
+				<input type="text" name="wps_tofw_tracking_number" id="wps_tofw_tracking_number" value="<?php echo esc_attr( $wps_tofw_track_id ); ?>" placeholder="<?php esc_attr_e( 'Enter Tracking Number', 'track-orders-for-woocommerce' ); ?>"></input>
 			</div>
 				<?php
 			} elseif ( 'yes' == $wps_tofw_enable_track_17track_feature ) {
 				?>
 			<div class="wps_tofw_ship_tracking_wrapper">
-				<label for="wps_tofw_user_tracking_number"><?php esc_html_e( '17Track Number', 'woocommerce-order-tracker' ); ?></label>
-				<input type="text" name="wps_tofw_tracking_number" id="wps_tofw_tracking_number" value="<?php echo esc_attr( $wps_tofw_track_id ); ?>" placeholder="<?php esc_attr_e( 'Enter 17 Tracking Number', 'woocommerce-order-tracker' ); ?>"></input>
+				<label for="wps_tofw_user_tracking_number"><?php esc_html_e( '17Track Number', 'track-orders-for-woocommerce' ); ?></label>
+				<input type="text" name="wps_tofw_tracking_number" id="wps_tofw_tracking_number" value="<?php echo esc_attr( $wps_tofw_track_id ); ?>" placeholder="<?php esc_attr_e( 'Enter 17 Tracking Number', 'track-orders-for-woocommerce' ); ?>"></input>
 			</div>
 				<?php
 			}
@@ -1236,9 +1247,9 @@ class Track_Orders_For_Woocommerce_Admin {
 					$shipping_address = $wps_all_data['shipping'];
 					$to = $billing_address['email'];
 				}
-				$subject = __( 'Your Order Status for Order #', 'woocommerce-order-tracker' ) . $post_id;
-				$message = __( 'Your Order Status is ', 'woocommerce-order-tracker' ) . $statuses[ $new_status ];
-				$mail_header = __( 'Current Order Status is ', 'woocommerce-order-tracker' ) . $statuses[ $new_status ];
+				$subject = __( 'Your Order Status for Order #', 'track-orders-for-woocommerce' ) . $post_id;
+				$message = __( 'Your Order Status is ', 'track-orders-for-woocommerce' ) . $statuses[ $new_status ];
+				$mail_header = __( 'Current Order Status is ', 'track-orders-for-woocommerce' ) . $statuses[ $new_status ];
 				$mail_footer = '';
 				$message = '<html>
 				<body>
@@ -1341,8 +1352,8 @@ class Track_Orders_For_Woocommerce_Admin {
 							<table>
 								<tbody>
 									<tr>
-										<th>' . __( 'Order Id', 'woocommerce-order-tracker' ) . '</th>
-										<th>' . __( 'Tracking Number ', 'woocommerce-order-tracker' ) . '</th>
+										<th>' . __( 'Order Id', 'track-orders-for-woocommerce' ) . '</th>
+										<th>' . __( 'Tracking Number ', 'track-orders-for-woocommerce' ) . '</th>
 									</tr>';
 									$wps_user_tracking_number = get_post_meta( $post_id, 'wps_tofw_package_tracking_number', true );
 									$message .= '<tr>

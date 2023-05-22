@@ -224,6 +224,7 @@ class Track_Orders_For_Woocommerce {
 		$this->loader->add_action( 'save_post', $tofw_plugin_admin, 'wps_tofw_save_delivery_date_meta' );
 		$this->loader->add_action( 'save_post', $tofw_plugin_admin, 'wps_tofw_save_shipping_services_meta' );
 		$this->loader->add_action( 'save_post', $tofw_plugin_admin, 'wps_tofw_save_custom_shipping_cities_meta' );
+		
 
 
 	}
@@ -252,6 +253,7 @@ class Track_Orders_For_Woocommerce {
 		// $this->loader->add_action( 'wp_ajax_wps_tofw_validate_license_key', $tofw_plugin_common, 'wps_tofw_validate_license_key' );
 
 		$this->loader->add_filter( 'template_include', $tofw_plugin_common, 'wps_tofw_include_track_order_page', 10, 1 );
+		$this->loader->add_action('woocommerce_order_status_changed', $tofw_plugin_common, 'wps_tofw_track_order_status', 10, 3 );
 	}
 
 	/**

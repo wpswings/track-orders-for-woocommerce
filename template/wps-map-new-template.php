@@ -62,9 +62,9 @@ if ( $allowed ) {
 		} else // check order associated to customer account or not for guest user.
 		{
 			if ( isset( $_SESSION['wps_tofw_email'] ) ) {
-				$tyo_user_email = $_SESSION['wps_tofw_email'];
+				$tofw_user_email = $_SESSION['wps_tofw_email'];
 				$order_email = get_post_meta( $order_id, '_billing_email', true );
-				if ( $tyo_user_email != $order_email ) {
+				if ( $tofw_user_email != $order_email ) {
 					$allowed = false;
 					$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
 					$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
@@ -111,8 +111,8 @@ do_action( 'woocommerce_before_main_content' );
 if ( $allowed ) {
 
 	if ( isset( $order_id ) && ! empty( $order_id ) ) {
-		$tyo_order = wc_get_order( $order_id );
-		$order_data = $tyo_order->get_data();
+		$tofw_order = wc_get_order( $order_id );
+		$order_data = $tofw_order->get_data();
 
 		$wps_tofw_all_saved_cities = get_option( 'wps_tofw_save_selected_city', false );
 		if ( is_array( $wps_tofw_all_saved_cities ) && ! empty( $wps_tofw_all_saved_cities ) ) {
@@ -126,7 +126,7 @@ if ( $allowed ) {
 		$wps_tofw_previous_saved_changed_time = get_post_meta( $order_id, 'wps_tofw_custom_change_time', true );
 
 
-		$billing_addresses = $tyo_order->get_formatted_billing_address();
+		$billing_addresses = $tofw_order->get_formatted_billing_address();
 		$created_time = $order_data['date_created'];
 		$converted_created_date = date_i18n( 'F d, Y g:i a', strtotime( $created_time ) );
 
@@ -229,7 +229,7 @@ if ( $allowed ) {
 		<div class="wps-tofw-new-order-details">
 			<?php
 			if ( WC()->version < '3.0.0' ) {
-				foreach ( $tyo_order->get_items() as $orderkey => $ordervalue ) {
+				foreach ( $tofw_order->get_items() as $orderkey => $ordervalue ) {
 					?>
 					<div class="wps-tofw-new-order-details-inner">
 						<?php
@@ -256,7 +256,7 @@ if ( $allowed ) {
 							 *
 							 * @since 1.0.0
 							 */
-							$product_permalink = apply_filters( 'woocommerce_order_item_permalink', $is_visible ? $product->get_permalink( $ordervalue ) : '', $ordervalue, $tyo_order );
+							$product_permalink = apply_filters( 'woocommerce_order_item_permalink', $is_visible ? $product->get_permalink( $ordervalue ) : '', $ordervalue, $tofw_order );
 							$total += $product->get_price() * $ordervalue['qty'];
 							?>
 							<div class="order-id"><p><?php esc_html_e( 'order id : ', 'track-orders-for-woocommerce' ); ?><strong><?php echo esc_html( $order_id ); ?></strong></p></div>
@@ -294,7 +294,7 @@ if ( $allowed ) {
 				$total = 0;
 				$wps_tofw_grand_total = 0;
 				$wps_tofw_total_qty = 0;
-				foreach ( $tyo_order->get_items() as $orderkey => $ordervalue ) {
+				foreach ( $tofw_order->get_items() as $orderkey => $ordervalue ) {
 					?>
 					<div class="wps-tofw-new-order-details-inner">
 						<?php
@@ -321,7 +321,7 @@ if ( $allowed ) {
 							 *
 							 * @since 1.0.0
 							 */
-							$product_permalink = apply_filters( 'woocommerce_order_item_permalink', $is_visible ? $product->get_permalink( $ordervalue ) : '', $ordervalue, $tyo_order );
+							$product_permalink = apply_filters( 'woocommerce_order_item_permalink', $is_visible ? $product->get_permalink( $ordervalue ) : '', $ordervalue, $tofw_order );
 							$total += $product->get_price() * $ordervalue['qty'];
 							$wps_tofw_grand_total += $total;
 							$wps_tofw_total_qty += $ordervalue['qty'];

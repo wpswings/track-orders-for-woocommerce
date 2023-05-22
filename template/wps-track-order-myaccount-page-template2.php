@@ -382,21 +382,35 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 				?>
 				<ul class="wps_tofw_process_steps_wrap">
 					<li id="wps_placed_order">
-						<img class="wps-tofw-animate" width="100px" height="100px" src="<?php echo esc_attr( wps_TRACK_YOUR_ORDER_URL ) . 'assets/images/placed.png'; ?>" alt="">
+						<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<rect x="0.5" y="0.5" width="63" height="63" rx="31.5" stroke="#E7E7E7"/>
+							<path d="M21.5385 24.6154L24 36.3077M21.5385 24.6154L20.0311 17.5809C19.8335 16.6588 19.0186 16 18.0755 16H16M21.5385 24.6154H28.9231M24 36.3077H44.1117C44.5846 36.3077 44.9928 35.9764 45.0902 35.5137L47.1307 25.8214C47.2616 25.1998 46.7873 24.6154 46.1522 24.6154H40.6154M24 36.3077L24.8163 39.1648C25.0616 40.0234 25.8464 40.6154 26.7394 40.6154H44.9231" stroke="black" stroke-linecap="round"/>
+							<circle cx="27.6923" cy="44.9231" r="2.57692" stroke="black"/>
+							<circle cx="41.2308" cy="44.9231" r="2.57692" stroke="black"/>
+							<path d="M35.0769 19.6923V29.5385M35.0769 29.5385L32 26.5299M35.0769 29.5385L38.1538 26.5299" stroke="#36B37E" stroke-linecap="round"/>
+						</svg>
 						<span><?php esc_html_e( 'Placed', 'track-orders-for-woocommerce' ); ?></span>
 					</li>
 					<li id="wps_approval_order">
 						<?php
 						if ( 1 == $shipping || 1 == $processing ) {
 							?>
-							<img width="100px" height="100px" src="<?php echo esc_attr( wps_TRACK_YOUR_ORDER_URL ) . 'assets/images/approved.png'; ?>" alt="">
+							<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="0.5" y="0.5" width="63" height="63" rx="31.5" stroke="#E7E7E7"/>
+<path d="M27.2 32L30.4 35.2L37.6 28" stroke="#36B37E" stroke-linecap="round"/>
+<path d="M44.7273 43.6364V17C44.7273 16.4477 44.2796 16 43.7273 16H25.8182M44.7273 48H21C20.4477 48 20 47.5523 20 47V21.8182M25.8182 16L22.9091 18.9091L20 21.8182M25.8182 16V20.8182C25.8182 21.3705 25.3705 21.8182 24.8182 21.8182H20" stroke="black" stroke-linecap="round"/>
+</svg>
 							<span><?php esc_html_e( 'Approval', 'track-orders-for-woocommerce' ); ?></span>
 							<?php
 						} else {
 							$shipping_blk = 1;
 							$processing_blk = 1;
 							?>
-							<img width="100px" height="100px" src="<?php echo esc_attr( wps_TRACK_YOUR_ORDER_URL ) . 'assets/images/approved-ani.gif'; ?>" alt="">
+							<svg class="wps_active_status_svg" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="0.5" y="0.5" width="63" height="63" rx="31.5" stroke="#36B37E"/>
+<path d="M27.2 32L30.4 35.2L37.6 28" stroke="#36B37E" stroke-linecap="round"/>
+<path d="M44.7273 43.6364V17C44.7273 16.4477 44.2796 16 43.7273 16H25.8182M44.7273 48H21C20.4477 48 20 47.5523 20 47V21.8182M25.8182 16L22.9091 18.9091L20 21.8182M25.8182 16V20.8182C25.8182 21.3705 25.3705 21.8182 24.8182 21.8182H20" stroke="black" stroke-linecap="round"/>
+</svg>
 							<span><?php esc_html_e( 'Approval', 'track-orders-for-woocommerce' ); ?></span>
 						<?php } ?>
 					</li>
@@ -404,18 +418,33 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 						<?php
 						if ( 1 == $processing_blk ) {
 							?>
-							<img width="100px" height="100px" src="<?php echo esc_attr( wps_TRACK_YOUR_ORDER_URL ) . 'assets/images/processing-b&w.png'; ?>" alt="">
+							<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="0.5" y="0.5" width="63" height="63" rx="31.5" stroke="#E7E7E7"/>
+<path d="M23.2 26L32.8 31.2M23.2 26V35.8256C23.2 36.1813 23.3889 36.5102 23.6961 36.6894L32.8 42M23.2 26L28 23.2M32.8 31.2V42M32.8 31.2L37.6 28.4M42.4 25.6L33.2944 20.6678C32.9874 20.5015 32.6159 20.5074 32.3143 20.6833L28 23.2M42.4 25.6V35.8256C42.4 36.1813 42.2111 36.5102 41.9039 36.6894L32.8 42M42.4 25.6L37.6 28.4M37.6 28.4V33.6M37.6 28.4L28 23.2" stroke="black" stroke-linecap="round"/>
+<path d="M31.2 15.6L31.5254 15.9796L32.0971 15.4896L31.4236 15.1528L31.2 15.6ZM28.2236 13.5528C27.9766 13.4293 27.6763 13.5294 27.5528 13.7764C27.4293 14.0234 27.5294 14.3237 27.7764 14.4472L28.2236 13.5528ZM28.0746 17.6204C27.8649 17.8001 27.8407 18.1157 28.0204 18.3254C28.2001 18.5351 28.5157 18.5593 28.7254 18.3796L28.0746 17.6204ZM16.5 30.8C16.5 22.6814 23.0814 16.1 31.2 16.1V15.1C22.5291 15.1 15.5 22.1291 15.5 30.8H16.5ZM31.4236 15.1528L28.2236 13.5528L27.7764 14.4472L30.9764 16.0472L31.4236 15.1528ZM30.8746 15.2204L28.0746 17.6204L28.7254 18.3796L31.5254 15.9796L30.8746 15.2204Z" fill="#019FFF"/>
+<path d="M32.8 47.6L32.4746 47.2204L31.9029 47.7105L32.5764 48.0472L32.8 47.6ZM35.7764 49.6472C36.0234 49.7707 36.3237 49.6706 36.4472 49.4236C36.5707 49.1766 36.4706 48.8763 36.2236 48.7528L35.7764 49.6472ZM35.9254 45.5796C36.1351 45.3999 36.1593 45.0843 35.9796 44.8746C35.7999 44.665 35.4843 44.6407 35.2746 44.8204L35.9254 45.5796ZM47.5 32.4C47.5 40.5186 40.9186 47.1 32.8 47.1V48.1C41.4709 48.1 48.5 41.0709 48.5 32.4H47.5ZM32.5764 48.0472L35.7764 49.6472L36.2236 48.7528L33.0236 47.1528L32.5764 48.0472ZM33.1254 47.9796L35.9254 45.5796L35.2746 44.8204L32.4746 47.2204L33.1254 47.9796Z" fill="#019FFF"/>
+</svg>
 							<span><?php esc_html_e( 'Processing', 'track-orders-for-woocommerce' ); ?></span>
 																					  <?php
 						} else if ( 0 == $shipping && 1 == $processing ) {
 							$shipping_blk = 1;
 							?>
-							<img width="100px" height="100px" src="<?php echo esc_attr( wps_TRACK_YOUR_ORDER_URL ) . 'assets/images/processing-ani.gif'; ?>" alt="">
+							<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="0.5" y="0.5" width="63" height="63" rx="31.5" stroke="#36be7e"/>
+<path d="M23.2 26L32.8 31.2M23.2 26V35.8256C23.2 36.1813 23.3889 36.5102 23.6961 36.6894L32.8 42M23.2 26L28 23.2M32.8 31.2V42M32.8 31.2L37.6 28.4M42.4 25.6L33.2944 20.6678C32.9874 20.5015 32.6159 20.5074 32.3143 20.6833L28 23.2M42.4 25.6V35.8256C42.4 36.1813 42.2111 36.5102 41.9039 36.6894L32.8 42M42.4 25.6L37.6 28.4M37.6 28.4V33.6M37.6 28.4L28 23.2" stroke="black" stroke-linecap="round"/>
+<path d="M31.2 15.6L31.5254 15.9796L32.0971 15.4896L31.4236 15.1528L31.2 15.6ZM28.2236 13.5528C27.9766 13.4293 27.6763 13.5294 27.5528 13.7764C27.4293 14.0234 27.5294 14.3237 27.7764 14.4472L28.2236 13.5528ZM28.0746 17.6204C27.8649 17.8001 27.8407 18.1157 28.0204 18.3254C28.2001 18.5351 28.5157 18.5593 28.7254 18.3796L28.0746 17.6204ZM16.5 30.8C16.5 22.6814 23.0814 16.1 31.2 16.1V15.1C22.5291 15.1 15.5 22.1291 15.5 30.8H16.5ZM31.4236 15.1528L28.2236 13.5528L27.7764 14.4472L30.9764 16.0472L31.4236 15.1528ZM30.8746 15.2204L28.0746 17.6204L28.7254 18.3796L31.5254 15.9796L30.8746 15.2204Z" fill="#019FFF"/>
+<path d="M32.8 47.6L32.4746 47.2204L31.9029 47.7105L32.5764 48.0472L32.8 47.6ZM35.7764 49.6472C36.0234 49.7707 36.3237 49.6706 36.4472 49.4236C36.5707 49.1766 36.4706 48.8763 36.2236 48.7528L35.7764 49.6472ZM35.9254 45.5796C36.1351 45.3999 36.1593 45.0843 35.9796 44.8746C35.7999 44.665 35.4843 44.6407 35.2746 44.8204L35.9254 45.5796ZM47.5 32.4C47.5 40.5186 40.9186 47.1 32.8 47.1V48.1C41.4709 48.1 48.5 41.0709 48.5 32.4H47.5ZM32.5764 48.0472L35.7764 49.6472L36.2236 48.7528L33.0236 47.1528L32.5764 48.0472ZM33.1254 47.9796L35.9254 45.5796L35.2746 44.8204L32.4746 47.2204L33.1254 47.9796Z" fill="#019FFF"/>
+</svg>
 							<span><?php esc_html_e( 'Processing', 'track-orders-for-woocommerce' ); ?></span>
 																					  <?php
 						} else {
 							?>
-							<img width="100px" height="100px" src="<?php echo esc_attr( wps_TRACK_YOUR_ORDER_URL ) . 'assets/images/processing.png'; ?>" alt="">
+							<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="0.5" y="0.5" width="63" height="63" rx="31.5" stroke="#E7E7E7"/>
+<path d="M23.2 26L32.8 31.2M23.2 26V35.8256C23.2 36.1813 23.3889 36.5102 23.6961 36.6894L32.8 42M23.2 26L28 23.2M32.8 31.2V42M32.8 31.2L37.6 28.4M42.4 25.6L33.2944 20.6678C32.9874 20.5015 32.6159 20.5074 32.3143 20.6833L28 23.2M42.4 25.6V35.8256C42.4 36.1813 42.2111 36.5102 41.9039 36.6894L32.8 42M42.4 25.6L37.6 28.4M37.6 28.4V33.6M37.6 28.4L28 23.2" stroke="black" stroke-linecap="round"/>
+<path d="M31.2 15.6L31.5254 15.9796L32.0971 15.4896L31.4236 15.1528L31.2 15.6ZM28.2236 13.5528C27.9766 13.4293 27.6763 13.5294 27.5528 13.7764C27.4293 14.0234 27.5294 14.3237 27.7764 14.4472L28.2236 13.5528ZM28.0746 17.6204C27.8649 17.8001 27.8407 18.1157 28.0204 18.3254C28.2001 18.5351 28.5157 18.5593 28.7254 18.3796L28.0746 17.6204ZM16.5 30.8C16.5 22.6814 23.0814 16.1 31.2 16.1V15.1C22.5291 15.1 15.5 22.1291 15.5 30.8H16.5ZM31.4236 15.1528L28.2236 13.5528L27.7764 14.4472L30.9764 16.0472L31.4236 15.1528ZM30.8746 15.2204L28.0746 17.6204L28.7254 18.3796L31.5254 15.9796L30.8746 15.2204Z" fill="#019FFF"/>
+<path d="M32.8 47.6L32.4746 47.2204L31.9029 47.7105L32.5764 48.0472L32.8 47.6ZM35.7764 49.6472C36.0234 49.7707 36.3237 49.6706 36.4472 49.4236C36.5707 49.1766 36.4706 48.8763 36.2236 48.7528L35.7764 49.6472ZM35.9254 45.5796C36.1351 45.3999 36.1593 45.0843 35.9796 44.8746C35.7999 44.665 35.4843 44.6407 35.2746 44.8204L35.9254 45.5796ZM47.5 32.4C47.5 40.5186 40.9186 47.1 32.8 47.1V48.1C41.4709 48.1 48.5 41.0709 48.5 32.4H47.5ZM32.5764 48.0472L35.7764 49.6472L36.2236 48.7528L33.0236 47.1528L32.5764 48.0472ZM33.1254 47.9796L35.9254 45.5796L35.2746 44.8204L32.4746 47.2204L33.1254 47.9796Z" fill="#019FFF"/>
+</svg>
 							<span><?php esc_html_e( 'Processing', 'track-orders-for-woocommerce' ); ?></span>
 																					  <?php
 						}
@@ -425,17 +454,35 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 						<?php
 						if ( 1 == $shipping_blk ) {
 							?>
-							<img width="100px" height="100px" src="<?php echo esc_attr( wps_TRACK_YOUR_ORDER_URL ) . 'assets/images/shipping-b&w.png'; ?>" alt="">
+							<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="0.5" y="0.5" width="63" height="63" rx="31.5" stroke="#E7E7E7"/>
+<path d="M27.4286 18H22.7143C22.162 18 21.7143 18.4477 21.7143 19V28.4286C21.7143 28.9809 22.162 29.4286 22.7143 29.4286H32.1429C32.6951 29.4286 33.1429 28.9809 33.1429 28.4286V19C33.1429 18.4477 32.6951 18 32.1428 18H27.4286ZM27.4286 18V23.1429" stroke="#F45C20" stroke-linecap="round"/>
+<path d="M38.8571 22.5714V24.8572M38.8571 22.5714V34M38.8571 22.5714H36M38.8571 24.8572H45.0373C45.4462 24.8572 45.8139 25.1061 45.9657 25.4858L48 30.5714M38.8571 24.8572V30.5714M48 30.5714V39.8572C48 40.4094 47.5523 40.8572 47 40.8572H44M48 30.5714H38.8571M38.8571 30.5714V34M38.8571 34H16M38.8571 34V38.5714M16 34V39.8572C16 40.4094 16.4477 40.8572 17 40.8572H20M16 34V23.5714C16 23.0192 16.4477 22.5714 17 22.5714H18.8571M26.8571 40.8572H37.1429" stroke="black"/>
+<circle cx="23.4286" cy="41.4286" r="3.5" stroke="black"/>
+<circle cx="40.5714" cy="41.4286" r="3.5" stroke="black"/>
+</svg>
 							<span><?php esc_html_e( 'Shipping', 'track-orders-for-woocommerce' ); ?></span>
 							<?php
 						} else if ( 1 == $shipping && 'wc-completed' != $order_status ) {
 							?>
-							<img width="100px" height="100px" src="<?php echo esc_attr( wps_TRACK_YOUR_ORDER_URL ) . 'assets/images/shipping-ani.gif'; ?>" alt="">
+							<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="0.5" y="0.5" width="63" height="63" rx="31.5" stroke="#36be7e"/>
+<path d="M27.4286 18H22.7143C22.162 18 21.7143 18.4477 21.7143 19V28.4286C21.7143 28.9809 22.162 29.4286 22.7143 29.4286H32.1429C32.6951 29.4286 33.1429 28.9809 33.1429 28.4286V19C33.1429 18.4477 32.6951 18 32.1428 18H27.4286ZM27.4286 18V23.1429" stroke="#F45C20" stroke-linecap="round"/>
+<path d="M38.8571 22.5714V24.8572M38.8571 22.5714V34M38.8571 22.5714H36M38.8571 24.8572H45.0373C45.4462 24.8572 45.8139 25.1061 45.9657 25.4858L48 30.5714M38.8571 24.8572V30.5714M48 30.5714V39.8572C48 40.4094 47.5523 40.8572 47 40.8572H44M48 30.5714H38.8571M38.8571 30.5714V34M38.8571 34H16M38.8571 34V38.5714M16 34V39.8572C16 40.4094 16.4477 40.8572 17 40.8572H20M16 34V23.5714C16 23.0192 16.4477 22.5714 17 22.5714H18.8571M26.8571 40.8572H37.1429" stroke="black"/>
+<circle cx="23.4286" cy="41.4286" r="3.5" stroke="black"/>
+<circle cx="40.5714" cy="41.4286" r="3.5" stroke="black"/>
+</svg>
 							<span><?php esc_html_e( 'Shipping', 'track-orders-for-woocommerce' ); ?></span>
 							<?php
 						} else {
 							?>
-							<img width="100px" height="100px" src="<?php echo esc_attr( wps_TRACK_YOUR_ORDER_URL ) . 'assets/images/shipping.png'; ?>" alt="">
+							<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="0.5" y="0.5" width="63" height="63" rx="31.5" stroke="#E7E7E7"/>
+<path d="M27.4286 18H22.7143C22.162 18 21.7143 18.4477 21.7143 19V28.4286C21.7143 28.9809 22.162 29.4286 22.7143 29.4286H32.1429C32.6951 29.4286 33.1429 28.9809 33.1429 28.4286V19C33.1429 18.4477 32.6951 18 32.1428 18H27.4286ZM27.4286 18V23.1429" stroke="#F45C20" stroke-linecap="round"/>
+<path d="M38.8571 22.5714V24.8572M38.8571 22.5714V34M38.8571 22.5714H36M38.8571 24.8572H45.0373C45.4462 24.8572 45.8139 25.1061 45.9657 25.4858L48 30.5714M38.8571 24.8572V30.5714M48 30.5714V39.8572C48 40.4094 47.5523 40.8572 47 40.8572H44M48 30.5714H38.8571M38.8571 30.5714V34M38.8571 34H16M38.8571 34V38.5714M16 34V39.8572C16 40.4094 16.4477 40.8572 17 40.8572H20M16 34V23.5714C16 23.0192 16.4477 22.5714 17 22.5714H18.8571M26.8571 40.8572H37.1429" stroke="black"/>
+<circle cx="23.4286" cy="41.4286" r="3.5" stroke="black"/>
+<circle cx="40.5714" cy="41.4286" r="3.5" stroke="black"/>
+</svg>
 							<span><?php esc_html_e( 'Shipping', 'track-orders-for-woocommerce' ); ?></span>
 							<?php
 						}
@@ -445,21 +492,41 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 					if ( 'wc-completed' == $order_status ) {
 						?>
 						<li class="wps_completed_condition" id="wps_delivered_order">
-							<img  width="100px" height="100px" src="<?php echo esc_attr( wps_TRACK_YOUR_ORDER_URL ) . 'assets/images/deliver-ani.gif'; ?>" alt="" data-completed_data='<?php echo esc_attr( $completed ); ?>' >
+							<svg class="wps_active_status_svg" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" data-completed_data='<?php echo esc_attr( $completed ); ?>'>
+<rect x="0.5" y="0.5" width="63" height="63" rx="31.5" stroke="#36B37E"/>
+<path d="M25.4286 23H20.7143C20.162 23 19.7143 23.4477 19.7143 24V33.4286C19.7143 33.9809 20.162 34.4286 20.7143 34.4286H30.1429C30.6951 34.4286 31.1429 33.9809 31.1429 33.4286V24C31.1429 23.4477 30.6951 23 30.1428 23H25.4286ZM25.4286 23V28.1429" stroke="#F45C20" stroke-linecap="round"/>
+<path d="M36.8571 27.5714V29.8572M36.8571 27.5714V39M36.8571 27.5714H34M36.8571 29.8572H43.0373C43.4462 29.8572 43.8139 30.1061 43.9657 30.4858L46 35.5714M36.8571 29.8572V35.5714M46 35.5714V44.8572C46 45.4094 45.5523 45.8572 45 45.8572H42M46 35.5714H36.8571M36.8571 35.5714V39M36.8571 39H14M36.8571 39V43.5714M14 39V44.8572C14 45.4094 14.4477 45.8572 15 45.8572H18M14 39V28.5714C14 28.0192 14.4477 27.5714 15 27.5714H16.8571M24.8571 45.8572H35.1429" stroke="black"/>
+<circle cx="21.4286" cy="46.4286" r="3.5" stroke="black"/>
+<circle cx="38.5714" cy="46.4286" r="3.5" stroke="black"/>
+<path d="M44.2632 19.117L43.1383 22.5358C42.8541 23.3996 43.7769 24.1636 44.5725 23.7233L51.6826 19.7883C52.3734 19.406 52.3695 18.4116 51.6758 18.0347L44.4798 14.1246C43.6882 13.6945 42.7761 14.4484 43.0495 15.3068L44.2632 19.117ZM44.2632 19.117L48.1523 19.1019" stroke="#36B37E" stroke-linecap="round"/>
+</svg>
 							<span><?php esc_html_e( 'Delivered', 'track-orders-for-woocommerce' ); ?></span>
 						</li> 
 						<?php
 					} else if ( 1 == $order_cancel ) {
 						?>
 						<li class="wps_cancelled_condition" id="wps_cancelled_order">
-							<img  width="100px" height="100px" src="<?php echo esc_attr( wps_TRACK_YOUR_ORDER_URL ) . 'assets/images/cancel-ani.gif'; ?>" alt="" data-cancelled_data='<?php echo esc_attr( $order_cancel ); ?>' >
+							<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"data-cancelled_data='<?php echo esc_attr( $order_cancel ); ?>'>
+<rect x="0.5" y="0.5" width="63" height="63" rx="31.5" stroke="#E7E7E7"/>
+<path d="M21.6471 24.7843L24.1569 36.7059M21.6471 24.7843L20.1035 17.5809C19.9059 16.6588 19.091 16 18.1479 16H16M21.6471 24.7843H29.1765M24.1569 36.7059H44.6788C45.1517 36.7059 45.5599 36.3746 45.6574 35.9119L47.7461 25.9903C47.877 25.3688 47.4027 24.7843 46.7676 24.7843H41.098M24.1569 36.7059L24.9973 39.6475C25.2426 40.5061 26.0274 41.098 26.9204 41.098H45.4902" stroke="black" stroke-linecap="round"/>
+<circle cx="27.9216" cy="45.4902" r="2.63725" stroke="black"/>
+<circle cx="41.7255" cy="45.4902" r="2.63725" stroke="black"/>
+<path d="M38.3081 22.5686L33.1716 28.1112L35.7398 25.3399M35.7398 25.3399L33.0979 22.6388M35.7398 25.3399L38.3818 28.0411" stroke="#B71D18" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
 							<span><?php esc_html_e( 'Cancelled', 'track-orders-for-woocommerce' ); ?></span>
 						</li> 
 						<?php
 					} else {
 						?>
 						<li class="wps_completed_condition" id="wps_delivered_order">
-							<img  width="100px" height="100px" src="<?php echo esc_attr( wps_TRACK_YOUR_ORDER_URL ) . 'assets/images/deliver-b&w.png'; ?>" alt="" data-completed_data='<?php echo esc_attr( $completed ); ?>' >
+							<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" data-completed_data='<?php echo esc_attr( $completed ); ?>'>
+<rect x="0.5" y="0.5" width="63" height="63" rx="31.5" stroke="#e7e7e7"/>
+<path d="M25.4286 23H20.7143C20.162 23 19.7143 23.4477 19.7143 24V33.4286C19.7143 33.9809 20.162 34.4286 20.7143 34.4286H30.1429C30.6951 34.4286 31.1429 33.9809 31.1429 33.4286V24C31.1429 23.4477 30.6951 23 30.1428 23H25.4286ZM25.4286 23V28.1429" stroke="#F45C20" stroke-linecap="round"/>
+<path d="M36.8571 27.5714V29.8572M36.8571 27.5714V39M36.8571 27.5714H34M36.8571 29.8572H43.0373C43.4462 29.8572 43.8139 30.1061 43.9657 30.4858L46 35.5714M36.8571 29.8572V35.5714M46 35.5714V44.8572C46 45.4094 45.5523 45.8572 45 45.8572H42M46 35.5714H36.8571M36.8571 35.5714V39M36.8571 39H14M36.8571 39V43.5714M14 39V44.8572C14 45.4094 14.4477 45.8572 15 45.8572H18M14 39V28.5714C14 28.0192 14.4477 27.5714 15 27.5714H16.8571M24.8571 45.8572H35.1429" stroke="black"/>
+<circle cx="21.4286" cy="46.4286" r="3.5" stroke="black"/>
+<circle cx="38.5714" cy="46.4286" r="3.5" stroke="black"/>
+<path d="M44.2632 19.117L43.1383 22.5358C42.8541 23.3996 43.7769 24.1636 44.5725 23.7233L51.6826 19.7883C52.3734 19.406 52.3695 18.4116 51.6758 18.0347L44.4798 14.1246C43.6882 13.6945 42.7761 14.4484 43.0495 15.3068L44.2632 19.117ZM44.2632 19.117L48.1523 19.1019" stroke="#36B37E" stroke-linecap="round"/>
+</svg>
 							<span><?php esc_html_e( 'Delivery', 'track-orders-for-woocommerce' ); ?></span>
 						</li>
 						<?php

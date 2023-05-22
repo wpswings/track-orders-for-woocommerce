@@ -456,7 +456,7 @@ jQuery(document).ready(function ($) {
 		jQuery('#wps_tofw_new_custom_statuses_for_order_tracking').closest('tr').hide();
 	}
 
-	jQuery( '#wps_tofw_order_status_in_hidden' ).closest('tr').hide();
+	jQuery('#wps_tofw_order_status_in_hidden').parent().parent().parent().hide();
 
 
 	var selected_order_status_approval = jQuery( '#wps_tofw_order_status_in_approval' ).val();

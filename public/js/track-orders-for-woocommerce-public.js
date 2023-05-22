@@ -33,12 +33,24 @@
 
 
 jQuery(window).bind("load", function() {
-	jQuery('#wps_placed_order > img').show(900);
-	jQuery('#wps_approval_order > img').show(1500);
-	jQuery('#wps_processing_order > img').show(2100);
-	jQuery('#wps_shipping_order > img').show(2700);
-	jQuery('#wps_delivered_order > img').show(3300);
-	jQuery('#wps_cancelled_order > img').show(3900);
+	setTimeout(function(){
+		jQuery('#wps_placed_order > svg').addClass('show_img_slow');
+	},600)
+	setTimeout(function(){
+		jQuery('#wps_approval_order > svg').addClass('show_img_slow');
+	},1000)
+	setTimeout(function(){
+		jQuery('#wps_processing_order > svg').addClass('show_img_slow');
+	},1400)
+	setTimeout(function(){
+		jQuery('#wps_shipping_order > svg').addClass('show_img_slow');
+	},1800)
+	setTimeout(function(){
+		jQuery('#wps_delivered_order > svg').addClass('show_img_slow');
+	},2200)
+	setTimeout(function(){
+		jQuery('#wps_cancelled_order > svg').addClass('show_img_slow');
+	},2600)
 });
 jQuery( document ).ready( function()
 {
@@ -103,28 +115,28 @@ jQuery( document ).ready( function()
 		jQuery('#wps_delivery').show(2000);
 		
 		var i = 1;
-		jQuery('.wps_progress .circle_tyo_wps').removeClass().addClass('circle_tyo_wps');
-		jQuery('.wps_progress .bar_tyo_wps').removeClass().addClass('bar_tyo_wps');
+		jQuery('.wps_progress .circle_tofw_wps').removeClass().addClass('circle_tofw_wps');
+		jQuery('.wps_progress .bar_tofw_wps').removeClass().addClass('bar_tofw_wps');
 		setInterval(function() {
 
 			var z = jQuery('.hidden_value').val();
 			if(i <= jQuery('.hidden_value').val())
 			{
-				jQuery('.wps_progress .circle_tyo_wps:nth-of-type(' + i + ')').addClass('active_tyo_wps');
+				jQuery('.wps_progress .circle_tofw_wps:nth-of-type(' + i + ')').addClass('active_tofw_wps');
 
-				jQuery('.wps_progress .circle_tyo_wps:nth-of-type(' + (i-1) + ')').removeClass('active_tyo_wps').addClass('wps_done');
+				jQuery('.wps_progress .circle_tofw_wps:nth-of-type(' + (i-1) + ')').removeClass('active_tofw_wps').addClass('wps_done');
 
-				jQuery('.wps_progress .circle_tyo_wps:nth-of-type(' + (i-1) + ') .label').html('&#10003;');
+				jQuery('.wps_progress .circle_tofw_wps:nth-of-type(' + (i-1) + ') .label').html('&#10003;');
 
-				jQuery('.wps_progress .bar_tyo_wps:nth-of-type(' + (i-1) + ')').addClass('active_tyo_wps');
+				jQuery('.wps_progress .bar_tofw_wps:nth-of-type(' + (i-1) + ')').addClass('active_tofw_wps');
 
-				jQuery('.wps_progress .bar_tyo_wps:nth-of-type(' + (i-2) + ')').removeClass('active_tyo_wps').addClass('wps_done');
+				jQuery('.wps_progress .bar_tofw_wps:nth-of-type(' + (i-2) + ')').removeClass('active_tofw_wps').addClass('wps_done');
 
 				i++;
 
 				if (i==0) {
-					jQuery('.wps_progress .bar_tyo_wps').removeClass().addClass('bar_tyo_wps');
-					jQuery('.wps_progress div.circle_tyo_wps').removeClass().addClass('circle_tyo_wps');
+					jQuery('.wps_progress .bar_tofw_wps').removeClass().addClass('bar_tofw_wps');
+					jQuery('.wps_progress div.circle_tofw_wps').removeClass().addClass('circle_tofw_wps');
 					i = 1;
 				}
 			}
