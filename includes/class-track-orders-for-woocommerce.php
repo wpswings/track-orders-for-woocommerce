@@ -225,7 +225,7 @@ class Track_Orders_For_Woocommerce {
 		$this->loader->add_action( 'save_post', $tofw_plugin_admin, 'wps_tofw_save_shipping_services_meta' );
 		$this->loader->add_action( 'save_post', $tofw_plugin_admin, 'wps_tofw_save_custom_shipping_cities_meta' );
 		$this->loader->add_action( 'init', $tofw_plugin_admin, 'wps_tofw_register_custom_order_status' );
-		$this->loader->add_action('wc_order_statuses', $tofw_plugin_admin, 'wps_tofw_add_custom_order_status')
+		$this->loader->add_action('wc_order_statuses', $tofw_plugin_admin, 'wps_tofw_add_custom_order_status', 10, 1);
 		
 
 
@@ -256,6 +256,8 @@ class Track_Orders_For_Woocommerce {
 
 		$this->loader->add_filter( 'template_include', $tofw_plugin_common, 'wps_tofw_include_track_order_page', 10, 1 );
 		$this->loader->add_action('woocommerce_order_status_changed', $tofw_plugin_common, 'wps_tofw_track_order_status', 10, 3 );
+
+		$this->loader->add_action('wp_ajax_wps_wot_export_my_orders', $tofw_plugin_common, 'wps_tofw_export_my_orders_callback');
 	}
 
 	/**
@@ -275,7 +277,7 @@ class Track_Orders_For_Woocommerce {
 		$this->loader->	add_action( 'woocommerce_order_details_after_order_table', $tofw_plugin_public, 'wps_tofw_track_order_button' );
 		$this->loader->add_action('woocommerce_my_account_my_orders_actions', $tofw_plugin_public, 'wps_tofw_add_track_order_button_on_orderpage', 10, 2 );
 		
-
+		$this->loader->add_action( 'woocommerce_before_account_orders', $tofw_plugin_public, 'wps_wot_add_export_button_before_order_table', 10, 1 );
 	}
 
 	/**

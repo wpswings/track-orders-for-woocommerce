@@ -140,5 +140,19 @@ class Track_Orders_For_Woocommerce_Public {
 		return $actions;
 	}
 
+	/**
+	 * Function to export.
+	 *
+	 * @return void
+	 */
+	public function wps_wot_add_export_button_before_order_table(){
+		if( 'on' == get_option( 'wps_tofw_enable_login_export' ) ) {
+
+			?>
+				<button class="wps_export woocommerce-button"><?php esc_html_e( 'Export Orders', 'track-orders-for-woocommerce' );?></button>
+			<?php
+			
+		}
+	}
 
 }

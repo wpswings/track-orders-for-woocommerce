@@ -65,7 +65,13 @@ class Track_Orders_For_Woocommerce_Common {
 	 */
 	public function tofw_common_enqueue_scripts() {
 		wp_register_script( $this->plugin_name . 'common', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'common/js/track-orders-for-woocommerce-common.js', array( 'jquery' ), $this->version, false );
-		wp_localize_script( $this->plugin_name . 'common', 'tofw_common_param', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
+		wp_localize_script( $this->plugin_name . 'common', 
+		'tofw_common_param', 
+		array( 
+			'ajaxurl' => admin_url( 'admin-ajax.php' ),
+			'nonce'  => wp_create_nonce( 'tofw_common_param_nonce' )
+		 ) 
+	);
 		wp_enqueue_script( $this->plugin_name . 'common' );
 	}
 
@@ -556,4 +562,108 @@ class Track_Orders_For_Woocommerce_Common {
 
 		}
 	}
+
+
+	/**
+		 * Function for ajax callback.
+		 *
+		 * @return array
+		 */
+		public function wps_tofw_export_my_orders_callback() {
+			$_orders = get_posts(
+				array(
+
+					'post_status' => array_keys(wc_get_order_statuses()),
+					'post_type'   => 'shop_order',
+					'numberposts' => -1,
+					'meta_key' => '_customer_user',
+					'meta_value' => get_current_user_id(),
+					'fields' => 'ids',
+				)
+			);
+
+			if( ! empty( $_orders ) ) {
+				$order_details = $this->wps_tofw_get_csv_order_details( $_orders );
+				$main_arr = array(
+					'status' => 'success',
+					'file_name' => 'wps_order_details',
+					'order_data' => $order_details,
+				);
+			} else {
+
+				$main_arr = array(
+					'status' => 'failed',
+				);
+			}
+			echo wp_json_encode( $main_arr );
+			wp_die();
+		}
+
+
+		/**
+		 * Function to return order details.
+		 *
+		 * @param array $_orders contains array of order ids.
+		 * @return array
+		 */
+		public function wps_tofw_get_csv_order_details( $_orders ){
+			$order_details = array();
+			$order_details[] = array(
+				__( 'Order Id', 'woocommerce-order-tracker' ),
+				__( 'Order Status', 'woocommerce-order-tracker' ),
+				__( 'Order Total', 'woocommerce-order-tracker' ),
+				__( 'Order Items', 'woocommerce-order-tracker' ),
+				__( 'Payment Method', 'woocommerce-order-tracker' ),
+				__( 'Billing Name', 'woocommerce-order-tracker' ),
+				__( 'Billing Email', 'woocommerce-order-tracker' ),
+				__( 'Billing Address', 'woocommerce-order-tracker' ),
+				__( 'Billing Contact', 'woocommerce-order-tracker' ),
+				__( 'Order date', 'woocommerce-order-tracker' ),
+				
+			);
+
+			foreach( $_orders as $index => $_order_id ) {
+				$order = wc_get_order( $_order_id );
+				$order_total = $order->get_total();
+				$payment_method = $order->get_payment_method_title();
+				$billing_name = $order->get_billing_first_name(); 
+				$billing_name .= ' ';
+				$billing_name .= $order->get_billing_last_name();
+				$billing_email  = $order->get_billing_email();
+				$billing_address = $order->get_billing_company();
+				$billing_address .=' ';
+				$billing_address .= $order->get_billing_address_1();
+				$billing_address .=' ';
+				$billing_address .= $order->get_billing_address_2();
+				$billing_address .=' ';
+				$billing_address .= $order->get_billing_city();
+				$billing_address .=' ';
+				$billing_address .= $order->get_billing_state();
+				$billing_address .=' ';
+				$billing_address .= $order->get_billing_country();
+				$billing_address .=' ';
+				$billing_address .= $order->get_billing_postcode();
+				
+				$billing_contact = $order->get_billing_phone();
+				$order_date = $order->get_date_created()->date('F d Y H:i ');
+				$order_items = '';
+				$_order_status = $order->get_status();
+				foreach ( $order->get_items() as $item_id => $item ) { 
+					$order_items .= $item->get_name() . ' ';
+				}
+				$order_details[] = array(
+					$_order_id,
+					$_order_status,
+					$order_total,
+					$order_items,
+					$payment_method,
+					$billing_name,
+					$billing_email,
+					$billing_address,
+					$billing_contact,
+					$order_date,
+				);
+			}
+			return $order_details;
+		}
 }
