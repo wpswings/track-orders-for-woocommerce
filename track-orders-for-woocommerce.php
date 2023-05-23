@@ -143,6 +143,7 @@ register_deactivation_hook(__FILE__, 'deactivate_track_orders_for_woocommerce');
  * admin-specific hooks, and public-facing site hooks.
  */
 require plugin_dir_path(__FILE__) . 'includes/class-track-orders-for-woocommerce.php';
+require plugin_dir_path(__FILE__) . 'integration/class-track-orders-for-woocommerce-with-fedex.php';
 
 
 
