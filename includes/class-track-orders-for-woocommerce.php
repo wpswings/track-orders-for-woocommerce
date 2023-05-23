@@ -224,6 +224,8 @@ class Track_Orders_For_Woocommerce {
 		$this->loader->add_action( 'save_post', $tofw_plugin_admin, 'wps_tofw_save_delivery_date_meta' );
 		$this->loader->add_action( 'save_post', $tofw_plugin_admin, 'wps_tofw_save_shipping_services_meta' );
 		$this->loader->add_action( 'save_post', $tofw_plugin_admin, 'wps_tofw_save_custom_shipping_cities_meta' );
+		$this->loader->add_action( 'init', $tofw_plugin_admin, 'wps_tofw_register_custom_order_status' );
+		$this->loader->add_action('wc_order_statuses', $tofw_plugin_admin, 'wps_tofw_add_custom_order_status')
 		
 
 
