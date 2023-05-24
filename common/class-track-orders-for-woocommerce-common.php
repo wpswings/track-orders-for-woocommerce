@@ -367,7 +367,7 @@ class Track_Orders_For_Woocommerce_Common {
 			update_post_meta( $order_id, 'wps_track_order_onchange_time_template', $wps_status_change_time_template2 );
 		}
 
-		if ( 'yes' == $wps_tofw_email_notifier && 'wc-completed' != $new_status ) {
+		if ( 'on' == $wps_tofw_email_notifier && 'wc-completed' != $new_status ) {
 			if ( '3.0.0' > WC()->version ) {
 				$order_id = $order->id;
 				$headers = array();

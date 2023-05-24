@@ -438,9 +438,9 @@ class Track_Orders_For_Woocommerce_Admin {
 				'title' => __( 'Enable E-mail Notification Feature', 'track-orders-for-woocommerce' ),
 				'type'  => 'radio-switch',
 				'description'  => __( 'Enable to send the e-mail notification to the customer on changing order status', 'track-orders-for-woocommerce' ),
-				'id'    => 'wps_tofw_enable_email_notification',
-				'value' => get_option( 'wps_tofw_enable_email_notification' ),
-				'class' => 'wps_tofw_enable_email_notification',
+				'id'    => 'wps_tofw_email_notifier',
+				'value' => get_option( 'wps_tofw_email_notifier' ),
+				'class' => 'wps_tofw_email_notifier',
 				'options' => array(
 					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
 					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
