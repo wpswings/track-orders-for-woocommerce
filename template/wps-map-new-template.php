@@ -416,7 +416,7 @@ if ( $allowed ) {
 				<input type="hidden" id="end_hidden" value="<?php echo esc_attr( $long ); ?>">
 				<input type="hidden" id="billing_hidden" value="<?php echo esc_attr( $wps_tofw_billing_add ); ?>">
 				<?php
-				update_option( 'wps_tofw_address_get_correct', 'yes' );
+				update_option( 'wps_tofw_address_get_correct', 'on' );
 				update_option( 'wps_tofw_address_latitude', $lat );
 				update_option( 'wps_tofw_address_longitude', $long );
 	

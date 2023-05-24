@@ -72,7 +72,7 @@ if ( true == $allowed ) {
 			}
 		} else // Check order associated to customer account or not for guest user.
 		{
-			if( 'yes' != get_option( 'wps_tofw_enable_track_order_using_order_id', 'no' ) )  { 
+			if( 'on' != get_option( 'wps_tofw_enable_track_order_using_order_id', 'no' ) )  { 
 
 				if ( isset( $_SESSION['wps_tofw_email'] ) ) {
 					$tofw_user_email = $_SESSION['wps_tofw_email'];
@@ -116,7 +116,7 @@ if ( true == $allowed ) {
 	header( 'Location: ' . $track_order_url );
 }
 $wps_tofw_enable_track_order_popup = get_option( 'wps_tofw_enable_track_order_popup', '' );
-if ( 'yes' !== $wps_tofw_enable_track_order_popup ) {
+if ( 'on' !== $wps_tofw_enable_track_order_popup ) {
 	get_header( 'shop' );
 
 	/**
@@ -125,7 +125,7 @@ if ( 'yes' !== $wps_tofw_enable_track_order_popup ) {
 	 * @since 1.0.0
 	 */
 	do_action( 'woocommerce_before_main_content' );
-} elseif ( 'yes' == $wps_tofw_enable_track_order_popup && $current_user_id > 0 && 0 != $order_id && '' != $order_id && null != $order_id ) {?>
+} elseif ( 'on' == $wps_tofw_enable_track_order_popup && $current_user_id > 0 && 0 != $order_id && '' != $order_id && null != $order_id ) {?>
 		<link rel="stylesheet" type="text/css" href="<?php echo esc_attr( wps_TRACK_YOUR_ORDER_URL ) . '/assets/css/wps-tofw-style-front.css'; ?>" media="screen">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 		<script type="text/javascript" src="<?php echo esc_attr( wps_TRACK_YOUR_ORDER_URL ) . 'assets/js/wps-tofw-script.js'; ?>"></script>
@@ -1092,7 +1092,7 @@ $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 															 *
 															 * @hooked woocommerce_output_content_wrapper_end - 10 (outputs closing divs for the content)
 															 */
-															if ( 'yes' != $wps_tofw_enable_track_order_popup ) {
+															if ( 'on' != $wps_tofw_enable_track_order_popup ) {
 
 
 																/**
@@ -1102,7 +1102,7 @@ $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 																 */
 																do_action( 'woocommerce_after_main_content' );
 																get_footer( 'shop' );
-															} elseif ( 'yes' == $wps_tofw_enable_track_order_popup && $current_user_id > 0 && 0 != $order_id && '' != $order_id && null != $order_id ) {
+															} elseif ( 'on' == $wps_tofw_enable_track_order_popup && $current_user_id > 0 && 0 != $order_id && '' != $order_id && null != $order_id ) {
 																
 																/**
 																 * Add content.

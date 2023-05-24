@@ -40,7 +40,7 @@ if ( ! class_exists( 'Track_Orders_For_Woocommerce_With_FedEx' ) ) {
 		 */
 		public function fedex_request( $order_id ) {
 			$request = array();
-			$path_to_wsdl = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'includes/TrackService_v10.wsdl';
+			$path_to_wsdl = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'integration/TrackService_v10.wsdl';
 			$wps_tofw_fedex_tracking_enable = get_option( 'wps_tofw_enable_third_party_tracking_api', 'no' );
 
 			$wps_fedex_track_number = get_post_meta( $order_id, 'wps_tofw_package_tracking_number', true );
@@ -228,7 +228,7 @@ if ( ! class_exists( 'Track_Orders_For_Woocommerce_With_FedEx' ) ) {
 			}
 			if ( ( isset( $wps_tofw_canadapost_userkey ) && ( ! empty( $wps_tofw_canadapost_userkey ) || '' != $wps_tofw_canadapost_userkey ) && ( isset( $wps_tofw_canadapost_password ) && ( ! empty( $wps_tofw_canadapost_password ) || '' != $wps_tofw_canadapost_password ) ) ) ) {
 
-				$wsdl = realpath( dirname( isset( $_SERVER['SCRIPT_FILENAME'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SCRIPT_FILENAME'] ) ) : '' ) ) . '/wp-content/plugins/woocommerce-order-tracker/includes/wsdl/track.wsdl';
+				$wsdl = realpath( dirname( isset( $_SERVER['SCRIPT_FILENAME'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SCRIPT_FILENAME'] ) ) : '' ) ) . '/wp-content/plugins/track-orders-for-woocommerce/integration/wsdl/track.wsdl';
 
 				$host_name = 'ct.soa-gw.canadapost.ca';
 

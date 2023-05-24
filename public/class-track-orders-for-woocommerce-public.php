@@ -155,4 +155,86 @@ class Track_Orders_For_Woocommerce_Public {
 		}
 	}
 
+	/**
+	 * This function is to create template for track order
+	 *
+	 * @link http://www.wpswings.com/
+	 * @param string $template is the contains path.
+	 * @return string
+	 */
+	public function wps_tofw_include_track_order_page($template){
+		$selected_template = get_option( 'wps_tofw_activated_template' );
+		$wps_tofw_google_map_setting = get_option( 'wps_tofw_trackorder_with_google_map', false );
+		$wps_tofw_enable_track_order_feature = get_option( 'tofw_enable_track_order', 'no' );
+		if ( 'on' != $wps_tofw_enable_track_order_feature ) {
+			return $template;
+		}
+		if ( 'on' == $wps_tofw_enable_track_order_feature && 'on' == $wps_tofw_google_map_setting ) {
+			$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
+			$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
+			if ( is_page( $page_id ) ) {
+				$new_template = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'template/wps-map-new-template.php';
+				$template = $new_template;
+			}
+		} else {
+
+			$wps_tofw_pages = get_option( 'wps_tofw_tracking_page', false );
+			$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
+			if ( is_page( $page_id ) ) {
+				if ( ' ' != $selected_template && null != $selected_template ) {
+					$new_template = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'template/wps-track-order-myaccount-page-' . $selected_template . '.php';
+					$template = $new_template;
+				} else {
+					$new_template = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'template/wps-track-order-myaccount-page-template1.php';
+					$template = $new_template;
+				}
+			}
+		}
+
+		return $template;
+	}
+
+
+	/**
+	 * This function is to create template for track order
+	 *
+	 * @link http://www.wpswings.com/
+	 * @param string $template is the contains path.
+	 * @return string
+	 */
+	public function wps_tofw_include_guest_track_order_page($template){
+		$wps_tofw_enable_track_order_feature = get_option( 'tofw_enable_track_order', 'no' );
+		if ( 'on' != $wps_tofw_enable_track_order_feature ) {
+			return $template;
+		}
+		$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
+		$page_id = $wps_tofw_pages['pages']['wps_guest_track_order_page'];
+		if ( is_page( $page_id ) ) {
+			$new_template = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'template/wps-guest-track-order-page.php';
+			$template = $new_template;
+		}
+
+		return $template;
+	}
+
+
+	/**
+	 * This function is to create template for FedEX tracking of Order
+	 *
+	 * @link http://www.wpswings.com/
+	 * @param string $template is the contains path.
+	 * @return string
+	 */
+	public function wps_ordertracking_page($template){
+		$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
+		$page_id = $wps_tofw_pages['pages']['wps_fedex_track_order'];
+		if ( is_page( $page_id ) ) {
+			$new_template = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'template/wps-order-tracking-page.php';
+			$template = $new_template;
+		}
+
+		return $template;
+	}
+
+
 }

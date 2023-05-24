@@ -390,9 +390,9 @@ class Track_Orders_For_Woocommerce_Admin {
 				'title' => __( 'Enable Order tracking using order id only', 'track-orders-for-woocommerce' ),
 				'type'  => 'radio-switch',
 				'description'  => __( 'In Default case, guest user can track order using email and order id. Enable this to track order using order id only..', 'track-orders-for-woocommerce' ),
-				'id'    => 'wps_tofw_enable_track_with_order_id',
-				'value' => get_option( 'wps_tofw_enable_track_with_order_id' ),
-				'class' => 'wps_tofw_enable_track_with_order_id',
+				'id'    => 'wps_tofw_enable_track_order_using_order_id',
+				'value' => get_option( 'wps_tofw_enable_track_order_using_order_id' ),
+				'class' => 'wps_tofw_enable_track_order_using_order_id',
 				'options' => array(
 					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
 					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
@@ -796,6 +796,16 @@ class Track_Orders_For_Woocommerce_Admin {
 				'title' => __( 'Enter Your FedEx User Password   ', 'track-orders-for-woocommerce' ),
 				'type'  => 'text',
 				'description'  => __( 'Enter Your FedEx User Password .', 'track-orders-for-woocommerce' ),
+				'id'    => 'wps_fedex_userpassword',
+				'value' => get_option( 'wps_fedex_userpassword' ),
+				'class' => '',
+				'style' => 'width:10em;',
+				
+			),
+			array(
+				'title' => __( 'Enter Your FedEx Account Number', 'track-orders-for-woocommerce' ),
+				'type'  => 'text',
+				'description'  => __( 'Enter Your FedEx Account Number  .', 'track-orders-for-woocommerce' ),
 				'id'    => 'wps_fedex_account_number',
 				'value' => get_option( 'wps_fedex_account_number' ),
 				'class' => '',
@@ -1138,24 +1148,29 @@ class Track_Orders_For_Woocommerce_Admin {
 		<?php
 	}
 
+	/**
+	 * Function to add metabox.
+	 *
+	 * @return void
+	 */
 	public function wps_tofw_track_order_services_metabox(){
 		global $post, $thepostid, $theorder;
-			$wps_tofw_enable_track_order_api = get_option( 'wps_tofw_enable_third_party_tracking_api', 'no' );
-			$wps_tofw_enable_track_17track_feature = get_option( 'wps_tofw_enable_17track_integration', 'no' );
-
-			if ( '3.0.0' > WC()->version ) {
-				$order_id = $theorder->id;
+		$wps_tofw_enable_track_order_api = get_option( 'wps_tofw_enable_third_party_tracking_api', 'no' );
+		$wps_tofw_enable_track_17track_feature = get_option( 'wps_tofw_enable_17track_integration', 'no' );
+		
+		if ( '3.0.0' > WC()->version ) {
+			$order_id = $theorder->id;
 			} else {
 				$order_id = $theorder->get_id();
 			}
 			$wps_tofw_fedex_tracking_enable = get_option( 'wps_tofw_enable_track_order_using_api', 'no' );
-			if ( 'yes' === $wps_tofw_fedex_tracking_enable ) {
-
+			if ( 'on' === $wps_tofw_fedex_tracking_enable ) {
+				
 				$wps_diffrent_shipping_services = array( 'fedex' => 'FedEx' );
 			} else {
 				$wps_diffrent_shipping_services = array();
 			}
-
+			
 			/**
 			 * Add different shipping services.
 			 *
@@ -1164,8 +1179,9 @@ class Track_Orders_For_Woocommerce_Admin {
 			$wps_diffrent_shipping_services = apply_filters( 'wps_tofw_add_diffrent_shipping_services', $wps_diffrent_shipping_services );
 			$wps_tofw_track_id = get_post_meta( $order_id, 'wps_tofw_package_tracking_number', true );
 			$selected_method = get_post_meta( $order_id, 'wps_tofw_selected_shipping_service', true );
-			if ( 'yes' == $wps_tofw_enable_track_order_api ) {
+			if ( 'on' == $wps_tofw_enable_track_order_api ) {
 				?>
+					
 				<div class="wps_tofw_shipping_service_wrapper">
 					<select name="wps_tofw_selected_shipping_services">
 						<option><?php esc_html_e( '---Select shipping Services---', 'track-orders-for-woocommerce' ); ?></option>
@@ -1191,14 +1207,7 @@ class Track_Orders_For_Woocommerce_Admin {
 				<input type="text" name="wps_tofw_tracking_number" id="wps_tofw_tracking_number" value="<?php echo esc_attr( $wps_tofw_track_id ); ?>" placeholder="<?php esc_attr_e( 'Enter Tracking Number', 'track-orders-for-woocommerce' ); ?>"></input>
 			</div>
 				<?php
-			} elseif ( 'yes' == $wps_tofw_enable_track_17track_feature ) {
-				?>
-			<div class="wps_tofw_ship_tracking_wrapper">
-				<label for="wps_tofw_user_tracking_number"><?php esc_html_e( '17Track Number', 'track-orders-for-woocommerce' ); ?></label>
-				<input type="text" name="wps_tofw_tracking_number" id="wps_tofw_tracking_number" value="<?php echo esc_attr( $wps_tofw_track_id ); ?>" placeholder="<?php esc_attr_e( 'Enter 17 Tracking Number', 'track-orders-for-woocommerce' ); ?>"></input>
-			</div>
-				<?php
-			}
+			} 
 	}
 
 	public function wps_tofw_save_delivery_date_meta(){

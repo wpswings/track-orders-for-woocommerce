@@ -65,7 +65,7 @@ $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 			?>
 			<?php
 			$wps_tofw_enable_track_17track_feature = get_option( 'wps_tofw_enable_17track_integration', 'no' );
-			if ( ! empty( $wps_tofw_enable_track_17track_feature ) && 'yes' == $wps_tofw_enable_track_17track_feature ) {
+			if ( ! empty( $wps_tofw_enable_track_17track_feature ) && 'on' == $wps_tofw_enable_track_17track_feature ) {
 				?>
 			<p class="woocommerce-FormRow woocommerce-FormRow--wide form-row form-row-wide">
 			<label><?php esc_html_e( 'Enter Your 17TrackingNo', 'track-orders-for-woocommerce' ); ?></label>
@@ -81,7 +81,7 @@ $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 					<label for="username"><?php esc_html_e( 'Enter Order Id', 'track-orders-for-woocommerce' ); ?><span class="required"> *</span></label>
 					<input type="text" id="order_id" name="order_id" class="woocommerce-Input woocommerce-Input--text input-text">
 				</p>
-				<?php if( 'yes' != get_option( 'wps_tofw_enable_track_order_using_order_id', 'no' ) )  { ?>
+				<?php if( 'on' != get_option( 'wps_tofw_enable_track_order_using_order_id', 'no' ) )  { ?>
 
 
 					<p class="woocommerce-FormRow woocommerce-FormRow--wide form-row form-row-wide">
@@ -100,7 +100,7 @@ $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 
 <?php 
 $check = get_option( 'wps_tofw_enable_export_order_guest_user' );
-if( 'yes' == $check ) { ?>
+if( 'on' == $check ) { ?>
 
 	<div>
 		<form method="POST">

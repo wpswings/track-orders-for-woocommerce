@@ -184,6 +184,7 @@ function track_orders_for_woocommerce_settings_link( $links ) {
 	return array_merge($my_link, $links);
 }
 
+
 /**
  * Adding custom setting links at the plugin activation list.
  *
@@ -212,3 +213,49 @@ if( ! function_exists('wps_standard_redirect_on_settings') ) {
 	}
 }
 
+
+/**
+ * This function checks session is set or not
+ *
+ * @link http://www.wpswings.com/
+ */
+function wps_tofw_set_session() {
+	if ( !session_id() ) {
+		
+		session_start();
+	}
+	$value_check = isset( $_POST['track_order_nonce_name'] ) ? sanitize_text_field( wp_unslash( $_POST['track_order_nonce_name'] ) ) : '';
+	wp_verify_nonce( $value_check, 'track_order_nonce' );
+	if ( isset( $_POST['wps_tofw_order_id_submit'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_order_id_submit'] ) ) : '' ) {
+		$order_id = isset( $_POST['order_id'] ) ? sanitize_text_field( wp_unslash( $_POST['order_id'] ) ) : '';
+		$billing_email = get_post_meta( $order_id, '_billing_email', true );
+		$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
+		$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
+		$track_order_url = get_permalink( $page_id );
+		$order = wc_get_order( $order_id );
+		if( ! empty( $order ) ) {
+
+			if( 'on' != get_option( 'wps_tofw_enable_track_order_using_order_id', 'no' ) ) {
+				$req_email = isset( $_POST['order_email'] ) ? sanitize_text_field( wp_unslash( $_POST['order_email'] ) ) : '';
+				
+				if ( ! empty($req_email ) && ! empty( $billing_email ) && $req_email == $billing_email ) {
+					$_SESSION['wps_tofw_email'] = $billing_email;
+					$order = wc_get_order( $order_id );
+					$url = $track_order_url . '?' . $order_id;
+					wp_redirect( $url );
+					exit();
+				} else {
+					$_SESSION['wps_tofw_notification'] = __( 'OrderId or Email is Invalid', 'woocommerce-order-tracker' );
+				}
+			} else {
+				$order = wc_get_order( $order_id );
+				$url = $track_order_url . '?' . $order_id;
+				wp_redirect( $url );
+				exit();
+			}
+		} else{
+			$_SESSION['wps_tofw_notification'] = __( 'OrderId is Invalid', 'woocommerce-order-tracker' );
+		}
+	}
+}
+add_action( 'init', 'wps_tofw_set_session' );
