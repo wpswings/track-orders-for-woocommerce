@@ -853,44 +853,7 @@ jQuery(document).ready(function ($) {
   
   
   
-  // status icon
-
-  var is_enable_status_icon = tofw_admin_param.is_enable_status_icon;
-	if( 'yes' == is_enable_status_icon ) {
-
-		// /home/cedcoss/Local Sites/order-tracker/app/public/order_complted_icon.png
-		var processing = tofw_admin_param.site_url + '/wp-content/plugins/woocommerce-order-tracker/assets/images/processing1.png';
-		var completed = tofw_admin_param.site_url + '/wp-content/plugins/woocommerce-order-tracker/assets/images/deliver1.png';
-		var on_hold = tofw_admin_param.site_url + '/wp-content/plugins/woocommerce-order-tracker/assets/images/approved1.png';
-		var pending = tofw_admin_param.site_url + '/wp-content/plugins/woocommerce-order-tracker/assets/images/order-pending.jpeg';
-		var cancelled = tofw_admin_param.site_url + '/wp-content/plugins/woocommerce-order-tracker/assets/images/cancel1.png';
-		var failed = tofw_admin_param.site_url + '/wp-content/plugins/woocommerce-order-tracker/assets/images/order-cancelled.png';
-		var refunded = tofw_admin_param.site_url + '/wp-content/plugins/woocommerce-order-tracker/assets/images/revert.png';
-		var dispatched = tofw_admin_param.site_url + '/wp-content/plugins/woocommerce-order-tracker/assets/images/dispatch.png';
-		var shipped = tofw_admin_param.site_url + '/wp-content/plugins/woocommerce-order-tracker/assets/images/shipped.png';
-		var packed = tofw_admin_param.site_url + '/wp-content/plugins/woocommerce-order-tracker/assets/images/order-packed.png';
-		 jQuery('.wp-list-table .status-wc-processing .order_status ').html('<mark class="order-status status-processing" ><img src="' + processing + '" height="50" width="50"></mark> ');
-		 jQuery('.wp-list-table .status-wc-completed .order_status ').html('<mark class="order-status status-completed" ><img src="' + completed + '" height="50" width="50"></mark> ');
-		 jQuery('.wp-list-table .status-wc-on-hold .order_status ').html('<mark class="order-status status-on-hold" ><img src="' + on_hold + '" height="50" width="50"></mark> ');
-		 jQuery('.wp-list-table .status-wc-pending .order_status ').html('<mark class="order-status status-pending" ><img src="' + pending + '" height="50" width="50"></mark> ');
-		 jQuery('.wp-list-table .status-wc-cancelled .order_status ').html('<mark class="order-status status-cancelled" ><img src="' + cancelled + '" height="50" width="50"></mark> ');
-		 jQuery('.wp-list-table .status-wc-failed .order_status ').html('<mark class="order-status status-failed" ><img src="' + failed + '" height="50" width="50"></mark> ');
-		 jQuery('.wp-list-table .status-wc-refunded .order_status ').html('<mark class="order-status status-refunded" ><img src="' + refunded + '" height="50" width="50"></mark> ');
-		 jQuery('.wp-list-table .status-wc-dispatched .order_status ').html('<mark class="order-status status-dispatched" ><img src="' + dispatched + '" height="50" width="50"></mark> ');
-		 jQuery('.wp-list-table .status-wc-shipped .order_status ').html('<mark class="order-status status-shipped" ><img src="' + shipped + '" height="50" width="50"></mark> ');
-		 jQuery('.wp-list-table .status-wc-packed .order_status ').html('<mark class="order-status status-packed" ><img src="' + packed + '" height="50" width="50"></mark> ');
-	
-		 var custom_url = tofw_admin_param.custom_order_status_url;
-		 if( custom_url != '' ){
-			
-			 $.each( custom_url, function( key, value ) {
-				jQuery('.wp-list-table .status-wc-' + key + ' .order_status ').html('<mark class="order-status status-'+ key +'" ><img src="' + value + '" height="50" width="50"></mark> ');
-			  });
-			
-		 }
-	}
-  
-
+ 
 	// Google map working.
 
 	jQuery('#wps_tofw_selected_address').select2({

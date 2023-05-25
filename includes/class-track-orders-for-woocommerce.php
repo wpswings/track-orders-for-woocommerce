@@ -258,6 +258,7 @@ class Track_Orders_For_Woocommerce {
 		$this->loader->add_action('woocommerce_order_status_changed', $tofw_plugin_common, 'wps_tofw_track_order_status', 10, 3 );
 
 		$this->loader->add_action('wp_ajax_wps_wot_export_my_orders', $tofw_plugin_common, 'wps_tofw_export_my_orders_callback');
+		$this->loader->add_action('wp_ajax_nopriv_wps_tofw_export_my_orders_guest_user', $tofw_plugin_common, 'wps_tofw_export_my_orders_guest_user_callback');
 		
 	}
 

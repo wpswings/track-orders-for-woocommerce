@@ -99,7 +99,7 @@ $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 </div>
 
 <?php 
-$check = get_option( 'wps_tofw_enable_export_order_guest_user' );
+$check = get_option( 'wps_tofw_enable_guest_export' );
 if( 'on' == $check ) { ?>
 
 	<div>
@@ -108,7 +108,7 @@ if( 'on' == $check ) { ?>
 			<p class="woocommerce-FormRow woocommerce-FormRow--wide form-row form-row-wide">
 				<label for="wps_wot_export_email"><?php esc_html_e( 'Enter Email', 'track-orders-for-woocommerce' ); ?><span class="required"> *</span></label>
 				<input type="email" required  class="woocommerce-Input wps_wot_export_email woocommerce-Input--text input-text">
-				<input type="submit"  value="<?php esc_attr_e( 'Export Orders', 'track-orders-for-woocommerce' ); ?>"  class="woocommerce-Button wps_wot_guest_user_export_button button">
+				<input type="submit"  value="<?php esc_attr_e( 'Export Orders', 'track-orders-for-woocommerce' ); ?>"  class="woocommerce-Button wps_tofw_guest_user_export_button button">
 			</p>
 		</form>
 	</div>

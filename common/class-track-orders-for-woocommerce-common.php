@@ -213,21 +213,16 @@ class Track_Orders_For_Woocommerce_Common {
 		}
 		update_option( 'wps_track_orders_for_woocommerce_multistep_done', 'yes' );
 
-		$wps_tofw_purchase_code = ! empty( $_POST['licenseCode'] ) ? sanitize_text_field( wp_unslash( $_POST['licenseCode'] ) ) : '';
-
-		$wps_tofw_response = self::track_orders_for_woocommerce_license_code_update( $wps_tofw_purchase_code );
-		if ( is_wp_error( $wps_tofw_response ) ) {
-			wp_send_json( 'license_could_not_be_verified' );
-		} else {
-			$wps_tofw_license_data = json_decode( wp_remote_retrieve_body( $wps_tofw_response ) );
-			if ( isset( $wps_tofw_license_data->result ) && 'success' === $wps_tofw_license_data->result ) {
-				update_option( 'wps_tofw_license_key', $wps_tofw_purchase_code );
-				update_option( 'wps_tofw_license_check', true );
-			}
-		}
+		
 		wp_send_json( 'yes' );
 	}
 
+	/**
+	 * Function to return template.
+	 *
+	 * @param [type] $template
+	 * @return void
+	 */
 	public function wps_tofw_include_track_order_page( $template ){
 		$selected_template = get_option( 'wps_tofw_activated_template' );
 		$wps_tofw_google_map_setting = get_option( 'wps_tofw_trackorder_with_google_map', false );
@@ -666,4 +661,52 @@ class Track_Orders_For_Woocommerce_Common {
 			}
 			return $order_details;
 		}
+
+
+		/**
+		 * Function for ajax callback for guest user export
+		 *
+		 * @return array
+		 */
+		public function wps_tofw_export_my_orders_guest_user_callback() {
+
+			$email = isset( $_POST['email'] ) ? $_POST['email'] : '';
+			$_orders = array();
+			if( ! empty( $email ) ) {
+				$_orders_temp = get_posts(
+					array(
+
+						'post_status' => array_keys(wc_get_order_statuses()),
+						'post_type'   => 'shop_order',
+						'numberposts' => -1,
+						'fields' => 'ids',
+					)
+				);
+				
+				if( ! empty( $_orders_temp ) && is_array( $_orders_temp ) ) { 
+					foreach($_orders_temp as $key => $id ) {
+						$_order = wc_get_order( $id );
+						if( $_order->get_billing_email() == $email ) {
+							$_orders[] = $id;
+						}
+					}
+					$order_details = $this->wps_tofw_get_csv_order_details( $_orders );
+					$main_arr = array(
+						'status' => 'success',
+						'file_name' => 'wps_order_details',
+						'order_data' => $order_details,
+					);
+				}
+				
+			} else {
+				$main_arr = array(
+					'status' => 'failed',
+				);
+			}
+
+			echo wp_json_encode( $main_arr );
+			wp_die();
+
+		}
+
 }

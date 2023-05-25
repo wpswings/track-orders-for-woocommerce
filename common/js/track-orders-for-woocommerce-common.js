@@ -66,18 +66,18 @@
 	
 		} );
 	
-		jQuery(document).on( 'click', '.wps_wot_guest_user_export_button', function(e){
+		jQuery(document).on( 'click', '.wps_tofw_guest_user_export_button', function(e){
 			e.preventDefault();
 			var email = jQuery(this).parent().find( '.wps_wot_export_email' ).val();
 			
 			jQuery.ajax({
-				url:ajax_url,
+				url:tofw_common_param.ajaxurl,
 				type:"POST",
 				datatType: 'JSON',
 				data: {
-					action : 'wps_wot_export_my_orders_guest_user',
+					action : 'wps_tofw_export_my_orders_guest_user',
 					email  : email,
-					nonce : global_new_tyo.mwb_tyo_nonce,
+					// nonce : global_new_tyo.mwb_tyo_nonce,
 				},success:function(response){
 					var result = JSON.parse(response);
 					if( 'success' == result.status ) {

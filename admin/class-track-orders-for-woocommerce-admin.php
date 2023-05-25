@@ -165,13 +165,25 @@ class Track_Orders_For_Woocommerce_Admin {
 					'address_validation_success' => __( 'Address Successfully Added', 'track-orders-for-woocommerce' ),
 					'selec_address_placeholder' => __( 'Select Your Hubpoint Addresses', 'track-orders-for-woocommerce' ),
 					'site_url' => site_url(),
+					
 				)
 			);
 			wp_enqueue_script( $this->plugin_name . 'admin-js' );
 			
 		}
 		wp_enqueue_script( 'jquery-ui-timepicker-js', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/js/jquery.ui.timepicker.js', array(), time(), false );
-		wp_enqueue_script( 'wps-admin-js', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/js/wps-admin.js', array(), time(), false );
+		wp_register_script( 'wps-admin-js', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/js/wps-admin.js', array(), time(), false );
+		wp_localize_script(
+			'wps-admin-js',
+			'wps_admin_param',
+			array(
+				'ajaxurl' => admin_url( 'admin-ajax.php' ),
+				'is_enable_status_icon'  => get_option( 'wps_tofw_enable_use_of_icon' ),
+				'site_url' => site_url(),
+				'custom_order_status_url'  => get_option( 'wps_tofw_new_custom_order_image' ),
+			),
+		);
+		wp_enqueue_script( 'wps-admin-js' );
 	}
 
 	/**
