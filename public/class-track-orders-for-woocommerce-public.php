@@ -291,5 +291,4 @@ class Track_Orders_For_Woocommerce_Public {
 		}
 	}
 
-
 }
