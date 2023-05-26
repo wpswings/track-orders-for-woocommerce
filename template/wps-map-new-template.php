@@ -4,7 +4,6 @@
  *
  * @version  1.0.0
  * @package  Woocommece_Order_Tracker/template
- *  
  */
 
 $allowed = true;
@@ -70,9 +69,10 @@ if ( $allowed ) {
 					$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
 					$myaccount_page_url = get_permalink( $page_id );
 					$reason = __( 'This order #', 'track-orders-for-woocommerce' ) . $order_id . __( 'is not associated to your account.', 'track-orders-for-woocommerce' ) . "<a href='$myaccount_page_url'>" . __( 'Click Here ', 'track-orders-for-woocommerce' ) . '</a>';
-					
+
 					/**
 					 * Add reason.
+					 *
 					 * @since 1.0.0
 					 */
 					$reason = apply_filters( 'wps_tofw_track_choose_order', $reason );
@@ -82,7 +82,7 @@ if ( $allowed ) {
 				$myaccount_page_url = get_permalink( $myaccount_page );
 				$allowed = false;
 				$reason = __( 'This order #', 'track-orders-for-woocommerce' ) . $order_id . __( ' is not associated to your account.', 'track-orders-for-woocommerce' ) . "<a href='$myaccount_page_url'>" . __( 'Click Here ', 'track-orders-for-woocommerce' ) . '</a>';
-				
+
 				/**
 				 *  Add reason.
 				 *
@@ -241,7 +241,7 @@ if ( $allowed ) {
 							 * @since 1.0.0
 							 */
 							$product = apply_filters( 'woocommerce_order_item_product', $ordervalue->get_product(), $ordervalue );
-							
+
 							/**
 							 * Get permalink.
 							 *
@@ -306,7 +306,7 @@ if ( $allowed ) {
 							 * @since 1.0.0
 							 */
 							$product = apply_filters( 'woocommerce_order_item_product', $ordervalue->get_product(), $ordervalue );
-							
+
 							/**
 							 * Add Products.
 							 *
@@ -399,18 +399,18 @@ if ( $allowed ) {
 		<input type="hidden" id="billing_hidden" value="<?php echo esc_attr( $wps_tofw_billing_add ); ?>">
 		<?php
 	} else {
-		if( ! empty( $address ) ) {
-			
+		if ( ! empty( $address ) ) {
+
 
 			$geocode = file_get_contents( 'https://maps.google.com/maps/api/geocode/json?address=' . urlencode( $address ) . '&key=' . $wps_tofw_google_api_key );
-			
+
 			$output = json_decode( $geocode );
-	
-	
+
+
 			if ( isset( $output->results[0] ) && ! empty( $output->results[0] ) ) {
 				$lat = $output->results[0]->geometry->location->lat;
 				$long = $output->results[0]->geometry->location->lng;
-	
+
 				?>
 				<input type="hidden" id="start_hidden" value="<?php echo esc_attr( $lat ); ?>">
 				<input type="hidden" id="end_hidden" value="<?php echo esc_attr( $long ); ?>">
@@ -419,7 +419,7 @@ if ( $allowed ) {
 				update_option( 'wps_tofw_address_get_correct', 'on' );
 				update_option( 'wps_tofw_address_latitude', $lat );
 				update_option( 'wps_tofw_address_longitude', $long );
-	
+
 			}
 		}
 	}

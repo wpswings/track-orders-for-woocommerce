@@ -201,23 +201,23 @@ class Track_Orders_For_Woocommerce {
 		// All admin actions and filters after License Validation goes here.
 		$this->loader->add_filter( 'wps_add_plugins_menus_array', $tofw_plugin_admin, 'tofw_admin_submenu_page', 15 );
 		$this->loader->add_filter( 'tofw_track_order_array', $tofw_plugin_admin, 'tofw_track_order_settings_page', 10 );
-		$this->loader->add_filter( 'tofw_general_settings_array', $tofw_plugin_admin, 'tofw_admin_general_settings_page', 10 ); 
+		$this->loader->add_filter( 'tofw_general_settings_array', $tofw_plugin_admin, 'tofw_admin_general_settings_page', 10 );
 		$this->loader->add_filter( 'tofw_custom_order_status_array', $tofw_plugin_admin, 'tofw_custom_order_status_setting_page', 10 );
 		$this->loader->add_action( 'tofw_track_order_gmap_settings_array', $tofw_plugin_admin, 'tofw_track_order_gmap_settings_callback' );
-		$this->loader->add_action('tofw_shipping_services_settings_array',  $tofw_plugin_admin, 'tofw_shipping_services_settings_callback' );
+		$this->loader->add_action( 'tofw_shipping_services_settings_array', $tofw_plugin_admin, 'tofw_shipping_services_settings_callback' );
 
 		// Saving tab settings.
 		$this->loader->add_action( 'wps_tofw_settings_saved_notice', $tofw_plugin_admin, 'tofw_admin_save_tab_settings' );
-		
+
 		// Developer's Hook Listing.
 		$this->loader->add_action( 'tofw_developer_admin_hooks_array', $tofw_plugin_admin, 'wps_developer_admin_hooks_listing' );
 		$this->loader->add_action( 'tofw_developer_public_hooks_array', $tofw_plugin_admin, 'wps_developer_public_hooks_listing' );
-		
+
 		$this->loader->add_action( 'wp_ajax_wps_tofw_create_custom_order_status', $tofw_plugin_admin, 'wps_tofw_create_custom_order_status_callback' );
-		$this->loader->add_action( 'wp_ajax_wps_tofw_delete_custom_order_status', $tofw_plugin_admin,'wps_tofw_delete_custom_order_status_callback' );
-		
+		$this->loader->add_action( 'wp_ajax_wps_tofw_delete_custom_order_status', $tofw_plugin_admin, 'wps_tofw_delete_custom_order_status_callback' );
+
 		$this->loader->add_action( 'wp_ajax_wps_selected_template', $tofw_plugin_admin, 'wps_selected_template_callback' );
-		
+
 		$this->loader->add_action( 'wp_ajax_wps_tofw_insert_address_for_tracking', $tofw_plugin_admin, 'wps_tofw_insert_address_for_tracking' );
 		$this->loader->add_action( 'admin_menu', $tofw_plugin_admin, 'wps_tofw_tracking_order_meta_box' );
 
@@ -225,9 +225,7 @@ class Track_Orders_For_Woocommerce {
 		$this->loader->add_action( 'save_post', $tofw_plugin_admin, 'wps_tofw_save_shipping_services_meta' );
 		$this->loader->add_action( 'save_post', $tofw_plugin_admin, 'wps_tofw_save_custom_shipping_cities_meta' );
 		$this->loader->add_action( 'init', $tofw_plugin_admin, 'wps_tofw_register_custom_order_status' );
-		$this->loader->add_action('wc_order_statuses', $tofw_plugin_admin, 'wps_tofw_add_custom_order_status', 10, 1);
-		
-
+		$this->loader->add_action( 'wc_order_statuses', $tofw_plugin_admin, 'wps_tofw_add_custom_order_status', 10, 1 );
 
 	}
 
@@ -252,14 +250,14 @@ class Track_Orders_For_Woocommerce {
 			$this->loader->add_action( 'wpswings_tracker_send_event', $tofw_plugin_common, 'tofw_wpswings_tracker_send_event' );
 		}
 		// license validation.
-		// $this->loader->add_action( 'wp_ajax_wps_tofw_validate_license_key', $tofw_plugin_common, 'wps_tofw_validate_license_key' );
+		
 
 		$this->loader->add_filter( 'template_include', $tofw_plugin_common, 'wps_tofw_include_track_order_page', 10, 1 );
-		$this->loader->add_action('woocommerce_order_status_changed', $tofw_plugin_common, 'wps_tofw_track_order_status', 10, 3 );
+		$this->loader->add_action( 'woocommerce_order_status_changed', $tofw_plugin_common, 'wps_tofw_track_order_status', 10, 3 );
 
-		$this->loader->add_action('wp_ajax_wps_wot_export_my_orders', $tofw_plugin_common, 'wps_tofw_export_my_orders_callback');
-		$this->loader->add_action('wp_ajax_nopriv_wps_tofw_export_my_orders_guest_user', $tofw_plugin_common, 'wps_tofw_export_my_orders_guest_user_callback');
-		
+		$this->loader->add_action( 'wp_ajax_wps_wot_export_my_orders', $tofw_plugin_common, 'wps_tofw_export_my_orders_callback' );
+		$this->loader->add_action( 'wp_ajax_nopriv_wps_tofw_export_my_orders_guest_user', $tofw_plugin_common, 'wps_tofw_export_my_orders_guest_user_callback' );
+
 	}
 
 	/**
@@ -277,13 +275,13 @@ class Track_Orders_For_Woocommerce {
 		$this->loader->add_action( 'wp_enqueue_scripts', $tofw_plugin_public, 'tofw_public_enqueue_scripts' );
 
 		$this->loader->add_action( 'woocommerce_order_details_after_order_table', $tofw_plugin_public, 'wps_tofw_track_order_button' );
-		$this->loader->add_action('woocommerce_order_details_before_order_table_items', $tofw_plugin_public, 'wps_tofw_track_order_info', 10, 1 );
-		$this->loader->add_action('woocommerce_my_account_my_orders_actions', $tofw_plugin_public, 'wps_tofw_add_track_order_button_on_orderpage', 10, 2 );
-		
+		$this->loader->add_action( 'woocommerce_order_details_before_order_table_items', $tofw_plugin_public, 'wps_tofw_track_order_info', 10, 1 );
+		$this->loader->add_action( 'woocommerce_my_account_my_orders_actions', $tofw_plugin_public, 'wps_tofw_add_track_order_button_on_orderpage', 10, 2 );
+
 		$this->loader->add_action( 'woocommerce_before_account_orders', $tofw_plugin_public, 'wps_wot_add_export_button_before_order_table', 10, 1 );
-		$this->loader->add_action('template_include', $tofw_plugin_public, 'wps_tofw_include_track_order_page', 10, 1);
-		$this->loader->add_action('template_include', $tofw_plugin_public, 'wps_tofw_include_guest_track_order_page', 10, 1 );
-		$this->loader->add_action('template_include', $tofw_plugin_public, 'wps_ordertracking_page', 10, 1 );
+		$this->loader->add_action( 'template_include', $tofw_plugin_public, 'wps_tofw_include_track_order_page', 10, 1 );
+		$this->loader->add_action( 'template_include', $tofw_plugin_public, 'wps_tofw_include_guest_track_order_page', 10, 1 );
+		$this->loader->add_action( 'template_include', $tofw_plugin_public, 'wps_ordertracking_page', 10, 1 );
 
 	}
 
@@ -371,7 +369,7 @@ class Track_Orders_For_Woocommerce {
 	 */
 	public function wps_std_plug_default_tabs() {
 		$tofw_default_tabs     = array();
-		
+
 		$tofw_default_tabs['track-orders-for-woocommerce-general']       = array(
 			'title'       => esc_html__( 'General Setting', 'track-orders-for-woocommerce' ),
 			'name'        => 'track-orders-for-woocommerce-general',
@@ -412,8 +410,6 @@ class Track_Orders_For_Woocommerce {
 			'name'        => 'track-orders-for-woocommerce-developer',
 			'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-developer.php',
 		);
-	
-	
 
 		$tofw_default_tabs =
 		// desc - filter for trial.
@@ -812,13 +808,15 @@ class Track_Orders_For_Woocommerce {
 										<div class="mdc-switch__track"></div>
 										<div class="mdc-switch__thumb-underlay">
 											<div class="mdc-switch__thumb"></div>
-											<input name="<?php echo ( isset( $tofw_component['name'] ) ? esc_html( $tofw_component['name'] ) : esc_html( $tofw_component['id'] ) ); ?>" type="checkbox" id="<?php echo esc_html( $tofw_component['id'] ); ?>" value="on" class="mdc-switch__native-control <?php echo ( isset( $tofw_component['class'] ) ? esc_attr( $tofw_component['class'] ) : '' ); ?>" role="switch" aria-checked="<?php
-							if ( 'on' == $tofw_component['value'] ) {
-								echo 'true';
-							} else {
-								echo 'false';
-							}
-							?>"
+											<input name="<?php echo ( isset( $tofw_component['name'] ) ? esc_html( $tofw_component['name'] ) : esc_html( $tofw_component['id'] ) ); ?>" type="checkbox" id="<?php echo esc_html( $tofw_component['id'] ); ?>" value="on" class="mdc-switch__native-control <?php echo ( isset( $tofw_component['class'] ) ? esc_attr( $tofw_component['class'] ) : '' ); ?>" role="switch" aria-checked="
+																	<?php
+																	if ( 'on' == $tofw_component['value'] ) {
+																		echo 'true';
+																	} else {
+																		echo 'false';
+																	}
+																	?>
+							"
 											<?php checked( $tofw_component['value'], 'on' ); ?>
 											>
 										</div>

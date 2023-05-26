@@ -4,7 +4,6 @@
  *
  * @version  1.0.0
  * @package  Woocommece_Order_Tracker/Include
- *  
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -16,8 +15,6 @@ if ( ! class_exists( 'Track_Orders_For_Woocommerce_With_FedEx' ) ) {
 	 * This is class for tracking order With FedEx Services .
 	 *
 	 * @name    wps_Track_Your_Order_With_FedEx
-	 *  
-	 * 
 	 */
 	class Track_Orders_For_Woocommerce_With_FedEx {
 

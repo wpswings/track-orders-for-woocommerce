@@ -111,7 +111,6 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 		self::$wps_msp_store_url         = home_url();
 		self::$wps_msp_plugin_name       = 'track-orders-for-woocommerce';
 		self::$wps_msp_plugin_name_label = 'Track Orders For Woocommerce';
-		
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'wps_msp_onboarding_enqueue_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'wps_msp_onboarding_enqueue_scripts' ) );
@@ -232,7 +231,7 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 	 */
 	public function wps_msp_add_onboarding_popup_screen() {
 		if ( $this->wps_msp_valid_page_screen_check() && $this->wps_msp_show_onboarding_popup_check() ) {
-			
+
 			require_once TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'onboarding/templates/track-orders-for-woocommerce-onboarding-template.php';
 		}
 	}
@@ -779,7 +778,7 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 	public function wps_msp_valid_page_screen_check() {
 		$wps_msp_screen  = get_current_screen();
 		$wps_msp_is_flag = false;
-	
+
 		if ( isset( $wps_msp_screen->id ) && 'wpswings_page_track_orders_for_woocommerce_menu' == $wps_msp_screen->id ) {
 			$wps_msp_is_flag = true;
 		}
@@ -795,7 +794,6 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 	public function wps_msp_show_onboarding_popup_check() {
 
 		$wps_msp_is_already_sent = get_option( 'wps_msp_onboarding_data_sent', false );
-		
 
 		// Already submitted the data.
 		if ( ! empty( $wps_msp_is_already_sent ) && 'sent' == $wps_msp_is_already_sent ) {

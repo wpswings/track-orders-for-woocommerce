@@ -4,7 +4,6 @@
  *
  * @version  1.0.0
  * @package  Woocommece_Order_Tracker/template
- *  
  */
 
 /**
@@ -45,7 +44,7 @@ if ( true == $allowed ) {
 		}
 		$allowed = false;
 		$reason = __( 'Please choose an Order.', 'track-orders-for-woocommerce' ) . '<a href="' . $myaccount_page_url . '">' . __( 'Click Here', 'track-orders-for-woocommerce' ) . '</a>';
-		
+
 		/**
 		 * Add reason.
 		 *
@@ -64,7 +63,7 @@ if ( true == $allowed ) {
 				$myaccount_page_url = get_permalink( $myaccount_page );
 				$allowed = false;
 				$reason = __( 'This order #', 'track-orders-for-woocommerce' ) . $order_id . __( 'is not associated to your account.', 'track-orders-for-woocommerce' ) . "<a href='$myaccount_page_url'>" . __( 'Click Here ', 'track-orders-for-woocommerce' ) . '</a>';
-				
+
 				/**
 				 * Add reason
 				 *
@@ -74,8 +73,8 @@ if ( true == $allowed ) {
 
 			}
 		} else // Check order associated to customer account or not for guest user.
-		{	
-			if( 'on' != get_option( 'wps_tofw_enable_track_order_using_order_id', 'no' ) ) { 
+		{
+			if ( 'on' != get_option( 'wps_tofw_enable_track_order_using_order_id', 'no' ) ) {
 
 				if ( isset( $_SESSION['wps_tofw_email'] ) ) {
 					$tofw_user_email = $_SESSION['wps_tofw_email'];
@@ -86,7 +85,7 @@ if ( true == $allowed ) {
 						$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
 						$myaccount_page_url = get_permalink( $page_id );
 						$reason = __( 'This order #', 'track-orders-for-woocommerce' ) . $order_id . __( 'is not associated to your account.', 'track-orders-for-woocommerce' ) . "<a href='$myaccount_page_url'>" . __( 'Click Here ', 'track-orders-for-woocommerce' ) . '</a>';
-						
+
 						/**
 						 * Add reason.
 						 *
@@ -190,7 +189,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 				}
 				$wps_date_on_order_change = $tofw_order->get_date_modified();
 				$wps_modified_date = date_i18n( 'd F, Y H:i', strtotime( $wps_date_on_order_change ) );
-				if( ! empty( $wps_status_change_time ) ) {
+				if ( ! empty( $wps_status_change_time ) ) {
 					$wps_status_change_time = get_post_meta( $order_id, 'wps_track_order_onchange_time', true );
 
 				}
@@ -238,7 +237,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 								echo esc_html( date_i18n( 'd F, Y H:i', strtotime( $tofw_order->post->post_date ) ) );
 							} else {
 								$wps_date = $tofw_order->get_date_created();
-								echo esc_html( $wps_date->date( 'd F, Y H:i' )  );}
+								echo esc_html( $wps_date->date( 'd F, Y H:i' ) );}
 							?>
 							</span>
 						</li>
@@ -280,7 +279,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 									 * @since 1.0.0
 									 */
 									$product = apply_filters( 'woocommerce_order_item_product', $item->get_product(), $item );
-									
+
 									/**
 									 * Add product.
 									 *
@@ -289,7 +288,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 									$thumbnail     = $product ? apply_filters( 'woocommerce_admin_order_item_thumbnail', $product->get_image( 'thumbnail', array( 'title' => '' ), false ), $item_id, $item ) : '';
 									$productdata = new WC_Product( $product->id );
 									$is_visible        = $product && $product->is_visible();
-									
+
 									/**
 									 * Add product.
 									 *
@@ -339,7 +338,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 									 * @since 1.0.0
 									 */
 									$product = apply_filters( 'woocommerce_order_item_product', $item->get_product(), $item );
-									
+
 									/**
 									 * Add product.
 									 *
@@ -348,7 +347,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 									$thumbnail     = $product ? apply_filters( 'woocommerce_admin_order_item_thumbnail', $product->get_image( 'thumbnail', array( 'title' => '' ), false ), $item_id, $item ) : '';
 									$productdata = wc_get_product( $product->get_id() );
 									$is_visible        = $product && $product->is_visible();
-									
+
 									/**
 									 * Add product.
 									 *
@@ -794,18 +793,18 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 								</table>
 							</section>
 							
-							<?php if( ! empty( $wps_tofw_enhanced_customer_note ) ) { ?>
+							<?php if ( ! empty( $wps_tofw_enhanced_customer_note ) ) { ?>
 								<div class="wps-tofw-order-tracking-section ">
 									<section class="section wps_tofw_product-details-section">
 										<table class=" wps_tofw_shop_table order_details wps-product-details-table wps-tofw-track-order-table ">
 											<thead>
 												<tr>
-													<th><?php esc_html_e( 'Customer Note :-', 'track-orders-for-woocommerce' );?></th>	
+													<th><?php esc_html_e( 'Customer Note :-', 'track-orders-for-woocommerce' ); ?></th>	
 												</tr>
 											</thead>
 											<tbody>
 												<tr>
-													<td><?php echo esc_html( $wps_tofw_enhanced_customer_note );?></td>
+													<td><?php echo esc_html( $wps_tofw_enhanced_customer_note ); ?></td>
 												</tr>
 											</tbody>
 														
@@ -854,7 +853,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 						do_action( 'woocommerce_after_main_content' );
 						get_footer( 'shop' );
 					} elseif ( 'on' == $wps_tofw_enable_track_order_popup && $current_user_id > 0 && 0 != $order_id && '' != $order_id && null != $order_id ) {
-						
+
 						/**
 						 * Add content.
 						 *

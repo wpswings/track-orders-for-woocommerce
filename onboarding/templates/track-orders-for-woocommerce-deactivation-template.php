@@ -18,9 +18,9 @@ if ( empty( $pagenow ) || 'plugins.php' != $pagenow ) {
 $wps_plugin_name                = ! empty( explode( '/', plugin_basename( __FILE__ ) ) ) ? explode( '/', plugin_basename( __FILE__ ) )[0] : '';
 $wps_plugin_deactivation_id     = $wps_plugin_name . '-no_thanks_deactive';
 $wps_plugin_onboarding_popup_id = $wps_plugin_name . '-onboarding_popup';
-$msp_onboarding_form_deactivate = 
-//desc - filter for trial.
-apply_filters('wps_msp_deactivation_form_fields', array());
+$msp_onboarding_form_deactivate =
+// desc - filter for trial.
+apply_filters( 'wps_msp_deactivation_form_fields', array() );
 
 ?>
 <?php if ( ! empty( $msp_onboarding_form_deactivate ) ) : ?>
@@ -39,7 +39,7 @@ apply_filters('wps_msp_deactivation_form_fields', array());
 					<h3 class="wps-msp-on-boarding-heading mdc-dialog__title"></h3>
 					<p class="wps-msp-on-boarding-desc"><?php esc_html_e( 'May we have a little info about why you are deactivating?', 'track-orders-for-woocommerce' ); ?></p>
 					<form action="#" method="post" class="wps-msp-on-boarding-form">
-						<?php 
+						<?php
 						$tofw_onboarding_deactive_html = $wps_tofw_obj->wps_std_plug_generate_html( $msp_onboarding_form_deactivate );
 						echo esc_html( $tofw_onboarding_deactive_html );
 						?>

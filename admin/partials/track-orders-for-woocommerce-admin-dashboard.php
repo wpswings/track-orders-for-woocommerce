@@ -64,7 +64,7 @@ $tofw_default_tabs = $wps_tofw_obj->wps_std_plug_default_tabs();
 			}
 				// look for the path based on the tab id in the admin templates.
 				$tofw_default_tabs     = $wps_tofw_obj->wps_std_plug_default_tabs();
-				
+
 				$tofw_tab_content_path = $tofw_default_tabs[ $tofw_active_tab ]['file_path'];
 				$wps_tofw_obj->wps_std_plug_load_template( $tofw_tab_content_path );
 				// desc - This hook is used for trial.

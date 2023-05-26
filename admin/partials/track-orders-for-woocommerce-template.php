@@ -4,7 +4,6 @@
  *
  * @version  1.0.0
  * @package  Woocommece_Order_Tracker/admin
- *  
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

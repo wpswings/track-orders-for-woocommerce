@@ -11,9 +11,9 @@
  * @subpackage WPSwings_Onboarding/admin/onboarding
  */
 global $wps_tofw_obj;
-$msp_onboarding_form_fields = 
-//desc - filter for trial.
-apply_filters('wps_msp_on_boarding_form_fields', array());
+$msp_onboarding_form_fields =
+// desc - filter for trial.
+apply_filters( 'wps_msp_on_boarding_form_fields', array() );
 ?>
 
 <?php if ( ! empty( $msp_onboarding_form_fields ) ) : ?>
@@ -30,7 +30,7 @@ apply_filters('wps_msp_on_boarding_form_fields', array());
 					<p class="wps-msp-on-boarding-desc"><?php esc_html_e( 'We love making new friends! Subscribe below and we promise to keep you up-to-date with our latest new plugins, updates, awesome deals and a few special offers.', 'track-orders-for-woocommerce' ); ?></p>
 
 					<form action="#" method="post" class="wps-msp-on-boarding-form">
-						<?php 
+						<?php
 						$tofw_onboarding_html = $wps_tofw_obj->wps_std_plug_generate_html( $msp_onboarding_form_fields );
 						echo esc_html( $tofw_onboarding_html );
 						?>

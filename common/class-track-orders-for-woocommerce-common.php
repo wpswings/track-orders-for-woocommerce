@@ -65,13 +65,14 @@ class Track_Orders_For_Woocommerce_Common {
 	 */
 	public function tofw_common_enqueue_scripts() {
 		wp_register_script( $this->plugin_name . 'common', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'common/js/track-orders-for-woocommerce-common.js', array( 'jquery' ), $this->version, false );
-		wp_localize_script( $this->plugin_name . 'common', 
-		'tofw_common_param', 
-		array( 
-			'ajaxurl' => admin_url( 'admin-ajax.php' ),
-			'nonce'  => wp_create_nonce( 'tofw_common_param_nonce' )
-		 ) 
-	);
+		wp_localize_script(
+			$this->plugin_name . 'common',
+			'tofw_common_param',
+			array(
+				'ajaxurl' => admin_url( 'admin-ajax.php' ),
+				'nonce'  => wp_create_nonce( 'tofw_common_param_nonce' ),
+			)
+		);
 		wp_enqueue_script( $this->plugin_name . 'common' );
 	}
 
@@ -124,10 +125,10 @@ class Track_Orders_For_Woocommerce_Common {
 
 	/**
 	 * Function is used for the sending the track data.
-	 * 
+	 *
 	 * @name tofw_wpswings_tracker_send_event.
 	 * @since 1.0.0
-	*/
+	 */
 	public function tofw_wpswings_tracker_send_event( $override = false ) {
 		require_once WC()->plugin_path() . '/includes/class-wc-tracker.php';
 
@@ -213,7 +214,6 @@ class Track_Orders_For_Woocommerce_Common {
 		}
 		update_option( 'wps_track_orders_for_woocommerce_multistep_done', 'yes' );
 
-		
 		wp_send_json( 'yes' );
 	}
 
@@ -223,7 +223,7 @@ class Track_Orders_For_Woocommerce_Common {
 	 * @param [type] $template
 	 * @return void
 	 */
-	public function wps_tofw_include_track_order_page( $template ){
+	public function wps_tofw_include_track_order_page( $template ) {
 		$selected_template = get_option( 'wps_tofw_activated_template' );
 		$wps_tofw_google_map_setting = get_option( 'wps_tofw_trackorder_with_google_map', false );
 		$wps_tofw_enable_track_order_feature = get_option( 'tofw_enable_track_order', 'no' );
@@ -259,30 +259,28 @@ class Track_Orders_For_Woocommerce_Common {
 	/**
 	 * Function to set timing if order status.
 	 *
-	 * @param int $order_id is id of order.
+	 * @param int    $order_id is id of order.
 	 * @param string $old_status is old status.
 	 * @param string $new_status is  current status.
 	 * @return void
 	 */
-	public function wps_tofw_track_order_status( $order_id, $old_status, $new_status ){
+	public function wps_tofw_track_order_status( $order_id, $old_status, $new_status ) {
 		$old_status = 'wc-' . $old_status;
 		$new_status = 'wc-' . $new_status;
 		$wps_tofw_email_notifier = get_option( 'wps_tofw_email_notifier', 'no' );
 		$order = new WC_Order( $order_id );
 		if ( '3.0.0' > WC()->version ) {
 			$wps_date_on_order_change = $order->modified_date;
-		
+
 		} else {
 			$change_order_status = $order->get_data()['status'];
 
 			$date_on_order_change = $order->get_data();
-			
+
 			$wps_date_on_order_change = $date_on_order_change['date_modified']->format( 'd F, Y H:i' );
-			
-			
 
 		}
-		$wps_modified_date = $wps_date_on_order_change ;
+		$wps_modified_date = $wps_date_on_order_change;
 
 		$wps_status_change_time = array();
 		$wps_status_change_time_temp = array();
@@ -291,23 +289,23 @@ class Track_Orders_For_Woocommerce_Common {
 		$wps_status_change_time_template2 = get_post_meta( $order_id, 'wps_track_order_onchange_time_template', true );
 		$order_index = 'wc-' . $change_order_status;
 		if ( is_array( $wps_status_change_time_temp ) && ! empty( $wps_status_change_time_temp ) ) {
-			if ( is_array( $wps_status_change_time_temp )) {
+			if ( is_array( $wps_status_change_time_temp ) ) {
 
 				$wps_status_change_time[ $order_index ] = $wps_modified_date;
-				}
+			}
 		} else {
 			$wps_status_change_time = array();
-			if ( is_array( $wps_status_change_time )) {
+			if ( is_array( $wps_status_change_time ) ) {
 
 				$wps_status_change_time[ $order_index ] = $wps_modified_date;
-				}
+			}
 		}
 		if ( is_array( $wps_status_change_time_temp ) && ! empty( $wps_status_change_time_temp ) ) {
 
 			$wps_status_change_time_temp[ $order_index ] = $wps_modified_date;
 		} else {
 			$wps_status_change_time_temp = array();
-			if ( is_array( $wps_status_change_time_temp )) { 
+			if ( is_array( $wps_status_change_time_temp ) ) {
 
 				$wps_status_change_time_temp[ $order_index ] = $wps_modified_date;
 			}
@@ -502,7 +500,7 @@ class Track_Orders_For_Woocommerce_Common {
 				 * Woocommerce order items.
 				 *
 				 * @since 1.0.0
-				 */ 
+				 */
 				$product = apply_filters( 'woocommerce_order_item_product', $item->get_product(), $item );
 				$item_meta      = new WC_Order_Item_Meta( $item, $product );
 				$item_meta_html = $item_meta->display( true, true );
@@ -560,39 +558,39 @@ class Track_Orders_For_Woocommerce_Common {
 
 
 	/**
-		 * Function for ajax callback.
-		 *
-		 * @return array
-		 */
-		public function wps_tofw_export_my_orders_callback() {
-			$_orders = get_posts(
-				array(
+	 * Function for ajax callback.
+	 *
+	 * @return array
+	 */
+	public function wps_tofw_export_my_orders_callback() {
+		$_orders = get_posts(
+			array(
 
-					'post_status' => array_keys(wc_get_order_statuses()),
-					'post_type'   => 'shop_order',
-					'numberposts' => -1,
-					'meta_key' => '_customer_user',
-					'meta_value' => get_current_user_id(),
-					'fields' => 'ids',
-				)
+				'post_status' => array_keys( wc_get_order_statuses() ),
+				'post_type'   => 'shop_order',
+				'numberposts' => -1,
+				'meta_key' => '_customer_user',
+				'meta_value' => get_current_user_id(),
+				'fields' => 'ids',
+			)
+		);
+
+		if ( ! empty( $_orders ) ) {
+			$order_details = $this->wps_tofw_get_csv_order_details( $_orders );
+			$main_arr = array(
+				'status' => 'success',
+				'file_name' => 'wps_order_details',
+				'order_data' => $order_details,
 			);
+		} else {
 
-			if( ! empty( $_orders ) ) {
-				$order_details = $this->wps_tofw_get_csv_order_details( $_orders );
-				$main_arr = array(
-					'status' => 'success',
-					'file_name' => 'wps_order_details',
-					'order_data' => $order_details,
-				);
-			} else {
-
-				$main_arr = array(
-					'status' => 'failed',
-				);
-			}
-			echo wp_json_encode( $main_arr );
-			wp_die();
+			$main_arr = array(
+				'status' => 'failed',
+			);
 		}
+		echo wp_json_encode( $main_arr );
+		wp_die();
+	}
 
 
 		/**
@@ -601,66 +599,66 @@ class Track_Orders_For_Woocommerce_Common {
 		 * @param array $_orders contains array of order ids.
 		 * @return array
 		 */
-		public function wps_tofw_get_csv_order_details( $_orders ){
-			$order_details = array();
-			$order_details[] = array(
-				__( 'Order Id', 'woocommerce-order-tracker' ),
-				__( 'Order Status', 'woocommerce-order-tracker' ),
-				__( 'Order Total', 'woocommerce-order-tracker' ),
-				__( 'Order Items', 'woocommerce-order-tracker' ),
-				__( 'Payment Method', 'woocommerce-order-tracker' ),
-				__( 'Billing Name', 'woocommerce-order-tracker' ),
-				__( 'Billing Email', 'woocommerce-order-tracker' ),
-				__( 'Billing Address', 'woocommerce-order-tracker' ),
-				__( 'Billing Contact', 'woocommerce-order-tracker' ),
-				__( 'Order date', 'woocommerce-order-tracker' ),
-				
-			);
+	public function wps_tofw_get_csv_order_details( $_orders ) {
+		$order_details = array();
+		$order_details[] = array(
+			__( 'Order Id', 'woocommerce-order-tracker' ),
+			__( 'Order Status', 'woocommerce-order-tracker' ),
+			__( 'Order Total', 'woocommerce-order-tracker' ),
+			__( 'Order Items', 'woocommerce-order-tracker' ),
+			__( 'Payment Method', 'woocommerce-order-tracker' ),
+			__( 'Billing Name', 'woocommerce-order-tracker' ),
+			__( 'Billing Email', 'woocommerce-order-tracker' ),
+			__( 'Billing Address', 'woocommerce-order-tracker' ),
+			__( 'Billing Contact', 'woocommerce-order-tracker' ),
+			__( 'Order date', 'woocommerce-order-tracker' ),
 
-			foreach( $_orders as $index => $_order_id ) {
-				$order = wc_get_order( $_order_id );
-				$order_total = $order->get_total();
-				$payment_method = $order->get_payment_method_title();
-				$billing_name = $order->get_billing_first_name(); 
-				$billing_name .= ' ';
-				$billing_name .= $order->get_billing_last_name();
-				$billing_email  = $order->get_billing_email();
-				$billing_address = $order->get_billing_company();
-				$billing_address .=' ';
-				$billing_address .= $order->get_billing_address_1();
-				$billing_address .=' ';
-				$billing_address .= $order->get_billing_address_2();
-				$billing_address .=' ';
-				$billing_address .= $order->get_billing_city();
-				$billing_address .=' ';
-				$billing_address .= $order->get_billing_state();
-				$billing_address .=' ';
-				$billing_address .= $order->get_billing_country();
-				$billing_address .=' ';
-				$billing_address .= $order->get_billing_postcode();
-				
-				$billing_contact = $order->get_billing_phone();
-				$order_date = $order->get_date_created()->date('F d Y H:i ');
-				$order_items = '';
-				$_order_status = $order->get_status();
-				foreach ( $order->get_items() as $item_id => $item ) { 
-					$order_items .= $item->get_name() . ' ';
-				}
-				$order_details[] = array(
-					$_order_id,
-					$_order_status,
-					$order_total,
-					$order_items,
-					$payment_method,
-					$billing_name,
-					$billing_email,
-					$billing_address,
-					$billing_contact,
-					$order_date,
-				);
+		);
+
+		foreach ( $_orders as $index => $_order_id ) {
+			$order = wc_get_order( $_order_id );
+			$order_total = $order->get_total();
+			$payment_method = $order->get_payment_method_title();
+			$billing_name = $order->get_billing_first_name();
+			$billing_name .= ' ';
+			$billing_name .= $order->get_billing_last_name();
+			$billing_email  = $order->get_billing_email();
+			$billing_address = $order->get_billing_company();
+			$billing_address .= ' ';
+			$billing_address .= $order->get_billing_address_1();
+			$billing_address .= ' ';
+			$billing_address .= $order->get_billing_address_2();
+			$billing_address .= ' ';
+			$billing_address .= $order->get_billing_city();
+			$billing_address .= ' ';
+			$billing_address .= $order->get_billing_state();
+			$billing_address .= ' ';
+			$billing_address .= $order->get_billing_country();
+			$billing_address .= ' ';
+			$billing_address .= $order->get_billing_postcode();
+
+			$billing_contact = $order->get_billing_phone();
+			$order_date = $order->get_date_created()->date( 'F d Y H:i ' );
+			$order_items = '';
+			$_order_status = $order->get_status();
+			foreach ( $order->get_items() as $item_id => $item ) {
+				$order_items .= $item->get_name() . ' ';
 			}
-			return $order_details;
+			$order_details[] = array(
+				$_order_id,
+				$_order_status,
+				$order_total,
+				$order_items,
+				$payment_method,
+				$billing_name,
+				$billing_email,
+				$billing_address,
+				$billing_contact,
+				$order_date,
+			);
 		}
+		return $order_details;
+	}
 
 
 		/**
@@ -668,45 +666,44 @@ class Track_Orders_For_Woocommerce_Common {
 		 *
 		 * @return array
 		 */
-		public function wps_tofw_export_my_orders_guest_user_callback() {
+	public function wps_tofw_export_my_orders_guest_user_callback() {
 
-			$email = isset( $_POST['email'] ) ? $_POST['email'] : '';
-			$_orders = array();
-			if( ! empty( $email ) ) {
-				$_orders_temp = get_posts(
-					array(
+		$email = isset( $_POST['email'] ) ? $_POST['email'] : '';
+		$_orders = array();
+		if ( ! empty( $email ) ) {
+			$_orders_temp = get_posts(
+				array(
 
-						'post_status' => array_keys(wc_get_order_statuses()),
-						'post_type'   => 'shop_order',
-						'numberposts' => -1,
-						'fields' => 'ids',
-					)
-				);
-				
-				if( ! empty( $_orders_temp ) && is_array( $_orders_temp ) ) { 
-					foreach($_orders_temp as $key => $id ) {
-						$_order = wc_get_order( $id );
-						if( $_order->get_billing_email() == $email ) {
-							$_orders[] = $id;
-						}
+					'post_status' => array_keys( wc_get_order_statuses() ),
+					'post_type'   => 'shop_order',
+					'numberposts' => -1,
+					'fields' => 'ids',
+				)
+			);
+
+			if ( ! empty( $_orders_temp ) && is_array( $_orders_temp ) ) {
+				foreach ( $_orders_temp as $key => $id ) {
+					$_order = wc_get_order( $id );
+					if ( $_order->get_billing_email() == $email ) {
+						$_orders[] = $id;
 					}
-					$order_details = $this->wps_tofw_get_csv_order_details( $_orders );
-					$main_arr = array(
-						'status' => 'success',
-						'file_name' => 'wps_order_details',
-						'order_data' => $order_details,
-					);
 				}
-				
-			} else {
+				$order_details = $this->wps_tofw_get_csv_order_details( $_orders );
 				$main_arr = array(
-					'status' => 'failed',
+					'status' => 'success',
+					'file_name' => 'wps_order_details',
+					'order_data' => $order_details,
 				);
 			}
-
-			echo wp_json_encode( $main_arr );
-			wp_die();
-
+		} else {
+			$main_arr = array(
+				'status' => 'failed',
+			);
 		}
+
+		echo wp_json_encode( $main_arr );
+		wp_die();
+
+	}
 
 }

@@ -4,7 +4,6 @@
  *
  * @version  1.0.0
  * @package  Woocommece_Order_Tracker/template
- *  
  */
 
 /**
@@ -45,7 +44,7 @@ if ( true == $allowed ) {
 		}
 		$allowed = false;
 		$reason = __( 'Please choose an Order.', 'track-orders-for-woocommerce' ) . '<a href="' . $myaccount_page_url . '">' . __( 'Click Here', 'track-orders-for-woocommerce' ) . '</a>';
-		
+
 		/**
 		 * Add reason.
 		 *
@@ -61,7 +60,7 @@ if ( true == $allowed ) {
 				$myaccount_page_url = get_permalink( $myaccount_page );
 				$allowed = false;
 				$reason = __( 'This order #', 'track-orders-for-woocommerce' ) . $order_id . __( 'is not associated to your account.', 'track-orders-for-woocommerce' ) . "<a href='$myaccount_page_url'>" . __( 'Click Here ', 'track-orders-for-woocommerce' ) . '</a>';
-				
+
 				/**
 				 * Add reason.
 				 *
@@ -70,8 +69,8 @@ if ( true == $allowed ) {
 				$reason = apply_filters( 'wps_tofw_track_choose_order', $reason );
 			}
 		} else // check order associated to customer account or not for guest user.
-		{	
-			if( 'on' != get_option( 'wps_tofw_enable_track_order_using_order_id', 'no' ) )  {
+		{
+			if ( 'on' != get_option( 'wps_tofw_enable_track_order_using_order_id', 'no' ) ) {
 
 				if ( isset( $_SESSION['wps_tofw_email'] ) ) {
 					$tofw_user_email = $_SESSION['wps_tofw_email'];
@@ -82,7 +81,7 @@ if ( true == $allowed ) {
 						$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
 						$myaccount_page_url = get_permalink( $page_id );
 						$reason = __( 'This order #', 'track-orders-for-woocommerce' ) . $order_id . __( 'is not associated to your account.', 'track-orders-for-woocommerce' ) . "<a href='$myaccount_page_url'>" . __( 'Click Here ', 'track-orders-for-woocommerce' ) . '</a>';
-						
+
 						/**
 						 * Add reason.
 						 *
@@ -91,12 +90,12 @@ if ( true == $allowed ) {
 						$reason = apply_filters( 'wps_tofw_track_choose_order', $reason );
 					}
 				} else {
-					
+
 					$myaccount_page = get_option( 'woocommerce_myaccount_page_id' );
 					$myaccount_page_url = get_permalink( $myaccount_page );
 					$allowed = false;
 					$reason = __( 'This order #', 'track-orders-for-woocommerce' ) . $order_id . __( ' is not associated to your account.', 'track-orders-for-woocommerce' ) . "<a href='$myaccount_page_url'>" . __( 'Click Here ', 'track-orders-for-woocommerce' ) . '</a>';
-					
+
 					/**
 					 * Add reason.
 					 *
@@ -104,7 +103,7 @@ if ( true == $allowed ) {
 					 */
 					$reason = apply_filters( 'wps_tofw_track_choose_order', $reason );
 				}
-			 }
+			}
 		}
 	}
 } else {
@@ -238,7 +237,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 					 * @since 1.0.0
 					 */
 					$product = apply_filters( 'woocommerce_order_item_product', $item->get_product(), $item );
-					
+
 					/**
 					 * Add product.
 					 *
@@ -247,7 +246,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 					$thumbnail     = $product ? apply_filters( 'woocommerce_admin_order_item_thumbnail', $product->get_image( 'thumbnail', array( 'title' => '' ), false ), $item_id, $item ) : '';
 					$productdata = new WC_Product( $product->id );
 					$is_visible        = $product && $product->is_visible();
-					
+
 					/**
 					 * Add product.
 					 *
@@ -348,7 +347,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 				}
 				?>
 				<?php
-				if( ! empty( $wps_track_order_status ) && is_array( $wps_track_order_status ) ){
+				if ( ! empty( $wps_track_order_status ) && is_array( $wps_track_order_status ) ) {
 
 					$length = count( $wps_track_order_status );
 					$current_last_status = $wps_track_order_status[ $length - 1 ];
@@ -548,8 +547,8 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 							if ( WC()->version < '3.0.0' ) {
 								echo esc_html( date_i18n( 'd F, Y H:i', strtotime( $tofw_order->post->post_date ) ) );
 							} else {
-								$wps_date = $tofw_order->get_date_created()->date('d F, Y H:i');
-								echo esc_html(  $wps_date ) ;}
+								$wps_date = $tofw_order->get_date_created()->date( 'd F, Y H:i' );
+								echo esc_html( $wps_date );}
 							?>
 							</li>
 							<li><?php esc_html_e( 'Your Order is Successfully Placed', 'track-orders-for-woocommerce' ); ?></li></ul>
@@ -566,7 +565,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 							$current_status = get_option( $order_status_key, __( 'Your Order status is ', 'track-orders-for-woocommerce' ) . $woo_statuses[ $order_status ] );
 							foreach ( $order_onchange_time as $changekey => $changevalue ) {
 								if ( $order_status == $changekey ) {
-									$onchange_approval_date = $changevalue ;
+									$onchange_approval_date = $changevalue;
 								}
 							}
 							?>
@@ -588,12 +587,12 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 										$current_status = $message;
 									}
 									if ( ! empty( $order_onchange_time ) && is_array( $order_onchange_time ) ) {
-										
+
 										foreach ( $order_onchange_time as $key1 => $value1 ) {
 
 											if ( $value == $key1 ) {
-												
-												$onchange_approval_date = $value1 ;
+
+												$onchange_approval_date = $value1;
 											}
 										}
 									}
@@ -605,7 +604,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 											if ( isset( $onchange_approval_date ) && '' != $onchange_approval_date ) {
 												echo esc_html( $onchange_approval_date );
 											} else {
-												echo esc_html( $tofw_order->get_date_created()->date('d F, Y H:i') ) ;
+												echo esc_html( $tofw_order->get_date_created()->date( 'd F, Y H:i' ) );
 												; }
 											?>
 											</li>
@@ -621,7 +620,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 									if ( ! empty( $order_onchange_time ) && is_array( $order_onchange_time ) ) {
 										foreach ( $order_onchange_time as $change_key1 => $change_value1 ) {
 											if ( $wps_track_order_status[ $key + 1 ] == $change_key1 ) {
-												$onchange_approval_date = $change_value1 ;
+												$onchange_approval_date = $change_value1;
 											}
 										}
 									}
@@ -662,7 +661,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 												$current_status = get_option( $order_status_key, __( 'Your Order status is ', 'track-orders-for-woocommerce' ) . $woo_statuses[ $order_status ] );
 												foreach ( $order_onchange_time as $changekey1 => $changevalue1 ) {
 													if ( $order_status == $changevalue1 ) {
-														$onchange_processing_date = $changevalue1 ;
+														$onchange_processing_date = $changevalue1;
 													}
 												}
 												?>
@@ -687,7 +686,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 															foreach ( $order_onchange_time as $key1 => $value1 ) {
 
 																if ( $value == $key1 ) {
-																	$onchange_processing_date = $value1 ;
+																	$onchange_processing_date = $value1;
 																}
 															}
 														}
@@ -707,7 +706,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 														if ( ! empty( $order_onchange_time ) && is_array( $order_onchange_time ) ) {
 															foreach ( $order_onchange_time as $key2 => $value2 ) {
 																if ( $wps_track_order_status[ $key + 1 ] == $key2 ) {
-																	$onchange_processing_date = $value2 ;
+																	$onchange_processing_date = $value2;
 																}
 															}
 														}
@@ -727,7 +726,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 											if ( ! empty( $order_onchange_time ) && is_array( $order_onchange_time ) ) {
 												foreach ( $order_onchange_time as $key_change1 => $value_change1 ) {
 													if ( $order_status == $key_change1 ) {
-														$onchange_processing_date = $value_change1 ;
+														$onchange_processing_date = $value_change1;
 													}
 												}
 											}
@@ -816,7 +815,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 																				foreach ( $order_onchange_time as $key1 => $value1 ) {
 
 																					if ( $value == $key1 ) {
-																						$onchange_shipping_date = $value1 ;
+																						$onchange_shipping_date = $value1;
 																					}
 																				}
 																			}
@@ -836,7 +835,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 																			if ( ! empty( $order_onchange_time ) && is_array( $order_onchange_time ) ) {
 																				foreach ( $order_onchange_time as $change_key => $change_value ) {
 																					if ( $wps_track_order_status[ $key + 1 ] == $change_key ) {
-																						$onchange_shipping_date =  $change_value ;
+																						$onchange_shipping_date = $change_value;
 																					}
 																				}
 																			}
@@ -856,7 +855,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 																if ( ! empty( $order_onchange_time ) && is_array( $order_onchange_time ) ) {
 																	foreach ( $order_onchange_time as $key_change => $value_change ) {
 																		if ( $order_status == $key_change ) {
-																			$onchange_shipping_date =  $value_change ;
+																			$onchange_shipping_date = $value_change;
 																		}
 																	}
 																}
@@ -931,19 +930,17 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 
 																		</div>
 																	</section>
-																	<?php if( ! empty( $wps_tofw_enhanced_customer_note ) ) { ?>
+																	<?php if ( ! empty( $wps_tofw_enhanced_customer_note ) ) { ?>
 																		<div class="wps-tofw-order-tracking-section ">
 																			<section class="wps_tofw_order_tracker_content">
 																				<div class=" wps-deliver-msg wps-tofw-wps-msg ">
-																					<h3><?php esc_html_e( 'Customer Note :-', 'track-orders-for-woocommerce' );?></h3>				
-																					<span><?php echo esc_html( $wps_tofw_enhanced_customer_note );?></span>
+																					<h3><?php esc_html_e( 'Customer Note :-', 'track-orders-for-woocommerce' ); ?></h3>				
+																					<span><?php echo esc_html( $wps_tofw_enhanced_customer_note ); ?></span>
 																				</div>
 																			</section>
 																		</div>
 																		<?php
 																	}
-																	
-																	
 	} else {
 		$return_request_not_send = __( 'Tracking Request can\'t be send. ', 'track-orders-for-woocommerce' );
 
@@ -966,7 +963,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 															 * @hooked woocommerce_output_content_wrapper_end - 10 (outputs closing divs for the content)
 															 */
 															if ( 'on' != $wps_tofw_enable_track_order_popup ) {
-																
+
 
 																/**
 																 * Add content.
@@ -976,7 +973,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 																do_action( 'woocommerce_after_main_content' );
 																get_footer( 'shop' );
 															} elseif ( 'on' == $wps_tofw_enable_track_order_popup && $current_user_id > 0 && 0 != $order_id && '' != $order_id && null != $order_id ) {
-																
+
 																/**
 																 * Add content.
 																 *
@@ -984,7 +981,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 																 */
 																do_action( 'wps_tofw_after_popup' );
 															} else {
-																
+
 																/**
 																 * Add content.
 																 *

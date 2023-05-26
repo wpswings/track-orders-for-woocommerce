@@ -4,7 +4,6 @@
  *
  * @version  1.0.0
  * @package  Woocommece_Order_Tracker/template
- *  
  */
 
 $current_user_id = get_current_user_id();
@@ -81,14 +80,16 @@ $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 					<label for="username"><?php esc_html_e( 'Enter Order Id', 'track-orders-for-woocommerce' ); ?><span class="required"> *</span></label>
 					<input type="text" id="order_id" name="order_id" class="woocommerce-Input woocommerce-Input--text input-text">
 				</p>
-				<?php if( 'on' != get_option( 'wps_tofw_enable_track_order_using_order_id', 'no' ) )  { ?>
+				<?php if ( 'on' != get_option( 'wps_tofw_enable_track_order_using_order_id', 'no' ) ) { ?>
 
 
 					<p class="woocommerce-FormRow woocommerce-FormRow--wide form-row form-row-wide">
 						<label for="username"><?php esc_html_e( 'Enter Order Email', 'track-orders-for-woocommerce' ); ?><span class="required"> *</span></label>
 						<input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="order_email" id="order_email" value="">
-					</p> <?php
-				} ?>
+					</p> 
+					<?php
+				}
+				?>
 				<input type="hidden" name="track_order_nonce_name" value="<?php wp_create_nonce( 'track_order_nonce' ); ?>">
 				<p class="form-row">
 					<input type="submit" value="<?php esc_attr_e( 'TRACK ORDER', 'track-orders-for-woocommerce' ); ?>" name="wps_tofw_order_id_submit" class="woocommerce-Button button">
@@ -98,13 +99,14 @@ $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 	</div>
 </div>
 
-<?php 
+<?php
 $check = get_option( 'wps_tofw_enable_guest_export' );
-if( 'on' == $check ) { ?>
+if ( 'on' == $check ) {
+	?>
 
 	<div>
 		<form method="POST">
-			<h3><?php esc_html_e( '!------ Export Your All Orders Using Email ------!', 'track-orders-for-woocommerce' ) ?></h3>
+			<h3><?php esc_html_e( '!------ Export Your All Orders Using Email ------!', 'track-orders-for-woocommerce' ); ?></h3>
 			<p class="woocommerce-FormRow woocommerce-FormRow--wide form-row form-row-wide">
 				<label for="wps_wot_export_email"><?php esc_html_e( 'Enter Email', 'track-orders-for-woocommerce' ); ?><span class="required"> *</span></label>
 				<input type="email" required  class="woocommerce-Input wps_wot_export_email woocommerce-Input--text input-text">
@@ -113,7 +115,7 @@ if( 'on' == $check ) { ?>
 		</form>
 	</div>
 
-<?php
+	<?php
 }
 
 

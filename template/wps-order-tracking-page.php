@@ -4,7 +4,6 @@
  *
  * @version  1.0.0
  * @package  Woocommece_Order_Tracker/template
- *  
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -38,7 +37,7 @@ if ( isset( $_POST['wps_track_package'] ) ) {
 
 		<div class="form-group">
 			<label for=""><?php esc_html_e( ' Enter Order Id ', 'track-orders-for-woocommerce' ); ?></label>
-			<input type="text" class="form-control" id="wps_tofw_order_id" name="wps_user_order_id"  placeholder=<?php esc_attr_e('Enter Order id', 'track-orders-for-woocommerce');?> >
+			<input type="text" class="form-control" id="wps_tofw_order_id" name="wps_user_order_id"  placeholder=<?php esc_attr_e( 'Enter Order id', 'track-orders-for-woocommerce' ); ?> >
 		</div>
 		<input type="hidden" name="wps_track_package_nonce_name" value="<?php wp_create_nonce( 'wps_track_package_nonce' ); ?>">
 		<button type="submit" class="btn btn-primary wps_tofw_button_track" name="wps_track_package"><?php esc_html_e( 'Submit', 'track-orders-for-woocommerce' ); ?></button>
