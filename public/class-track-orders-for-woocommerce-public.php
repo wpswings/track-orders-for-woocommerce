@@ -236,5 +236,60 @@ class Track_Orders_For_Woocommerce_Public {
 		return $template;
 	}
 
+	/**
+		 * This function is for rendering track order button
+		 *
+		 * @link http://www.wpswings.com/
+		 * @param object $order is a object.
+		 */
+		public function wps_tofw_track_order_info( $order ) {
+			if ( '3.0.0' > WC()->version ) {
+				$order_id = $order->id;
+			} else {
+				$order_id = $order->get_id();
+			}
+			$wps_tofw_enable_track_order_feature = get_option( 'tofw_enable_track_order', 'no' );
+			
+			if ( 'on' != $wps_tofw_enable_track_order_feature ) {
+				return;
+			}
+			
+			$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
+			$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
+			$track_order_url = get_permalink( $page_id );
+			$wps_tofw_enable_track_order_api = get_option( 'wps_tofw_enable_third_party_tracking_api', 'no' );
+			if ( 'on' == $wps_tofw_enable_track_order_api ) {
+
+				$wps_shipping_service = get_post_meta( $order_id, 'wps_tofw_selected_shipping_service', true );
+				if ( 'canada_post' === $wps_shipping_service ) {
+					$wps_shipping_service = 'Canada Post';
+				} else if ( 'fedex' === $wps_shipping_service ) {
+					$wps_shipping_service = 'FedEx';
+				} else if ( 'usps' === $wps_shipping_service ) {
+					$wps_shipping_service = 'USPS';
+				}
+				$wps_est_delivery_date = get_post_meta( $order_id, 'wps_tofw_estimated_delivery_date', true );
+				$wps_est_delivery_time = get_post_meta( $order_id, 'wps_tofw_estimated_delivery_time', true );
+				$wps_tyo_tracking_number = get_post_meta( $order_id, 'wps_tofw_package_tracking_number', true );
+				?>
+			<div style="background-color: rgba(246,246,246,255);padding: 20px;">
+			<h3 style="font-weight:500"><?php esc_html_e( 'Tracking Info', 'track-orders-for-woocommerce' ); ?></h3>
+			<p>
+				<?php esc_html_e( 'Order picked up by ', 'track-orders-for-woocommerce' ); ?><b><?php echo esc_html( $wps_shipping_service ); ?></b><br>
+				<?php esc_html_e( 'Estimated Delivery Date : ', 'track-orders-for-woocommerce' ); ?><b>
+								  <?php
+									echo esc_html( $wps_est_delivery_date );
+									echo ' ';
+									echo esc_html( $wps_est_delivery_time );
+									?>
+				</b><br>
+				<?php esc_html_e( 'Tracking Code : ', 'track-orders-for-woocommerce' ); ?><b><?php echo esc_html( $wps_tyo_tracking_number ); ?></b>
+			</p>
+				<a href="<?php echo esc_attr( $track_order_url ) . '?' . esc_attr( $order_id ); ?>" ><?php esc_html_e( 'track your order', 'track-orders-for-woocommerce' ); ?></a>
+			</div>
+				<?php
+			}
+		}
+
 
 }

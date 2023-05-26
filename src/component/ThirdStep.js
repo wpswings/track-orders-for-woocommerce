@@ -25,7 +25,7 @@ const ThirdStep = (props) => {
                 color="primary"
                  />
             }
-            label="General Settings"
+            label="Enable Plugin"
             className={classes.margin} />
         <FormControlLabel
             control={
@@ -36,7 +36,7 @@ const ThirdStep = (props) => {
                 color="primary"
                />
             }
-            label="Reset License"
+            label="Enable track orders Feature"
             className={classes.margin} />
         </FormGroup>
     </>

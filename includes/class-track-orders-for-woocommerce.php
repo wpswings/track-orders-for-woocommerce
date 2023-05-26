@@ -130,7 +130,7 @@ class Track_Orders_For_Woocommerce {
 
 			// The class responsible for on-boarding steps for plugin.
 			if ( is_dir( plugin_dir_path( dirname( __FILE__ ) ) . 'onboarding' ) && ! class_exists( 'Track_Orders_For_Woocommerce_Onboarding_Steps' ) ) {
-				// include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-track-orders-for-woocommerce-onboarding-steps.php';
+				include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-track-orders-for-woocommerce-onboarding-steps.php';
 			}
 
 			if ( class_exists( 'Track_Orders_For_Woocommerce_Onboarding_Steps' ) ) {
@@ -277,6 +277,7 @@ class Track_Orders_For_Woocommerce {
 		$this->loader->add_action( 'wp_enqueue_scripts', $tofw_plugin_public, 'tofw_public_enqueue_scripts' );
 
 		$this->loader->add_action( 'woocommerce_order_details_after_order_table', $tofw_plugin_public, 'wps_tofw_track_order_button' );
+		$this->loader->add_action('woocommerce_order_details_before_order_table_items', $tofw_plugin_public, 'wps_tofw_track_order_info', 10, 1 );
 		$this->loader->add_action('woocommerce_my_account_my_orders_actions', $tofw_plugin_public, 'wps_tofw_add_track_order_button_on_orderpage', 10, 2 );
 		
 		$this->loader->add_action( 'woocommerce_before_account_orders', $tofw_plugin_public, 'wps_wot_add_export_button_before_order_table', 10, 1 );

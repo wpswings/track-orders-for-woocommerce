@@ -2,8 +2,6 @@ import {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, Typography, Container, CircularProgress} from '@material-ui/core';
 import Stepper from './component/Stepper';
-import FirstStep from './component/FirstStep';
-import SecondStep from './component/SecondStep';
 import ThirdStep from './component/ThirdStep';
 import FinalStep from './component/FinalStep';
 import Context from './store/store';
@@ -32,7 +30,7 @@ function App(props) {
     
     const classes = useStyles();
     const [activeStep, setActiveStep] = useState(0);
-    const steps = [ __( 'General Settings', 'track-orders-for-woocommerce' ), __( 'Industry', 'track-orders-for-woocommerce' ), __( 'Accept consent', 'track-orders-for-woocommerce' ), __( 'Final Step', 'track-orders-for-woocommerce' )];
+    const steps = [ __( 'General Settings', 'track-orders-for-woocommerce' ),  __( 'Final Step', 'track-orders-for-woocommerce' )];
 
     
     const onFormFieldHandler = (event) => {
@@ -42,14 +40,10 @@ function App(props) {
     const getStepContent = (stepIndex) => {
         switch (stepIndex) {
             case 0:
-                return (<FirstStep />);
+                return (<ThirdStep />);
             case 1:
-                return (<SecondStep/>);
-            case 2:
-                return <ThirdStep />;
-            case 3:
             return <FinalStep />;
-            case 4:
+            case 2:
                 return <h1>{__( 'Thanks for your details', 'track-orders-for-woocommerce' )}</h1>;
             default:
                 return __( 'Unknown stepIndex', 'track-orders-for-woocommerce' );

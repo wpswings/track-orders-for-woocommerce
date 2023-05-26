@@ -61,18 +61,7 @@ class Track_Orders_For_Woocommerce_Admin {
 		$screen = get_current_screen();
 		
 		if ( isset( $screen->id ) && ( 'wpswings_page_home' === $screen->id || 'wpswings_page_track_orders_for_woocommerce_menu' === $screen->id ) ) {
-			// multistep form css.
-			if ( ! tofw_wps_standard_check_multistep() ) {
-				$style_url        = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'build/style-index.css';
-				wp_enqueue_style(
-					'wps-admin-react-styles',
-					$style_url,
-					array(),
-					time(),
-					false
-				);
-				return;
-			}
+			
 			
 			wp_enqueue_style( 'track-orders-for-woocommerce-select2-css', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/select-2/track-orders-for-woocommerce-select2.css', array(), time(), 'all' );
 
@@ -101,41 +90,6 @@ class Track_Orders_For_Woocommerce_Admin {
 
 		$screen = get_current_screen();
 		if ( isset( $screen->id ) && ( 'wpswings_page_home' === $screen->id || 'wpswings_page_track_orders_for_woocommerce_menu' === $screen->id ) ) {
-			if ( ! tofw_wps_standard_check_multistep() ) {
-				// js for the multistep from.
-				$script_path      = '../../build/index.js';
-				$script_asset_path = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'build/index.asset.php';
-				$script_asset      = file_exists( $script_asset_path )
-					? require $script_asset_path
-					: array(
-						'dependencies' => array(
-							'wp-hooks',
-							'wp-element',
-							'wp-i18n',
-							'wc-components',
-						),
-						'version'      => filemtime( $script_path ),
-					);
-				$script_url        = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'build/index.js';
-				wp_register_script(
-					'react-app-block',
-					$script_url,
-					$script_asset['dependencies'],
-					$script_asset['version'],
-					true
-				);
-				wp_enqueue_script( 'react-app-block' );
-				wp_localize_script(
-					'react-app-block',
-					'frontend_ajax_object',
-					array(
-						'ajaxurl'            => admin_url( 'admin-ajax.php' ),
-						'wps_standard_nonce' => wp_create_nonce( 'ajax-nonce' ),
-						'redirect_url' => admin_url( 'admin.php?page=track_orders_for_woocommerce_menu' ),
-					)
-				);
-				return;
-			}
 
 			wp_enqueue_script( 'track-orders-for-woocommerce-select2', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/select-2/track-orders-for-woocommerce-select2.js', array( 'jquery' ), time(), false );
 
@@ -194,10 +148,10 @@ class Track_Orders_For_Woocommerce_Admin {
 	public function tofw_options_page() {
 		global $submenu;
 		if ( empty( $GLOBALS['admin_page_hooks']['wps-plugins'] ) ) {
-			add_menu_page( 'WPSwings', 'WPSwings', 'manage_options', 'wps-plugins', array( $this, 'wps_plugins_listing_page' ), TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/image/wps_Grey-01.svg', 15 );
-			if ( tofw_wps_standard_check_multistep() ) {
-				add_submenu_page( 'wps-plugins', 'Home', 'Home', 'manage_options', 'home', array( $this, 'wpswings_welcome_callback_function' ) );
-			}
+			add_menu_page( 'WPSwings', 'WPSwings', 'manage_options', 'wps-plugins', array( $this, 'wps_plugins_listing_page' ), TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/image/wpswings_logo.png', 15 );
+			
+			add_submenu_page( 'wps-plugins', 'Home', 'Home', 'manage_options', 'home', array( $this, 'wpswings_welcome_callback_function' ) );
+			
 			$tofw_menus =
 			// desc - filter for trial.
 			apply_filters( 'wps_add_plugins_menus_array', array() );
@@ -216,9 +170,9 @@ class Track_Orders_For_Woocommerce_Admin {
 					}
 				}
 				if ( ! $is_home ) {
-					if ( tofw_wps_standard_check_multistep() ) {
+					
 						add_submenu_page( 'wps-plugins', 'Home', 'Home', 'manage_options', 'home', array( $this, 'wpswings_welcome_callback_function' ), 1 );
-					}
+					
 				}
 			}
 		}
@@ -872,7 +826,8 @@ class Track_Orders_For_Woocommerce_Admin {
 		if ( isset( $_POST['tofw_button_demo'] ) ) {
 			
 			$screen = get_current_screen();
-			if ( isset( $screen->id ) && 'wp-swings_page_home' === $screen->id ) { 
+			
+			if ( isset( $screen->id ) && 'wp-swings_page_home' === $screen->id || 'wpswings_page_home'===  $screen->id ) { 
 
 				$enable_tracking = ! empty( $_POST['tofw_enable_tracking'] ) ? sanitize_text_field( wp_unslash( $_POST['tofw_enable_tracking'] ) ) : '';
 				update_option( 'tofw_enable_tracking', $enable_tracking );
