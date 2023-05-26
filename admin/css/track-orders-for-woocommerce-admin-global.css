@@ -803,3 +803,8 @@ input.role_box_open {
   display: none !important;
 }
 
+
+#wps_tofw_create_custom_order_status{
+  margin-top: 10px;
+  background-color: #2196f3;
+}

@@ -124,6 +124,9 @@ class Track_Orders_For_Woocommerce_Admin {
 			wp_enqueue_script( $this->plugin_name . 'admin-js' );
 
 		}
+		add_thickbox();
+
+		wp_enqueue_media();
 		wp_enqueue_script( 'jquery-ui-timepicker-js', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/js/jquery.ui.timepicker.js', array(), time(), false );
 		wp_register_script( 'wps-admin-js', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/js/wps-admin.js', array(), time(), false );
 		wp_localize_script(
