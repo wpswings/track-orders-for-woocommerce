@@ -579,19 +579,19 @@ jQuery(document).ready(function ($) {
 	else if( pre_length <= hidden_length )
 	{
 		var i = 0;
-		jQuery.grep(hidden_value, function(el) {
+		// jQuery.grep(hidden_value, function(el) {
 
-			if (jQuery.inArray(el, previously_selected_value) == -1) 
-			{
-				jQuery("#wps_tofw_order_status_in_processing option[value="+el+"]").remove();
-				jQuery("#wps_tofw_order_status_in_shipping option[value="+el+"]").remove();
+		// 	if (jQuery.inArray(el, previously_selected_value) == -1) 
+		// 	{
+		// 		jQuery("#wps_tofw_order_status_in_processing option[value="+el+"]").remove();
+		// 		jQuery("#wps_tofw_order_status_in_shipping option[value="+el+"]").remove();
 
-			}
+		// 	}
 
 
-			i++;
+		// 	i++;
 
-		});
+		// });
 	}
 
 } );
@@ -652,8 +652,8 @@ jQuery(document).ready(function ($) {
 				if (jQuery.inArray(el, previously_selected_value) == -1) 
 				{
 
-					jQuery("#wps_tofw_order_status_in_approval option[value="+el+"]").remove();
-					jQuery("#wps_tofw_order_status_in_shipping option[value="+el+"]").remove();
+					// jQuery("#wps_tofw_order_status_in_approval option[value="+el+"]").remove();
+					// jQuery("#wps_tofw_order_status_in_shipping option[value="+el+"]").remove();
 
 				}
 
@@ -720,8 +720,8 @@ jQuery(document).ready(function ($) {
 			if (jQuery.inArray(el, previously_selected_value) == -1) 
 			{
 
-				jQuery("#wps_tofw_order_status_in_processing option[value="+el+"]").remove();
-				jQuery("#wps_tofw_order_status_in_approval option[value="+el+"]").remove();
+				// jQuery("#wps_tofw_order_status_in_processing option[value="+el+"]").remove();
+				// jQuery("#wps_tofw_order_status_in_approval option[value="+el+"]").remove();
 
 			}
 

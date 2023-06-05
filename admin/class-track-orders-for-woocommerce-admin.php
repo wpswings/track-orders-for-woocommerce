@@ -882,7 +882,7 @@ class Track_Orders_For_Woocommerce_Admin {
 					foreach ( $tofw_genaral_settings as $tofw_genaral_setting ) {
 						if ( isset( $tofw_genaral_setting['id'] ) && '' !== $tofw_genaral_setting['id'] ) {
 							if ( isset( $_POST[ $tofw_genaral_setting['id'] ] ) ) {
-								update_option( $tofw_genaral_setting['id'], is_array( $_POST[ $tofw_genaral_setting['id'] ] ) ? $this->wps_sanitize_array( $_POST[ $tofw_genaral_setting['id'] ] ) : sanitize_text_field( wp_unslash( $_POST[ $tofw_genaral_setting['id'] ] ) ) );
+								update_option( $tofw_genaral_setting['id'], is_array( $_POST[ $tofw_genaral_setting['id'] ] ) ? map_deep( wp_unslash( $_POST[ $tofw_genaral_setting['id'] ] ), 'sanitize_text_field' ) : sanitize_text_field( wp_unslash( $_POST[ $tofw_genaral_setting['id'] ] ) ) );
 							} else {
 								update_option( $tofw_genaral_setting['id'], '' );
 							}
@@ -1451,7 +1451,8 @@ class Track_Orders_For_Woocommerce_Admin {
 		if ( 'on' !== $wps_tofw_enable_track_order_feature || 'on' !== $wps_tofw_enable_custom_order_feature ) {
 			return;
 		}
-
+		$label_count = __( 'Order Packed', 'track-orders-for-woocommerce' );
+		$label_count .= '<span class="count">(%s)</span>';
 		register_post_status(
 			'wc-packed',
 			array(
@@ -1461,10 +1462,11 @@ class Track_Orders_For_Woocommerce_Admin {
 				'show_in_admin_all_list'    => true,
 				'show_in_admin_status_list' => true,
 				/* translators: %s: count */
-				'label_count'               => _n_noop( __( 'Order Packed', 'track-orders-for-woocommerce' ) . '<span class="count">(%s)</span>', __( 'Order Packed', 'track-orders-for-woocommerce' ) . '<span class="count">(%s)</span>' ),
+				'label_count'               => _n_noop( $label_count , $label_count ),
 			)
 		);
-
+		$label_count = __( 'Order Dispatched', 'track-orders-for-woocommerce' );
+		$label_count .= '<span class="count">(%s)</span>';
 		register_post_status(
 			'wc-dispatched',
 			array(
@@ -1474,10 +1476,11 @@ class Track_Orders_For_Woocommerce_Admin {
 				'show_in_admin_all_list'    => true,
 				'show_in_admin_status_list' => true,
 				/* translators: %s: count */
-				'label_count'               => _n_noop( __( 'Order Dispatched', 'track-orders-for-woocommerce' ) . ' <span class="count">(%s)</span>', __( 'Order Dispatched', 'track-orders-for-woocommerce' ) . ' <span class="count">(%s)</span>' ),
+				'label_count'               => _n_noop( $label_count , $label_count ),
 			)
 		);
-
+		$label_count = __( 'Order Shipped', 'track-orders-for-woocommerce' );
+		$label_count .= '<span class="count">(%s)</span>';
 		register_post_status(
 			'wc-shipped',
 			array(
@@ -1487,7 +1490,7 @@ class Track_Orders_For_Woocommerce_Admin {
 				'show_in_admin_all_list'    => true,
 				'show_in_admin_status_list' => true,
 				/* translators: %s: count */
-				'label_count'               => _n_noop( __( 'Order Shipped', 'track-orders-for-woocommerce' ) . ' <span class="count">(%s)</span>', __( 'Order Shipped', 'track-orders-for-woocommerce' ) . ' <span class="count">(%s)</span>' ),
+				'label_count'               => _n_noop( $label_count , $label_count ),
 			)
 		);
 
@@ -1526,7 +1529,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			return $order_statuses;
 		}
 			$custom_order = get_option( 'wps_tofw_new_custom_order_status', array() );
-			$statuses = get_option( 'wps_tofw_new_custom_statuses_for_order_tracking', array() );
+			$statuses = get_option( 'tofw_selected_custom_order_status', array() );
 			$wps_tofw_statuses = get_option( 'wps_tofw_new_settings_custom_statuses_for_order_tracking', array() );
 
 			$custom_order[] = array( 'dispatched' => __( 'Order Dispatched', 'track-orders-for-woocommerce' ) );

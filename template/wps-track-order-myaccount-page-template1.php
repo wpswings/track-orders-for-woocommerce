@@ -114,38 +114,15 @@ if ( true == $allowed ) {
 	$track_order_url = get_permalink( $page_id );
 	header( 'Location: ' . $track_order_url );
 }
-$wps_tofw_enable_track_order_popup = get_option( 'wps_tofw_enable_track_order_popup', '' );
-if ( 'on' !== $wps_tofw_enable_track_order_popup ) {
-	get_header( 'shop' );
 
-	/**
-	 * Add content.
-	 *
-	 * @since 1.0.0
-	 */
-	do_action( 'woocommerce_before_main_content' );
-} elseif ( 'on' == $wps_tofw_enable_track_order_popup && $current_user_id > 0 && 0 != $order_id && '' != $order_id && null != $order_id ) {?>
-		<link rel="stylesheet" type="text/css" href="<?php echo esc_attr( wps_TRACK_YOUR_ORDER_URL ) . '/assets/css/wps-tofw-style-front.css'; ?>" media="screen">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-		<script type="text/javascript" src="<?php echo esc_attr( wps_TRACK_YOUR_ORDER_URL ) . 'assets/js/wps-tofw-script.js'; ?>"></script>
-		<?php
+get_header( 'shop' );
 
-		/**
-		 * Add content.
-		 *
-		 * @since 1.0.0
-		 */
-		do_action( 'wps_tofw_before_popup' );
-} else {
-	get_header( 'shop' );
-
-	/**
-	 * Add content.
-	 *
-	 * @since 1.0.0
-	 */
-	do_action( 'woocommerce_before_main_content' );
-}
+/**
+ * Add content.
+ *
+ * @since 1.0.0
+ */
+do_action( 'woocommerce_before_main_content' );
 
 /**
 	 * Woocommerce_before_main_content hook.
@@ -159,7 +136,7 @@ $wps_main_wrapper_class = get_option( 'wps_tofw_track_order_class' );
 $wps_child_wrapper_class = get_option( 'wps_tofw_track_order_child_class' );
 $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 ?>
-<style>	<?php echo $wps_track_order_css; ?>	</style>
+<style>	<?php echo esc_html( $wps_track_order_css ); ?>	</style>
 <div class="wps-tofw-order-tracking-section <?php echo esc_attr( $wps_main_wrapper_class ); ?>">
 	<?php
 	$get_status_approval = get_option( 'wps_tofw_order_status_in_approval', array() );
@@ -180,7 +157,7 @@ $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 
 	if ( is_array( $get_status_shipping ) && ! empty( $get_status_shipping ) ) {
 		foreach ( $get_status_shipping as $key1 => $value1 ) {
-			if ( ! empty( $wps_track_order_status ) && in_array( $value, $wps_track_order_status ) ) {
+			if ( ! empty( $wps_track_order_status ) && in_array( $value1, $wps_track_order_status ) ) {
 				$status_shipped = 1;
 			}
 		}

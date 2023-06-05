@@ -126,8 +126,8 @@ class Track_Orders_For_Woocommerce_Common {
 	/**
 	 * Function is used for the sending the track data.
 	 *
-	 * @name tofw_wpswings_tracker_send_event.
-	 * @since 1.0.0
+	 * @param boolean $override is a boolean.
+	 * @return void
 	 */
 	public function tofw_wpswings_tracker_send_event( $override = false ) {
 		require_once WC()->plugin_path() . '/includes/class-wc-tracker.php';
@@ -220,8 +220,8 @@ class Track_Orders_For_Woocommerce_Common {
 	/**
 	 * Function to return template.
 	 *
-	 * @param [type] $template
-	 * @return void
+	 * @param string $template is a path.
+	 * @return string
 	 */
 	public function wps_tofw_include_track_order_page( $template ) {
 		$selected_template = get_option( 'wps_tofw_activated_template' );
@@ -560,7 +560,7 @@ class Track_Orders_For_Woocommerce_Common {
 	/**
 	 * Function for ajax callback.
 	 *
-	 * @return array
+	 * @return void
 	 */
 	public function wps_tofw_export_my_orders_callback() {
 		$_orders = get_posts(
@@ -661,14 +661,15 @@ class Track_Orders_For_Woocommerce_Common {
 	}
 
 
-		/**
-		 * Function for ajax callback for guest user export
-		 *
-		 * @return array
-		 */
+	/**
+	 * Function for ajax callback for guest user export
+	 *
+	 * @return void
+	 */
 	public function wps_tofw_export_my_orders_guest_user_callback() {
-
-		$email = isset( $_POST['email'] ) ? $_POST['email'] : '';
+		$nonce = isset( $_POST['track_order_nonce_name'] ) ? $_POST['track_order_nonce_name'] : '';
+		wp_verify_nonce( $nonce, 'track_order_nonce' );
+		$email = isset( $_POST['email'] ) ? sanitize_text_field( wp_unslash( $_POST['email'] ) ) : '';
 		$_orders = array();
 		if ( ! empty( $email ) ) {
 			$_orders_temp = get_posts(

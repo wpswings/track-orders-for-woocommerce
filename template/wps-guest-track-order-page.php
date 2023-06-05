@@ -110,6 +110,7 @@ if ( 'on' == $check ) {
 			<p class="woocommerce-FormRow woocommerce-FormRow--wide form-row form-row-wide">
 				<label for="wps_wot_export_email"><?php esc_html_e( 'Enter Email', 'track-orders-for-woocommerce' ); ?><span class="required"> *</span></label>
 				<input type="email" required  class="woocommerce-Input wps_wot_export_email woocommerce-Input--text input-text">
+				<input type="hidden" name="track_order_nonce_name" value="<?php wp_create_nonce( 'track_order_nonce' ); ?>">
 				<input type="submit"  value="<?php esc_attr_e( 'Export Orders', 'track-orders-for-woocommerce' ); ?>"  class="woocommerce-Button wps_tofw_guest_user_export_button button">
 			</p>
 		</form>

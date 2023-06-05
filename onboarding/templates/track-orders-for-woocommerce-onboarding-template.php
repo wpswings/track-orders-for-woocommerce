@@ -10,6 +10,7 @@
  * @package    WPSwings_Onboarding
  * @subpackage WPSwings_Onboarding/admin/onboarding
  */
+
 global $wps_tofw_obj;
 $msp_onboarding_form_fields =
 // desc - filter for trial.
