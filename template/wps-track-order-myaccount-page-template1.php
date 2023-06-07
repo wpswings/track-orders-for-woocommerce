@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 $allowed = true;
 
 $current_user_id = get_current_user_id();
-
+$wps_tofw_enable_track_order_popup = '';
 if ( true == $allowed ) {
 
 	$check_value = isset( $_POST['woocommerce-process-checkout-nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['woocommerce-process-checkout-nonce'] ) ) : '';
