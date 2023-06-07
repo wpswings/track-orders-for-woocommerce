@@ -18,7 +18,7 @@ global $wps_tofw_obj;
 $tofw_developer_admin_hooks =
 // desc - filter for trial.
 apply_filters( 'tofw_developer_admin_hooks_array', array() );
-							 
+
 $count_admin                = filtered_array( $tofw_developer_admin_hooks );
 $tofw_developer_public_hooks =
 // desc - filter for trial.

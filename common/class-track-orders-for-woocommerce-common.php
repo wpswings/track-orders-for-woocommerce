@@ -667,8 +667,7 @@ class Track_Orders_For_Woocommerce_Common {
 	 * @return void
 	 */
 	public function wps_tofw_export_my_orders_guest_user_callback() {
-		$nonce = isset( $_POST['track_order_nonce_name'] ) ? $_POST['track_order_nonce_name'] : '';
-		wp_verify_nonce( $nonce, 'track_order_nonce' );
+		check_ajax_referer( 'tofw_common_param_nonce', 'nonce' );
 		$email = isset( $_POST['email'] ) ? sanitize_text_field( wp_unslash( $_POST['email'] ) ) : '';
 		$_orders = array();
 		if ( ! empty( $email ) ) {

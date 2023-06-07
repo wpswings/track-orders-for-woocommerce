@@ -202,7 +202,7 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 
 		if ( ! $this->current_action() ) {
 
-			wp_verify_nonce( isset($_POST['wps_tabs_nonce'] ) ?  sanitize_text_field( wp_unslash( $_POST['wps_tabs_nonce'] )  ) : '', 'admin_save_data' );
+			wp_verify_nonce( isset( $_POST['wps_tabs_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tabs_nonce'] ) ) : '', 'admin_save_data' );
 			if ( is_array( $_POST ) && ! empty( $_POST ) ) {
 				$redirect_url = get_admin_url() . 'admin.php?page=track_orders_for_woocommerce_menu&tofw_tab=track-orders-for-woocommerce-custom-orders-status';
 				wp_redirect( $redirect_url );
@@ -281,7 +281,7 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 		if ( 'bulk-delete' === $this->current_action() ) {
 
 			$wps_tofw_old_selected_statuses = get_option( 'wps_tofw_new_settings_custom_statuses_for_order_tracking', false );
-			wp_verify_nonce( isset($_POST['wps_tabs_nonce'] ) ?  sanitize_text_field( wp_unslash( $_POST['wps_tabs_nonce'] )  ) : '', 'admin_save_data' );
+			wp_verify_nonce( isset( $_POST['wps_tabs_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tabs_nonce'] ) ) : '', 'admin_save_data' );
 			$wps_data = isset( $_POST['wps_tofw_custom_order'] ) ? map_deep( wp_unslash( $_POST['wps_tofw_custom_order'] ), 'sanitize_text_field' ) : array();
 			$wps_data_exist_db = get_option( 'wps_tofw_new_custom_order_status', array() );
 			if ( is_array( $wps_data ) && ! empty( $wps_data ) ) {

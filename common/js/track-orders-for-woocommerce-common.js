@@ -77,7 +77,7 @@
 				data: {
 					action : 'wps_tofw_export_my_orders_guest_user',
 					email  : email,
-					// nonce : global_new_tyo.mwb_tyo_nonce,
+					nonce : tofw_common_param.nonce,
 				},success:function(response){
 					var result = JSON.parse(response);
 					if( 'success' == result.status ) {

@@ -250,7 +250,6 @@ class Track_Orders_For_Woocommerce {
 			$this->loader->add_action( 'wpswings_tracker_send_event', $tofw_plugin_common, 'tofw_wpswings_tracker_send_event' );
 		}
 		// license validation.
-		
 
 		$this->loader->add_filter( 'template_include', $tofw_plugin_common, 'wps_tofw_include_track_order_page', 10, 1 );
 		$this->loader->add_action( 'woocommerce_order_status_changed', $tofw_plugin_common, 'wps_tofw_track_order_status', 10, 3 );

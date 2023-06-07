@@ -167,7 +167,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			$is_home = false;
 			if ( ! empty( $submenu['wps-plugins'] ) ) {
 				foreach ( $submenu['wps-plugins'] as $key => $value ) {
-					if (  'Home' === $value[0] ) {
+					if ( 'Home' === $value[0] ) {
 						$is_home = true;
 					}
 				}
@@ -1451,8 +1451,7 @@ class Track_Orders_For_Woocommerce_Admin {
 		if ( 'on' !== $wps_tofw_enable_track_order_feature || 'on' !== $wps_tofw_enable_custom_order_feature ) {
 			return;
 		}
-		$label_count = __( 'Order Packed', 'track-orders-for-woocommerce' );
-		$label_count .= '<span class="count">(%s)</span>';
+		
 		register_post_status(
 			'wc-packed',
 			array(
@@ -1462,11 +1461,10 @@ class Track_Orders_For_Woocommerce_Admin {
 				'show_in_admin_all_list'    => true,
 				'show_in_admin_status_list' => true,
 				/* translators: %s: count */
-				'label_count'               => _n_noop( $label_count , $label_count ),
+				'label_count'               => false,
 			)
 		);
-		$label_count = __( 'Order Dispatched', 'track-orders-for-woocommerce' );
-		$label_count .= '<span class="count">(%s)</span>';
+		
 		register_post_status(
 			'wc-dispatched',
 			array(
@@ -1476,11 +1474,10 @@ class Track_Orders_For_Woocommerce_Admin {
 				'show_in_admin_all_list'    => true,
 				'show_in_admin_status_list' => true,
 				/* translators: %s: count */
-				'label_count'               => _n_noop( $label_count , $label_count ),
+				'label_count'               => _n_noop( 'Order Dispatched <span class="count">(%s)</span>', 'Order Dispatched <span class="count">(%s)</span>' ),
 			)
 		);
-		$label_count = __( 'Order Shipped', 'track-orders-for-woocommerce' );
-		$label_count .= '<span class="count">(%s)</span>';
+	
 		register_post_status(
 			'wc-shipped',
 			array(
@@ -1490,7 +1487,7 @@ class Track_Orders_For_Woocommerce_Admin {
 				'show_in_admin_all_list'    => true,
 				'show_in_admin_status_list' => true,
 				/* translators: %s: count */
-				'label_count'               => _n_noop( $label_count , $label_count ),
+				'label_count'               =>false,
 			)
 		);
 
@@ -1508,7 +1505,7 @@ class Track_Orders_For_Woocommerce_Admin {
 							'show_in_admin_all_list'    => true,
 							'show_in_admin_status_list' => true,
 							/* translators: %s: count */
-							'label_count'               => _n_noop( $custom_status_value . ' <span class="count">(%s)</span>', $custom_status_value . ' <span class="count">(%s)</span>' ),
+							'label_count'               => false,
 						)
 					);
 				}
