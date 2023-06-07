@@ -36,7 +36,7 @@ apply_filters( 'wps_msp_deactivation_form_fields', array() );
 						</a>
 					</div>
 
-					<h3 class="wps-msp-on-boarding-heading mdc-dialog__title"></h3>
+					<h3 class="wps-msp-on-boarding-heading mdc-dialog__title"><?php esc_html_e( 'Track Orders For Woocommerce', 'track-orders-for-woocommerce' ); ?></h3>
 					<p class="wps-msp-on-boarding-desc"><?php esc_html_e( 'May we have a little info about why you are deactivating?', 'track-orders-for-woocommerce' ); ?></p>
 					<form action="#" method="post" class="wps-msp-on-boarding-form">
 						<?php

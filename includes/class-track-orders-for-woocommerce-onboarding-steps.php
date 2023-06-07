@@ -484,7 +484,7 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 
 			rand() => array(
 				'id' => 'wps-msp-deactivation-reason-text',
-				'title' => esc_html__( 'Let us know why you are deactivating ', 'track-orders-for-woocommerce' ) . self::$wps_msp_plugin_name_label . esc_html__( ' so we can improve the plugin', 'track-orders-for-woocommerce' ),
+				'title' => esc_html__( 'Let us know why you are deactivating Track Orders For Woocommerce so we can improve the plugin. ', 'track-orders-for-woocommerce' ) . self::$wps_msp_plugin_name_label . esc_html__( ' so we can improve the plugin', 'track-orders-for-woocommerce' ),
 				'type' => 'textarea',
 				'description' => '',
 				'name' => 'deactivation_reason_text',
