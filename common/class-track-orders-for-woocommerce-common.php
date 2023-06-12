@@ -706,4 +706,111 @@ class Track_Orders_For_Woocommerce_Common {
 
 	}
 
+	/**
+	 * Function to register custom statuses.
+	 *
+	 * @return void
+	 */
+	public function wps_tofw_register_custom_order_status() {
+
+		$wps_tofw_enable_track_order_feature = get_option( 'tofw_enable_track_order', 'no' );
+		$wps_tofw_enable_custom_order_feature = get_option( 'tofw_enable_use_custom_status', 'no' );
+		if ( 'on' !== $wps_tofw_enable_track_order_feature || 'on' !== $wps_tofw_enable_custom_order_feature ) {
+			return;
+		}
+		
+		register_post_status(
+			'wc-packed',
+			array(
+				'label'                     => __( 'Order Packed', 'track-orders-for-woocommerce' ),
+				'public'                    => true,
+				'exclude_from_search'       => false,
+				'show_in_admin_all_list'    => true,
+				'show_in_admin_status_list' => true,
+				/* translators: %s: count */
+				'label_count'               => false,
+			)
+		);
+		
+		register_post_status(
+			'wc-dispatched',
+			array(
+				'label'                     => __( 'Order Dispatched', 'track-orders-for-woocommerce' ),
+				'public'                    => true,
+				'exclude_from_search'       => false,
+				'show_in_admin_all_list'    => true,
+				'show_in_admin_status_list' => true,
+				/* translators: %s: count */
+				'label_count'               => _n_noop( 'Order Dispatched <span class="count">(%s)</span>', 'Order Dispatched <span class="count">(%s)</span>' ),
+			)
+		);
+	
+		register_post_status(
+			'wc-shipped',
+			array(
+				'label'                     => __( 'Order Shipped', 'track-orders-for-woocommerce' ),
+				'public'                    => true,
+				'exclude_from_search'       => false,
+				'show_in_admin_all_list'    => true,
+				'show_in_admin_status_list' => true,
+				/* translators: %s: count */
+				'label_count'               =>false,
+			)
+		);
+
+		$custom_statuses = get_option( 'wps_tofw_new_custom_order_status', array() );
+
+		if ( is_array( $custom_statuses ) && ! empty( $custom_statuses ) ) {
+			foreach ( $custom_statuses as $key => $value ) {
+				foreach ( $value as $custom_status_key => $custom_status_value ) {
+					register_post_status(
+						'wc-' . $custom_status_key,
+						array(
+							'label'                     => $custom_status_value,
+							'public'                    => true,
+							'exclude_from_search'       => false,
+							'show_in_admin_all_list'    => true,
+							'show_in_admin_status_list' => true,
+							/* translators: %s: count */
+							'label_count'               => false,
+						)
+					);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Function to add custom statuses.
+	 *
+	 * @param array $order_statuses is an array.
+	 * @return array
+	 */
+	public function wps_tofw_add_custom_order_status( $order_statuses ) {
+		$wps_tofw_enable_track_order_feature = get_option( 'tofw_enable_track_order', 'no' );
+		$wps_tofw_enable_custom_order_feature = get_option( 'tofw_enable_use_custom_status', 'no' );
+		if ( 'on' != $wps_tofw_enable_track_order_feature || 'on' != $wps_tofw_enable_custom_order_feature ) {
+			return $order_statuses;
+		}
+			$custom_order = get_option( 'wps_tofw_new_custom_order_status', array() );
+			$statuses = get_option( 'tofw_selected_custom_order_status', array() );
+			$wps_tofw_statuses = get_option( 'wps_tofw_new_settings_custom_statuses_for_order_tracking', array() );
+
+			$custom_order[] = array( 'dispatched' => __( 'Order Dispatched', 'track-orders-for-woocommerce' ) );
+			$custom_order[] = array( 'shipped' => __( 'Order Shipped', 'track-orders-for-woocommerce' ) );
+			$custom_order[] = array( 'packed' => __( 'Order Packed', 'track-orders-for-woocommerce' ) );
+
+		if ( is_array( $custom_order ) && ! empty( $custom_order ) ) {
+			foreach ( $custom_order as $key1 => $value1 ) {
+				foreach ( $value1 as $custom_key => $custom_value ) {
+					if ( in_array( 'wc-' . $custom_key, $statuses ) ) {
+						$order_statuses[ 'wc-' . $custom_key ] = $custom_value;
+					}
+				}
+			}
+		}
+			
+			return $order_statuses;
+	}
+
 }
