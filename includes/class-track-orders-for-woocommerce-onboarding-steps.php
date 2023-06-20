@@ -48,7 +48,7 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 	 * @since 1.0.0
 	 * @var string Portal id.
 	 */
-	private static $wps_msp_portal_id = '6493626';
+	private static $wps_msp_portal_id = '25444144';
 
 	/**
 	 * Form id of hubspot api for track-orders-for-woocommerce.
@@ -56,7 +56,7 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 	 * @since 1.0.0
 	 * @var string Form id.
 	 */
-	private static $wps_msp_onboarding_form_id = 'd94dcb10-c9c1-4155-a9ad-35354f2c3b52';
+	private static $wps_msp_onboarding_form_id = '2a2fe23c-0024-43f5-9473-cbfefdb06fe2';
 
 	/**
 	 * Form id of hubspot api for track-orders-for-woocommerce.
@@ -64,7 +64,7 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 	 * @since 1.0.0
 	 * @var string Form id.
 	 */
-	private static $wps_msp_deactivation_form_id = '329ffc7a-0e8c-4e11-8b41-960815c31f8d';
+	private static $wps_msp_deactivation_form_id = '67feecaa-9a93-4fda-8f85-f73168da2672';
 
 	/**
 	 * Define some variables for track-orders-for-woocommerce.
