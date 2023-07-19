@@ -392,7 +392,7 @@ class Track_Orders_For_Woocommerce {
 			'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-template.php',
 		);
 		$tofw_default_tabs['track-orders-for-woocommerce-track-your-your-order-with-google-map']      = array(
-			'title'       => esc_html__( 'Track Order with Google Map', 'track-orders-for-woocommerce' ),
+			'title'       => esc_html__( 'Track Order with Google Maps', 'track-orders-for-woocommerce' ),
 			'name'        => 'track-orders-for-woocommerce-track-your-your-order-with-google-map',
 			'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-track-your-order-with-google-map.php',
 		);

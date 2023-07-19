@@ -343,9 +343,9 @@ class Track_Orders_For_Woocommerce_Admin {
 	public function tofw_admin_general_settings_page( $tofw_settings_general ) {
 		$tofw_settings_general = array(
 			array(
-				'title' => __( 'Enable plugin', 'track-orders-for-woocommerce' ),
+				'title' => __( 'Enable Plugin', 'track-orders-for-woocommerce' ),
 				'type'  => 'radio-switch',
-				'description'  => __( 'Enable plugin to start the functionality.', 'track-orders-for-woocommerce' ),
+				'description'  => __( 'Start the Functionality.', 'track-orders-for-woocommerce' ),
 				'id'    => 'wps_tofw_is_plugin_enable',
 				'value' => get_option( 'wps_tofw_is_plugin_enable' ),
 				'class' => 'wps_tofw_is_plugin_enable',
@@ -355,9 +355,9 @@ class Track_Orders_For_Woocommerce_Admin {
 				),
 			),
 			array(
-				'title' => __( 'Enable Order tracking using order id only', 'track-orders-for-woocommerce' ),
+				'title' => __( 'Enable Order Tracking Using Order Id Only', 'track-orders-for-woocommerce' ),
 				'type'  => 'radio-switch',
-				'description'  => __( 'In Default case, guest user can track order using email and order id. Enable this to track order using order id only..', 'track-orders-for-woocommerce' ),
+				'description'  => __( 'In Default Case, Guest User Can Track Order Using Email and Order Id.', 'track-orders-for-woocommerce' ),
 				'id'    => 'wps_tofw_enable_track_order_using_order_id',
 				'value' => get_option( 'wps_tofw_enable_track_order_using_order_id' ),
 				'class' => 'wps_tofw_enable_track_order_using_order_id',
@@ -367,9 +367,9 @@ class Track_Orders_For_Woocommerce_Admin {
 				),
 			),
 			array(
-				'title' => __( 'Enable logged-in user to EXPORT ORDER', 'track-orders-for-woocommerce' ),
+				'title' => __( 'Enable Logged-in User to EXPORT ORDER', 'track-orders-for-woocommerce' ),
 				'type'  => 'radio-switch',
-				'description'  => __( 'Logged-in user can export order from my-account->order sections', 'track-orders-for-woocommerce' ),
+				'description'  => __( 'Logged-In User Can Export Order From my-account->order Section', 'track-orders-for-woocommerce' ),
 				'id'    => 'wps_tofw_enable_login_export',
 				'value' => get_option( 'wps_tofw_enable_login_export' ),
 				'class' => 'wps_tofw_enable_login_export',
@@ -379,9 +379,9 @@ class Track_Orders_For_Woocommerce_Admin {
 				),
 			),
 			array(
-				'title' => __( 'Enable Guest user to EXPORT ORDER', 'track-orders-for-woocommerce' ),
+				'title' => __( 'Enable Guest User to EXPORT ORDER', 'track-orders-for-woocommerce' ),
 				'type'  => 'radio-switch',
-				'description'  => __( 'Guest user can export order from guest tracking page', 'track-orders-for-woocommerce' ),
+				'description'  => __( 'Guest User Can Export Order From Guest Tracking Page', 'track-orders-for-woocommerce' ),
 				'id'    => 'wps_tofw_enable_guest_export',
 				'value' => get_option( 'wps_tofw_enable_guest_export' ),
 				'class' => 'wps_tofw_enable_guest_export',
@@ -391,9 +391,9 @@ class Track_Orders_For_Woocommerce_Admin {
 				),
 			),
 			array(
-				'title' => __( 'Enable use of icon for order status', 'track-orders-for-woocommerce' ),
+				'title' => __( 'Enable Use of Icon for Order Status', 'track-orders-for-woocommerce' ),
 				'type'  => 'radio-switch',
-				'description'  => __( 'Enable this to show icon instead of text for order status in order table.', 'track-orders-for-woocommerce' ),
+				'description'  => __( 'Enable This To Show Icon Instead of Text for Order Status in Order Table.', 'track-orders-for-woocommerce' ),
 				'id'    => 'wps_tofw_enable_use_of_icon',
 				'value' => get_option( 'wps_tofw_enable_use_of_icon' ),
 				'class' => 'wps_tofw_enable_use_of_icon',
@@ -405,7 +405,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			array(
 				'title' => __( 'Enable E-mail Notification Feature', 'track-orders-for-woocommerce' ),
 				'type'  => 'radio-switch',
-				'description'  => __( 'Enable to send the e-mail notification to the customer on changing order status', 'track-orders-for-woocommerce' ),
+				'description'  => __( 'Send the E-Mail Notification to the Customer on Changing Order Status', 'track-orders-for-woocommerce' ),
 				'id'    => 'wps_tofw_email_notifier',
 				'value' => get_option( 'wps_tofw_email_notifier' ),
 				'class' => 'wps_tofw_email_notifier',
@@ -471,9 +471,9 @@ class Track_Orders_For_Woocommerce_Admin {
 		$tofw_track_order_settings = array(
 
 			array(
-				'title' => __( 'Enable track orders Feature', 'track-orders-for-woocommerce' ),
+				'title' => __( 'Enable Track Orders Feature', 'track-orders-for-woocommerce' ),
 				'type'  => 'radio-switch',
-				'description'  => __( 'Enable Track Your Order Feature.', 'track-orders-for-woocommerce' ),
+				'description'  => __( '', 'track-orders-for-woocommerce' ),
 				'id'    => 'tofw_enable_track_order',
 				'value' => get_option( 'tofw_enable_track_order' ),
 				'class' => 'tofw-radio-switch-class',
@@ -486,7 +486,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			array(
 				'title' => __( 'Enable Use Of Custom Order Status', 'track-orders-for-woocommerce' ),
 				'type'  => 'radio-switch',
-				'description'  => __( 'Enable this setting to use custom status to enhance order tracking.', 'track-orders-for-woocommerce' ),
+				'description'  => __( '', 'track-orders-for-woocommerce' ),
 				'id'    => 'tofw_enable_use_custom_status',
 				'value' => get_option( 'tofw_enable_use_custom_status' ),
 				'class' => 'tofw-radio-switch-class',
@@ -510,7 +510,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			array(
 				'title' => __( 'Approval', 'track-orders-for-woocommerce' ),
 				'type'  => 'multiselect',
-				'description'  => __( 'Select Custom status to enhance tracking.', 'track-orders-for-woocommerce' ),
+				'description'  => __( 'Select Custom Order Status for the Approval Stage.', 'track-orders-for-woocommerce' ),
 				'id'    => 'wps_tofw_order_status_in_approval',
 				'value' => get_option( 'wps_tofw_order_status_in_approval' ),
 				'class' => 'tofw-multiselect-class wps-defaut-multiselect',
@@ -520,7 +520,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			array(
 				'title' => __( 'Processing', 'track-orders-for-woocommerce' ),
 				'type'  => 'multiselect',
-				'description'  => __( 'Select Custom status to enhance tracking.', 'track-orders-for-woocommerce' ),
+				'description'  => __( 'Select Custom Order Status for the Processing Stage.', 'track-orders-for-woocommerce' ),
 				'id'    => 'wps_tofw_order_status_in_processing',
 				'value' => get_option( 'wps_tofw_order_status_in_processing' ),
 				'class' => 'tofw-multiselect-class wps-defaut-multiselect',
@@ -530,7 +530,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			array(
 				'title' => __( 'Shipping', 'track-orders-for-woocommerce' ),
 				'type'  => 'multiselect',
-				'description'  => __( 'Select Custom status to enhance tracking.', 'track-orders-for-woocommerce' ),
+				'description'  => __( 'Select Custom Order Status for the Shipping Stage.', 'track-orders-for-woocommerce' ),
 				'id'    => 'wps_tofw_order_status_in_shipping',
 				'value' => get_option( 'wps_tofw_order_status_in_shipping' ),
 				'class' => 'tofw-multiselect-class wps-defaut-multiselect',
@@ -582,7 +582,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			array(
 				'title' => __( 'Custom Order Statuses', 'track-orders-for-woocommerce' ),
 				'type'  => 'multiselect',
-				'description'  => __( 'Select Custom status to use in tracking.', 'track-orders-for-woocommerce' ),
+				'description'  => __( 'Select Custom Statuses to Use in Tracking.', 'track-orders-for-woocommerce' ),
 				'id'    => 'tofw_selected_custom_order_status',
 				'value' => get_option( 'tofw_selected_custom_order_status' ),
 				'class' => 'tofw-multiselect-class wps-defaut-multiselect',
@@ -631,7 +631,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			array(
 				'title' => __( 'Enable Google Map For Tracking', 'track-orders-for-woocommerce' ),
 				'type'  => 'radio-switch',
-				'description'  => __( 'Enable Tracking Your Order With Google Map Api.', 'track-orders-for-woocommerce' ),
+				'description'  => __( 'Track Your Order With Google Map ApI.', 'track-orders-for-woocommerce' ),
 				'id'    => 'wps_tofw_trackorder_with_google_map',
 				'value' => get_option( 'wps_tofw_trackorder_with_google_map' ),
 				'class' => 'tofw-radio-switch-class',
@@ -641,9 +641,9 @@ class Track_Orders_For_Woocommerce_Admin {
 				),
 			),
 			array(
-				'title' => __( 'Enter Google Map Api Key', 'track-orders-for-woocommerce' ),
+				'title' => __( 'Enter Google Map API Key', 'track-orders-for-woocommerce' ),
 				'type'  => 'text',
-				'description'  => __( 'Enter Google Map Api Key.', 'track-orders-for-woocommerce' ),
+				'description'  =>'',
 				'id'    => 'wps_tofw_google_api_key',
 				'value' => get_option( 'wps_tofw_google_api_key' ),
 				'class' => '',
@@ -653,7 +653,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			array(
 				'title' => __( 'Enter Order Production House Address', 'track-orders-for-woocommerce' ),
 				'type'  => 'text',
-				'description'  => __( 'Enter your order production house address.', 'track-orders-for-woocommerce' ),
+				'description'  =>'',
 				'id'    => 'wps_tofw_order_production_address',
 				'value' => get_option( 'wps_tofw_order_production_address' ),
 				'class' => '',
@@ -663,7 +663,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			array(
 				'title' => __( 'Enter Addresses From Where Your Order Has Gone Through', 'track-orders-for-woocommerce' ),
 				'type'  => 'text',
-				'description'  => __( 'Enter the addresses one by one from where your order has gone through.', 'track-orders-for-woocommerce' ),
+				'description'  =>'',
 				'id'    => 'wps_tofw_track_order_addresses',
 				'value' => '',
 				'class' => '',
@@ -680,7 +680,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			array(
 				'title' => __( 'Selected Addresses', 'track-orders-for-woocommerce' ),
 				'type'  => 'multiselect',
-				'description'  => __( 'Select Custom status to enhance tracking.', 'track-orders-for-woocommerce' ),
+				'description'  => __( 'Select Your Hub Point Addresses From Where Your Order Has Gone Through.', 'track-orders-for-woocommerce' ),
 				'id'    => 'wps_tofw_selected_address',
 				'value' => get_option( 'wps_tofw_selected_address' ),
 				'class' => 'tofw-multiselect-class wps-defaut-multiselect',
@@ -716,9 +716,9 @@ class Track_Orders_For_Woocommerce_Admin {
 
 		$tofw_shipping_services_settings = array(
 			array(
-				'title' => __( 'Enable Third Party Tracking Api', 'track-orders-for-woocommerce' ),
+				'title' => __( 'Enable Third Party Tracking API', 'track-orders-for-woocommerce' ),
 				'type'  => 'radio-switch',
-				'description'  => __( 'Enable Third Party Tracking Api.', 'track-orders-for-woocommerce' ),
+				'description'  =>'',
 				'id'    => 'wps_tofw_enable_third_party_tracking_api',
 				'value' => get_option( 'wps_tofw_enable_third_party_tracking_api' ),
 				'class' => 'tofw-radio-switch-class',
@@ -730,7 +730,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			array(
 				'title' => __( 'Enter The Shop Address ', 'track-orders-for-woocommerce' ),
 				'type'  => 'text',
-				'description'  => __( 'Enter The Shop Address for the customer easiness.', 'track-orders-for-woocommerce' ),
+				'description'  =>'',
 				'id'    => 'wps_tofw_shop_address',
 				'value' => get_option( 'wps_tofw_shop_address' ),
 				'class' => '',
@@ -740,7 +740,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			array(
 				'title' => __( 'Enable FedEx Shipment Tracking', 'track-orders-for-woocommerce' ),
 				'type'  => 'radio-switch',
-				'description'  => __( 'Enable FedEx Shipment Tracking Api.', 'track-orders-for-woocommerce' ),
+				'description'  =>'',
 				'id'    => 'wps_tofw_enable_track_order_using_api',
 				'value' => get_option( 'wps_tofw_enable_track_order_using_api' ),
 				'class' => 'tofw-radio-switch-class',
@@ -752,7 +752,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			array(
 				'title' => __( 'Enter Your FedEx User Key  ', 'track-orders-for-woocommerce' ),
 				'type'  => 'text',
-				'description'  => __( 'Enable FedEx Shipment Tracking Api.', 'track-orders-for-woocommerce' ),
+				'description'  =>'',
 				'id'    => 'wps_fedex_userkey',
 				'value' => get_option( 'wps_fedex_userkey' ),
 				'class' => '',
@@ -762,7 +762,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			array(
 				'title' => __( 'Enter Your FedEx User Password   ', 'track-orders-for-woocommerce' ),
 				'type'  => 'text',
-				'description'  => __( 'Enter Your FedEx User Password .', 'track-orders-for-woocommerce' ),
+				'description'  =>'',
 				'id'    => 'wps_fedex_userpassword',
 				'value' => get_option( 'wps_fedex_userpassword' ),
 				'class' => '',
@@ -772,7 +772,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			array(
 				'title' => __( 'Enter Your FedEx Account Number', 'track-orders-for-woocommerce' ),
 				'type'  => 'text',
-				'description'  => __( 'Enter Your FedEx Account Number  .', 'track-orders-for-woocommerce' ),
+				'description'  =>'',
 				'id'    => 'wps_fedex_account_number',
 				'value' => get_option( 'wps_fedex_account_number' ),
 				'class' => '',
@@ -782,7 +782,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			array(
 				'title' => __( 'Enter Your FedEx Meter Number    ', 'track-orders-for-woocommerce' ),
 				'type'  => 'text',
-				'description'  => __( 'Enter Your FedEx Meter Number  .', 'track-orders-for-woocommerce' ),
+				'description'  =>'',
 				'id'    => 'wps_fedex_meter_number',
 				'value' => get_option( 'wps_fedex_meter_number' ),
 				'class' => '',
