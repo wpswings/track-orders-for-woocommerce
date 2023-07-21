@@ -1,112 +1,154 @@
-=== Track Orders For Woocommerce ===
+=== Track Orders for WooCommerce - Shipment Tracking, Order Status, Order Monitoring Templates & Google Maps Integration ===
 Contributors: wpswings
-Tags: comments, spam
-Requires at least: 4.6
-Tested up to: 4.9.5
+Donate link: https://wpswings.com/
+Tags: shipping, tracker, order Status, order tracking, track order, status tracking, shipment tracking, woocommerce order tracking
+Requires at least: 5.5.0
+Tested up to: 6.2.2
+WC requires at least: 5.5.0
+WC tested up to: 7.8.2
 Stable tag: 1.0.0
-License: GNU General Public License v3.0
-License URI: http://www.gnu.org/licenses/gpl-3.0.html
+Requires PHP: 7.2
+License: GPLv3 or later
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Here is a short description of the plugin.  This should be no more than 150 characters.  No markup here.
+Let customers track WooCommerce orders through interactive templates, customizable tracking stages & real-time updates. 
 
 == Description ==
+**KEEP YOUR CUSTOMERS INFORMED WITH REAL-TIME ORDER TRACKING AND ENGAGE THEIR MINDS AS THEY WAIT. ADD STAGES TO THE SHIPPING JOURNEY BASED ON YOUR FULFILLMENT PROCESS AND RENDER A COMPLETE ORDER TRACKING EXPERIENCE TO THE CUSTOMERS.**
 
-This is the long description.  No limit, and you can use Markdown (as well as in the following sections).
+Track Orders for WooCommerce is the only order-tracking system you’ll ever need. Using this extension, you can enable customers to monitor the delivery process. They can track the shipment from order placement to doorstep delivery. 
 
-For backwards compatibility, if this section is missing, the full length of the short description will be used, and
-Markdown parsed.
+Order tracker plugin goes beyond tracking. It lets you optimize the tracking module to make waiting less boring for your customers. On top of that, you can tailor the tracking stages to your shipping process.
 
-A few notes about the sections above:
+== WITH THE TRACK ORDERS FOR WOOCOMMERCE PLUGIN YOU CAN: ==
+* Track order with three immersive templates
+* Quick order tracker button for customers 
+* Show the icon for order status in the order table
+* Track orders using the unique order id only
+* Third-party Shipment Tracking (FedEx)
+* Enable Google Maps tracking for customers 
+* Let customers & guest export orders in a CSV file
+* Email notifications for order status
+* Show additional order details 
+* Create and use the custom order status
 
-*   "Contributors" is a comma separated list of people who have contributed for this plugin
-*   "Tags" is a comma separated list of tags that apply to the plugin
-*   "Requires at least" is the lowest version that the plugin will work on
-*   "Tested up to" is the highest version that you've *successfully used to test the plugin*. Note that it might work on
-higher versions... this is just the highest one you've verified.
-*   Stable tag should indicate the Subversion "tag" of the latest stable version, or "trunk," if you use `/trunk/` for
-stable.
+== ORDER TRACKER PLUGIN MEETS YOUR REQUIREMENT, SO == 
+[**Download Now!!**](https://downloads.wordpress.org/plugin/track-orders-for-woocommerce.zip)
 
-    Note that the `readme.txt` of the stable tag is the one that is considered the defining one for the plugin, so
-if the `/trunk/readme.txt` file says that the stable tag is `4.3`, then it is `/tags/4.3/readme.txt` that'll be used
-for displaying information about the plugin.  In this situation, the only thing considered from the trunk `readme.txt`
-is the stable tag pointer.  Thus, if you develop in trunk, you can update the trunk `readme.txt` to reflect changes in
-your in-development version, without having that information incorrectly disclosed about the current stable version
-that lacks those changes -- as long as the trunk's `readme.txt` points to the correct stable tag.
+== WHAT’S INCLUDED IN OUR FREE TRACK ORDERS FOR WOOCOMMERCE PLUGIN == 
 
-    If no stable tag is provided, it is assumed that trunk is stable, but you should specify "trunk" if that's where
-you put the stable version, in order to eliminate any doubt.
+**1) Track Order Using Pre-Built Templates**
+WooCommerce Order Tracker provides a diverse range of three distinct order-tracking templates, which enables you to incorporate captivating visual representations for different order statuses, such as on-hold, processing, delivery, and more. These templates offer an engaging and gamified experience to enhance the tracking process and keep customers informed at every stage of their orders. 
+
+**2) Create Custom Order Status**
+Order tracker for WooCommerce allows you to create and use custom order statuses tailored to your specific order fulfillment workflow. Define order statuses that cater to the distinct stages within your shipping process. Additionally, you can personalize each custom order status by assigning a chosen image that resonates with your brand. 
+
+**3) Track Order With Google Maps**
+The Track Order with Google Maps feature allows customers to track their orders in real-time using Google Maps API integration. You have to provide the Google Maps API key, the order production house address, and the lessons of the order transit locations. Once enabled, customers can view the progress of their order on a Google Maps map.
+
+**4) Third-party Shipment Tracking (FedEx)**
+Through the integration with FedEx's shipment tracking system, the WooCommerce order tracker plugin allows customers to track their packages in real time using the provided tracking code. It improves customer experience by giving up-to-date information on the progress of their shipments and ensuring transparency. 
+
+**5) Replace Order Status Text With Icons**
+You can replace the order status text with relevant icons in the order details table, allowing customers to quickly grasp the status of their orders at a glance. By utilizing icons that are associated with each specific order status, such as a checkmark for "completed" or a clock for "processing," the visual representation becomes more compelling and user-friendly. 
+
+**6) Email Notifications for Order Status**
+Use the order tracking plugin to implement automated email notifications that are triggered whenever the order status is updated. Let customers receive timely updates on any changes or progress to their orders, ensuring they stay informed and engaged with their purchase journey. 
+
+**7) Track Only Using Order ID**
+Enable them to track their orders effortlessly by solely entering their unique order ID, without the need for additional information such as email addresses or account logins. The WooCommerce order tracker plugin simplifies the tracking process and eliminates any potential friction that customers may encounter.
+
+**8) Order Export as CSV File**
+With the WooCommerce order tracker, logged-in users and guest users can export their order details in a comma-separated values (CSV) file, which contains details like Order ID, Status, Total, Items, Payment Method, Billing Name, and Email address. This allows users to view their complete order history and know their order statuses.
+
+**9) Order Information**
+Show customers information crucial to the order fulfillment process, such as the delivery partner, estimated delivery date, and tracking code. Including the delivery partner's name ensures transparency and allows customers to recognize the shipping company responsible for delivering their package. 
+
+Visit [**Track orders for WooCommerce Documentation**](https://docs.wpswings.com/track-orders-for-woocommerce?utm_source=wpswings-track-orders-doc&utm_medium=track-orders-org-page&utm_campaign=track-orders-doc) and learn more about the features and working of the plugin.
+
+== WHAT PREMIUM VERSION OF WOOCOMMERCE ORDER TRACKER OFFERS [COMING SOON] ==
+
+* Track order with 4 more new templates
+* Shortcode to create Order Tracking page
+* Shortcode to create Order Tracking form
+* Let customers track their orders in the pop-up box
+* Third-party Shipment Tracking (USPS & Canada Post) 
+* Tracking With Google Maps
+* Tracking With 17track.net
+* Custom Status for Bulk Action
+
+== SUPPORT ==
+If you need support or have questions, kindly use our online chat window [**here**](https://wpswings.com/?utm_source=wpswings-official&utm_medium=track-orders-org-page&utm_campaign=official) or connect with us then [**Generate a ticket**](https://wpswings.com/submit-query/?utm_source=wpswings-track-orders-submit-query&utm_medium=par-org-page&utm_campaign=submit-query)
+
+> If our documentation doesn’t contain the solution to your problem, you can visit the [**WP Swings Forums Community**](https://forums.wpswings.com/?utm_source=wpswings-forums&utm_medium=track-orders-org-page&utm_campaign=forum)
+
+> Create and Revamp your eCommerce store with [**WooCommerce Services**](https://wpswings.com/woocommerce-services/?utm_source=wpswings-track-orders-services&utm_medium=track-orders-org-page&utm_campaign=woocommerce-services) 
 
 == Installation ==
 
-This section describes how to install the plugin and get it working.
+= Automatic installation =
+Automatic installation is the easiest option as WordPress handles the file transfers itself and you don't need to leave your web browser. To do an automatic install of the plugin, log in to your WordPress dashboard, navigate to the Plugins menu, and click Add New.
 
-e.g.
+In the search field type **Track Orders for WooCommerce** and click Search Plugins. Once you've found our Track Orders for WooCommerce plugin you can view details about it such as the point release, rating, and description. Most importantly, of course, you can install it by simply clicking **Install Now**.
 
-1. Upload the `track-orders-for-woocommerce` folder to the `/wp-content/plugins/` directory
-2. Activate the plugin through the 'Plugins' menu in WordPress
+= Manual installation =
+The manual installation method involves downloading our Track Orders for WooCommerce and uploading it to your web server via your favorite FTP application. The WordPress codex contains [**instructions on how to do this here**](https://wordpress.org/support/article/managing-plugins/#manual-plugin-installation).
+
+
+== Screenshots ==
+1. **General Settings**
+2. **Users Tracking Their Orders**
+3. **Let Guest Users Export Their Orders**
+4. **Select Icons for Order Status**
+5. **Order Tracking E-Mail Notifications**
+6. **Track Order Settings**
+7. **Track Shipment Using Order ID Only**
+8. **Custom Order Status Settings**
+9. **Order Tracking Templates**
+10. **Export Order for Customers**
+11. **Track Orders With Google Maps**
+12. **Third-Party Shipping Services (FedEx)**
+
 
 == Frequently Asked Questions ==
 
-= A question that someone might have =
+=How do I enable the WooCommerce order tracking plugin?= 
+To enable shipment tracking, go to WooCommerce > Track Orders for WooCommerce. In the General Settings section, click on the "Enable Plugin" option.
 
-An answer to that question.
+=How can my users track my orders using the order tracker WooCommerce plugin?= To track your orders using the plugin, you can use the following methods:
+* Guest users can track their orders by visiting the following URL: [your-store-url]/guest-track-order-form/. They have to enter their order ID and email address in the form and click the "Track Order" button.
 
-= What about foo bar? =
+* Logged-in users: the logged-in user can track their orders from the account page. Click the "Orders" tab, and then click the "Track Order" button. 
 
-Answer to foo bar dilemma.
+=How do I create custom order statuses for my WooCommerce store?= 
+In the Track Order Settings section, click the "Create Order Status" button. Enter a name and default image for the order status, and then click the "Save Settings" button.
 
-== Screenshots ==
+=How do I enable Google Maps for order tracking in WooCommerce?=
+To enable Google Maps for order tracking in WooCommerce, go to the Track Order Settings section and enable the “Google Maps Tracking" option. Enter your Google Maps API key, the address of your order production house, and the addresses of any transit locations.
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
+=How do I enable third-party tracking APIs in WooCommerce?=
+To enable third-party tracking APIs in WooCommerce, go to the Shipping Services section, and click on the "Enable Third-Party Tracking APIs" option. Enter the physical address of the starting point of your shipping journey.
+
+=How do I customize the appearance of my WooCommerce order tracking pages?= 
+You can customize the appearance of your WooCommerce order tracking pages by going to the Templates section. Here, you can select from three different templates.
+
+=How should I allow customers to export their WooCommerce order data?= 
+Firstly enable the Logged-in User to export orders from the general settings. They can export their order data from my account > orders page. Complete order history will be downloaded in a CSV file.
+
+= My Question is not listed? =
+
+Check out [**Track Orders  for WooCommerce Knowledge Base**](https://support.wpswings.com/wordpress-plugins-knowledge-base/category/woocommerce-order-tracker/?utm_source=wpswings-track-orders-kb&utm_medium=track-orders-org-page&utm_campaign=kb)
+
 
 == Changelog ==
 
-= 1.0 =
-* A change since the previous version.
-* Another change.
+= 1.0.0 - Released on 21 July 2023 =
 
-= 0.5 =
-* List versions from most recent at top to oldest at bottom.
+* First version
+
 
 == Upgrade Notice ==
 
-= 1.0 =
-Upgrade notices describe the reason a user should upgrade.  No more than 300 characters.
+= 1.0.0 - Released on 21 July 2023 =
 
-= 0.5 =
-This version fixes a security related bug.  Upgrade immediately.
-
-== Arbitrary section ==
-
-You may provide arbitrary sections, in the same format as the ones above.  This may be of use for extremely complicated
-plugins where more information needs to be conveyed that doesn't fit into the categories of "description" or
-"installation."  Arbitrary sections will be shown below the built-in sections outlined above.
-
-== A brief Markdown Example ==
-
-Ordered list:
-
-1. Some feature
-1. Another feature
-1. Something else about the plugin
-
-Unordered list:
-
-* something
-* something else
-* third thing
-
-Here's a link to [WordPress](http://wordpress.org/ "Your favorite software") and one to [Markdown's Syntax Documentation][markdown syntax].
-Titles are optional, naturally.
-
-[markdown syntax]: http://daringfireball.net/projects/markdown/syntax
-            "Markdown is what the parser uses to process much of the readme file"
-
-Markdown uses email style notation for blockquotes and I've been told:
-> Asterisks for *emphasis*. Double it up  for **strong**.
-
-`<?php code(); // goes in backticks ?>`
+* First version
