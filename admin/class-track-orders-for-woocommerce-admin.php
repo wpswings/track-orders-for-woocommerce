@@ -546,7 +546,7 @@ class Track_Orders_For_Woocommerce_Admin {
 		 *
 		 * @since 1.0.0
 		 */
-		apply_filters( 'tofw_general_settings_array_filter', $tofw_track_order_settings );
+		apply_filters( 'tofw_track_order_settings_array_filter', $tofw_track_order_settings );
 
 		$tofw_track_order_settings[] = array(
 			'type'  => 'button',
