@@ -243,7 +243,13 @@ class Track_Orders_For_Woocommerce_Common {
 			$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
 			if ( is_page( $page_id ) ) {
 				if ( ' ' != $selected_template && null != $selected_template ) {
-					$new_template = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'template/wps-track-order-myaccount-page-' . $selected_template . '.php';
+					$path = '';
+					if( 'template4' === $selected_template || 'new-template1' === $selected_template || 'new-template2' === $selected_template || 'new-template3' === $selected_template ){
+						$path = TRACK_ORDERS_FOR_WOOCOMMERCE_PRO_DIR_PATH;
+					} else {
+						$path = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH;
+					}
+					$new_template = $path . 'template/wps-track-order-myaccount-page-' . $selected_template . '.php';
 					$template = $new_template;
 				} else {
 					$new_template = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'template/wps-track-order-myaccount-page-template1.php';

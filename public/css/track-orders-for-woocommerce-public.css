@@ -1319,7 +1319,7 @@ width: 200px;
 =            my new style            =
 ====================================*/
 .wps_order_tracking_path {
-  background-image: url("../images/ot.png");
+  background-image: url("../image/ot.png");
   background-position: center center;
   background-repeat: no-repeat;
   background-size: 100% auto;
