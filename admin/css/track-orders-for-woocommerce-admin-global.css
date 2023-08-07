@@ -592,7 +592,7 @@ input.role_box_open {
 .wps_tofw_temlate_name {
   float: left;
   font-size: 18px;
-  max-width: 50%;
+  /* max-width: 50%; */
   padding: 15px 10px;
 }
 .wps_tofw_temlate_name h4{
