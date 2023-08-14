@@ -1040,13 +1040,13 @@ class Track_Orders_For_Woocommerce_Admin {
 	 */
 	public function wps_tofw_tracking_order_meta_box() {
 		$wps_tofw_enable_track_order_feature = get_option( 'tofw_enable_track_order', 'no' );
-
+		$wps_tofwp_enable_track_17track_feature = get_option( 'wps_tofwp_enable_17track_integration', 'no' );
 		if ( 'on' != $wps_tofw_enable_track_order_feature ) {
 			return;
 		}
 		add_meta_box( 'wps_tofw_track_order', __( 'Enter Estimated Delivery Date', 'track-orders-for-woocommerce' ), array( $this, 'wps_tofw_track_order_metabox' ), 'shop_order', 'side' );
 		$wps_tofw_enable_track_order_api = get_option( 'wps_tofw_enable_third_party_tracking_api', 'no' );
-		if ( 'on' == $wps_tofw_enable_track_order_api ) {
+		if ( 'on' == $wps_tofw_enable_track_order_api || 'on' == $wps_tofwp_enable_track_17track_feature ) {
 			add_meta_box( 'wps_tofw_tracking_services', __( 'Select Service For Tracking Your Package', 'track-orders-for-woocommerce' ), array( $this, 'wps_tofw_track_order_services_metabox' ), 'shop_order', 'side' );
 		}
 		$wps_tofw_google_map_setting = get_option( 'wps_tofw_trackorder_with_google_map', false );
@@ -1131,8 +1131,8 @@ class Track_Orders_For_Woocommerce_Admin {
 	 */
 	public function wps_tofw_track_order_services_metabox() {
 		global $post, $thepostid, $theorder;
-		$wps_tofw_enable_track_order_api = get_option( 'wps_tofw_enable_third_party_tracking_api', 'no' );
-		$wps_tofw_enable_track_17track_feature = get_option( 'wps_tofw_enable_17track_integration', 'no' );
+		$wps_tofw_enable_track_order_feature = get_option( 'tofw_enable_track_order', 'no' );
+		$wps_tofwp_enable_track_17track_feature = get_option( 'wps_tofwp_enable_17track_integration', 'no' );
 
 		if ( '3.0.0' > WC()->version ) {
 			$order_id = $theorder->id;
@@ -1155,7 +1155,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			$wps_diffrent_shipping_services = apply_filters( 'wps_tofw_add_diffrent_shipping_services', $wps_diffrent_shipping_services );
 			$wps_tofw_track_id = get_post_meta( $order_id, 'wps_tofw_package_tracking_number', true );
 			$selected_method = get_post_meta( $order_id, 'wps_tofw_selected_shipping_service', true );
-		if ( 'on' == $wps_tofw_enable_track_order_api ) {
+		if ( 'on' == $wps_tofw_enable_track_order_feature ) {
 			?>
 					
 				<div class="wps_tofw_shipping_service_wrapper">
@@ -1183,7 +1183,15 @@ class Track_Orders_For_Woocommerce_Admin {
 				<input type="text" name="wps_tofw_tracking_number" id="wps_tofw_tracking_number" value="<?php echo esc_attr( $wps_tofw_track_id ); ?>" placeholder="<?php esc_attr_e( 'Enter Tracking Number', 'track-orders-for-woocommerce' ); ?>"></input>
 			</div>
 				<?php
-		}
+			} elseif ( 'on' == $wps_tofwp_enable_track_17track_feature ) {
+				?>
+				<div class="wps_tyo_ship_tracking_wrapper">
+					<label for="wps_tyo_user_tracking_number"><?php esc_html_e( '17Track Number', 'track-orders-for-woocommerce' ); ?></label>
+					<input type="text" name="wps_tyo_tracking_number" id="wps_tyo_tracking_number" value="<?php echo esc_attr( $wps_tyo_track_id ); ?>" placeholder="<?php esc_attr_e( 'Enter 17 Tracking Number', 'woocommerce-order-tracker' ); ?>"></input>
+				</div>
+				<?php
+			}
+		
 	}
 
 	/**
