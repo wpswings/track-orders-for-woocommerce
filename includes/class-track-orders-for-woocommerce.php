@@ -401,6 +401,9 @@ class Track_Orders_For_Woocommerce {
 			'name'        => 'track-orders-for-woocommerce-shipping-services',
 			'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-shipping-services.php',
 		);
+		$tofw_default_tabs =
+		// desc - filter for trial.
+		apply_filters( 'track_orders_for_woocmmerce_admin_settings_tabs', $tofw_default_tabs );
 		$tofw_default_tabs['track-orders-for-woocommerce-overview']      = array(
 			'title'       => esc_html__( 'Overview', 'track-orders-for-woocommerce' ),
 			'name'        => 'track-orders-for-woocommerce-overview',
@@ -412,9 +415,7 @@ class Track_Orders_For_Woocommerce {
 			'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-developer.php',
 		);
 
-		$tofw_default_tabs =
-		// desc - filter for trial.
-		apply_filters( 'track_orders_for_woocmmerce_admin_settings_tabs', $tofw_default_tabs );
+		
 
 		return $tofw_default_tabs;
 	}
@@ -426,19 +427,20 @@ class Track_Orders_For_Woocommerce {
 	 * @param string $path   path file for inclusion.
 	 * @param array  $params parameters to pass to the file for access.
 	 */
-	public function wps_std_plug_load_template( $path, $params = array() ) {
+	public function wps_tofw_plug_load_template( $path, $file_name) {
 
 		// $tofw_file_path = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . $path;
+		$tofw_file_path = apply_filters( 'wps_tofw_pro_tab_template_html', $path, $file_name );
+		// print_r(  $tofw_file_path );die;
+		include $tofw_file_path;
+		// if ( file_exists( $tofw_file_path ) ) {
 
-		if ( file_exists( $path ) ) {
+		// } else {
 
-			include $path;
-		} else {
-
-			/* translators: %s: file path */
-			$tofw_notice = sprintf( esc_html__( 'Unable to locate file at location "%s". Some features may not work properly in this plugin. Please contact us!', 'track-orders-for-woocommerce' ), $path );
-			$this->wps_std_plug_admin_notice( $tofw_notice, 'error' );
-		}
+		// 	/* translators: %s: file path */
+		// 	$tofw_notice = sprintf( esc_html__( 'Unable to locate file at location "%s". Some features may not work properly in this plugin. Please contact us!', 'track-orders-for-woocommerce' ), $tofw_file_path );
+		// 	$this->wps_std_plug_admin_notice( $tofw_notice, 'error' );
+		// }
 	}
 
 	/**

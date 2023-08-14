@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit(); // Exit if accessed directly.
 }
 
-global $wps_tofw_obj;
+global $wps_tofw_obj,$error_notice;
 $tofw_active_tab = isset( $_GET['tofw_tab'] ) ? sanitize_key( $_GET['tofw_tab'] ) : 'track-orders-for-woocommerce-general';
 $tofw_default_tabs = $wps_tofw_obj->wps_std_plug_default_tabs();
 ?>
@@ -32,6 +32,13 @@ $tofw_default_tabs = $wps_tofw_obj->wps_std_plug_default_tabs();
 		<a href="https://wpswings.com/contact-us/" target="_blank" class="wps-link"><?php esc_html_e( 'Support', 'track-orders-for-woocommerce' ); ?></a>
 	</div>
 </header>
+<?php
+do_action( 'wps_tofw_licensed_tab_section' );
+if ( ! $error_notice ) {
+	$wps_tofw_error_text = esc_html__( 'Settings saved !', 'track-orders-for-woocommerce' );
+	$tofw_wps_tofw_obj->wps_tofw_plug_admin_notice( $wps_tofw_error_text, 'success' );
+}
+?>
 <main class="wps-main wps-bg-white wps-r-8">
 	<nav class="wps-navbar">
 		<ul class="wps-navbar__items">
@@ -64,9 +71,11 @@ $tofw_default_tabs = $wps_tofw_obj->wps_std_plug_default_tabs();
 			}
 				// look for the path based on the tab id in the admin templates.
 				$tofw_default_tabs     = $wps_tofw_obj->wps_std_plug_default_tabs();
-
+				// look for the path based on the tab id in the admin templates.
+				// $tofw_tab_content_path = 'admin/partials/' . $tofw_active_tab . '.php';
+		
 				$tofw_tab_content_path = $tofw_default_tabs[ $tofw_active_tab ]['file_path'];
-				$wps_tofw_obj->wps_std_plug_load_template( $tofw_tab_content_path );
+				$wps_tofw_obj->wps_tofw_plug_load_template( $tofw_tab_content_path, $tofw_active_tab );
 				// desc - This hook is used for trial.
 				do_action( 'wps_msp_after_general_settings_form' );
 			?>
