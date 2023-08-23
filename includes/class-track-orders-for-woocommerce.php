@@ -431,16 +431,16 @@ class Track_Orders_For_Woocommerce {
 
 		// $tofw_file_path = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . $path;
 		$tofw_file_path = apply_filters( 'wps_tofw_pro_tab_template_html', $path, $file_name );
-		// print_r(  $tofw_file_path );die;
-		include $tofw_file_path;
-		// if ( file_exists( $tofw_file_path ) ) {
 
-		// } else {
+		if ( file_exists( $path ) ) {
 
-		// 	/* translators: %s: file path */
-		// 	$tofw_notice = sprintf( esc_html__( 'Unable to locate file at location "%s". Some features may not work properly in this plugin. Please contact us!', 'track-orders-for-woocommerce' ), $tofw_file_path );
-		// 	$this->wps_std_plug_admin_notice( $tofw_notice, 'error' );
-		// }
+		include ($path);
+
+		} else {
+			/* translators: %s: file path */
+			$etmfw_notice = sprintf( esc_html__( 'Unable to locate file at location "%s". Some features may not work properly in this plugin. Please contact us!', 'event-tickets-manager-for-woocommerce' ), $etmfw_file_path );
+			$this->wps_std_plug_admin_notice( $etmfw_notice, 'error' );
+		}
 	}
 
 	/**

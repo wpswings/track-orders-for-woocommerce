@@ -36,7 +36,7 @@ $tofw_default_tabs = $wps_tofw_obj->wps_std_plug_default_tabs();
 do_action( 'wps_tofw_licensed_tab_section' );
 if ( ! $error_notice ) {
 	$wps_tofw_error_text = esc_html__( 'Settings saved !', 'track-orders-for-woocommerce' );
-	$tofw_wps_tofw_obj->wps_tofw_plug_admin_notice( $wps_tofw_error_text, 'success' );
+	// $wps_tofw_obj->wps_std_plug_admin_notice( $wps_tofw_error_text, 'success' );.
 }
 ?>
 <main class="wps-main wps-bg-white wps-r-8">
