@@ -798,6 +798,7 @@ class Track_Orders_For_Woocommerce_Admin {
 		 * @since 1.0.0
 		 */
 		apply_filters( 'tofw_shipping_services_settings_array_filter', $tofw_shipping_services_settings );
+		
 
 		$tofw_shipping_services_settings[] = array(
 			'type'  => 'button',
