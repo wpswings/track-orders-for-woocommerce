@@ -277,8 +277,10 @@ class Track_Orders_For_Woocommerce {
 
 		$this->loader->add_action( 'woocommerce_order_details_after_order_table', $tofw_plugin_public, 'wps_tofw_track_order_button' );
 		$this->loader->add_action( 'woocommerce_order_details_before_order_table_items', $tofw_plugin_public, 'wps_tofw_track_order_info', 10, 1 );
-		$this->loader->add_action( 'woocommerce_my_account_my_orders_actions', $tofw_plugin_public, 'wps_tofw_add_track_order_button_on_orderpage', 10, 2 );
+		if ( ! in_array( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php', get_option( 'active_plugins', array() ), true ) ) {
+			$this->loader->add_action( 'woocommerce_my_account_my_orders_actions', $tofw_plugin_public, 'wps_tofw_add_track_order_button_on_orderpage', 10, 2 );
 
+		}
 		$this->loader->add_action( 'woocommerce_before_account_orders', $tofw_plugin_public, 'wps_wot_add_export_button_before_order_table', 10, 1 );
 		$this->loader->add_action( 'template_include', $tofw_plugin_public, 'wps_tofw_include_track_order_page', 10, 1 );
 		$this->loader->add_action( 'template_include', $tofw_plugin_public, 'wps_tofw_include_guest_track_order_page', 10, 1 );

@@ -122,7 +122,7 @@ class Track_Orders_For_Woocommerce_Public {
 		if ( 'on' != $wps_tofw_enable_track_order_feature ) {
 			return $actions;
 		}
-		$wps_tofw_enable_track_order_popup = get_option( 'wps_tofw_enable_track_order_popup', 'no' );
+		
 		$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
 		$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
 		if ( '3.0.0' > WC()->version ) {

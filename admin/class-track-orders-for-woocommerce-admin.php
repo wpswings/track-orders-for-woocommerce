@@ -140,6 +140,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			),
 		);
 		wp_enqueue_script( 'wps-admin-js' );
+		
 	}
 
 	/**

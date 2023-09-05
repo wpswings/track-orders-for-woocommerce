@@ -806,7 +806,7 @@ class Track_Orders_For_Woocommerce_Common {
 			$custom_order[] = array( 'shipped' => __( 'Order Shipped', 'track-orders-for-woocommerce' ) );
 			$custom_order[] = array( 'packed' => __( 'Order Packed', 'track-orders-for-woocommerce' ) );
 
-		if ( is_array( $custom_order ) && ! empty( $custom_order ) && ! empty($statuses) ) {
+		if ( is_array( $custom_order ) && ! empty( $custom_order ) && ! empty($statuses) && is_array( $statuses ) ) {
 			foreach ( $custom_order as $key1 => $value1 ) {
 				foreach ( $value1 as $custom_key => $custom_value ) {
 					if ( in_array( 'wc-' . $custom_key, $statuses ) ) {

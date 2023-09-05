@@ -10,7 +10,9 @@ section.wps-order-section::after {
   content: "";
   display: table;
 }
-
+.wps_track_order, a.thickbox {
+  margin-top: 15px !important;
+}
 .wps_tofw_enhanced_content {
   text-align: center;
   margin-bottom: 30px;
@@ -1174,7 +1176,7 @@ section#wps_tofw_wrapper {
   color: #fff;
 }
 
-.wps_tofw_'attachment-thumbnail.size-thumbnail.wp-post-image {
+.wps_tofw_attachment-thumbnail.size-thumbnail.wp-post-image {
 width: 200px;
 }
 
