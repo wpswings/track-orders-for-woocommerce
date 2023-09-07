@@ -1186,7 +1186,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			?>
 				<div class="wps_tyo_ship_tracking_wrapper">
 					<label for="wps_tyo_user_tracking_number"><?php esc_html_e( '17Track Number', 'track-orders-for-woocommerce' ); ?></label>
-					<input type="text" name="wps_tyo_tracking_number" id="wps_tyo_tracking_number" value="<?php echo esc_attr( $wps_tofw_track_id ); ?>" placeholder="<?php esc_attr_e( 'Enter 17 Tracking Number', 'woocommerce-order-tracker' ); ?>"></input>
+					<input type="text" name="wps_tofw_tracking_number" id="wps_tofw_tracking_number" value="<?php echo esc_attr( $wps_tofw_track_id ); ?>" placeholder="<?php esc_attr_e( 'Enter 17 Tracking Number', 'woocommerce-order-tracker' ); ?>"></input>
 				</div>
 				<?php
 		}
