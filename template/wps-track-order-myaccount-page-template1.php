@@ -1077,12 +1077,14 @@ $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 																 */
 																do_action( 'woocommerce_after_main_content' );
 																get_footer( 'shop' );
-															} elseif ( 'on' == $wps_tofw_enable_track_order_popup && $current_user_id > 0 && 0 != $order_id && '' != $order_id && null != $order_id ) { ?>
+															} elseif ( 'on' == $wps_tofw_enable_track_order_popup && $current_user_id > 0 && 0 != $order_id && '' != $order_id && null != $order_id ) {
+																// phpcs:disable
+																?>
 																<link rel="stylesheet" type="text/css" href="<?php echo esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . '/public/css/track-orders-for-woocommerce-public.css'; ?>" media="screen">
 																<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 																<script type="text/javascript" src="<?php echo esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'public/js/track-orders-for-woocommerce-public.js'; ?>"></script>
 																<?php
-																
+																// phpcs:disable
 																/**
 																 * Add content.
 																 *

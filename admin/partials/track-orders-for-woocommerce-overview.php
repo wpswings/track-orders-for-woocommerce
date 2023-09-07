@@ -25,7 +25,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<p>
 				<?php
 				esc_html_e(
-					'The "Track Orders for WooCommerce" plugin is a versatile tool that enhances the order-tracking functionality of your store. It provides a visually appealing interface for customers to track their orders, and the unique tracking ID is enough to show the shipping timeline to users. You can also utilize custom order statuses to match specific business requirements. Also, provide Google tracking functionality to your customers.', 'track-orders-for-woocommerce'
+					'The "Track Orders for WooCommerce" plugin is a versatile tool that enhances the order-tracking functionality of your store. It provides a visually appealing interface for customers to track their orders, and the unique tracking ID is enough to show the shipping timeline to users. You can also utilize custom order statuses to match specific business requirements. Also, provide Google tracking functionality to your customers.',
+					'track-orders-for-woocommerce'
 				);
 				?>
 			</p>

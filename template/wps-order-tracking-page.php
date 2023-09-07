@@ -48,20 +48,20 @@ if ( isset( $_POST['wps_track_package'] ) ) {
 <?php
 if ( $flag ) {
 	$wps_tofw_selected_shipping_method = get_post_meta( $wps_user_order_id, 'wps_tofw_selected_shipping_service', true );
-	
+
 	if ( isset( $wps_tofw_selected_shipping_method ) && ( 'fedex' == $wps_tofw_selected_shipping_method ) ) {
 		include_once TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'integration/class-track-orders-for-woocommerce-with-fedex.php';
 		$request = new Track_Orders_For_Woocommerce_With_FedEx();
 		$request->fedex_request( $wps_user_order_id );
 	} else if ( isset( $wps_tofw_selected_shipping_method ) && ( 'canada_post' == $wps_tofw_selected_shipping_method ) ) {
 
-		do_action('wps_track_orders_canada_post', $wps_user_order_id);
+		do_action( 'wps_track_orders_canada_post', $wps_user_order_id );
 		include_once TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'integration/class-track-orders-for-woocommerce-with-fedex.php';
-	
+
 
 	} else if ( isset( $wps_tofw_selected_shipping_method ) && ( 'usps' == $wps_tofw_selected_shipping_method ) ) {
-		do_action('wps_track_orders_usps', $wps_user_order_id);
-		
+		do_action( 'wps_track_orders_usps', $wps_user_order_id );
+
 		?>
 			<div class="wps_tofw_shipment_tracking_warning_msg">
 				<h4><?php esc_html_e( 'Service Not Available', 'track-orders-for-woocommerce' ); ?></h4>	

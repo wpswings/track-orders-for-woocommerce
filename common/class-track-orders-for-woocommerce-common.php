@@ -244,7 +244,7 @@ class Track_Orders_For_Woocommerce_Common {
 			if ( is_page( $page_id ) ) {
 				if ( ' ' != $selected_template && null != $selected_template ) {
 					$path = '';
-					if( 'template4' === $selected_template || 'new-template1' === $selected_template || 'new-template2' === $selected_template || 'new-template3' === $selected_template ){
+					if ( 'template4' === $selected_template || 'new-template1' === $selected_template || 'new-template2' === $selected_template || 'new-template3' === $selected_template ) {
 						$path = TRACK_ORDERS_FOR_WOOCOMMERCE_PRO_DIR_PATH;
 					} else {
 						$path = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH;
@@ -724,7 +724,7 @@ class Track_Orders_For_Woocommerce_Common {
 		if ( 'on' !== $wps_tofw_enable_track_order_feature || 'on' !== $wps_tofw_enable_custom_order_feature ) {
 			return;
 		}
-		
+
 		register_post_status(
 			'wc-packed',
 			array(
@@ -737,7 +737,7 @@ class Track_Orders_For_Woocommerce_Common {
 				'label_count'               => false,
 			)
 		);
-		
+
 		register_post_status(
 			'wc-dispatched',
 			array(
@@ -750,7 +750,7 @@ class Track_Orders_For_Woocommerce_Common {
 				'label_count'               => _n_noop( 'Order Dispatched <span class="count">(%s)</span>', 'Order Dispatched <span class="count">(%s)</span>' ),
 			)
 		);
-	
+
 		register_post_status(
 			'wc-shipped',
 			array(
@@ -760,7 +760,7 @@ class Track_Orders_For_Woocommerce_Common {
 				'show_in_admin_all_list'    => true,
 				'show_in_admin_status_list' => true,
 				/* translators: %s: count */
-				'label_count'               =>false,
+				'label_count'               => false,
 			)
 		);
 
@@ -806,7 +806,7 @@ class Track_Orders_For_Woocommerce_Common {
 			$custom_order[] = array( 'shipped' => __( 'Order Shipped', 'track-orders-for-woocommerce' ) );
 			$custom_order[] = array( 'packed' => __( 'Order Packed', 'track-orders-for-woocommerce' ) );
 
-		if ( is_array( $custom_order ) && ! empty( $custom_order ) && ! empty($statuses) && is_array( $statuses ) ) {
+		if ( is_array( $custom_order ) && ! empty( $custom_order ) && ! empty( $statuses ) && is_array( $statuses ) ) {
 			foreach ( $custom_order as $key1 => $value1 ) {
 				foreach ( $value1 as $custom_key => $custom_value ) {
 					if ( in_array( 'wc-' . $custom_key, $statuses ) ) {
@@ -815,7 +815,7 @@ class Track_Orders_For_Woocommerce_Common {
 				}
 			}
 		}
-			
+
 			return $order_statuses;
 	}
 

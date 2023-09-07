@@ -224,8 +224,6 @@ class Track_Orders_For_Woocommerce {
 		$this->loader->add_action( 'save_post', $tofw_plugin_admin, 'wps_tofw_save_delivery_date_meta' );
 		$this->loader->add_action( 'save_post', $tofw_plugin_admin, 'wps_tofw_save_shipping_services_meta' );
 		$this->loader->add_action( 'save_post', $tofw_plugin_admin, 'wps_tofw_save_custom_shipping_cities_meta' );
-		
-		
 
 	}
 
@@ -242,23 +240,23 @@ class Track_Orders_For_Woocommerce {
 		$this->loader->add_action( 'wp_enqueue_scripts', $tofw_plugin_common, 'tofw_common_enqueue_styles' );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $tofw_plugin_common, 'tofw_common_enqueue_scripts' );
+		if ( 'on' == get_option( 'wps_tofw_is_plugin_enable' ) ) {
+			// Save ajax request for the plugin's multistep.
+			$this->loader->add_action( 'wp_ajax_tofw_wps_standard_save_settings_filter', $tofw_plugin_common, 'tofw_wps_standard_save_settings_filter' );
+			$this->loader->add_action( 'wp_ajax_nopriv_tofw_wps_standard_save_settings_filter', $tofw_plugin_common, 'tofw_wps_standard_save_settings_filter' );
+			if ( self::is_enbale_usage_tracking() ) {
+				$this->loader->add_action( 'wpswings_tracker_send_event', $tofw_plugin_common, 'tofw_wpswings_tracker_send_event' );
+			}
+			// license validation.
 
-		// Save ajax request for the plugin's multistep.
-		$this->loader->add_action( 'wp_ajax_tofw_wps_standard_save_settings_filter', $tofw_plugin_common, 'tofw_wps_standard_save_settings_filter' );
-		$this->loader->add_action( 'wp_ajax_nopriv_tofw_wps_standard_save_settings_filter', $tofw_plugin_common, 'tofw_wps_standard_save_settings_filter' );
-		if ( self::is_enbale_usage_tracking() ) {
-			$this->loader->add_action( 'wpswings_tracker_send_event', $tofw_plugin_common, 'tofw_wpswings_tracker_send_event' );
+			$this->loader->add_filter( 'template_include', $tofw_plugin_common, 'wps_tofw_include_track_order_page', 10, 1 );
+			$this->loader->add_action( 'woocommerce_order_status_changed', $tofw_plugin_common, 'wps_tofw_track_order_status', 10, 3 );
+
+			$this->loader->add_action( 'wp_ajax_wps_wot_export_my_orders', $tofw_plugin_common, 'wps_tofw_export_my_orders_callback' );
+			$this->loader->add_action( 'wp_ajax_nopriv_wps_tofw_export_my_orders_guest_user', $tofw_plugin_common, 'wps_tofw_export_my_orders_guest_user_callback' );
+			$this->loader->add_action( 'init', $tofw_plugin_common, 'wps_tofw_register_custom_order_status' );
+			$this->loader->add_action( 'wc_order_statuses', $tofw_plugin_common, 'wps_tofw_add_custom_order_status', 10, 1 );
 		}
-		// license validation.
-
-		$this->loader->add_filter( 'template_include', $tofw_plugin_common, 'wps_tofw_include_track_order_page', 10, 1 );
-		$this->loader->add_action( 'woocommerce_order_status_changed', $tofw_plugin_common, 'wps_tofw_track_order_status', 10, 3 );
-
-		$this->loader->add_action( 'wp_ajax_wps_wot_export_my_orders', $tofw_plugin_common, 'wps_tofw_export_my_orders_callback' );
-		$this->loader->add_action( 'wp_ajax_nopriv_wps_tofw_export_my_orders_guest_user', $tofw_plugin_common, 'wps_tofw_export_my_orders_guest_user_callback' );
-		$this->loader->add_action( 'init', $tofw_plugin_common, 'wps_tofw_register_custom_order_status' );
-		$this->loader->add_action( 'wc_order_statuses', $tofw_plugin_common, 'wps_tofw_add_custom_order_status', 10, 1 );
-
 	}
 
 	/**
@@ -275,17 +273,18 @@ class Track_Orders_For_Woocommerce {
 		$this->loader->add_action( 'wp_enqueue_scripts', $tofw_plugin_public, 'tofw_public_enqueue_scripts' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $tofw_plugin_public, 'tofw_public_enqueue_scripts' );
 
-		$this->loader->add_action( 'woocommerce_order_details_after_order_table', $tofw_plugin_public, 'wps_tofw_track_order_button' );
-		$this->loader->add_action( 'woocommerce_order_details_before_order_table_items', $tofw_plugin_public, 'wps_tofw_track_order_info', 10, 1 );
-		if ( ! in_array( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php', get_option( 'active_plugins', array() ), true ) ) {
-			$this->loader->add_action( 'woocommerce_my_account_my_orders_actions', $tofw_plugin_public, 'wps_tofw_add_track_order_button_on_orderpage', 10, 2 );
+		if ( 'on' == get_option( 'wps_tofw_is_plugin_enable' ) ) {
+			$this->loader->add_action( 'woocommerce_order_details_after_order_table', $tofw_plugin_public, 'wps_tofw_track_order_button' );
+			$this->loader->add_action( 'woocommerce_order_details_before_order_table_items', $tofw_plugin_public, 'wps_tofw_track_order_info', 10, 1 );
+			if ( ! in_array( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php', get_option( 'active_plugins', array() ), true ) ) {
+				$this->loader->add_action( 'woocommerce_my_account_my_orders_actions', $tofw_plugin_public, 'wps_tofw_add_track_order_button_on_orderpage', 10, 2 );
 
+			}
+			$this->loader->add_action( 'woocommerce_before_account_orders', $tofw_plugin_public, 'wps_wot_add_export_button_before_order_table', 10, 1 );
+			$this->loader->add_action( 'template_include', $tofw_plugin_public, 'wps_tofw_include_track_order_page', 10, 1 );
+			$this->loader->add_action( 'template_include', $tofw_plugin_public, 'wps_tofw_include_guest_track_order_page', 10, 1 );
+			$this->loader->add_action( 'template_include', $tofw_plugin_public, 'wps_ordertracking_page', 10, 1 );
 		}
-		$this->loader->add_action( 'woocommerce_before_account_orders', $tofw_plugin_public, 'wps_wot_add_export_button_before_order_table', 10, 1 );
-		$this->loader->add_action( 'template_include', $tofw_plugin_public, 'wps_tofw_include_track_order_page', 10, 1 );
-		$this->loader->add_action( 'template_include', $tofw_plugin_public, 'wps_tofw_include_guest_track_order_page', 10, 1 );
-		$this->loader->add_action( 'template_include', $tofw_plugin_public, 'wps_ordertracking_page', 10, 1 );
-
 	}
 
 	/**
@@ -417,8 +416,6 @@ class Track_Orders_For_Woocommerce {
 			'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-developer.php',
 		);
 
-		
-
 		return $tofw_default_tabs;
 	}
 
@@ -427,20 +424,20 @@ class Track_Orders_For_Woocommerce {
 	 *
 	 * @since 1.0.0
 	 * @param string $path   path file for inclusion.
-	 * @param array  $params parameters to pass to the file for access.
+	 * @param array  $file_name parameters to pass to the file for access.
 	 */
-	public function wps_tofw_plug_load_template( $path, $file_name) {
+	public function wps_tofw_plug_load_template( $path, $file_name ) {
 
 		// $tofw_file_path = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . $path;
 		$tofw_file_path = apply_filters( 'wps_tofw_pro_tab_template_html', $path, $file_name );
 
 		if ( file_exists( $path ) ) {
 
-		include ($path);
+			include( $path );
 
 		} else {
 			/* translators: %s: file path */
-			$etmfw_notice = sprintf( esc_html__( 'Unable to locate file at location "%s". Some features may not work properly in this plugin. Please contact us!', 'event-tickets-manager-for-woocommerce' ), $etmfw_file_path );
+			$etmfw_notice = sprintf( esc_html__( 'Unable to locate file at location "%s". Some features may not work properly in this plugin. Please contact us!', 'event-tickets-manager-for-woocommerce' ), $path );
 			$this->wps_std_plug_admin_notice( $etmfw_notice, 'error' );
 		}
 	}

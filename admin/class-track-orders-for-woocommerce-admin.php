@@ -140,7 +140,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			),
 		);
 		wp_enqueue_script( 'wps-admin-js' );
-		
+
 	}
 
 	/**
@@ -474,7 +474,6 @@ class Track_Orders_For_Woocommerce_Admin {
 			array(
 				'title' => __( 'Enable Track Orders Feature', 'track-orders-for-woocommerce' ),
 				'type'  => 'radio-switch',
-				'description'  => __( '', 'track-orders-for-woocommerce' ),
 				'id'    => 'tofw_enable_track_order',
 				'value' => get_option( 'tofw_enable_track_order' ),
 				'class' => 'tofw-radio-switch-class',
@@ -487,7 +486,6 @@ class Track_Orders_For_Woocommerce_Admin {
 			array(
 				'title' => __( 'Enable Use Of Custom Order Status', 'track-orders-for-woocommerce' ),
 				'type'  => 'radio-switch',
-				'description'  => __( '', 'track-orders-for-woocommerce' ),
 				'id'    => 'tofw_enable_use_custom_status',
 				'value' => get_option( 'tofw_enable_use_custom_status' ),
 				'class' => 'tofw-radio-switch-class',
@@ -644,7 +642,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			array(
 				'title' => __( 'Enter Google Map API Key', 'track-orders-for-woocommerce' ),
 				'type'  => 'text',
-				'description'  =>'',
+				'description'  => '',
 				'id'    => 'wps_tofw_google_api_key',
 				'value' => get_option( 'wps_tofw_google_api_key' ),
 				'class' => '',
@@ -654,7 +652,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			array(
 				'title' => __( 'Enter Order Production House Address', 'track-orders-for-woocommerce' ),
 				'type'  => 'text',
-				'description'  =>'',
+				'description'  => '',
 				'id'    => 'wps_tofw_order_production_address',
 				'value' => get_option( 'wps_tofw_order_production_address' ),
 				'class' => '',
@@ -664,7 +662,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			array(
 				'title' => __( 'Enter Addresses From Where Your Order Has Gone Through', 'track-orders-for-woocommerce' ),
 				'type'  => 'text',
-				'description'  =>'',
+				'description'  => '',
 				'id'    => 'wps_tofw_track_order_addresses',
 				'value' => '',
 				'class' => '',
@@ -719,7 +717,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			array(
 				'title' => __( 'Enable Third Party Tracking API', 'track-orders-for-woocommerce' ),
 				'type'  => 'radio-switch',
-				'description'  =>'',
+				'description'  => '',
 				'id'    => 'wps_tofw_enable_third_party_tracking_api',
 				'value' => get_option( 'wps_tofw_enable_third_party_tracking_api' ),
 				'class' => 'tofw-radio-switch-class',
@@ -731,7 +729,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			array(
 				'title' => __( 'Enter The Shop Address ', 'track-orders-for-woocommerce' ),
 				'type'  => 'text',
-				'description'  =>'',
+				'description'  => '',
 				'id'    => 'wps_tofw_shop_address',
 				'value' => get_option( 'wps_tofw_shop_address' ),
 				'class' => '',
@@ -741,7 +739,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			array(
 				'title' => __( 'Enable FedEx Shipment Tracking', 'track-orders-for-woocommerce' ),
 				'type'  => 'radio-switch',
-				'description'  =>'',
+				'description'  => '',
 				'id'    => 'wps_tofw_enable_track_order_using_api',
 				'value' => get_option( 'wps_tofw_enable_track_order_using_api' ),
 				'class' => 'tofw-radio-switch-class',
@@ -753,7 +751,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			array(
 				'title' => __( 'Enter Your FedEx User Key  ', 'track-orders-for-woocommerce' ),
 				'type'  => 'text',
-				'description'  =>'',
+				'description'  => '',
 				'id'    => 'wps_fedex_userkey',
 				'value' => get_option( 'wps_fedex_userkey' ),
 				'class' => '',
@@ -763,7 +761,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			array(
 				'title' => __( 'Enter Your FedEx User Password   ', 'track-orders-for-woocommerce' ),
 				'type'  => 'text',
-				'description'  =>'',
+				'description'  => '',
 				'id'    => 'wps_fedex_userpassword',
 				'value' => get_option( 'wps_fedex_userpassword' ),
 				'class' => '',
@@ -773,7 +771,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			array(
 				'title' => __( 'Enter Your FedEx Account Number', 'track-orders-for-woocommerce' ),
 				'type'  => 'text',
-				'description'  =>'',
+				'description'  => '',
 				'id'    => 'wps_fedex_account_number',
 				'value' => get_option( 'wps_fedex_account_number' ),
 				'class' => '',
@@ -783,7 +781,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			array(
 				'title' => __( 'Enter Your FedEx Meter Number    ', 'track-orders-for-woocommerce' ),
 				'type'  => 'text',
-				'description'  =>'',
+				'description'  => '',
 				'id'    => 'wps_fedex_meter_number',
 				'value' => get_option( 'wps_fedex_meter_number' ),
 				'class' => '',
@@ -799,7 +797,6 @@ class Track_Orders_For_Woocommerce_Admin {
 		 * @since 1.0.0
 		 */
 		apply_filters( 'tofw_shipping_services_settings_array_filter', $tofw_shipping_services_settings );
-		
 
 		$tofw_shipping_services_settings[] = array(
 			'type'  => 'button',
@@ -1133,7 +1130,7 @@ class Track_Orders_For_Woocommerce_Admin {
 	 */
 	public function wps_tofw_track_order_services_metabox() {
 		global $post, $thepostid, $theorder;
-		$wps_tofw_enable_track_order_feature = get_option( 'tofw_enable_track_order', 'no' );
+		$wps_tofw_enable_track_order_feature = get_option( 'wps_tofw_enable_third_party_tracking_api', 'no' );
 		$wps_tofwp_enable_track_17track_feature = get_option( 'wps_tofwp_enable_17track_integration', 'no' );
 
 		if ( '3.0.0' > WC()->version ) {
@@ -1185,15 +1182,15 @@ class Track_Orders_For_Woocommerce_Admin {
 				<input type="text" name="wps_tofw_tracking_number" id="wps_tofw_tracking_number" value="<?php echo esc_attr( $wps_tofw_track_id ); ?>" placeholder="<?php esc_attr_e( 'Enter Tracking Number', 'track-orders-for-woocommerce' ); ?>"></input>
 			</div>
 				<?php
-			} elseif ( 'on' == $wps_tofwp_enable_track_17track_feature ) {
-				?>
+		} elseif ( 'on' == $wps_tofwp_enable_track_17track_feature ) {
+			?>
 				<div class="wps_tyo_ship_tracking_wrapper">
 					<label for="wps_tyo_user_tracking_number"><?php esc_html_e( '17Track Number', 'track-orders-for-woocommerce' ); ?></label>
-					<input type="text" name="wps_tyo_tracking_number" id="wps_tyo_tracking_number" value="<?php echo esc_attr( $wps_tyo_track_id ); ?>" placeholder="<?php esc_attr_e( 'Enter 17 Tracking Number', 'woocommerce-order-tracker' ); ?>"></input>
+					<input type="text" name="wps_tyo_tracking_number" id="wps_tyo_tracking_number" value="<?php echo esc_attr( $wps_tofw_track_id ); ?>" placeholder="<?php esc_attr_e( 'Enter 17 Tracking Number', 'woocommerce-order-tracker' ); ?>"></input>
 				</div>
 				<?php
-			}
-		
+		}
+
 	}
 
 	/**
@@ -1449,7 +1446,7 @@ class Track_Orders_For_Woocommerce_Admin {
 
 	}
 
-	
+
 
 
 }

@@ -82,7 +82,7 @@ if ( 'template1' == $activated_template ) {
 			</div>
 		</div>
 	</div>
-	<?php do_action( 'wps_tofw_template_tab',$template4, $new_template1, $new_template2, $new_template3 ); ?>
+	<?php do_action( 'wps_tofw_template_tab', $template4, $new_template1, $new_template2, $new_template3 ); ?>
 </div>
 	
 <div class="hidden_wrapper">

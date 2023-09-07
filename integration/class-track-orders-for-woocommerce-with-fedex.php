@@ -6,6 +6,7 @@
  * @package  Woocommece_Order_Tracker/Include
  */
 
+// phpcs:ignoreFile.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -118,7 +119,7 @@ if ( ! class_exists( 'Track_Orders_For_Woocommerce_With_FedEx' ) ) {
 						$response = $client->track( $request );
 
 						$fedex_response = $response->CompletedTrackDetails;
-						
+
 						$wps_counter = 0;
 						$f = 0;
 						if ( isset( $fedex_response->TrackDetails->Events ) && ! empty( $fedex_response->TrackDetails->Events ) ) {
