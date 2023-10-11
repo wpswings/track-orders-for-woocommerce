@@ -75,7 +75,7 @@ class Track_Orders_For_Woocommerce {
 		if ( defined( 'TRACK_ORDERS_FOR_WOOCOMMERCE_VERSION' ) ) {
 			$this->version = TRACK_ORDERS_FOR_WOOCOMMERCE_VERSION;
 		} else {
-			$this->version = '1.0.1';
+			$this->version = '1.0.0';
 		}
 
 		$this->plugin_name = 'track-orders-for-woocommerce';
