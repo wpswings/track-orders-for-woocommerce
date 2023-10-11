@@ -6,7 +6,6 @@
  * @package  Woocommece_Order_Tracker/Include
  */
 
-// phpcs:ignoreFile.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
