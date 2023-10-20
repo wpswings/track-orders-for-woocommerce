@@ -19,11 +19,11 @@ $tofw_developer_admin_hooks =
 // desc - filter for trial.
 apply_filters( 'tofw_developer_admin_hooks_array', array() );
 
-$count_admin                = filtered_array( $tofw_developer_admin_hooks );
+$count_admin                = track_orders_filtered_array( $tofw_developer_admin_hooks );
 $tofw_developer_public_hooks =
 // desc - filter for trial.
 apply_filters( 'tofw_developer_public_hooks_array', array() );
-$count_public = filtered_array( $tofw_developer_public_hooks );
+$count_public = track_orders_filtered_array( $tofw_developer_public_hooks );
 ?>
 <!--  template file for admin settings. -->
 <div class="tofw-section-wrap">
@@ -44,11 +44,11 @@ $count_public = filtered_array( $tofw_developer_public_hooks );
 					foreach ( $count_admin as $k => $v ) {
 						if ( isset( $v['action_hook'] ) ) {
 							?>
-						<tr class="mdc-data-table__row"><td class="mdc-data-table__cell"><?php esc_html_e( 'Action Hook', 'track-orders-for-woocommerce' ); ?></td><td class="mdc-data-table__cell"><?php echo esc_html( $v['action_hook'] ); ?></td><td class="mdc-data-table__cell"><?php echo esc_html( $v['desc'] ); ?></td></tr>
+						<tr class="mdc-data-table__row"><td class="mdc-data-table__cell"><?php esc_html_e( 'Action Hook', 'track-orders-for-woocommerce' ); ?></td><td class="mdc-data-table__cell"><?php echo esc_html( $v['action_hook'] ); ?></td><td class="mdc-data-table__cell"><?php echo esc_html( $v['track_orders_desc'] ); ?></td></tr>
 							<?php
 						} else {
 							?>
-							<tr class="mdc-data-table__row"><td class="mdc-data-table__cell"><?php esc_html_e( 'Filter Hook', 'track-orders-for-woocommerce' ); ?></td><td class="mdc-data-table__cell"><?php echo esc_html( $v['filter_hook'] ); ?></td><td class="mdc-data-table__cell"><?php echo esc_html( $v['desc'] ); ?></td></tr>
+							<tr class="mdc-data-table__row"><td class="mdc-data-table__cell"><?php esc_html_e( 'Filter Hook', 'track-orders-for-woocommerce' ); ?></td><td class="mdc-data-table__cell"><?php echo esc_html( $v['filter_hook'] ); ?></td><td class="mdc-data-table__cell"><?php echo esc_html( $v['track_orders_desc'] ); ?></td></tr>
 							<?php
 						}
 					}
@@ -79,11 +79,11 @@ $count_public = filtered_array( $tofw_developer_public_hooks );
 					foreach ( $count_public as $k => $v ) {
 						if ( isset( $v['action_hook'] ) ) {
 							?>
-						<tr class="mdc-data-table__row"><td class="mdc-data-table__cell"><?php esc_html_e( 'Action Hook', 'track-orders-for-woocommerce' ); ?></td><td class="mdc-data-table__cell"><?php echo esc_html( $v['action_hook'] ); ?></td><td class="mdc-data-table__cell"><?php echo esc_html( $v['desc'] ); ?></td></tr>
+						<tr class="mdc-data-table__row"><td class="mdc-data-table__cell"><?php esc_html_e( 'Action Hook', 'track-orders-for-woocommerce' ); ?></td><td class="mdc-data-table__cell"><?php echo esc_html( $v['action_hook'] ); ?></td><td class="mdc-data-table__cell"><?php echo esc_html( $v['track_orders_desc'] ); ?></td></tr>
 							<?php
 						} else {
 							?>
-							<tr class="mdc-data-table__row"><td class="mdc-data-table__cell"><?php esc_html_e( 'Filter Hook', 'track-orders-for-woocommerce' ); ?></td><td class="mdc-data-table__cell"><?php echo esc_html( $v['filter_hook'] ); ?></td><td class="mdc-data-table__cell"><?php echo esc_html( $v['desc'] ); ?></td></tr>
+							<tr class="mdc-data-table__row"><td class="mdc-data-table__cell"><?php esc_html_e( 'Filter Hook', 'track-orders-for-woocommerce' ); ?></td><td class="mdc-data-table__cell"><?php echo esc_html( $v['filter_hook'] ); ?></td><td class="mdc-data-table__cell"><?php echo esc_html( $v['track_orders_desc'] ); ?></td></tr>
 							<?php
 						}
 					}
@@ -106,7 +106,7 @@ $count_public = filtered_array( $tofw_developer_public_hooks );
  * @param array $argu is an array.
  * @return array
  */
-function filtered_array( $argu ) {
+function track_orders_filtered_array( $argu ) {
 	$count_admin = array();
 	foreach ( $argu as $key => $value ) {
 		foreach ( $value as $k => $originvalue ) {
@@ -122,8 +122,8 @@ function filtered_array( $argu ) {
 				$val                            = str_replace( "',array());", '', $val );
 				$count_admin[ $k ]['filter_hook'] = $val;
 			}
-			$vale                    = str_replace( '//desc - ', '', $originvalue['desc'] );
-			$count_admin[ $k ]['desc'] = $vale;
+			$vale                    = str_replace( '//desc - ', '', $originvalue['track_orders_desc'] );
+			$count_admin[ $k ]['track_orders_desc'] = $vale;
 		}
 	}
 	return $count_admin;

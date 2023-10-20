@@ -38,7 +38,7 @@ if ( true == $allowed ) {
 			$myaccount_page = get_option( 'woocommerce_myaccount_page_id' );
 			$myaccount_page_url = get_permalink( $myaccount_page );
 		} else {
-			$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
+			$wps_tofw_pages = get_option( 'track_orders_tracking_page' );
 			$page_id = $wps_tofw_pages['pages']['wps_guest_track_order_page'];
 			$myaccount_page_url = get_permalink( $page_id );
 		}
@@ -77,11 +77,11 @@ if ( true == $allowed ) {
 			if ( 'on' != get_option( 'wps_tofw_enable_track_order_using_order_id', 'no' ) ) {
 
 				if ( isset( $_SESSION['wps_tofw_email'] ) ) {
-					$tofw_user_email = $_SESSION['wps_tofw_email'];
+					$tofw_user_email = sanitize_text_field( wp_unslash( $_SESSION['wps_tofw_email'] ) );
 					$order_email = get_post_meta( $order_id, '_billing_email', true );
 					if ( $tofw_user_email != $order_email ) {
 						$allowed = false;
-						$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
+						$wps_tofw_pages = get_option( 'track_orders_tracking_page' );
 						$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
 						$myaccount_page_url = get_permalink( $page_id );
 						$reason = __( 'This order #', 'track-orders-for-woocommerce' ) . $order_id . __( 'is not associated to your account.', 'track-orders-for-woocommerce' ) . "<a href='$myaccount_page_url'>" . __( 'Click Here ', 'track-orders-for-woocommerce' ) . '</a>';
@@ -100,7 +100,7 @@ if ( true == $allowed ) {
 		}
 	}
 } else {
-	$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
+	$wps_tofw_pages = get_option( 'track_orders_tracking_page' );
 	$page_id = $wps_tofw_pages['pages']['wps_guest_track_order_page'];
 	$track_order_url = get_permalink( $page_id );
 	header( 'Location: ' . $track_order_url );

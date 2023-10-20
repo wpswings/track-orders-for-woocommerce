@@ -6,6 +6,8 @@
  * @package  Woocommece_Order_Tracker/template
  */
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly. 
+
 $current_user_id = get_current_user_id();
 if ( $current_user_id > 0 ) {
 	$myaccount_page = get_option( 'woocommerce_myaccount_page_id' );
@@ -56,7 +58,7 @@ $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 			if ( isset( $_SESSION['wps_tofw_notification'] ) && ! empty( $_SESSION['wps_tofw_notification'] ) ) {
 				?>
 				<ul class="woocommerce-error">
-						<li><strong><?php esc_html_e( 'ERROR', 'track-orders-for-woocommerce' ); ?></strong>: <?php echo esc_html( $_SESSION['wps_tofw_notification'] ); ?></li>
+						<li><strong><?php esc_html_e( 'ERROR', 'track-orders-for-woocommerce' ); ?></strong>: <?php echo esc_html( sanitize_text_field( wp_unslash( $_SESSION['wps_tofw_notification'] ) ) ); ?></li>
 				</ul>
 				<?php
 				unset( $_SESSION['wps_tofw_notification'] );

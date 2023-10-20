@@ -200,7 +200,7 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 			$is_valid = true;
 		}
 		if ( $this->wps_msp_valid_page_screen_check() || $is_valid ) {
-			wp_enqueue_script( 'wps-msp-onboarding-select2-js', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/select-2/track-orders-for-woocommerce-select2.js', array( 'jquery' ), '1.0.0', false );
+			wp_enqueue_script( 'wps-msp-onboarding-select2-js', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/select-2/track-orders-for-woocommerce-select2.min.js', array( 'jquery' ), '1.0.0', false );
 
 			wp_enqueue_script( 'track-orders-for-woocommerce-metarial-js', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/material-design/material-components-web.min.js', array(), time(), false );
 			wp_enqueue_script( 'track-orders-for-woocommerce-metarial-js2', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/material-design/material-components-v5.0-web.min.js', array(), time(), false );
@@ -256,8 +256,8 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 	 */
 	public function wps_msp_skip_onboarding_popup() {
 
-		$get_skipped_timstamp = update_option( 'wps_msp_onboarding_data_skipped', time() );
-		echo json_encode( 'true' );
+		$get_skipped_timstamp = update_option( 'track_orders_msp_onboarding_data_skipped', time() );
+		echo wp_json_encode( 'true' );
 		wp_die();
 	}
 
@@ -357,10 +357,10 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 			rand() => array(
 				'id' => 'wps-msp-onboard-email',
 				'title' => esc_html__( 'What is the best email address to contact you?', 'track-orders-for-woocommerce' ),
-				'type' => 'email',
+				'type' => 'track_orders_email',
 				'description' => '',
-				'name' => 'email',
-				'placeholder' => esc_html__( 'Email', 'track-orders-for-woocommerce' ),
+				'name' => 'track_orders_email',
+				'placeholder' => esc_html__( 'track_orders_email', 'track-orders-for-woocommerce' ),
 				'value' => $current_user_email,
 				'required' => 'yes',
 				'class' => 'tofw-text-class',
@@ -409,7 +409,7 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 				'type' => 'hidden',
 				'placeholder' => '',
 				'name' => 'wps-msp-show-counter',
-				'value' => get_option( 'wps_msp_onboarding_data_sent', 'not-sent' ),
+				'value' => get_option( 'track_orders_msp_onboarding_data_sent', 'not-sent' ),
 				'required' => '',
 				'class' => '',
 			),
@@ -499,7 +499,7 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 				'title' => '',
 				'description' => '',
 				'type' => 'hidden',
-				'name' => 'email',
+				'name' => 'track_orders_email',
 				'placeholder' => '',
 				'value' => $current_user_email,
 				'required' => '',
@@ -621,15 +621,15 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 			}
 		} catch ( Exception $e ) {
 
-			echo json_encode( $e->getMessage() );
+			echo wp_json_encode( $e->getMessage() );
 			wp_die();
 		}
 
 		if ( ! empty( $action_type ) && 'onboarding' == $action_type ) {
-			 $get_skipped_timstamp = update_option( 'wps_msp_onboarding_data_sent', 'sent' );
+			 $get_skipped_timstamp = update_option( 'track_orders_msp_onboarding_data_sent', 'sent' );
 		}
 
-		echo json_encode( $formatted_data );
+		echo esc_html( wp_json_encode( $formatted_data ) );
 		wp_die();
 	}
 
@@ -684,7 +684,7 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 			'Content-Type' => 'application/json',
 		);
 
-		$form_data = json_encode(
+		$form_data = wp_json_encode(
 			array(
 				'fields' => $form_data,
 				'context'  => array(
@@ -793,14 +793,14 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 	 */
 	public function wps_msp_show_onboarding_popup_check() {
 
-		$wps_msp_is_already_sent = get_option( 'wps_msp_onboarding_data_sent', false );
+		$wps_msp_is_already_sent = get_option( 'track_orders_msp_onboarding_data_sent', false );
 
 		// Already submitted the data.
 		if ( ! empty( $wps_msp_is_already_sent ) && 'sent' == $wps_msp_is_already_sent ) {
 			return false;
 		}
 
-		$wps_msp_get_skipped_timstamp = get_option( 'wps_msp_onboarding_data_skipped', false );
+		$wps_msp_get_skipped_timstamp = get_option( 'track_orders_msp_onboarding_data_skipped', false );
 		if ( ! empty( $wps_msp_get_skipped_timstamp ) ) {
 
 			$wps_msp_next_show = strtotime( '+2 days', $wps_msp_get_skipped_timstamp );

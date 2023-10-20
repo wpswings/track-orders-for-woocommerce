@@ -40,8 +40,8 @@ $tofw_tab_key = '';
 					array(
 						'title' => __( 'Enable Tracking', 'track-orders-for-woocommerce' ),
 						'type'  => 'radio-switch',
-						'id'    => 'tofw_enable_tracking',
-						'value' => get_option( 'tofw_enable_tracking' ),
+						'id'    => 'track_orders_enable_tracking',
+						'value' => get_option( 'track_orders_enable_tracking' ),
 						'class' => 'tofw-radio-switch-class',
 						'options' => array(
 							'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
@@ -61,7 +61,7 @@ $tofw_tab_key = '';
 				<div class="tofw-secion-wrap">
 					<?php
 					$tofw_general_html = $wps_tofw_obj->wps_std_plug_generate_html( $tofw_genaral_settings );
-					echo esc_html( $tofw_general_html );
+					echo wp_kses_post( $tofw_general_html );
 					wp_nonce_field( 'admin_save_data', 'wps_tabs_nonce' );
 					?>
 				</div>

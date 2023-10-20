@@ -25,7 +25,7 @@ wp_verify_nonce( $value_check, 'wps_track_package_nonce' );
 if ( isset( $_POST['wps_track_package'] ) ) {
 	$flag = true;
 	$wps_user_order_id = isset( $_POST['wps_user_order_id'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_user_order_id'] ) ) : '';
-	update_option( 'wps_tofw_user_order_id', $wps_user_order_id );
+	update_option( 'track_orders_user_order_id', $wps_user_order_id );
 }
 
 ?>

@@ -25,7 +25,7 @@ apply_filters( 'tofw_track_order_array', array() );
 	<div class="tofw-secion-wrap">
 		<?php
 		$tofw_track_order_html = $wps_tofw_obj->wps_std_plug_generate_html( $tofw_track_order );
-		echo esc_html( $tofw_track_order_html );
+		echo wp_kses_post( $tofw_track_order_html );
 		wp_nonce_field( 'admin_save_data', 'wps_tabs_nonce' );
 		?>
 	</div>

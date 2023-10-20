@@ -318,7 +318,7 @@ class Track_Orders_For_Woocommerce {
 	 * @name is_enbale_usage_tracking
 	 */
 	public static function is_enbale_usage_tracking() {
-		$check_is_enable = get_option( 'tofw_enable_tracking', false );
+		$check_is_enable = get_option( 'track_orders_enable_tracking', false );
 		return ! empty( $check_is_enable ) ? true : false;
 	}
 
@@ -503,8 +503,6 @@ class Track_Orders_For_Woocommerce {
 		// Get the server's port.
 		$tofw_system_status['server_port'] = isset( $_SERVER['SERVER_PORT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_PORT'] ) ) : '';
 
-		// Get the uptime.
-		$tofw_system_status['uptime'] = function_exists( 'exec' ) ? @exec( 'uptime -p' ) : __( 'N/A (make sure exec function is enabled)', 'track-orders-for-woocommerce' );
 
 		// Get the server path.
 		$tofw_system_status['server_path'] = defined( 'ABSPATH' ) ? ABSPATH : __( 'N/A (ABSPATH constant not defined)', 'track-orders-for-woocommerce' );
@@ -557,8 +555,6 @@ class Track_Orders_For_Woocommerce {
 		// Get server host name.
 		$tofw_system_status['server_hostname'] = function_exists( 'gethostname' ) ? gethostname() : __( 'N/A (gethostname function does not exist)', 'track-orders-for-woocommerce' );
 
-		// Show the number of processes currently running on the server.
-		$tofw_system_status['processes'] = function_exists( 'exec' ) ? @exec( 'ps aux | wc -l' ) : __( 'N/A (make sure exec is enabled)', 'track-orders-for-woocommerce' );
 
 		// Get the memory usage.
 		$tofw_system_status['memory_usage'] = function_exists( 'memory_get_peak_usage' ) ? round( memory_get_peak_usage( true ) / 1024 / 1024, 2 ) : 0;
@@ -567,7 +563,6 @@ class Track_Orders_For_Woocommerce {
 		// Check to see if system is Windows, if so then use an alternative since sys_getloadavg() won't work.
 		if ( stristr( PHP_OS, 'win' ) ) {
 			$tofw_system_status['is_windows']        = true;
-			$tofw_system_status['windows_cpu_usage'] = function_exists( 'exec' ) ? @exec( 'wmic cpu get loadpercentage /all' ) : __( 'N/A (make sure exec is enabled)', 'track-orders-for-woocommerce' );
 		}
 
 		// Get the memory limit.
@@ -575,9 +570,6 @@ class Track_Orders_For_Woocommerce {
 
 		// Get the PHP maximum execution time.
 		$tofw_system_status['php_max_execution_time'] = function_exists( 'ini_get' ) ? ini_get( 'max_execution_time' ) : __( 'N/A (ini_get function does not exist)', 'track-orders-for-woocommerce' );
-
-		// Get outgoing IP address.
-		$tofw_system_status['outgoing_ip'] = function_exists( 'file_get_contents' ) ? file_get_contents( 'http://ipecho.net/plain' ) : __( 'N/A (file_get_contents function does not exist)', 'track-orders-for-woocommerce' );
 
 		$tofw_system_data['php'] = $tofw_system_status;
 		$tofw_system_data['wp']  = $tofw_wordpress_status;
@@ -599,7 +591,7 @@ class Track_Orders_For_Woocommerce {
 
 						case 'hidden':
 						case 'number':
-						case 'email':
+						case 'track_orders_email':
 						case 'text':
 							?>
 						<div class="wps-form-group wps-msp-<?php echo esc_attr( $tofw_component['type'] ); ?>">
@@ -957,9 +949,9 @@ class Track_Orders_For_Woocommerce {
 	 */
 	public static function check_lcns_validity() {
 
-		$wps_tofw_lcns_key = get_option( 'wps_tofw_license_key', '' );
+		$wps_tofw_lcns_key = get_option( 'track_orders_license_key', '' );
 
-		$wps_tofw_lcns_status = get_option( 'wps_tofw_license_check', '' );
+		$wps_tofw_lcns_status = get_option( 'track_orders_license_check', '' );
 
 		if ( $wps_tofw_lcns_key && true == $wps_tofw_lcns_status ) {
 

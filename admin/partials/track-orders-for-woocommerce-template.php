@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-$activated_template = get_option( 'wps_tofw_activated_template', '' );
+$activated_template = get_option( 'track_orders_activated_template', '' );
 $template1 = __( 'Activate', 'track-orders-for-woocommerce' );
 $template2 = __( 'Activate', 'track-orders-for-woocommerce' );
 $template3 = __( 'Activate', 'track-orders-for-woocommerce' );
