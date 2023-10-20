@@ -197,8 +197,8 @@ class Track_Orders_For_Woocommerce_Common {
 		$desc = ! empty( $_POST['track_orders_desc'] ) ? sanitize_text_field( wp_unslash( $_POST['track_orders_desc'] ) ) : '';
 		update_option( 'track_orders_desc', $desc );
 
-		$age = ! empty( $_POST['track_orders_age] ) ? sanitize_text_field( wp_unslash( $_POST['track_orders_age] ) ) : '';
-		update_option( 'track_orders_age, $age );
+		$age = ! empty( $_POST['track_orders_age'] ) ? sanitize_text_field( wp_unslash( $_POST['track_orders_age'] ) ) : '';
+		update_option( 'track_orders_age', $age );
 
 		$track_orders_first_checkbox = ! empty( $_POST['FirstCheckbox'] ) ? sanitize_text_field( wp_unslash( $_POST['FirstCheckbox'] ) ) : '';
 		update_option( 'track_orders_first_checkbox', $track_orders_first_checkbox );

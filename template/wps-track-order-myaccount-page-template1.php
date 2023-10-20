@@ -13,8 +13,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 $allowed = true;
-
 $current_user_id = get_current_user_id();
+
 $wps_tofw_enable_track_order_popup = get_option( 'wps_tofwp_enable_track_order_popup' );
 if ( true == $allowed ) {
 
@@ -75,9 +75,9 @@ if ( true == $allowed ) {
 
 				if ( isset( $_SESSION['wps_tofw_email'] ) ) {
 					$tofw_user_email = sanitize_text_field( wp_unslash( $_SESSION['wps_tofw_email'] ) );
-
 					$order_email = get_post_meta( $order_id, '_billing_email', true );
 					if ( $tofw_user_email != $order_email ) {
+						
 						$allowed = false;
 						$wps_tofw_pages = get_option( 'track_orders_tracking_page' );
 						$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
