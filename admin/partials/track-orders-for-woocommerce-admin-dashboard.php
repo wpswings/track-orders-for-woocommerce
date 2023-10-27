@@ -35,6 +35,7 @@ $tofw_default_tabs = $wps_tofw_obj->wps_std_plug_default_tabs();
 <?php
 do_action( 'wps_tofw_licensed_tab_section' );
 if ( ! $error_notice ) {
+	
 	$wps_tofw_error_text = esc_html__( 'Settings saved !', 'track-orders-for-woocommerce' );
 }
 ?>
@@ -76,6 +77,7 @@ if ( ! $error_notice ) {
 			$wps_tofw_obj->wps_tofw_plug_load_template( $tofw_tab_content_path, $tofw_active_tab );
 			// desc - This hook is used for trial.
 			do_action( 'wps_msp_after_general_settings_form' );
+			
 			?>
 		</div>
 	</section>

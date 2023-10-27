@@ -474,8 +474,9 @@ class Track_Orders_For_Woocommerce {
 		$tofw_notice  = '<div class="' . esc_attr( $tofw_classes ) . '">';
 		$tofw_notice .= '<p>' . esc_html( $tofw_message ) . '</p>';
 		$tofw_notice .= '</div>';
-
+		
 		echo wp_kses_post( $tofw_notice );
+		
 	}
 
 
@@ -626,7 +627,7 @@ class Track_Orders_For_Woocommerce {
 							<?php
 							break;
 						case 'custom_status':
-							require_once TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/class-wps-custom-order-status.php';
+							require_once TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/class-track-orders-custom-order-status.php';
 							break;
 						case 'password':
 							?>

@@ -158,7 +158,7 @@ class Track_Orders_For_Woocommerce_Common {
 			$api_url,
 			array(
 				'method'      => 'POST',
-				'body'        => wp_wp_json_encode( $params ),
+				'body'        => wp_json_encode( $params ),
 			)
 		);
 	}
@@ -594,7 +594,7 @@ class Track_Orders_For_Woocommerce_Common {
 				'status' => 'failed',
 			);
 		}
-		echo wp_wp_json_encode( $main_arr );
+		echo esc_html( wp_json_encode( $main_arr ) );
 		wp_die();
 	}
 
@@ -707,7 +707,7 @@ class Track_Orders_For_Woocommerce_Common {
 			);
 		}
 
-		echo wp_wp_json_encode( $main_arr );
+		echo esc_html( wp_json_encode( $main_arr ) );
 		wp_die();
 
 	}

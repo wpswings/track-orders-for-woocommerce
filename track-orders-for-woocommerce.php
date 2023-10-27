@@ -37,6 +37,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
 
+
+
 if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', array() ), true ) || ( is_multisite() && array_key_exists( 'woocommerce/woocommerce.php', get_site_option( 'active_sitewide_plugins', array() ) ) ) ) {
 
 	/**

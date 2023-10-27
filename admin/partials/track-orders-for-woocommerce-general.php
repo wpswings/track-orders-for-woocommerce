@@ -24,7 +24,7 @@ apply_filters( 'tofw_general_settings_array', array() );
 	<div class="tofw-secion-wrap">
 		<?php
 		$tofw_general_html = $wps_tofw_obj->wps_std_plug_generate_html( $tofw_genaral_settings );
-		echo wp_kses_post( $tofw_general_html );
+		echo esc_html( $tofw_general_html );
 		wp_nonce_field( 'admin_save_data', 'wps_tabs_nonce' );
 		?>
 	</div>

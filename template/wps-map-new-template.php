@@ -404,12 +404,19 @@ if ( $allowed ) {
 
 
 			$geocode = wpswings_url_get_contents( 'https://maps.google.com/maps/api/geocode/json?address=' . urlencode( $address ) . '&key=' . $wps_tofw_google_api_key );
-			function wpswings_url_get_contents($Url) {
+
+			/**
+			 * Function to get url.
+			 *
+			 * @param string $url contains url.
+			 * @return string
+			 */
+			function wpswings_url_get_contents($url) {
 				if (!function_exists('curl_init')){ 
 					die('CURL is not installed!');
 				}
 				$ch = curl_init();
-				curl_setopt($ch, CURLOPT_URL, $Url);
+				curl_setopt($ch, CURLOPT_URL, $url);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 				$output = curl_exec($ch);
 				curl_close($ch);

@@ -118,6 +118,7 @@ class Track_Orders_For_Woocommerce_Admin {
 					'address_validation_success' => __( 'Address Successfully Added', 'track-orders-for-woocommerce' ),
 					'selec_address_placeholder' => __( 'Select Your Hubpoint Addresses', 'track-orders-for-woocommerce' ),
 					'site_url' => site_url(),
+					'custom_order_msg' => __( 'You can not use Special Chracters !', 'track-orders-for-woocommerce' )
 
 				)
 			);
@@ -894,8 +895,10 @@ class Track_Orders_For_Woocommerce_Admin {
 					$wps_msp_error_text = esc_html__( 'Id of some field is missing', 'track-orders-for-woocommerce' );
 					$wps_tofw_obj->wps_std_plug_admin_notice( $wps_msp_error_text, 'error' );
 				} else {
+					
 					$wps_msp_error_text = esc_html__( 'Settings saved !', 'track-orders-for-woocommerce' );
 					$wps_tofw_obj->wps_std_plug_admin_notice( $wps_msp_error_text, 'success' );
+					
 				}
 			}
 		}

@@ -133,6 +133,15 @@ jQuery(document).ready(function ($) {
     }
   });
   
+  $('#wps_tofw_create_order_name').on('keypress', function(e) {
+    var regex = new RegExp("^[a-zA-Z0-9\s ]+$"); // Regular expression to allow only alphanumeric characters
+    var key = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+    if (!regex.test(key)) {
+		alert(tofw_admin_param.custom_order_msg);
+		
+      return false;
+    }
+  });
   
   jQuery(document).on('click','input#wps_tofw_create_custom_order_status',function(){
     jQuery('#wps_tofw_send_loading').show();
