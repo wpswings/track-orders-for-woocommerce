@@ -401,10 +401,6 @@ if ( $allowed ) {
 		<?php
 	} else {
 		if ( ! empty( $address ) ) {
-
-
-			$geocode = wpswings_url_get_contents( 'https://maps.google.com/maps/api/geocode/json?address=' . urlencode( $address ) . '&key=' . $wps_tofw_google_api_key );
-
 			/**
 			 * Function to get url.
 			 *
@@ -422,6 +418,10 @@ if ( $allowed ) {
 				curl_close($ch);
 				return $output;
 			}
+
+			$geocode = wpswings_url_get_contents( 'https://maps.google.com/maps/api/geocode/json?address=' . urlencode( $address ) . '&key=' . $wps_tofw_google_api_key );
+
+			
 			$output = json_decode( $geocode );
 
 
