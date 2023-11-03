@@ -435,6 +435,7 @@ input.role_box_open {
 .wps_tofw_template_img_wrap img {
  
   height:240px ;
+  object-fit: contain;
 }
 .wps_tofw_template_img_wrap:hover::before {
   background-color: rgba(255, 255, 255, 0.25);
