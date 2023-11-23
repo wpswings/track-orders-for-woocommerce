@@ -412,6 +412,7 @@ if ( $allowed ) {
 					die('CURL is not installed!');
 				}
 				$ch = curl_init();
+				do_action_ref_array( 'http_api_curl', array( &$ch, array(), $url ) );
 				curl_setopt($ch, CURLOPT_URL, $url);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 				$output = curl_exec($ch);

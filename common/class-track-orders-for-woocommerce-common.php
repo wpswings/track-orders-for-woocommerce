@@ -115,7 +115,10 @@ class Track_Orders_For_Woocommerce_Common {
 				echo wp_json_encode(
 					array(
 						'status' => false,
-						'msg' => esc_html__( $wps_tofw_license_data->message ),
+						'msg' => printf( 
+							esc_html( '%s', 'track-orders-for-woocommerce' ),
+							esc_html__( $wps_tofw_license_data->message )
+						),
 					)
 				);
 			}
