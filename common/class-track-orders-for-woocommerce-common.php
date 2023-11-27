@@ -680,17 +680,17 @@ class Track_Orders_For_Woocommerce_Common {
 		check_ajax_referer( 'tofw_common_param_nonce', 'nonce' );
 		$email = isset( $_POST['track_orders_email'] ) ? sanitize_text_field( wp_unslash( $_POST['track_orders_email'] ) ) : '';
 		$_orders = array();
+	
 		if ( ! empty( $email ) ) {
 			$_orders_temp = get_posts(
 				array(
-
+					
 					'post_status' => array_keys( wc_get_order_statuses() ),
 					'post_type'   => 'shop_order',
 					'numberposts' => -1,
 					'fields' => 'ids',
-				)
-			);
-
+					)
+				);
 			if ( ! empty( $_orders_temp ) && is_array( $_orders_temp ) ) {
 				foreach ( $_orders_temp as $key => $id ) {
 					$_order = wc_get_order( $id );

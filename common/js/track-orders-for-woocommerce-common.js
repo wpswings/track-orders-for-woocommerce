@@ -75,10 +75,10 @@
 			jQuery.ajax({
 				url:tofw_common_param.ajaxurl,
 				type:"POST",
-				datatType: 'JSON',
+				dataType: 'JSON',
 				data: {
 					action : 'wps_tofw_export_my_orders_guest_user',
-					email  : email,
+					track_orders_email  : email,
 					nonce : tofw_common_param.nonce,
 				},success:function(response){
 					var result = JSON.parse(response);
@@ -94,6 +94,8 @@
 					   
 					   var encodedUri = encodeURI(csvContent);
 							download(filename, encodedUri);
+					} else {
+						alert('No Order Found on This Email!');
 					}
 				
 				}	
