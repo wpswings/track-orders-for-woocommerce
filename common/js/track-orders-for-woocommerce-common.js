@@ -40,11 +40,13 @@
 			jQuery.ajax({
 				url:tofw_common_param.ajaxurl,
 				type:"POST",
-				datatType: 'JSON',
+				dataType: 'JSON',
 				data: {
 					action : 'wps_wot_export_my_orders',
 					// nonce : tofw_common_param.nonce,
-				},success:function(response){
+				},
+				success: function (response) {
+					
 					var result = JSON.parse(response);
 					if( 'success' == result.status ) {
 						var filename = result.file_name;
@@ -56,7 +58,7 @@
 						   csvContent += row + "\r\n";
 								 });
 					   
-					   var encodedUri = encodeURI(csvContent);
+						var encodedUri = encodeURI(csvContent);
 							download(filename, encodedUri);
 					}
 				

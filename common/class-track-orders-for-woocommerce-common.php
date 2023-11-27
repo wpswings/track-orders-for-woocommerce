@@ -591,13 +591,14 @@ class Track_Orders_For_Woocommerce_Common {
 				'file_name' => 'wps_order_details',
 				'order_data' => $order_details,
 			);
+			
 		} else {
 
 			$main_arr = array(
 				'status' => 'failed',
 			);
 		}
-		echo esc_html( wp_json_encode( $main_arr ) );
+		wp_send_json(  wp_json_encode( $main_arr ) ) ;
 		wp_die();
 	}
 
