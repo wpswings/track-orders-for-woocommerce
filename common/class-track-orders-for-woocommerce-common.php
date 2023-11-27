@@ -55,7 +55,7 @@ class Track_Orders_For_Woocommerce_Common {
 	 */
 	public function tofw_common_enqueue_styles() {
 		wp_enqueue_style( $this->plugin_name . 'common', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'common/css/track-orders-for-woocommerce-common.css', array(), $this->version, 'all' );
-		wp_enqueue_style( 'bootstrap', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'common/css/bootstrap.css', array(), $this->version, 'all' );
+
 	}
 
 	/**
