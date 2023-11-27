@@ -711,7 +711,7 @@ class Track_Orders_For_Woocommerce_Common {
 			);
 		}
 
-		echo esc_html( wp_json_encode( $main_arr ) );
+		wp_send_json(  wp_json_encode( $main_arr ) );
 		wp_die();
 
 	}
