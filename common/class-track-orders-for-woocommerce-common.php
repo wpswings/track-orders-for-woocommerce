@@ -388,7 +388,7 @@ class Track_Orders_For_Woocommerce_Common {
 				$wps_all_data = $order->get_data();
 				$billing_address = $wps_all_data['billing'];
 				$shipping_address = $wps_all_data['shipping'];
-				$to = $billing_address['track_orders_email'];
+				$to = $to = get_post_meta( $order_id, '_billing_email', true );
 				$subject = __( 'Your Order Status for Order #', 'track-orders-for-woocommerce' ) . $order_id;
 				$message = __( 'Your Order Status is ', 'track-orders-for-woocommerce' ) . $statuses[ $new_status ];
 				$mail_header = __( 'Current Order Status is ', 'track-orders-for-woocommerce' ) . $statuses[ $new_status ];
