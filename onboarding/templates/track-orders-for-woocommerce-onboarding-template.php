@@ -35,7 +35,7 @@ apply_filters( 'wps_msp_on_boarding_form_fields', array() );
 					<form action="#" method="post" class="wps-msp-on-boarding-form">
 						<?php
 						$tofw_onboarding_html = $wps_tofw_obj->wps_std_plug_generate_html( $msp_onboarding_form_fields );
-						echo wp_kses_post( $tofw_onboarding_html );
+						echo esc_html( $tofw_onboarding_html );
 						?>
 						<div class="wps-msp-on-boarding-form-btn__wrapper mdc-dialog__actions">
 							<div class="wps-msp-on-boarding-form-submit wps-msp-on-boarding-form-verify ">
