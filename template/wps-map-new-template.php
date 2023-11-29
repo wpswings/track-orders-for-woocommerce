@@ -220,7 +220,7 @@ if ( $allowed ) {
 							<?php
 						}
 						?>
-						<span><?php echo esc_html( $order_data['billing']['address_1'] ) . ', ' . esc_html( $order_data['billing']['address_2'] ) . '</br>' . esc_html( $order_data['billing']['city'] ) . ', ' . esc_html( $order_data['billing']['state'] ) . '</br>' . esc_html( $order_data['billing']['track_orders_email'] ); ?></span>
+						<span><?php echo esc_html( $order_data['billing']['address_1'] ) . ', ' . esc_html( $order_data['billing']['address_2'] ) . '</br>' . esc_html( $order_data['billing']['city'] ) . ', ' . esc_html( $order_data['billing']['state'] ) . '</br>' . esc_html( $tofw_order->get_billing_email() ); ?></span>
 					</div>
 					<span class="wps-track-order-last-inner-circle"></span>
 					<span class="wps-track-order-outer-inner-circle"></span>
