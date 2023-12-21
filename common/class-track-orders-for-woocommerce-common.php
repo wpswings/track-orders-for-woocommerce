@@ -8,7 +8,7 @@
  * @package    Track_Orders_For_Woocommerce
  * @subpackage Track_Orders_For_Woocommerce/common
  */
-
+use Automattic\WooCommerce\Utilities\OrderUtil;
 /**
  * The common functionality of the plugin.
  *
@@ -290,9 +290,19 @@ class Track_Orders_For_Woocommerce_Common {
 
 		$wps_status_change_time = array();
 		$wps_status_change_time_temp = array();
-		$wps_status_change_time = get_post_meta( $order_id, 'wps_track_order_onchange_time', true );
-		$wps_status_change_time_temp = get_post_meta( $order_id, 'wps_track_order_onchange_time_temp', true );
-		$wps_status_change_time_template2 = get_post_meta( $order_id, 'wps_track_order_onchange_time_template', true );
+
+		if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+			// HPOS usage is enabled.
+			$wps_status_change_time = 	$order->get_meta('wps_track_order_onchange_time', true );
+			$wps_status_change_time_temp = 	$order->get_meta('wps_track_order_onchange_time_temp', true );
+			$wps_status_change_time_template2 = $order->get_meta('wps_track_order_onchange_time_template', true );
+		} else {
+			$wps_status_change_time = get_post_meta( $order_id, 'wps_track_order_onchange_time', true );
+			$wps_status_change_time_temp = get_post_meta( $order_id, 'wps_track_order_onchange_time_temp', true );
+			$wps_status_change_time_template2 = get_post_meta( $order_id, 'wps_track_order_onchange_time_template', true );
+		}
+
+		
 		$order_index = 'wc-' . $change_order_status;
 		if ( is_array( $wps_status_change_time_temp ) && ! empty( $wps_status_change_time_temp ) ) {
 			if ( is_array( $wps_status_change_time_temp ) ) {
@@ -325,7 +335,14 @@ class Track_Orders_For_Woocommerce_Common {
 		}
 		$statuses = wc_get_order_statuses();
 
-		$wps_track_order_status = get_post_meta( $order_id, 'wps_track_order_status', true );
+
+		if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+			// HPOS usage is enabled.
+			$wps_track_order_status = 	$order->get_meta('wps_track_order_status', true );
+		} else {
+			$wps_track_order_status = get_post_meta( $order_id, 'wps_track_order_status', true );
+		}
+
 		if ( is_array( $wps_track_order_status ) && ! empty( $wps_track_order_status ) ) {
 			$c = count( $wps_track_order_status );
 			if ( $wps_track_order_status[ $c - 1 ] === $old_status ) {
@@ -338,18 +355,42 @@ class Track_Orders_For_Woocommerce_Common {
 				}
 
 				$wps_track_order_status[] = $new_status;
-				update_post_meta( $order_id, 'wps_track_order_status', $wps_track_order_status );
-				update_post_meta( $order_id, 'wps_track_order_onchange_time', $wps_status_change_time );
-				update_post_meta( $order_id, 'wps_track_order_onchange_time_temp', $wps_status_change_time_temp );
-				update_post_meta( $order_id, 'wps_track_order_onchange_time_template', $wps_status_change_time_template2 );
+
+
+				if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+					// HPOS usage is enabled.
+					$order->update_meta_data( 'wps_track_order_status', $wps_track_order_status );
+					$order->update_meta_data( 'wps_track_order_onchange_time', $wps_status_change_time );
+					$order->update_meta_data( 'wps_track_order_onchange_time_temp', $wps_status_change_time_temp );
+					$order->update_meta_data( 'wps_track_order_onchange_time_template', $wps_status_change_time_template2 );
+					$order->save();
+
+				} else {
+					update_post_meta( $order_id, 'wps_track_order_status', $wps_track_order_status );
+					update_post_meta( $order_id, 'wps_track_order_onchange_time', $wps_status_change_time );
+					update_post_meta( $order_id, 'wps_track_order_onchange_time_temp', $wps_status_change_time_temp );
+					update_post_meta( $order_id, 'wps_track_order_onchange_time_template', $wps_status_change_time_template2 );
+				}
+
 			} else {
 
 				$wps_track_order_status[] = $old_status;
 				$wps_track_order_status[] = $new_status;
-				update_post_meta( $order_id, 'wps_track_order_status', $wps_track_order_status );
-				update_post_meta( $order_id, 'wps_track_order_onchange_time', $wps_status_change_time );
-				update_post_meta( $order_id, 'wps_track_order_onchange_time_temp', $wps_status_change_time_temp );
-				update_post_meta( $order_id, 'wps_track_order_onchange_time_template', $wps_status_change_time_template2 );
+
+				if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+					// HPOS usage is enabled.
+					$order->update_meta_data( 'wps_track_order_status', $wps_track_order_status );
+					$order->update_meta_data( 'wps_track_order_onchange_time', $wps_status_change_time );
+					$order->update_meta_data( 'wps_track_order_onchange_time_temp', $wps_status_change_time_temp );
+					$order->update_meta_data( 'wps_track_order_onchange_time_template', $wps_status_change_time_template2 );
+					$order->save();
+
+				} else {
+					update_post_meta( $order_id, 'wps_track_order_status', $wps_track_order_status );
+					update_post_meta( $order_id, 'wps_track_order_onchange_time', $wps_status_change_time );
+					update_post_meta( $order_id, 'wps_track_order_onchange_time_temp', $wps_status_change_time_temp );
+					update_post_meta( $order_id, 'wps_track_order_onchange_time_template', $wps_status_change_time_template2 );
+				}
 			}
 		} else {
 
@@ -360,10 +401,20 @@ class Track_Orders_For_Woocommerce_Common {
 			$wps_track_order_status[] = $old_status;
 			$wps_track_order_status[] = $new_status;
 
-			update_post_meta( $order_id, 'wps_track_order_status', $wps_track_order_status );
-			update_post_meta( $order_id, 'wps_track_order_onchange_time', $wps_status_change_time );
-			update_post_meta( $order_id, 'wps_track_order_onchange_time_temp', $wps_status_change_time_temp );
-			update_post_meta( $order_id, 'wps_track_order_onchange_time_template', $wps_status_change_time_template2 );
+			if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+				// HPOS usage is enabled.
+				$order->update_meta_data( 'wps_track_order_status', $wps_track_order_status );
+				$order->update_meta_data( 'wps_track_order_onchange_time', $wps_status_change_time );
+				$order->update_meta_data( 'wps_track_order_onchange_time_temp', $wps_status_change_time_temp );
+				$order->update_meta_data( 'wps_track_order_onchange_time_template', $wps_status_change_time_template2 );
+				$order->save();
+
+			} else {
+				update_post_meta( $order_id, 'wps_track_order_status', $wps_track_order_status );
+				update_post_meta( $order_id, 'wps_track_order_onchange_time', $wps_status_change_time );
+				update_post_meta( $order_id, 'wps_track_order_onchange_time_temp', $wps_status_change_time_temp );
+				update_post_meta( $order_id, 'wps_track_order_onchange_time_template', $wps_status_change_time_template2 );
+			}
 		}
 
 		if ( 'on' == $wps_tofw_email_notifier && 'wc-completed' != $new_status ) {
@@ -371,9 +422,17 @@ class Track_Orders_For_Woocommerce_Common {
 				$order_id = $order->id;
 				$headers = array();
 				$headers[] = 'Content-Type: text/html; charset=UTF-8';
-				$fname = get_post_meta( $order_id, '_billing_first_name', true );
-				$lname = get_post_meta( $order_id, '_billing_last_name', true );
-				$to = get_post_meta( $order_id, '_billing_email', true );
+				if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+					// HPOS usage is enabled.
+					$fname = 	$order->get_meta('_billing_first_name', true );
+					$lname = 	$order->get_meta('_billing_last_name', true );
+					$to = 	$order->get_meta('_billing_email', true);
+				} else {
+					$fname = get_post_meta( $order_id, '_billing_first_name', true );
+					$lname = get_post_meta( $order_id, '_billing_last_name', true );
+					$to = get_post_meta( $order_id, '_billing_email', true );
+				}
+
 				$subject = __( 'Your Order Status for Order #', 'track-orders-for-woocommerce' ) . $order_id;
 				$message = __( 'Your Order Status is ', 'track-orders-for-woocommerce' ) . $statuses[ $new_status ];
 				$mail_header = __( 'Current Order Status is ', 'track-orders-for-woocommerce' ) . $statuses[ $new_status ];
@@ -510,7 +569,7 @@ class Track_Orders_For_Woocommerce_Common {
 				$product = apply_filters( 'woocommerce_order_item_product', $item->get_product(), $item );
 				$item_meta      = new WC_Order_Item_Meta( $item, $product );
 				$item_meta_html = $item_meta->display( true, true );
-
+				$wps_billing_phone = OrderUtil::custom_orders_table_usage_is_enabled() ? $order->get_meta('_billing_phone', true ) : get_post_meta( $order->id, '_billing_phone', true );
 				$message .= '<tr>
 									<td>' . $item['name'] . '<br>';
 					$message .= '<small>' . $item_meta_html . '</small>
@@ -530,12 +589,12 @@ class Track_Orders_For_Woocommerce_Common {
 							<ul>
 								<li>
 									<p class="info">
-										<span class="bold">' . __( 'Email', 'track-orders-for-woocommerce' ) . ': </span>' . get_post_meta( $order->id, '_billing_email', true ) . '
+										<span class="bold">' . __( 'Email', 'track-orders-for-woocommerce' ) . ': </span>' .  OrderUtil::custom_orders_table_usage_is_enabled() ? $order->get_meta('_billing_email', true ) : get_post_meta( $order->id, '_billing_email', true )  . '
 									</p>
 								</li>
 								<li>
 									<p class="info">
-										<span class="bold">' . __( 'Tel', 'track-orders-for-woocommerce' ) . ': </span>' . get_post_meta( $order->id, '_billing_phone', true ) . '
+										<span class="bold">' . __( 'Tel', 'track-orders-for-woocommerce' ) . ': </span>' .$wps_billing_phone  . '
 									</p>
 								</li>
 							</ul>
@@ -569,15 +628,12 @@ class Track_Orders_For_Woocommerce_Common {
 	 * @return void
 	 */
 	public function wps_tofw_export_my_orders_callback() {
-		$_orders = get_posts(
+		$_orders = wc_get_orders(
 			array(
-
-				'post_status' => array_keys( wc_get_order_statuses() ),
-				'post_type'   => 'shop_order',
+				'status'      => array_keys(wc_get_order_statuses()),
+				'customer'    => get_current_user_id(),
 				'numberposts' => -1,
-				'meta_key' => '_customer_user',
-				'meta_value' => get_current_user_id(),
-				'fields' => 'ids',
+				'return'      => 'ids', // Specify 'ids' to get only the order IDs.
 			)
 		);
 
@@ -677,13 +733,12 @@ class Track_Orders_For_Woocommerce_Common {
 		$email = isset( $_POST['email'] ) ? sanitize_text_field( wp_unslash( $_POST['email'] ) ) : '';
 		$_orders = array();
 		if ( ! empty( $email ) ) {
-			$_orders_temp = get_posts(
+			$_orders_temp = wc_get_orders(
 				array(
-
-					'post_status' => array_keys( wc_get_order_statuses() ),
-					'post_type'   => 'shop_order',
+					'status'      => array_keys(wc_get_order_statuses()),
+					'customer'    => get_current_user_id(),
 					'numberposts' => -1,
-					'fields' => 'ids',
+					'return'      => 'ids', // Specify 'ids' to get only the order IDs.
 				)
 			);
 

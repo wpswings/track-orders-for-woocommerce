@@ -22,11 +22,11 @@
  * Domain Path:       /languages
  *
  * Requires at least:    5.5.0
- * Tested up to:         6.3.1
+ * Tested up to:         6.4.0
  * WC requires at least: 5.5.0
- * WC tested up to:      8.0.3
+ * WC tested up to:      8.4.0
  * Requires PHP:         7.2
- * Stable tag:           1.0.1
+ * Stable tag:           1.0.2
  *
  * License:           GNU General Public License v3.0
  * License URI:       http://www.gnu.org/licenses/gpl-3.0.html
@@ -36,6 +36,19 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
+
+// HPOS Compatibility and cart and checkout block.
+add_action(
+    'before_woocommerce_init',
+    function() {
+        if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+            \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+        }
+        if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
+            \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', __FILE__, true );
+        }
+    }
+);
 
 if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', array() ), true ) || ( is_multisite() && array_key_exists( 'woocommerce/woocommerce.php', get_site_option( 'active_sitewide_plugins', array() ) ) ) ) {
 
