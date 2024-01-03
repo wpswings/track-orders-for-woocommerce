@@ -55,10 +55,9 @@ if ( true == $allowed ) {
 	} else {
 
 		if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
-			// HPOS usage is enabled.
-			$order_customer_id = 	$order->get_meta('_customer_user', true );
+			$order_customer_id = get_post_field('post_author', $order_id);
 		} else {
-			$order_customer_id = 	$order_customer_id = get_post_meta( $order_id, '_customer_user', true );;
+			$order_customer_id = get_post_field('post_author', $order_id);
 		}
 
 		if ( $current_user_id > 0 ) {

@@ -33,8 +33,8 @@ if ( true == $allowed ) {
 	// check order id is valid.
 	$order = new WC_Order( $order_id );
 
-	if ( ! is_numeric( $order_id ) ) {
 
+	if ( ! is_numeric( $order_id ) ) {
 		if ( get_current_user_id() > 0 ) {
 			$myaccount_page = get_option( 'woocommerce_myaccount_page_id' );
 			$myaccount_page_url = get_permalink( $myaccount_page );
@@ -56,9 +56,9 @@ if ( true == $allowed ) {
 	} else {
 		if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
 			// HPOS usage is enabled.
-			$order_customer_id = 	$order->get_meta('_customer_user', true );
+			$order_customer_id = get_post_field('post_author', $order_id);
 		} else {
-			$order_customer_id = get_post_meta( $order_id, '_customer_user', true );
+			$order_customer_id = get_post_field('post_author', $order_id);
 		}
 
 
@@ -167,7 +167,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 
 			if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
 				// HPOS usage is enabled.
-				$$expected_delivery_date = 	$tofw_order->get_meta('wps_tofw_estimated_delivery_date', true );
+				$expected_delivery_date = 	$tofw_order->get_meta('wps_tofw_estimated_delivery_date', true );
 				$expected_delivery_time = 	$tofw_order->get_meta('wps_tofw_estimated_delivery_time', true );
 				$order_delivered_date = 	$tofw_order->get_meta('_completed_date', true );
 			} else {
