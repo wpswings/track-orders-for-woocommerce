@@ -234,15 +234,15 @@ $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 
 		if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
 			// HPOS usage is enabled.
-			$billing_first_name = 	$tofw_order->get_meta('_billing_first_name', true );
-			$billing_last_name = 	$tofw_order->get_meta('_billing_last_name', true );
-			$billing_address = 	$tofw_order->get_meta('_billing_address_1', true ) . ' ' . $tofw_order->get_meta('_billing_address_2', true );
-			$billing_city = 	$tofw_order->get_meta('_billing_city', true );
-			$billing_state = 	$tofw_order->get_meta('_billing_state', true );
-			$billing_country = 	$tofw_order->get_meta('_billing_country', true );
-			$billing_postcode = 	$tofw_order->get_meta('_billing_postcode', true );
+			$billing_first_name = 	$tofw_order->get_billing_first_name();
+			$billing_last_name = 	$tofw_order->get_billing_last_name();
+			$billing_address = 		$tofw_order->get_billing_address_1() . ' ' . $order->get_billing_address_2();
+			$billing_city = 		$tofw_order->get_billing_city();
+			$billing_state = 		$tofw_order->get_billing_state();
+			$billing_country = 		$tofw_order->get_billing_country();
+			$billing_postcode = 	$tofw_order->get_billing_postcode();
 			$wps_track_order_status = 	$tofw_order->get_meta('wps_track_order_status', true );
-			$order_onchange_time = 	$tofw_order->get_meta('wps_track_order_onchange_time', true );
+			$wps_phone_number = 		$tofw_order->get_billing_phone();
 		} else {
 			$billing_first_name = get_post_meta( $order_id, '_billing_first_name', true );
 			$billing_last_name = get_post_meta( $order_id, '_billing_last_name', true );
@@ -1088,7 +1088,7 @@ $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 																			</div>
 																			<div class="wps_tofw_user_address">
 																				<?php 
-																				$wps_billing_phone = OrderUtil::custom_orders_table_usage_is_enabled() ? $order->get_meta('_billing_phone', true ) : get_post_meta( $order_id, '_billing_phone', true );
+																				$wps_billing_phone = OrderUtil::custom_orders_table_usage_is_enabled() ? $order->get_billing_phone() : get_post_meta( $order_id, '_billing_phone', true );
  																				?>
 																				<h3> <?php echo esc_html( $billing_first_name ) . ' ' . esc_html( $billing_last_name ) . ' ' . esc_html( $wps_billing_phone ); ?></h3>
 																				<p><?php echo esc_html( $billing_address ); ?></p>

@@ -242,15 +242,15 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 		
 		if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
 			// HPOS usage is enabled.
-			$billing_first_name = 	$tofw_order->get_meta('_billing_first_name', true );
-			$billing_last_name = 	$tofw_order->get_meta('_billing_last_name', true );
-			$billing_address = 	$tofw_order->get_meta('_billing_address_1', true ) . ' ' . $tofw_order->get_meta('_billing_address_2', true );
-			$billing_city = 	$tofw_order->get_meta('_billing_city', true );
-			$billing_state = 	$tofw_order->get_meta('_billing_state', true );
-			$billing_country = 	$tofw_order->get_meta('_billing_country', true );
-			$billing_postcode = 	$tofw_order->get_meta('_billing_postcode', true );
+			$billing_first_name = 	$tofw_order->get_billing_first_name();
+			$billing_last_name = 	$tofw_order->get_billing_last_name();
+			$billing_address = 		$tofw_order->get_billing_address_1() . ' ' . $order->get_billing_address_2();
+			$billing_city = 		$tofw_order->get_billing_city();
+			$billing_state = 		$tofw_order->get_billing_state();
+			$billing_country = 		$tofw_order->get_billing_country();
+			$billing_postcode = 	$tofw_order->get_billing_postcode();
 			$wps_track_order_status = 	$tofw_order->get_meta('wps_track_order_status', true );
-			$order_onchange_time = 	$tofw_order->get_meta('wps_track_order_onchange_time', true );
+			$wps_phone_number = 		$tofw_order->get_billing_phone();
 		} else {
 			$billing_first_name = get_post_meta( $order_id, '_billing_first_name', true );
 			$billing_last_name = get_post_meta( $order_id, '_billing_last_name', true );
