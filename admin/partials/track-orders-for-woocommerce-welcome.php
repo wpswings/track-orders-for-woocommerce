@@ -40,8 +40,8 @@ $tofw_tab_key = '';
 					array(
 						'title' => __( 'Enable Tracking', 'track-orders-for-woocommerce' ),
 						'type'  => 'radio-switch',
-						'id'    => 'tofw_enable_tracking',
-						'value' => get_option( 'tofw_enable_tracking' ),
+						'id'    => 'track_orders_enable_tracking',
+						'value' => get_option( 'track_orders_enable_tracking' ),
 						'class' => 'tofw-radio-switch-class',
 						'options' => array(
 							'yes' => __( 'YES', 'track-orders-for-woocommerce' ),

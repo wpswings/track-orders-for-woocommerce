@@ -435,6 +435,7 @@ input.role_box_open {
 .wps_tofw_template_img_wrap img {
  
   height:240px ;
+  object-fit: contain;
 }
 .wps_tofw_template_img_wrap:hover::before {
   background-color: rgba(255, 255, 255, 0.25);
@@ -592,7 +593,7 @@ input.role_box_open {
 .wps_tofw_temlate_name {
   float: left;
   font-size: 18px;
-  max-width: 50%;
+  /* max-width: 50%; */
   padding: 15px 10px;
 }
 .wps_tofw_temlate_name h4{
@@ -651,130 +652,7 @@ input.role_box_open {
 .wps_tofw_field_details #wps_tofw_google_api_key {
   width: 300px;
 }
-/*=============================================
- =            Section comment block            =
- =============================================*/
- .wps_tofw_wrapper * {
-  box-sizing: border-box;
-}
-.wps_tofw_wrapper {
-  background-color: #fff;
-  padding: 10px;
-  margin-top: 10px;
-}
-.wps_tofw_courier_content .wps-tofw-courier-data {
-  float: left;
-  width: 24%;
-  margin-top: 15px;
-  background-color: #f1f1f1;
-  padding: 10px;
-  margin-right: 1%;
-  border: 1px solid #dddddd;
-  border-radius: 4px;
-  position: relative;
-}
 
-.wps_tofw_courier_content::after,
-.wps_enhanced_tofw_provider:after,
-.wps_enhanced_tofw_add-inner-wrap:after {
-  clear: both;
-  display: block;
-  content: "";
-}
-
-.wps_enhanced_tofw_add-wrap {
-  width: 68%;
-  float: left;
-}
-.wps_enhanced_tofw_add-wrap:first-child {
-  width: 30%;
-  margin-right: 2%;
-}
-.wps_enhanced_tofw_add-wrap .wps_toy_enhanced_provider {
-  width: 100% !important;
-  margin-top: 5px;
-  margin-top: 5px !important;
-}
-.form-table input.tog, input[type="radio"], input[type="checkbox"]{
-  width: 14px;
-  height: 14px;
-}
-.wps-tofw-courier-data input[type="checkbox"] + label {
-  padding-left: 15px;
-}
-.wps-tofw-courier-data input[type="checkbox"] {
-  margin: 0;
-  opacity: 0;
-}
-.wps-tofw-courier-data input[type="checkbox"] + label::before {
-  content: "";
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  border: 2px solid #d4d4e0;
-  left: 5px;
-  border-radius: 4px;
-  cursor: pointer;
-  top: 8px;
-  background-color: #fff;
-}
-.wps-tofw-courier-data input[type="checkbox"]:checked + label::after {
-  content: "\f147";
-  font-family: dashicons;
-  position: absolute;
-  left: 6px;
-  font-size: 22px;
-  top: 11px;
-}
-.wps_enhanced_tofw_add-inner-wrap {
-  margin-top: 5px;
-}
-#wps_tofw_enhanced_woocommerce_shipment_tracking_add_providers {
-  float: right;
-  margin-left: 1%;
-  margin-top: 3px;
-}
-.wps_toy_enhanced_provider_url {
-  float: left;
-  width: 82% !important;
-}
-.wps_enhanced_tofw_remove {
-  float: right;
-  text-decoration: navajowhite;
-  background-color: #fff;
-  width: 20px;
-  text-align: center;
-  height: 20px;
-  color: #000;
-  border-radius: 50%;
-  font-size: 12px;
-  font-weight: bold;
-  margin-top: 0;
-}
-/*=====  End of Section comment block  ======*/
-@media screen and (max-width: 767px) {
-  .wps_tofw_courier_content .wps-tofw-courier-data {
-    width: 48%;
-    margin-right: 2%;
-  }
-}
-@media screen and (max-width:576px) {
-  .wps_tofw_courier_content .wps-tofw-courier-data {
-    width: 100%;
-    margin-right: 0;
-  }
-  .wps_enhanced_tofw_add-wrap:first-child {
-    width: 100%;
-    margin-right: 0;
-    margin-bottom: 10px;
-  }
-  .wps_enhanced_tofw_add-wrap,
-  .wps_toy_enhanced_provider_url{
-    width: 100% !important;
-  }
-  #wps_tofw_enhanced_woocommerce_shipment_tracking_add_providers{
-    margin-top: 10px;
-  }
   #wps_new_template_2{
     display: none;
   }
@@ -803,3 +681,8 @@ input.role_box_open {
   display: none !important;
 }
 
+
+#wps_tofw_create_custom_order_status{
+  margin-top: 10px;
+  background-color: #2196f3;
+}

@@ -6,6 +6,9 @@
  * @package  Woocommece_Order_Tracker/template
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 $allowed = true;
 $current_user_id = get_current_user_id();
 
@@ -29,7 +32,7 @@ if ( $allowed ) {
 			$myaccount_page = get_option( 'woocommerce_myaccount_page_id' );
 			$myaccount_page_url = get_permalink( $myaccount_page );
 		} else {
-			$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
+			$wps_tofw_pages = get_option( 'track_orders_tracking_page' );
 			$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
 			$myaccount_page_url = get_permalink( $page_id );
 		}
@@ -61,11 +64,11 @@ if ( $allowed ) {
 		} else // check order associated to customer account or not for guest user.
 		{
 			if ( isset( $_SESSION['wps_tofw_email'] ) ) {
-				$tofw_user_email = $_SESSION['wps_tofw_email'];
+				$tofw_user_email = sanitize_text_field( wp_unslash( $_SESSION['wps_tofw_email'] ) );
 				$order_email = get_post_meta( $order_id, '_billing_email', true );
 				if ( $tofw_user_email != $order_email ) {
 					$allowed = false;
-					$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
+					$wps_tofw_pages = get_option( 'track_orders_tracking_page' );
 					$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
 					$myaccount_page_url = get_permalink( $page_id );
 					$reason = __( 'This order #', 'track-orders-for-woocommerce' ) . $order_id . __( 'is not associated to your account.', 'track-orders-for-woocommerce' ) . "<a href='$myaccount_page_url'>" . __( 'Click Here ', 'track-orders-for-woocommerce' ) . '</a>';
@@ -93,7 +96,7 @@ if ( $allowed ) {
 		}
 	}
 } else {
-	$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
+	$wps_tofw_pages = get_option( 'track_orders_tracking_page' );
 	$page_id = $wps_tofw_pages['pages']['wps_guest_track_order_page'];
 	$track_order_url = get_permalink( $page_id );
 	header( 'Location: ' . $track_order_url );
@@ -219,7 +222,7 @@ if ( $allowed ) {
 							<?php
 						}
 						?>
-						<span><?php echo esc_html( $order_data['billing']['address_1'] ) . ', ' . esc_html( $order_data['billing']['address_2'] ) . '</br>' . esc_html( $order_data['billing']['city'] ) . ', ' . esc_html( $order_data['billing']['state'] ) . '</br>' . esc_html( $order_data['billing']['email'] ); ?></span>
+						<span><?php echo esc_html( $order_data['billing']['address_1'] ) . ', ' . esc_html( $order_data['billing']['address_2'] ) . '</br>' . esc_html( $order_data['billing']['city'] ) . ', ' . esc_html( $order_data['billing']['state'] ) . '</br>' . esc_html( $tofw_order->get_billing_email() ); ?></span>
 					</div>
 					<span class="wps-track-order-last-inner-circle"></span>
 					<span class="wps-track-order-outer-inner-circle"></span>
@@ -369,7 +372,7 @@ if ( $allowed ) {
 					$wps_tofw_order_send_to_cities[] = $valuemap;
 					$wps_tofw_order_send_to_cities = array_unique( $wps_tofw_order_send_to_cities );
 					$wps_tofw_order_send_to_cities = array_values( $wps_tofw_order_send_to_cities );
-					$wps_tofw_order_sent_cities = json_encode( $wps_tofw_order_send_to_cities );
+					$wps_tofw_order_sent_cities = wp_json_encode( $wps_tofw_order_send_to_cities );
 				}
 			}
 		}
@@ -382,17 +385,17 @@ if ( $allowed ) {
 		$wps_tofw_order_production_add = get_option( 'wps_tofw_order_production_address', false );
 		$address[] = $wps_tofw_order_production_add;
 		$wps_tofw_order_sent_cities = $address;
-		echo '<input type="hidden" name="wps_tofw_google_distance_map" id="wps_tofw_google_distance_map" value="' . esc_attr( htmlspecialchars( json_encode( $wps_tofw_order_sent_cities ) ) ) . '">';
+		echo '<input type="hidden" name="wps_tofw_google_distance_map" id="wps_tofw_google_distance_map" value="' . esc_attr( htmlspecialchars( wp_json_encode( $wps_tofw_order_sent_cities ) ) ) . '">';
 	}
 
 	$wps_tofw_order_production_add = get_option( 'wps_tofw_order_production_address', false );
 	$address = $wps_tofw_order_production_add;
 	$wps_tofw_billing_add = $order_data['billing']['city'] . '+' . $order_data['billing']['state'];
 
-	$wps_tofw_origin_location = get_option( 'wps_tofw_address_get_correct', false );
+	$wps_tofw_origin_location = get_option( 'track_orders_address_get_correct', false );
 	if ( isset( $wps_tofw_origin_location ) && ( '' != $wps_tofw_origin_location || null != $wps_tofw_origin_location ) ) {
-		$lat = get_option( 'wps_tofw_address_latitude', false );
-		$long = get_option( 'wps_tofw_address_longitude', false );
+		$lat = get_option( 'track_orders_address_latitude', false );
+		$long = get_option( 'track_orders_address_longitude', false );
 		?>
 		<input type="hidden" id="start_hidden" value="<?php echo esc_attr( $lat ); ?>">
 		<input type="hidden" id="end_hidden" value="<?php echo esc_attr( $long ); ?>">
@@ -400,9 +403,31 @@ if ( $allowed ) {
 		<?php
 	} else {
 		if ( ! empty( $address ) ) {
+			/**
+			 * Function to get url.
+			 *
+			 * @param string $url contains url.
+			 * @return string
+			 */
+			function track_orders_wpswings_url_get_contents( $url ) {
+				// Check if allow_url_fopen is enabled.
+				if ( ! ini_get( 'allow_url_fopen' ) ) {
+					die( 'allow_url_fopen is not enabled!' );
+				}
 
+				// Use file_get_contents to retrieve the content of the URL.
+				$output = file_get_contents( $url );
 
-			$geocode = file_get_contents( 'https://maps.google.com/maps/api/geocode/json?address=' . urlencode( $address ) . '&key=' . $wps_tofw_google_api_key );
+				if ( false === $output ) {
+					// Handle error if file_get_contents fails.
+					die( 'Failed to get contents from ' . esc_url( $url ) );
+				}
+
+				return $output;
+			}
+
+			$geocode = track_orders_wpswings_url_get_contents( 'https://maps.google.com/maps/api/geocode/json?address=' . urlencode( $address ) . '&key=' . $wps_tofw_google_api_key );
+
 
 			$output = json_decode( $geocode );
 
@@ -416,9 +441,9 @@ if ( $allowed ) {
 				<input type="hidden" id="end_hidden" value="<?php echo esc_attr( $long ); ?>">
 				<input type="hidden" id="billing_hidden" value="<?php echo esc_attr( $wps_tofw_billing_add ); ?>">
 				<?php
-				update_option( 'wps_tofw_address_get_correct', 'on' );
-				update_option( 'wps_tofw_address_latitude', $lat );
-				update_option( 'wps_tofw_address_longitude', $long );
+				update_option( 'track_orders_address_get_correct', 'on' );
+				update_option( 'track_orders_address_latitude', $lat );
+				update_option( 'track_orders_address_longitude', $long );
 
 			}
 		}

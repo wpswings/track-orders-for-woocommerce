@@ -13,8 +13,8 @@
  *
  * @wordpress-plugin
  * Plugin Name:       Track Orders for WooCommerce
- * Plugin URI:        https://wpswings.com/product/track-orders-for-woocommerce/
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Plugin URI:        https://wordpress.org/plugins/track-orders-for-woocommerce
+ * Description:       Track Orders for WooCommerce provides you the best way to track your orders.
  * Version:           1.0.0
  * Author:            WPSwings
  * Author URI:        https://wpswings.com/
@@ -22,9 +22,9 @@
  * Domain Path:       /languages
  *
  * Requires at least:    5.5.0
- * Tested up to:         6.2.0
+ * Tested up to:         6.3.1
  * WC requires at least: 5.5.0
- * WC tested up to:      7.7.0
+ * WC tested up to:      8.0.3
  * Requires PHP:         7.2
  * Stable tag:           1.0.0
  *
@@ -37,6 +37,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
 
+
+
 if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', array() ), true ) || ( is_multisite() && array_key_exists( 'woocommerce/woocommerce.php', get_site_option( 'active_sitewide_plugins', array() ) ) ) ) {
 
 	/**
@@ -44,8 +46,7 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 	 *
 	 * @since 1.0.0
 	 */
-	function define_track_orders_for_woocommerce_constants() {
-
+	function track_orders_for_woocommerce_define_constants() {
 		track_orders_for_woocommerce_constants( 'TRACK_ORDERS_FOR_WOOCOMMERCE_VERSION', '1.0.0' );
 		track_orders_for_woocommerce_constants( 'TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH', plugin_dir_path( __FILE__ ) );
 		track_orders_for_woocommerce_constants( 'TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL', plugin_dir_url( __FILE__ ) );
@@ -58,14 +59,12 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 	 *
 	 * @since 1.0.0
 	 */
-	function auto_update_track_orders_for_woocommerce() {
-
+	function track_orders_for_woocommerce_auto_update() {
 		if ( ! defined( 'TRACK_ORDERS_FOR_WOOCOMMERCE_ITEM_REFERENCE' ) ) {
 			define( 'TRACK_ORDERS_FOR_WOOCOMMERCE_ITEM_REFERENCE', 'Track Orders For WooCommerce' );
 		}
 		track_orders_for_woocommerce_constants( 'TRACK_ORDERS_FOR_WOOCOMMERCE_BASE_FILE', __FILE__ );
 		track_orders_for_woocommerce_constants( 'TRACK_ORDERS_FOR_WOOCOMMERCE_SERVER_URL', 'https://wpswings.com' );
-
 	}
 
 
@@ -89,11 +88,10 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 	 * The code that runs during plugin activation.
 	 * This action is documented in includes/class-track-orders-for-woocommerce-activator.php
 	 */
-	function activate_track_orders_for_woocommerce() {
-
+	function track_orders_for_woocommerce_activate() {
 		include_once plugin_dir_path( __FILE__ ) . 'includes/class-track-orders-for-woocommerce-activator.php';
 		Track_Orders_For_Woocommerce_Activator::track_orders_for_woocommerce_activate();
-		$wps_tofw_active_plugin = get_option( 'wps_all_plugins_active', false );
+		$wps_tofw_active_plugin = get_option( 'track_orders_all_plugins_active', false );
 		if ( is_array( $wps_tofw_active_plugin ) && ! empty( $wps_tofw_active_plugin ) ) {
 			$wps_tofw_active_plugin['track-orders-for-woocommerce'] = array(
 				'plugin_name' => __( 'Track Orders For Woocommerce', 'track-orders-for-woocommerce' ),
@@ -106,17 +104,17 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 				'active' => '1',
 			);
 		}
-		update_option( 'wps_all_plugins_active', $wps_tofw_active_plugin );
+		update_option( 'track_orders_all_plugins_active', $wps_tofw_active_plugin );
 	}
 
 	/**
 	 * The code that runs during plugin deactivation.
 	 * This action is documented in includes/class-track-orders-for-woocommerce-deactivator.php
 	 */
-	function deactivate_track_orders_for_woocommerce() {
+	function track_orders_for_woocommerce_deactivate() {
 		include_once plugin_dir_path( __FILE__ ) . 'includes/class-track-orders-for-woocommerce-deactivator.php';
 		Track_Orders_For_Woocommerce_Deactivator::track_orders_for_woocommerce_deactivate();
-		$wps_tofw_deactive_plugin = get_option( 'wps_all_plugins_active', false );
+		$wps_tofw_deactive_plugin = get_option( 'track_orders_all_plugins_active', false );
 		if ( is_array( $wps_tofw_deactive_plugin ) && ! empty( $wps_tofw_deactive_plugin ) ) {
 			foreach ( $wps_tofw_deactive_plugin as $wps_tofw_deactive_key => $wps_tofw_deactive ) {
 				if ( 'track-orders-for-woocommerce' === $wps_tofw_deactive_key ) {
@@ -124,11 +122,11 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 				}
 			}
 		}
-		update_option( 'wps_all_plugins_active', $wps_tofw_deactive_plugin );
+		update_option( 'track_orders_all_plugins_active', $wps_tofw_deactive_plugin );
 	}
 
-	register_activation_hook( __FILE__, 'activate_track_orders_for_woocommerce' );
-	register_deactivation_hook( __FILE__, 'deactivate_track_orders_for_woocommerce' );
+	register_activation_hook( __FILE__, 'track_orders_for_woocommerce_activate' );
+	register_deactivation_hook( __FILE__, 'track_orders_for_woocommerce_deactivate' );
 
 	/**
 	 * The core plugin class that is used to define internationalization,
@@ -148,15 +146,14 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 	 *
 	 * @since 1.0.0
 	 */
-	function run_track_orders_for_woocommerce() {
-		define_track_orders_for_woocommerce_constants();
-		auto_update_track_orders_for_woocommerce();
+	function track_orders_for_woocommerce_run() {
+		track_orders_for_woocommerce_define_constants();
+		track_orders_for_woocommerce_auto_update();
 		$wps_tofw = new Track_Orders_For_Woocommerce();
 		$wps_tofw->tofw_run();
 		$GLOBALS['wps_tofw_obj'] = $wps_tofw;
-
 	}
-	run_track_orders_for_woocommerce();
+	track_orders_for_woocommerce_run();
 
 
 	// Add settings link on plugin page.
@@ -194,8 +191,8 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 	}
 	add_filter( 'plugin_row_meta', 'track_orders_for_woocommerce_custom_settings_at_plugin_tab', 10, 2 );
 
-	add_action( 'activated_plugin', 'wps_standard_redirect_on_settings' );
-	if ( ! function_exists( 'wps_standard_redirect_on_settings' ) ) {
+	add_action( 'activated_plugin', 'track_orders_standard_redirect_on_settings' );
+	if ( ! function_exists( 'track_orders_standard_redirect_on_settings' ) ) {
 
 		/**
 		 * Function to redirect.
@@ -203,11 +200,11 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 		 * @param string $plugin is string.
 		 * @return void
 		 */
-		function wps_standard_redirect_on_settings( $plugin ) {
+		function track_orders_standard_redirect_on_settings( $plugin ) {
 			if ( plugin_basename( __FILE__ ) === $plugin ) {
 				$general_settings_url = admin_url( 'admin.php?page=track_orders_for_woocommerce_menu' );
 				wp_redirect( esc_url( $general_settings_url ) );
-				   exit();
+				exit();
 			}
 		}
 	}
@@ -218,7 +215,7 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 	 *
 	 * @link http://www.wpswings.com/
 	 */
-	function wps_tofw_set_session() {
+	function track_orders_set_session() {
 		if ( ! session_id() ) {
 
 			session_start();
@@ -228,7 +225,7 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 		if ( isset( $_POST['wps_tofw_order_id_submit'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_order_id_submit'] ) ) : '' ) {
 			$order_id = isset( $_POST['order_id'] ) ? sanitize_text_field( wp_unslash( $_POST['order_id'] ) ) : '';
 			$billing_email = get_post_meta( $order_id, '_billing_email', true );
-			$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
+			$wps_tofw_pages = get_option( 'track_orders_tracking_page' );
 			$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
 			$track_order_url = get_permalink( $page_id );
 			$order = wc_get_order( $order_id );
@@ -257,9 +254,9 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 			}
 		}
 	}
-	add_action( 'init', 'wps_tofw_set_session' );
+	add_action( 'init', 'track_orders_set_session' );
 } else {
-	wps_tofw_dependency_checkup();
+	track_orders_dependency_checkup();
 }
 
 /**
@@ -267,9 +264,9 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
  *
  * @return void
  */
-function wps_tofw_dependency_checkup() {
-	add_action( 'admin_init', 'wps_tofw_deactivate_child_plugin' );
-	add_action( 'admin_notices', 'wps_tofw_show_admin_notices' );
+function track_orders_dependency_checkup() {
+	add_action( 'admin_init', 'track_orders_deactivate_child_plugin' );
+	add_action( 'admin_notices', 'track_orders_show_admin_notices' );
 }
 
 /**
@@ -277,7 +274,7 @@ function wps_tofw_dependency_checkup() {
  *
  * @return void
  */
-function wps_tofw_deactivate_child_plugin() {
+function track_orders_deactivate_child_plugin() {
 	deactivate_plugins( plugin_basename( __FILE__ ) );
 }
 /**
@@ -285,16 +282,14 @@ function wps_tofw_deactivate_child_plugin() {
  *
  * @return void
  */
-function wps_tofw_show_admin_notices() {
+function track_orders_show_admin_notices() {
 	$mwb_mbfw_child_plugin  = __( 'Track Orders For Woocommerce', 'track-orders-for-woocommerce' );
 	$mwb_mbfw_parent_plugin = __( 'WooCommerce', 'track-orders-for-woocommerce' );
 	echo '<div class="notice notice-error is-dismissible"><p>'
 		/* translators: %s: dependency checks */
-		. sprintf( esc_html__( '%1$s requires %2$s to function correctly. Please activate %2$s before activating %1$s. For now, the plugin has been deactivated.', 'mwb-bookings-for-woocommerce' ), '<strong>' . esc_html( $mwb_mbfw_child_plugin ) . '</strong>', '<strong>' . esc_html( $mwb_mbfw_parent_plugin ) . '</strong>' )
+		. sprintf( esc_html__( '%1$s requires %2$s to function correctly. Please activate %2$s before activating %1$s. For now, the plugin has been deactivated.', 'track-orders-for-woocommerce' ), '<strong>' . esc_html( $mwb_mbfw_child_plugin ) . '</strong>', '<strong>' . esc_html( $mwb_mbfw_parent_plugin ) . '</strong>' )
 		. '</p></div>';
 	if ( isset( $_GET['activate'] ) ) { // phpcs:ignore
 		unset( $_GET['activate'] ); //phpcs:ignore
 	}
 }
-
-

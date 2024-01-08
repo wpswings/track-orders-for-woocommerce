@@ -13,9 +13,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 $allowed = true;
-
 $current_user_id = get_current_user_id();
 
+$wps_tofw_enable_track_order_popup = get_option( 'wps_tofwp_enable_track_order_popup' );
 if ( true == $allowed ) {
 
 	$check_value = isset( $_POST['woocommerce-process-checkout-nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['woocommerce-process-checkout-nonce'] ) ) : '';
@@ -39,7 +39,7 @@ if ( true == $allowed ) {
 			$myaccount_page = get_option( 'woocommerce_myaccount_page_id' );
 			$myaccount_page_url = get_permalink( $myaccount_page );
 		} else {
-			$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
+			$wps_tofw_pages = get_option( 'track_orders_tracking_page' );
 			$page_id = $wps_tofw_pages['pages']['wps_guest_track_order_page'];
 			$myaccount_page_url = get_permalink( $page_id );
 		}
@@ -74,12 +74,12 @@ if ( true == $allowed ) {
 			if ( 'on' != get_option( 'wps_tofw_enable_track_order_using_order_id', 'no' ) ) {
 
 				if ( isset( $_SESSION['wps_tofw_email'] ) ) {
-					$tofw_user_email = $_SESSION['wps_tofw_email'];
-
+					$tofw_user_email = sanitize_text_field( wp_unslash( $_SESSION['wps_tofw_email'] ) );
 					$order_email = get_post_meta( $order_id, '_billing_email', true );
 					if ( $tofw_user_email != $order_email ) {
+
 						$allowed = false;
-						$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
+						$wps_tofw_pages = get_option( 'track_orders_tracking_page' );
 						$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
 						$myaccount_page_url = get_permalink( $page_id );
 						$reason = __( 'This order #', 'track-orders-for-woocommerce' ) . $order_id . __( 'is not associated to your account.', 'track-orders-for-woocommerce' ) . "<a href='$myaccount_page_url'>" . __( 'Click Here ', 'track-orders-for-woocommerce' ) . '</a>';
@@ -109,43 +109,20 @@ if ( true == $allowed ) {
 		}
 	}
 } else {
-	$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
+	$wps_tofw_pages = get_option( 'track_orders_tracking_page' );
 	$page_id = $wps_tofw_pages['pages']['wps_guest_track_order_page'];
 	$track_order_url = get_permalink( $page_id );
 	header( 'Location: ' . $track_order_url );
 }
-$wps_tofw_enable_track_order_popup = get_option( 'wps_tofw_enable_track_order_popup', '' );
-if ( 'on' !== $wps_tofw_enable_track_order_popup ) {
-	get_header( 'shop' );
 
-	/**
-	 * Add content.
-	 *
-	 * @since 1.0.0
-	 */
-	do_action( 'woocommerce_before_main_content' );
-} elseif ( 'on' == $wps_tofw_enable_track_order_popup && $current_user_id > 0 && 0 != $order_id && '' != $order_id && null != $order_id ) {?>
-		<link rel="stylesheet" type="text/css" href="<?php echo esc_attr( wps_TRACK_YOUR_ORDER_URL ) . '/assets/css/wps-tofw-style-front.css'; ?>" media="screen">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-		<script type="text/javascript" src="<?php echo esc_attr( wps_TRACK_YOUR_ORDER_URL ) . 'assets/js/wps-tofw-script.js'; ?>"></script>
-		<?php
+get_header( 'shop' );
 
-		/**
-		 * Add content.
-		 *
-		 * @since 1.0.0
-		 */
-		do_action( 'wps_tofw_before_popup' );
-} else {
-	get_header( 'shop' );
-
-	/**
-	 * Add content.
-	 *
-	 * @since 1.0.0
-	 */
-	do_action( 'woocommerce_before_main_content' );
-}
+/**
+ * Add content.
+ *
+ * @since 1.0.0
+ */
+do_action( 'woocommerce_before_main_content' );
 
 /**
 	 * Woocommerce_before_main_content hook.
@@ -159,7 +136,7 @@ $wps_main_wrapper_class = get_option( 'wps_tofw_track_order_class' );
 $wps_child_wrapper_class = get_option( 'wps_tofw_track_order_child_class' );
 $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 ?>
-<style>	<?php echo $wps_track_order_css; ?>	</style>
+<style>	<?php echo esc_html( $wps_track_order_css ); ?>	</style>
 <div class="wps-tofw-order-tracking-section <?php echo esc_attr( $wps_main_wrapper_class ); ?>">
 	<?php
 	$get_status_approval = get_option( 'wps_tofw_order_status_in_approval', array() );
@@ -180,7 +157,7 @@ $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 
 	if ( is_array( $get_status_shipping ) && ! empty( $get_status_shipping ) ) {
 		foreach ( $get_status_shipping as $key1 => $value1 ) {
-			if ( ! empty( $wps_track_order_status ) && in_array( $value, $wps_track_order_status ) ) {
+			if ( ! empty( $wps_track_order_status ) && in_array( $value1, $wps_track_order_status ) ) {
 				$status_shipped = 1;
 			}
 		}
@@ -880,9 +857,6 @@ $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 																	</section>
 																	<div class="wps_tofw_header" id="wps_product">
 																		<div class="section wps_tofw_product-details-section-template ">
-																			<?
-																			?>
-																			
 																			<table class="wps_tofw_shop_table order_details wps-product-details-table wps-product-details-table-template">
 																				<thead>
 																					<tr>
@@ -1101,6 +1075,11 @@ $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 																do_action( 'woocommerce_after_main_content' );
 																get_footer( 'shop' );
 															} elseif ( 'on' == $wps_tofw_enable_track_order_popup && $current_user_id > 0 && 0 != $order_id && '' != $order_id && null != $order_id ) {
+
+
+																wp_enqueue_style( 'track-orders-for-woocommerce-public-css', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'public/css/track-orders-for-woocommerce-public.css', array(), '1.0.0', 'all' );
+																wp_register_script( 'track-orders-for-woocommerce-public-js', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'public/js/track-orders-for-woocommerce-public.js', array( 'jquery' ), '1.0.0', false );
+
 
 																/**
 																 * Add content.

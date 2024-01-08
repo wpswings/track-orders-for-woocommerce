@@ -55,7 +55,7 @@ class Track_Orders_For_Woocommerce_Common {
 	 */
 	public function tofw_common_enqueue_styles() {
 		wp_enqueue_style( $this->plugin_name . 'common', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'common/css/track-orders-for-woocommerce-common.css', array(), $this->version, 'all' );
-		wp_enqueue_style( 'bootstrap', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'common/css/bootstrap.css', array(), $this->version, 'all' );
+
 	}
 
 	/**
@@ -86,10 +86,10 @@ class Track_Orders_For_Woocommerce_Common {
 		$wps_tofw_purchase_code = ( ! empty( $_POST['purchase_code'] ) ) ? sanitize_text_field( wp_unslash( $_POST['purchase_code'] ) ) : '';
 		$wps_tofw_response = self::track_orders_for_woocommerce_license_code_update( $wps_tofw_purchase_code );
 		if ( is_wp_error( $wps_tofw_response ) ) {
-			echo json_encode(
+			echo wp_json_encode(
 				array(
 					'status' => false,
-					'msg' => __(
+					'msg' => esc_html__(
 						'An unexpected error occurred. Please try again.',
 						'track-orders-for-woocommerce'
 					),
@@ -99,25 +99,26 @@ class Track_Orders_For_Woocommerce_Common {
 			$wps_tofw_license_data = json_decode( wp_remote_retrieve_body( $wps_tofw_response ) );
 
 			if ( isset( $wps_tofw_license_data->result ) && 'success' === $wps_tofw_license_data->result ) {
-				update_option( 'wps_tofw_license_key', $wps_tofw_purchase_code );
-				update_option( 'wps_tofw_license_check', true );
+				update_option( 'track_orders_license_key', $wps_tofw_purchase_code );
+				update_option( 'track_orders_license_check', true );
 
-				echo json_encode(
+				echo wp_json_encode(
 					array(
 						'status' => true,
-						'msg' => __(
+						'msg' => esc_html__(
 							'Successfully Verified. Please Wait.',
 							'track-orders-for-woocommerce'
 						),
 					)
 				);
 			} else {
-				echo json_encode(
+				echo wp_json_encode(
 					array(
 						'status' => false,
-						'msg' => $wps_tofw_license_data->message,
+						'msg'    => esc_html( $wps_tofw_license_data->message ),
 					)
 				);
+
 			}
 		}
 		wp_die();
@@ -126,17 +127,17 @@ class Track_Orders_For_Woocommerce_Common {
 	/**
 	 * Function is used for the sending the track data.
 	 *
-	 * @name tofw_wpswings_tracker_send_event.
-	 * @since 1.0.0
+	 * @param boolean $override is a boolean.
+	 * @return void
 	 */
 	public function tofw_wpswings_tracker_send_event( $override = false ) {
 		require_once WC()->plugin_path() . '/includes/class-wc-tracker.php';
 
-		$last_send = get_option( 'wpswings_tracker_last_send' );
+		$last_send = get_option( 'track_orders_tracker_last_send' );
 		if ( ! apply_filters( 'wpswings_tracker_send_override', $override ) ) {
 			// Send a maximum of once per week by default.
 			$last_send = $this->wps_tofw_last_send_time();
-			if ( $last_send && $last_send > apply_filters( 'wpswings_tracker_last_send_interval', strtotime( '-1 week' ) ) ) {
+			if ( $last_send && $last_send > apply_filters( 'track_orders_tracker_last_send_interval', strtotime( '-1 week' ) ) ) {
 				return;
 			}
 		} else {
@@ -150,7 +151,7 @@ class Track_Orders_For_Woocommerce_Common {
 		$api_route = 'mp';
 		$api_route .= 's';
 		// Update time first before sending to ensure it is set.
-		update_option( 'wpswings_tracker_last_send', time() );
+		update_option( 'track_orders_tracker_last_send', time() );
 		$params = WC_Tracker::get_tracking_data();
 		$params = apply_filters( 'wpswings_tracker_params', $params );
 		$api_url = 'https://tracking.wpswings.com/wp-json/' . $api_route . '-route/v1/' . $api_route . '-testing-data/';
@@ -171,7 +172,7 @@ class Track_Orders_For_Woocommerce_Common {
 	 * @since 1.0.0
 	 */
 	public function wps_tofw_last_send_time() {
-		return apply_filters( 'wpswings_tracker_last_send_time', get_option( 'wpswings_tracker_last_send', false ) );
+		return apply_filters( 'track_orders_tracker_last_send_time', get_option( 'track_orders_tracker_last_send', false ) );
 	}
 
 	/**
@@ -185,34 +186,34 @@ class Track_Orders_For_Woocommerce_Common {
 
 		$term_accpted = ! empty( $_POST['consetCheck'] ) ? sanitize_text_field( wp_unslash( $_POST['consetCheck'] ) ) : ' ';
 		if ( ! empty( $term_accpted ) && 'yes' == $term_accpted ) {
-			update_option( 'tofw_enable_tracking', 'on' );
+			update_option( 'track_orders_enable_tracking', 'on' );
 		}
 		// settings fields.
-		$first_name = ! empty( $_POST['firstName'] ) ? sanitize_text_field( wp_unslash( $_POST['firstName'] ) ) : '';
-		update_option( 'firstname', $first_name );
+		$first_name = ! empty( $_POST['track_orders_firstname'] ) ? sanitize_text_field( wp_unslash( $_POST['track_orders_firstname'] ) ) : '';
+		update_option( 'track_orders_firstname', $first_name );
 
-		$email = ! empty( $_POST['email'] ) ? sanitize_text_field( wp_unslash( $_POST['email'] ) ) : '';
-		update_option( 'email', $email );
+		$email = ! empty( $_POST['track_orders_email'] ) ? sanitize_text_field( wp_unslash( $_POST['track_orders_email'] ) ) : '';
+		update_option( 'track_orders_email', $email );
 
-		$desc = ! empty( $_POST['desc'] ) ? sanitize_text_field( wp_unslash( $_POST['desc'] ) ) : '';
-		update_option( 'desc', $desc );
+		$desc = ! empty( $_POST['track_orders_desc'] ) ? sanitize_text_field( wp_unslash( $_POST['track_orders_desc'] ) ) : '';
+		update_option( 'track_orders_desc', $desc );
 
-		$age = ! empty( $_POST['age'] ) ? sanitize_text_field( wp_unslash( $_POST['age'] ) ) : '';
-		update_option( 'age', $age );
+		$age = ! empty( $_POST['track_orders_age'] ) ? sanitize_text_field( wp_unslash( $_POST['track_orders_age'] ) ) : '';
+		update_option( 'track_orders_age', $age );
 
-		$first_checkbox = ! empty( $_POST['FirstCheckbox'] ) ? sanitize_text_field( wp_unslash( $_POST['FirstCheckbox'] ) ) : '';
-		update_option( 'first_checkbox', $first_checkbox );
+		$track_orders_first_checkbox = ! empty( $_POST['FirstCheckbox'] ) ? sanitize_text_field( wp_unslash( $_POST['FirstCheckbox'] ) ) : '';
+		update_option( 'track_orders_first_checkbox', $track_orders_first_checkbox );
 
 		$checked_first_switch = ! empty( $_POST['checkedA'] ) ? sanitize_text_field( wp_unslash( $_POST['checkedA'] ) ) : '';
 		if ( ! empty( $checked_first_switch ) && $checked_first_switch ) {
-			update_option( 'tofw_radio_switch_demo', 'on' );
+			update_option( 'track_orders_radio_switch_demo', 'on' );
 		}
 
 		$checked_second_switch = ! empty( $_POST['checkedB'] ) ? sanitize_text_field( wp_unslash( $_POST['checkedB'] ) ) : '';
 		if ( ! empty( $checked_second_switch ) && $checked_second_switch ) {
-			update_option( 'tofw_radio_reset_license', 'on' );
+			update_option( 'track_orders_radio_reset_license', 'on' );
 		}
-		update_option( 'wps_track_orders_for_woocommerce_multistep_done', 'yes' );
+		update_option( 'track_orders_for_woocommerce_multistep_done', 'yes' );
 
 		wp_send_json( 'yes' );
 	}
@@ -220,18 +221,18 @@ class Track_Orders_For_Woocommerce_Common {
 	/**
 	 * Function to return template.
 	 *
-	 * @param [type] $template
-	 * @return void
+	 * @param string $template is a path.
+	 * @return string
 	 */
 	public function wps_tofw_include_track_order_page( $template ) {
-		$selected_template = get_option( 'wps_tofw_activated_template' );
+		$selected_template = get_option( 'track_orders_activated_template' );
 		$wps_tofw_google_map_setting = get_option( 'wps_tofw_trackorder_with_google_map', false );
 		$wps_tofw_enable_track_order_feature = get_option( 'tofw_enable_track_order', 'no' );
 		if ( 'on' != $wps_tofw_enable_track_order_feature ) {
 			return $template;
 		}
 		if ( 'on' == $wps_tofw_enable_track_order_feature && 'on' == $wps_tofw_google_map_setting ) {
-			$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
+			$wps_tofw_pages = get_option( 'track_orders_tracking_page' );
 			$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
 			if ( is_page( $page_id ) ) {
 				$new_template = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'template/wps-map-new-template.php';
@@ -239,11 +240,17 @@ class Track_Orders_For_Woocommerce_Common {
 			}
 		} else {
 
-			$wps_tofw_pages = get_option( 'wps_tofw_tracking_page', false );
+			$wps_tofw_pages = get_option( 'track_orders_tracking_page', false );
 			$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
 			if ( is_page( $page_id ) ) {
 				if ( ' ' != $selected_template && null != $selected_template ) {
-					$new_template = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'template/wps-track-order-myaccount-page-' . $selected_template . '.php';
+					$path = '';
+					if ( 'template4' === $selected_template || 'new-template1' === $selected_template || 'new-template2' === $selected_template || 'new-template3' === $selected_template ) {
+						$path = TRACK_ORDERS_FOR_WOOCOMMERCE_PRO_DIR_PATH;
+					} else {
+						$path = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH;
+					}
+					$new_template = $path . 'template/wps-track-order-myaccount-page-' . $selected_template . '.php';
 					$template = $new_template;
 				} else {
 					$new_template = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'template/wps-track-order-myaccount-page-template1.php';
@@ -379,7 +386,7 @@ class Track_Orders_For_Woocommerce_Common {
 				$wps_all_data = $order->get_data();
 				$billing_address = $wps_all_data['billing'];
 				$shipping_address = $wps_all_data['shipping'];
-				$to = $billing_address['email'];
+				$to = get_post_meta( $order_id, '_billing_email', true );
 				$subject = __( 'Your Order Status for Order #', 'track-orders-for-woocommerce' ) . $order_id;
 				$message = __( 'Your Order Status is ', 'track-orders-for-woocommerce' ) . $statuses[ $new_status ];
 				$mail_header = __( 'Current Order Status is ', 'track-orders-for-woocommerce' ) . $statuses[ $new_status ];
@@ -524,7 +531,7 @@ class Track_Orders_For_Woocommerce_Common {
 							<ul>
 								<li>
 									<p class="info">
-										<span class="bold">' . __( 'Email', 'track-orders-for-woocommerce' ) . ': </span>' . get_post_meta( $order->id, '_billing_email', true ) . '
+										<span class="bold">' . __( 'track_orders_email', 'track-orders-for-woocommerce' ) . ': </span>' . get_post_meta( $order->id, '_billing_email', true ) . '
 									</p>
 								</li>
 								<li>
@@ -560,20 +567,21 @@ class Track_Orders_For_Woocommerce_Common {
 	/**
 	 * Function for ajax callback.
 	 *
-	 * @return array
+	 * @return void
 	 */
 	public function wps_tofw_export_my_orders_callback() {
-		$_orders = get_posts(
-			array(
+		$current_user_id = get_current_user_id();
 
-				'post_status' => array_keys( wc_get_order_statuses() ),
-				'post_type'   => 'shop_order',
-				'numberposts' => -1,
-				'meta_key' => '_customer_user',
-				'meta_value' => get_current_user_id(),
-				'fields' => 'ids',
+		// Get orders for the current user.
+		$customer_orders = wc_get_orders(
+			array(
+				'customer' => $current_user_id,
+				'status'   => array_keys( wc_get_order_statuses() ),
 			)
 		);
+
+		// Extract order IDs from the orders.
+		$_orders = wp_list_pluck( $customer_orders, 'ID' );
 
 		if ( ! empty( $_orders ) ) {
 			$order_details = $this->wps_tofw_get_csv_order_details( $_orders );
@@ -582,13 +590,14 @@ class Track_Orders_For_Woocommerce_Common {
 				'file_name' => 'wps_order_details',
 				'order_data' => $order_details,
 			);
+
 		} else {
 
 			$main_arr = array(
 				'status' => 'failed',
 			);
 		}
-		echo wp_json_encode( $main_arr );
+		wp_send_json( wp_json_encode( $main_arr ) );
 		wp_die();
 	}
 
@@ -661,15 +670,16 @@ class Track_Orders_For_Woocommerce_Common {
 	}
 
 
-		/**
-		 * Function for ajax callback for guest user export
-		 *
-		 * @return array
-		 */
+	/**
+	 * Function for ajax callback for guest user export
+	 *
+	 * @return void
+	 */
 	public function wps_tofw_export_my_orders_guest_user_callback() {
-
-		$email = isset( $_POST['email'] ) ? $_POST['email'] : '';
+		check_ajax_referer( 'tofw_common_param_nonce', 'nonce' );
+		$email = isset( $_POST['track_orders_email'] ) ? sanitize_text_field( wp_unslash( $_POST['track_orders_email'] ) ) : '';
 		$_orders = array();
+
 		if ( ! empty( $email ) ) {
 			$_orders_temp = get_posts(
 				array(
@@ -680,7 +690,6 @@ class Track_Orders_For_Woocommerce_Common {
 					'fields' => 'ids',
 				)
 			);
-
 			if ( ! empty( $_orders_temp ) && is_array( $_orders_temp ) ) {
 				foreach ( $_orders_temp as $key => $id ) {
 					$_order = wc_get_order( $id );
@@ -701,9 +710,116 @@ class Track_Orders_For_Woocommerce_Common {
 			);
 		}
 
-		echo wp_json_encode( $main_arr );
+		wp_send_json( wp_json_encode( $main_arr ) );
 		wp_die();
 
+	}
+
+	/**
+	 * Function to register custom statuses.
+	 *
+	 * @return void
+	 */
+	public function wps_tofw_register_custom_order_status() {
+
+		$wps_tofw_enable_track_order_feature = get_option( 'tofw_enable_track_order', 'no' );
+		$wps_tofw_enable_custom_order_feature = get_option( 'tofw_enable_use_custom_status', 'no' );
+		if ( 'on' !== $wps_tofw_enable_track_order_feature || 'on' !== $wps_tofw_enable_custom_order_feature ) {
+			return;
+		}
+
+		register_post_status(
+			'wc-packed',
+			array(
+				'label'                     => __( 'Order Packed', 'track-orders-for-woocommerce' ),
+				'public'                    => true,
+				'exclude_from_search'       => false,
+				'show_in_admin_all_list'    => true,
+				'show_in_admin_status_list' => true,
+				/* translators: %s: count */
+				'label_count'               => false,
+			)
+		);
+
+		register_post_status(
+			'wc-dispatched',
+			array(
+				'label'                     => __( 'Order Dispatched', 'track-orders-for-woocommerce' ),
+				'public'                    => true,
+				'exclude_from_search'       => false,
+				'show_in_admin_all_list'    => true,
+				'show_in_admin_status_list' => true,
+				/* translators: %s: count */
+				'label_count'               => _n_noop( 'Order Dispatched <span class="count">(%s)</span>', 'Order Dispatched <span class="count">(%s)</span>' ),
+			)
+		);
+
+		register_post_status(
+			'wc-shipped',
+			array(
+				'label'                     => __( 'Order Shipped', 'track-orders-for-woocommerce' ),
+				'public'                    => true,
+				'exclude_from_search'       => false,
+				'show_in_admin_all_list'    => true,
+				'show_in_admin_status_list' => true,
+				/* translators: %s: count */
+				'label_count'               => false,
+			)
+		);
+
+		$custom_statuses = get_option( 'track_orders_new_custom_order_status', array() );
+
+		if ( is_array( $custom_statuses ) && ! empty( $custom_statuses ) ) {
+			foreach ( $custom_statuses as $key => $value ) {
+				foreach ( $value as $custom_status_key => $custom_status_value ) {
+					register_post_status(
+						'wc-' . $custom_status_key,
+						array(
+							'label'                     => $custom_status_value,
+							'public'                    => true,
+							'exclude_from_search'       => false,
+							'show_in_admin_all_list'    => true,
+							'show_in_admin_status_list' => true,
+							/* translators: %s: count */
+							'label_count'               => false,
+						)
+					);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Function to add custom statuses.
+	 *
+	 * @param array $order_statuses is an array.
+	 * @return array
+	 */
+	public function wps_tofw_add_custom_order_status( $order_statuses ) {
+		$wps_tofw_enable_track_order_feature = get_option( 'tofw_enable_track_order', 'no' );
+		$wps_tofw_enable_custom_order_feature = get_option( 'tofw_enable_use_custom_status', 'no' );
+		if ( 'on' != $wps_tofw_enable_track_order_feature || 'on' != $wps_tofw_enable_custom_order_feature ) {
+			return $order_statuses;
+		}
+			$custom_order = get_option( 'track_orders_new_custom_order_status', array() );
+			$statuses = get_option( 'tofw_selected_custom_order_status', array() );
+			$wps_tofw_statuses = get_option( 'track_orders_new_settings_custom_statuses_for_order_tracking', array() );
+
+			$custom_order[] = array( 'dispatched' => __( 'Order Dispatched', 'track-orders-for-woocommerce' ) );
+			$custom_order[] = array( 'shipped' => __( 'Order Shipped', 'track-orders-for-woocommerce' ) );
+			$custom_order[] = array( 'packed' => __( 'Order Packed', 'track-orders-for-woocommerce' ) );
+
+		if ( is_array( $custom_order ) && ! empty( $custom_order ) && ! empty( $statuses ) && is_array( $statuses ) ) {
+			foreach ( $custom_order as $key1 => $value1 ) {
+				foreach ( $value1 as $custom_key => $custom_value ) {
+					if ( in_array( 'wc-' . $custom_key, $statuses ) ) {
+						$order_statuses[ 'wc-' . $custom_key ] = $custom_value;
+					}
+				}
+			}
+		}
+
+			return $order_statuses;
 	}
 
 }

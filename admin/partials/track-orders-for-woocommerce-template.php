@@ -10,11 +10,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-$activated_template = get_option( 'wps_tofw_activated_template', '' );
+$activated_template = get_option( 'track_orders_activated_template', '' );
 $template1 = __( 'Activate', 'track-orders-for-woocommerce' );
 $template2 = __( 'Activate', 'track-orders-for-woocommerce' );
 $template3 = __( 'Activate', 'track-orders-for-woocommerce' );
-
+$template4 = __( 'Activate', 'track-orders-for-woocommerce' );
+$new_template1 = __( 'Activate', 'track-orders-for-woocommerce' );
+$new_template2 = __( 'Activate', 'track-orders-for-woocommerce' );
+$new_template3 = __( 'Activate', 'track-orders-for-woocommerce' );
 
 if ( 'template1' == $activated_template ) {
 	$template1 = __( 'Activated', 'track-orders-for-woocommerce' );
@@ -22,6 +25,14 @@ if ( 'template1' == $activated_template ) {
 	$template2 = __( 'Activated', 'track-orders-for-woocommerce' );
 } else if ( 'template3' == $activated_template ) {
 	$template3 = __( 'Activated', 'track-orders-for-woocommerce' );
+} else if ( 'template4' == $activated_template ) {
+	$template4 = __( 'Activated', 'track-orders-for-woocommerce' );
+} else if ( 'newtemplate1' == $activated_template ) {
+	$new_template1 = __( 'Activated', 'track-orders-for-woocommerce' );
+} else if ( 'newtemplate2' == $activated_template ) {
+	$new_template2 = __( 'Activated', 'track-orders-for-woocommerce' );
+} else if ( 'newtemplate3' == $activated_template ) {
+	$new_template3 = __( 'Activated', 'track-orders-for-woocommerce' );
 }
 ?>
 
@@ -71,6 +82,7 @@ if ( 'template1' == $activated_template ) {
 			</div>
 		</div>
 	</div>
+	<?php do_action( 'wps_tofw_template_tab', $template4, $new_template1, $new_template2, $new_template3 ); ?>
 </div>
 	
 <div class="hidden_wrapper">
@@ -83,6 +95,6 @@ if ( 'template1' == $activated_template ) {
 	<div id="wps_template_3" class="wps_hide_template">
 		<img src="<?php echo esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/ot01.jpg'; ?>">
 	</div>
-	</div>
+	<?php do_action( 'wps_tofw_preview_template' ); ?>
 	
 </div>

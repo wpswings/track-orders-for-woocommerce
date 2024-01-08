@@ -2,7 +2,7 @@
 
 jQuery(document).ready(function() {
 
-
+	
 
     	/*SETTING A DATEPICKER TO THE METABOX ON ORDER EDIT PAGE*/
 	if( jQuery( '.wps_tofw_est_delivery_date' ).length > 0 ){
@@ -24,7 +24,8 @@ jQuery(document).ready(function() {
 
 	 var is_enable_status_icon = wps_admin_param.is_enable_status_icon;
 
-	 if( 'on' == is_enable_status_icon ) {
+	
+	if ('on' == is_enable_status_icon) {
 		   // /home/cedcoss/Local Sites/order-tracker/app/public/order_complted_icon.png
 		   var processing = wps_admin_param.site_url + '/wp-content/plugins/track-orders-for-woocommerce/admin/image/processing1.png';
 		   var completed = wps_admin_param.site_url + '/wp-content/plugins/track-orders-for-woocommerce/admin/image/deliver1.png';

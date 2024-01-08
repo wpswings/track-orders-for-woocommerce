@@ -91,32 +91,7 @@ jQuery(document).ready(function ($) {
 
       });
   });
-  //jquery add buttton
-    jQuery('#wps_tofw_enhanced_woocommerce_shipment_tracking_add_providers').on('click',function(e){
-        var wps_company_name=jQuery('.wps_toy_enhanced_provider').val();
-        var wps_company_url=jQuery('.wps_toy_enhanced_provider_url').val();
-        jQuery.ajax({
-        url:ajax_url,
-        type:"POST",
-        data: {
-          action : 'wps_provider_subbmission_data_from_plugin',
-          nonce : tofw_admin_param.wps_tofw_nonce,
-          wps_company_name : wps_company_name,
-          wps_company_url : wps_company_url
-        },success:function(response){
-          jQuery('.wps_toy_enhanced_provider').val("");
-          jQuery('.wps_toy_enhanced_provider_url').val("");
-          var  wps_append="<div class='wps-tyo-courier-data' id='wps_enhanced_tofw_class"+wps_company_name+"'>";
-            wps_append+="<input type='checkbox' id='wps_enhanced_checkbox"+wps_company_name+"' name='wps_tofw_courier_url["+wps_company_name+"]' value='"+wps_company_url+"'>";
-                wps_append+="<label for='wps_enhanced_checkbox"+wps_company_name+"'>"+wps_company_name+"</label>";
-                  wps_append+='<a href="#" id="wps_enhanced_cross'+wps_company_name+'" class="wps_enhanced_tofw_remove" data-id="'+wps_company_name+'">X</a></div>';
-          jQuery(wps_append).appendTo(".wps_tofw_courier_content");
-          
-        }	
-
-      });
-      
-    });
+ 
   
   // for custom order status image icons 
 	jQuery('.wps_tofw_other_setting_upload_logo').click(function(){
@@ -158,6 +133,15 @@ jQuery(document).ready(function ($) {
     }
   });
   
+  $('#wps_tofw_create_order_name').on('keypress', function(e) {
+    var regex = new RegExp("^[a-zA-Z0-9\s ]+$"); // Regular expression to allow only alphanumeric characters
+    var key = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+    if (!regex.test(key)) {
+		alert(tofw_admin_param.custom_order_msg);
+		
+      return false;
+    }
+  });
   
   jQuery(document).on('click','input#wps_tofw_create_custom_order_status',function(){
     jQuery('#wps_tofw_send_loading').show();
@@ -579,19 +563,19 @@ jQuery(document).ready(function ($) {
 	else if( pre_length <= hidden_length )
 	{
 		var i = 0;
-		jQuery.grep(hidden_value, function(el) {
+		// jQuery.grep(hidden_value, function(el) {
 
-			if (jQuery.inArray(el, previously_selected_value) == -1) 
-			{
-				jQuery("#wps_tofw_order_status_in_processing option[value="+el+"]").remove();
-				jQuery("#wps_tofw_order_status_in_shipping option[value="+el+"]").remove();
+		// 	if (jQuery.inArray(el, previously_selected_value) == -1) 
+		// 	{
+		// 		jQuery("#wps_tofw_order_status_in_processing option[value="+el+"]").remove();
+		// 		jQuery("#wps_tofw_order_status_in_shipping option[value="+el+"]").remove();
 
-			}
+		// 	}
 
 
-			i++;
+		// 	i++;
 
-		});
+		// });
 	}
 
 } );
@@ -652,8 +636,8 @@ jQuery(document).ready(function ($) {
 				if (jQuery.inArray(el, previously_selected_value) == -1) 
 				{
 
-					jQuery("#wps_tofw_order_status_in_approval option[value="+el+"]").remove();
-					jQuery("#wps_tofw_order_status_in_shipping option[value="+el+"]").remove();
+					// jQuery("#wps_tofw_order_status_in_approval option[value="+el+"]").remove();
+					// jQuery("#wps_tofw_order_status_in_shipping option[value="+el+"]").remove();
 
 				}
 
@@ -720,8 +704,8 @@ jQuery(document).ready(function ($) {
 			if (jQuery.inArray(el, previously_selected_value) == -1) 
 			{
 
-				jQuery("#wps_tofw_order_status_in_processing option[value="+el+"]").remove();
-				jQuery("#wps_tofw_order_status_in_approval option[value="+el+"]").remove();
+				// jQuery("#wps_tofw_order_status_in_processing option[value="+el+"]").remove();
+				// jQuery("#wps_tofw_order_status_in_approval option[value="+el+"]").remove();
 
 			}
 

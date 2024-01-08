@@ -224,8 +224,6 @@ class Track_Orders_For_Woocommerce {
 		$this->loader->add_action( 'save_post', $tofw_plugin_admin, 'wps_tofw_save_delivery_date_meta' );
 		$this->loader->add_action( 'save_post', $tofw_plugin_admin, 'wps_tofw_save_shipping_services_meta' );
 		$this->loader->add_action( 'save_post', $tofw_plugin_admin, 'wps_tofw_save_custom_shipping_cities_meta' );
-		$this->loader->add_action( 'init', $tofw_plugin_admin, 'wps_tofw_register_custom_order_status' );
-		$this->loader->add_action( 'wc_order_statuses', $tofw_plugin_admin, 'wps_tofw_add_custom_order_status', 10, 1 );
 
 	}
 
@@ -242,22 +240,23 @@ class Track_Orders_For_Woocommerce {
 		$this->loader->add_action( 'wp_enqueue_scripts', $tofw_plugin_common, 'tofw_common_enqueue_styles' );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $tofw_plugin_common, 'tofw_common_enqueue_scripts' );
+		if ( 'on' == get_option( 'wps_tofw_is_plugin_enable' ) ) {
+			// Save ajax request for the plugin's multistep.
+			$this->loader->add_action( 'wp_ajax_tofw_wps_standard_save_settings_filter', $tofw_plugin_common, 'tofw_wps_standard_save_settings_filter' );
+			$this->loader->add_action( 'wp_ajax_nopriv_tofw_wps_standard_save_settings_filter', $tofw_plugin_common, 'tofw_wps_standard_save_settings_filter' );
+			if ( self::is_enbale_usage_tracking() ) {
+				$this->loader->add_action( 'wpswings_tracker_send_event', $tofw_plugin_common, 'tofw_wpswings_tracker_send_event' );
+			}
+			// license validation.
 
-		// Save ajax request for the plugin's multistep.
-		$this->loader->add_action( 'wp_ajax_tofw_wps_standard_save_settings_filter', $tofw_plugin_common, 'tofw_wps_standard_save_settings_filter' );
-		$this->loader->add_action( 'wp_ajax_nopriv_tofw_wps_standard_save_settings_filter', $tofw_plugin_common, 'tofw_wps_standard_save_settings_filter' );
-		if ( self::is_enbale_usage_tracking() ) {
-			$this->loader->add_action( 'wpswings_tracker_send_event', $tofw_plugin_common, 'tofw_wpswings_tracker_send_event' );
+			$this->loader->add_filter( 'template_include', $tofw_plugin_common, 'wps_tofw_include_track_order_page', 10, 1 );
+			$this->loader->add_action( 'woocommerce_order_status_changed', $tofw_plugin_common, 'wps_tofw_track_order_status', 10, 3 );
+
+			$this->loader->add_action( 'wp_ajax_wps_wot_export_my_orders', $tofw_plugin_common, 'wps_tofw_export_my_orders_callback' );
+			$this->loader->add_action( 'wp_ajax_nopriv_wps_tofw_export_my_orders_guest_user', $tofw_plugin_common, 'wps_tofw_export_my_orders_guest_user_callback' );
+			$this->loader->add_action( 'init', $tofw_plugin_common, 'wps_tofw_register_custom_order_status' );
+			$this->loader->add_action( 'wc_order_statuses', $tofw_plugin_common, 'wps_tofw_add_custom_order_status', 10, 1 );
 		}
-		// license validation.
-		
-
-		$this->loader->add_filter( 'template_include', $tofw_plugin_common, 'wps_tofw_include_track_order_page', 10, 1 );
-		$this->loader->add_action( 'woocommerce_order_status_changed', $tofw_plugin_common, 'wps_tofw_track_order_status', 10, 3 );
-
-		$this->loader->add_action( 'wp_ajax_wps_wot_export_my_orders', $tofw_plugin_common, 'wps_tofw_export_my_orders_callback' );
-		$this->loader->add_action( 'wp_ajax_nopriv_wps_tofw_export_my_orders_guest_user', $tofw_plugin_common, 'wps_tofw_export_my_orders_guest_user_callback' );
-
 	}
 
 	/**
@@ -274,15 +273,18 @@ class Track_Orders_For_Woocommerce {
 		$this->loader->add_action( 'wp_enqueue_scripts', $tofw_plugin_public, 'tofw_public_enqueue_scripts' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $tofw_plugin_public, 'tofw_public_enqueue_scripts' );
 
-		$this->loader->add_action( 'woocommerce_order_details_after_order_table', $tofw_plugin_public, 'wps_tofw_track_order_button' );
-		$this->loader->add_action( 'woocommerce_order_details_before_order_table_items', $tofw_plugin_public, 'wps_tofw_track_order_info', 10, 1 );
-		$this->loader->add_action( 'woocommerce_my_account_my_orders_actions', $tofw_plugin_public, 'wps_tofw_add_track_order_button_on_orderpage', 10, 2 );
+		if ( 'on' == get_option( 'wps_tofw_is_plugin_enable' ) ) {
+			$this->loader->add_action( 'woocommerce_order_details_after_order_table', $tofw_plugin_public, 'wps_tofw_track_order_button' );
+			$this->loader->add_action( 'woocommerce_order_details_before_order_table_items', $tofw_plugin_public, 'wps_tofw_track_order_info', 10, 1 );
+			if ( ! in_array( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php', get_option( 'active_plugins', array() ), true ) ) {
+				$this->loader->add_action( 'woocommerce_my_account_my_orders_actions', $tofw_plugin_public, 'wps_tofw_add_track_order_button_on_orderpage', 10, 2 );
 
-		$this->loader->add_action( 'woocommerce_before_account_orders', $tofw_plugin_public, 'wps_wot_add_export_button_before_order_table', 10, 1 );
-		$this->loader->add_action( 'template_include', $tofw_plugin_public, 'wps_tofw_include_track_order_page', 10, 1 );
-		$this->loader->add_action( 'template_include', $tofw_plugin_public, 'wps_tofw_include_guest_track_order_page', 10, 1 );
-		$this->loader->add_action( 'template_include', $tofw_plugin_public, 'wps_ordertracking_page', 10, 1 );
-
+			}
+			$this->loader->add_action( 'woocommerce_before_account_orders', $tofw_plugin_public, 'wps_wot_add_export_button_before_order_table', 10, 1 );
+			$this->loader->add_action( 'template_include', $tofw_plugin_public, 'wps_tofw_include_track_order_page', 10, 1 );
+			$this->loader->add_action( 'template_include', $tofw_plugin_public, 'wps_tofw_include_guest_track_order_page', 10, 1 );
+			$this->loader->add_action( 'template_include', $tofw_plugin_public, 'wps_ordertracking_page', 10, 1 );
+		}
 	}
 
 	/**
@@ -316,7 +318,7 @@ class Track_Orders_For_Woocommerce {
 	 * @name is_enbale_usage_tracking
 	 */
 	public static function is_enbale_usage_tracking() {
-		$check_is_enable = get_option( 'tofw_enable_tracking', false );
+		$check_is_enable = get_option( 'track_orders_enable_tracking', false );
 		return ! empty( $check_is_enable ) ? true : false;
 	}
 
@@ -391,7 +393,7 @@ class Track_Orders_For_Woocommerce {
 			'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-template.php',
 		);
 		$tofw_default_tabs['track-orders-for-woocommerce-track-your-your-order-with-google-map']      = array(
-			'title'       => esc_html__( 'Track Order with Google Map', 'track-orders-for-woocommerce' ),
+			'title'       => esc_html__( 'Track Order with Google Maps', 'track-orders-for-woocommerce' ),
 			'name'        => 'track-orders-for-woocommerce-track-your-your-order-with-google-map',
 			'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-track-your-order-with-google-map.php',
 		);
@@ -400,6 +402,9 @@ class Track_Orders_For_Woocommerce {
 			'name'        => 'track-orders-for-woocommerce-shipping-services',
 			'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-shipping-services.php',
 		);
+		$tofw_default_tabs =
+		// desc - filter for trial.
+		apply_filters( 'track_orders_for_woocmmerce_admin_settings_tabs', $tofw_default_tabs );
 		$tofw_default_tabs['track-orders-for-woocommerce-overview']      = array(
 			'title'       => esc_html__( 'Overview', 'track-orders-for-woocommerce' ),
 			'name'        => 'track-orders-for-woocommerce-overview',
@@ -411,10 +416,6 @@ class Track_Orders_For_Woocommerce {
 			'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-developer.php',
 		);
 
-		$tofw_default_tabs =
-		// desc - filter for trial.
-		apply_filters( 'track_orders_for_woocmmerce_admin_settings_tabs', $tofw_default_tabs );
-
 		return $tofw_default_tabs;
 	}
 
@@ -423,20 +424,21 @@ class Track_Orders_For_Woocommerce {
 	 *
 	 * @since 1.0.0
 	 * @param string $path   path file for inclusion.
-	 * @param array  $params parameters to pass to the file for access.
+	 * @param array  $file_name parameters to pass to the file for access.
 	 */
-	public function wps_std_plug_load_template( $path, $params = array() ) {
+	public function wps_tofw_plug_load_template( $path, $file_name ) {
 
 		// $tofw_file_path = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . $path;
+		$tofw_file_path = apply_filters( 'wps_tofw_pro_tab_template_html', $path, $file_name );
 
 		if ( file_exists( $path ) ) {
 
-			include $path;
-		} else {
+			include( $path );
 
+		} else {
 			/* translators: %s: file path */
-			$tofw_notice = sprintf( esc_html__( 'Unable to locate file at location "%s". Some features may not work properly in this plugin. Please contact us!', 'track-orders-for-woocommerce' ), $path );
-			$this->wps_std_plug_admin_notice( $tofw_notice, 'error' );
+			$etmfw_notice = sprintf( esc_html__( 'Unable to locate file at location "%s". Some features may not work properly in this plugin. Please contact us!', 'track-orders-for-woocommerce' ), $path );
+			$this->wps_std_plug_admin_notice( $etmfw_notice, 'error' );
 		}
 	}
 
@@ -474,6 +476,7 @@ class Track_Orders_For_Woocommerce {
 		$tofw_notice .= '</div>';
 
 		echo wp_kses_post( $tofw_notice );
+
 	}
 
 
@@ -500,9 +503,6 @@ class Track_Orders_For_Woocommerce {
 
 		// Get the server's port.
 		$tofw_system_status['server_port'] = isset( $_SERVER['SERVER_PORT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_PORT'] ) ) : '';
-
-		// Get the uptime.
-		$tofw_system_status['uptime'] = function_exists( 'exec' ) ? @exec( 'uptime -p' ) : __( 'N/A (make sure exec function is enabled)', 'track-orders-for-woocommerce' );
 
 		// Get the server path.
 		$tofw_system_status['server_path'] = defined( 'ABSPATH' ) ? ABSPATH : __( 'N/A (ABSPATH constant not defined)', 'track-orders-for-woocommerce' );
@@ -555,9 +555,6 @@ class Track_Orders_For_Woocommerce {
 		// Get server host name.
 		$tofw_system_status['server_hostname'] = function_exists( 'gethostname' ) ? gethostname() : __( 'N/A (gethostname function does not exist)', 'track-orders-for-woocommerce' );
 
-		// Show the number of processes currently running on the server.
-		$tofw_system_status['processes'] = function_exists( 'exec' ) ? @exec( 'ps aux | wc -l' ) : __( 'N/A (make sure exec is enabled)', 'track-orders-for-woocommerce' );
-
 		// Get the memory usage.
 		$tofw_system_status['memory_usage'] = function_exists( 'memory_get_peak_usage' ) ? round( memory_get_peak_usage( true ) / 1024 / 1024, 2 ) : 0;
 
@@ -565,7 +562,6 @@ class Track_Orders_For_Woocommerce {
 		// Check to see if system is Windows, if so then use an alternative since sys_getloadavg() won't work.
 		if ( stristr( PHP_OS, 'win' ) ) {
 			$tofw_system_status['is_windows']        = true;
-			$tofw_system_status['windows_cpu_usage'] = function_exists( 'exec' ) ? @exec( 'wmic cpu get loadpercentage /all' ) : __( 'N/A (make sure exec is enabled)', 'track-orders-for-woocommerce' );
 		}
 
 		// Get the memory limit.
@@ -573,9 +569,6 @@ class Track_Orders_For_Woocommerce {
 
 		// Get the PHP maximum execution time.
 		$tofw_system_status['php_max_execution_time'] = function_exists( 'ini_get' ) ? ini_get( 'max_execution_time' ) : __( 'N/A (ini_get function does not exist)', 'track-orders-for-woocommerce' );
-
-		// Get outgoing IP address.
-		$tofw_system_status['outgoing_ip'] = function_exists( 'file_get_contents' ) ? file_get_contents( 'http://ipecho.net/plain' ) : __( 'N/A (file_get_contents function does not exist)', 'track-orders-for-woocommerce' );
 
 		$tofw_system_data['php'] = $tofw_system_status;
 		$tofw_system_data['wp']  = $tofw_wordpress_status;
@@ -597,7 +590,7 @@ class Track_Orders_For_Woocommerce {
 
 						case 'hidden':
 						case 'number':
-						case 'email':
+						case 'track_orders_email':
 						case 'text':
 							?>
 						<div class="wps-form-group wps-msp-<?php echo esc_attr( $tofw_component['type'] ); ?>">
@@ -632,7 +625,7 @@ class Track_Orders_For_Woocommerce {
 							<?php
 							break;
 						case 'custom_status':
-							require_once TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/class-wps-custom-order-status.php';
+							require_once TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/class-track-orders-custom-order-status.php';
 							break;
 						case 'password':
 							?>
@@ -955,9 +948,9 @@ class Track_Orders_For_Woocommerce {
 	 */
 	public static function check_lcns_validity() {
 
-		$wps_tofw_lcns_key = get_option( 'wps_tofw_license_key', '' );
+		$wps_tofw_lcns_key = get_option( 'track_orders_license_key', '' );
 
-		$wps_tofw_lcns_status = get_option( 'wps_tofw_license_check', '' );
+		$wps_tofw_lcns_status = get_option( 'track_orders_license_check', '' );
 
 		if ( $wps_tofw_lcns_key && true == $wps_tofw_lcns_status ) {
 
