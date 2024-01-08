@@ -23,20 +23,20 @@ jQuery(document).ready(function() {
 	 // status icon
 
 	 var is_enable_status_icon = wps_admin_param.is_enable_status_icon;
-
+	console.log(wps_admin_param.wps_file_include);
 	
 	if ('on' == is_enable_status_icon) {
 		   // /home/cedcoss/Local Sites/order-tracker/app/public/order_complted_icon.png
-		   var processing = wps_admin_param.site_url + '/wp-content/plugins/track-orders-for-woocommerce/admin/image/processing1.png';
-		   var completed = wps_admin_param.site_url + '/wp-content/plugins/track-orders-for-woocommerce/admin/image/deliver1.png';
-		   var on_hold = wps_admin_param.site_url + '/wp-content/plugins/track-orders-for-woocommerce/admin/image/approved1.png';
-		   var pending = wps_admin_param.site_url + '/wp-content/plugins/track-orders-for-woocommerce/admin/image/order-pending.jpeg';
-		   var cancelled = wps_admin_param.site_url + '/wp-content/plugins/track-orders-for-woocommerce/admin/image/cancel1.png';
-		   var failed = wps_admin_param.site_url + '/wp-content/plugins/track-orders-for-woocommerce/admin/image/order-cancelled.png';
-		   var refunded = wps_admin_param.site_url + '/wp-content/plugins/track-orders-for-woocommerce/admin/image/revert.png';
-		   var dispatched = wps_admin_param.site_url + '/wp-content/plugins/track-orders-for-woocommerce/admin/image/dispatch.png';
-		   var shipped = wps_admin_param.site_url + '/wp-content/plugins/track-orders-for-woocommerce/admin/image/shipped.png';
-		   var packed = wps_admin_param.site_url + '/wp-content/plugins/track-orders-for-woocommerce/admin/image/order-packed.png';
+		   var processing = wps_admin_param.wps_file_include + 'image/processing1.png';
+		   var completed = wps_admin_param.wps_file_include + 'image/deliver1.png';
+		   var on_hold = wps_admin_param.wps_file_include + 'image/approved1.png';
+		   var pending =  wps_admin_param.wps_file_include + 'image/order-pending.jpeg';
+		   var cancelled =  wps_admin_param.wps_file_include + 'image/cancel1.png';
+		   var failed =  wps_admin_param.wps_file_include + 'image/order-cancelled.png';
+		   var refunded =  wps_admin_param.wps_file_include + 'image/revert.png';
+		   var dispatched =  wps_admin_param.wps_file_include + 'image/dispatch.png';
+		   var shipped =  wps_admin_param.wps_file_include + 'image/shipped.png';
+		   var packed =  wps_admin_param.wps_file_include + 'image/order-packed.png';
 			jQuery('.wp-list-table .status-wc-processing .order_status ').html('<mark class="order-status status-processing" ><img src="' + processing + '" height="50" width="50"></mark> ');
 			jQuery('.wp-list-table .status-wc-completed .order_status ').html('<mark class="order-status status-completed" ><img src="' + completed + '" height="50" width="50"></mark> ');
 			jQuery('.wp-list-table .status-wc-on-hold .order_status ').html('<mark class="order-status status-on-hold" ><img src="' + on_hold + '" height="50" width="50"></mark> ');

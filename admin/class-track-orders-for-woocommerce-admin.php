@@ -138,6 +138,7 @@ class Track_Orders_For_Woocommerce_Admin {
 				'is_enable_status_icon'  => get_option( 'wps_tofw_enable_use_of_icon' ),
 				'site_url' => site_url(),
 				'custom_order_status_url'  => get_option( 'track_orders_new_custom_order_image' ),
+				'wps_file_include'  => plugin_dir_url( __FILE__ ),
 			),
 		);
 		wp_enqueue_script( 'wps-admin-js' );
