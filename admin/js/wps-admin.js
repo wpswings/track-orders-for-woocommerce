@@ -22,7 +22,9 @@ jQuery(document).ready(function() {
 
 	 // status icon
 
-	 var is_enable_status_icon = wps_admin_param.is_enable_status_icon;
+	var is_enable_status_icon = wps_admin_param.is_enable_status_icon;
+	
+	console.log(is_enable_status_icon);
 
 	
 	if ('on' == is_enable_status_icon) {
@@ -48,11 +50,14 @@ jQuery(document).ready(function() {
 			jQuery('.wp-list-table .status-wc-shipped .order_status ').html('<mark class="order-status status-shipped" ><img src="' + shipped + '" height="50" width="50"></mark> ');
 			jQuery('.wp-list-table .status-wc-packed .order_status ').html('<mark class="order-status status-packed" ><img src="' + packed + '" height="50" width="50"></mark> ');
 	   
-			var custom_url = wps_admin_param.custom_order_status_url;
+		var custom_url = wps_admin_param.custom_order_status_url;
+		
+		console.log(custom_url);
 			if( custom_url != '' ){
 			   
-				jQuery.each( custom_url, function( key, value ) {
-				   jQuery('.wp-list-table .status-wc-' + key + ' .order_status ').html('<mark class="order-status status-'+ key +'" ><img src="' + value + '" height="50" width="50"></mark> ');
+				jQuery.each(custom_url, function (key, value) {
+					console.log('prince');
+				   jQuery('.wp-list-table .status-' + key + ' .order_status ').html('<mark class="order-status status-'+ key +'" ><img src="' + value + '" height="50" width="50"></mark> ');
 				 });
 			   
 			}
