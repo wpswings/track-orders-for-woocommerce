@@ -36,7 +36,7 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
-
+use Automattic\WooCommerce\Utilities\OrderUtil;
 // HPOS Compatibility and cart and checkout block.
 add_action(
     'before_woocommerce_init',
@@ -240,7 +240,13 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 		wp_verify_nonce( $value_check, 'track_order_nonce' );
 		if ( isset( $_POST['wps_tofw_order_id_submit'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_order_id_submit'] ) ) : '' ) {
 			$order_id = isset( $_POST['order_id'] ) ? sanitize_text_field( wp_unslash( $_POST['order_id'] ) ) : '';
+
+			$tofw_order = new WC_Order( $order_id );
+			if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+			$billing_email = 		$tofw_order->get_billing_email();
+			} else {
 			$billing_email = get_post_meta( $order_id, '_billing_email', true );
+			}
 			$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
 			$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
 			$track_order_url = get_permalink( $page_id );
@@ -248,16 +254,17 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 			if ( ! empty( $order ) ) {
 
 				if ( 'on' != get_option( 'wps_tofw_enable_track_order_using_order_id', 'no' ) ) {
-					$req_email = isset( $_POST['order_email'] ) ? sanitize_text_field( wp_unslash( $_POST['order_email'] ) ) : '';
 
-					if ( ! empty( $req_email ) && ! empty( $billing_email ) && $req_email == $billing_email ) {
+					$req_email = isset( $_POST['order_email'] ) ? sanitize_text_field( wp_unslash( $_POST['order_email'] ) ) : '';
+					if ( $req_email == $billing_email ) {
 						$_SESSION['wps_tofw_email'] = $billing_email;
 						$order = wc_get_order( $order_id );
+						
 						$url = $track_order_url . '?' . $order_id;
 						wp_redirect( $url );
 						exit();
 					} else {
-						$_SESSION['wps_tofw_notification'] = __( 'OrderId or Email is Invalid', 'woocommerce-order-tracker' );
+						$_SESSION['wps_tofw_notification'] = __( 'OrderId or Email is Invalidss', 'woocommerce-order-tracker' );
 					}
 				} else {
 					$order = wc_get_order( $order_id );

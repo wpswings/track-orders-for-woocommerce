@@ -83,7 +83,7 @@ if ( true == $allowed ) {
 
 					if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
 						// HPOS usage is enabled.
-						$order_email = 	$order->get_meta('_billing_email', true  );
+						$order_email = 	$order->get_billing_email();
 					} else {
 						$order_email = get_post_meta( $order_id, '_billing_email', true );
 					}
