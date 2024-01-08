@@ -21,7 +21,7 @@
   "_resolved": "https://registry.npmjs.org/datatables.net-responsive/-/datatables.net-responsive-2.2.7.tgz",
   "_shasum": "12e93deab8e8aebf4a2bc45b266c00d2662a5ced",
   "_spec": "datatables.net-responsive@^2.2.7",
-  "_where": "/home/cedcoss/Local Sites/woocommerce/app/public/wp-content/plugins/wallet-system-for-woocommerce",
+  "_where": "",
   "author": {
     "name": "SpryMedia Ltd",
     "url": "http://datatables.net"
