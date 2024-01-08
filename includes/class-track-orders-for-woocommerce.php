@@ -694,20 +694,22 @@ class Track_Orders_For_Woocommerce {
 								<div class="wps-form-select">
 									<select id="<?php echo esc_attr( $tofw_component['id'] ); ?>" name="<?php echo ( isset( $tofw_component['name'] ) ? esc_html( $tofw_component['name'] ) : esc_html( $tofw_component['id'] ) ); ?><?php echo ( 'multiselect' === $tofw_component['type'] ) ? '[]' : ''; ?>" id="<?php echo esc_attr( $tofw_component['id'] ); ?>" class="mdl-textfield__input <?php echo ( isset( $tofw_component['class'] ) ? esc_attr( $tofw_component['class'] ) : '' ); ?>" <?php echo 'multiselect' === $tofw_component['type'] ? 'multiple="multiple"' : ''; ?> >
 							<?php
-							foreach ( $tofw_component['options'] as $tofw_key => $tofw_val ) {
-								?>
+							if ( is_array( $tofw_component['options'] ) || is_object( $tofw_component['options'] ) ) {
+								foreach ( $tofw_component['options'] as $tofw_key => $tofw_val ) {
+									?>
 											<option value="<?php echo esc_attr( $tofw_key ); ?>"
 												<?php
 												if ( is_array( $tofw_component['value'] ) ) {
 													selected( in_array( (string) $tofw_key, $tofw_component['value'], true ), true );
 												} else {
-														   selected( $tofw_component['value'], (string) $tofw_key );
+													selected( $tofw_component['value'], (string) $tofw_key );
 												}
 												?>
 												>
 												<?php echo esc_html( $tofw_val ); ?>
 											</option>
-										<?php
+											<?php
+								}
 							}
 							?>
 									</select>

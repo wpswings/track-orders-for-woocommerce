@@ -274,7 +274,7 @@ if ( $allowed ) {
 										echo wp_kses_post( $thumbnail );
 									} else {
 										?>
-										<p><img alt="<?php esc_html_e( 'Placeholder', 'track-orders-for-woocommerce' ); ?>"  class="wps_tofw_attachment-thumbnail size-thumbnail wp-post-image wps-img-responsive" src="<?php echo esc_attr( home_url() ); ?>/wp-content/plugins/woocommerce/assets/images/placeholder.png"></p>
+										<p><img alt="<?php esc_html_e( 'Placeholder', 'track-orders-for-woocommerce' ); ?>"  class="wps_tofw_attachment-thumbnail size-thumbnail wp-post-image wps-img-responsive" src="<?php echo esc_url( plugin_dir_url( __FILE__ ) . 'woocommerce/assets/images/placeholder.png' ); ?>"></p>
 										<?php
 									}
 									?>
@@ -341,7 +341,7 @@ if ( $allowed ) {
 										echo wp_kses_post( $thumbnail );
 									} else {
 										?>
-										<p><img alt="<?php esc_attr_e( 'Placeholder', 'track-orders-for-woocommerce' ); ?>"  class="wps_tofw_attachment-thumbnail size-thumbnail wp-post-image wps-img-responsive" src="<?php echo esc_attr( home_url() ); ?>/wp-content/plugins/woocommerce/assets/images/placeholder.png"></p>
+										<p><img alt="<?php esc_attr_e( 'Placeholder', 'track-orders-for-woocommerce' ); ?>"  class="wps_tofw_attachment-thumbnail size-thumbnail wp-post-image wps-img-responsive" src="<?php echo esc_url( plugin_dir_url( __FILE__ ) . 'woocommerce/assets/images/placeholder.png' ); ?>"></p>
 										<?php
 									}
 									?>
