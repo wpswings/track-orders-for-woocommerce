@@ -26,7 +26,6 @@ jQuery(document).ready(function() {
 	console.log(wps_admin_param.wps_file_include);
 	
 	if ('on' == is_enable_status_icon) {
-		   // /home/cedcoss/Local Sites/order-tracker/app/public/order_complted_icon.png
 		   var processing = wps_admin_param.wps_file_include + 'image/processing1.png';
 		   var completed = wps_admin_param.wps_file_include + 'image/deliver1.png';
 		   var on_hold = wps_admin_param.wps_file_include + 'image/approved1.png';

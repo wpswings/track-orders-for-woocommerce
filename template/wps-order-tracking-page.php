@@ -1,6 +1,6 @@
 <?php
 /**
- * Guest track order page.
+ * Order track page.
  *
  * @version  1.0.0
  * @package  Woocommece_Order_Tracker/template

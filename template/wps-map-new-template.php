@@ -1,12 +1,12 @@
 <?php
 /**
- * Guest track order page.
+ * Map New track order page.
  *
  * @version  1.0.0
  * @package  Woocommece_Order_Tracker/template
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
+ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 $allowed = true;

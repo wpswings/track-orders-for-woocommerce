@@ -935,7 +935,6 @@ class Track_Orders_For_Woocommerce {
 	 */
 	public static $lic_callback_function = 'check_lcns_validity';
 
-	// public static variable to be accessed in this plugin.
 	/**
 	 * Public static variable to be accessed in this plugin.
 	 *
