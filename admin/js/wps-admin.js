@@ -2,8 +2,6 @@
 
 jQuery(document).ready(function() {
 
-	
-
     	/*SETTING A DATEPICKER TO THE METABOX ON ORDER EDIT PAGE*/
 	if( jQuery( '.wps_tofw_est_delivery_date' ).length > 0 ){
 
@@ -18,15 +16,9 @@ jQuery(document).ready(function() {
 	
 	}
 
-
-
 	 // status icon
-
 	var is_enable_status_icon = wps_admin_param.is_enable_status_icon;
-	
-	console.log(is_enable_status_icon);
 
-	
 	if ('on' == is_enable_status_icon) {
 		var processing = wps_admin_param.wps_file_include + 'image/processing1.png';
 		var completed = wps_admin_param.wps_file_include + 'image/deliver1.png';
@@ -38,20 +30,19 @@ jQuery(document).ready(function() {
 		var dispatched =  wps_admin_param.wps_file_include + 'image/dispatch.png';
 		var shipped =  wps_admin_param.wps_file_include + 'image/shipped.png';
 		var packed =  wps_admin_param.wps_file_include + 'image/order-packed.png';
-			jQuery('.wp-list-table .status-wc-processing .order_status ').html('<mark class="order-status status-processing" ><img src="' + processing + '" height="50" width="50"></mark> ');
-			jQuery('.wp-list-table .status-wc-completed .order_status ').html('<mark class="order-status status-completed" ><img src="' + completed + '" height="50" width="50"></mark> ');
-			jQuery('.wp-list-table .status-wc-on-hold .order_status ').html('<mark class="order-status status-on-hold" ><img src="' + on_hold + '" height="50" width="50"></mark> ');
-			jQuery('.wp-list-table .status-wc-pending .order_status ').html('<mark class="order-status status-pending" ><img src="' + pending + '" height="50" width="50"></mark> ');
-			jQuery('.wp-list-table .status-wc-cancelled .order_status ').html('<mark class="order-status status-cancelled" ><img src="' + cancelled + '" height="50" width="50"></mark> ');
-			jQuery('.wp-list-table .status-wc-failed .order_status ').html('<mark class="order-status status-failed" ><img src="' + failed + '" height="50" width="50"></mark> ');
-			jQuery('.wp-list-table .status-wc-refunded .order_status ').html('<mark class="order-status status-refunded" ><img src="' + refunded + '" height="50" width="50"></mark> ');
-			jQuery('.wp-list-table .status-wc-dispatched .order_status ').html('<mark class="order-status status-dispatched" ><img src="' + dispatched + '" height="50" width="50"></mark> ');
-			jQuery('.wp-list-table .status-wc-shipped .order_status ').html('<mark class="order-status status-shipped" ><img src="' + shipped + '" height="50" width="50"></mark> ');
-			jQuery('.wp-list-table .status-wc-packed .order_status ').html('<mark class="order-status status-packed" ><img src="' + packed + '" height="50" width="50"></mark> ');
+			jQuery('.wp-list-table .status-processing .order_status ').html('<mark class="order-status status-processing" ><img src="' + processing + '" height="50" width="50"></mark> ');
+			jQuery('.wp-list-table .status-completed .order_status ').html('<mark class="order-status status-completed" ><img src="' + completed + '" height="50" width="50"></mark> ');
+			jQuery('.wp-list-table .status-on-hold .order_status ').html('<mark class="order-status status-on-hold" ><img src="' + on_hold + '" height="50" width="50"></mark> ');
+			jQuery('.wp-list-table .status-pending .order_status ').html('<mark class="order-status status-pending" ><img src="' + pending + '" height="50" width="50"></mark> ');
+			jQuery('.wp-list-table .status-cancelled .order_status ').html('<mark class="order-status status-cancelled" ><img src="' + cancelled + '" height="50" width="50"></mark> ');
+			jQuery('.wp-list-table .status-failed .order_status ').html('<mark class="order-status status-failed" ><img src="' + failed + '" height="50" width="50"></mark> ');
+			jQuery('.wp-list-table .status-refunded .order_status ').html('<mark class="order-status status-refunded" ><img src="' + refunded + '" height="50" width="50"></mark> ');
+			jQuery('.wp-list-table .status-dispatched .order_status ').html('<mark class="order-status status-dispatched" ><img src="' + dispatched + '" height="50" width="50"></mark> ');
+			jQuery('.wp-list-table .status-shipped .order_status ').html('<mark class="order-status status-shipped" ><img src="' + shipped + '" height="50" width="50"></mark> ');
+			jQuery('.wp-list-table .status-packed .order_status ').html('<mark class="order-status status-packed" ><img src="' + packed + '" height="50" width="50"></mark> ');
 	   
 		var custom_url = wps_admin_param.custom_order_status_url;
 		
-		console.log(custom_url);
 			if( custom_url != '' ){
 			   
 				jQuery.each(custom_url, function (key, value) {
@@ -61,6 +52,5 @@ jQuery(document).ready(function() {
 			   
 			}
 	   }
-	 
-   
+
 });
