@@ -11,7 +11,9 @@
  * @package    Track_Orders_For_Woocommerce
  * @subpackage Track_Orders_For_Woocommerce/includes
  */
+
 use Automattic\WooCommerce\Utilities\OrderUtil;
+
 /**
  * The core plugin class.
  *

@@ -5,6 +5,7 @@
  * @version  1.0.0
  * @package  Woocommece_Order_Tracker/template
  */
+
 use Automattic\WooCommerce\Utilities\OrderUtil;
 /**
  * Exit if accessed directly
@@ -55,9 +56,9 @@ if ( true == $allowed ) {
 	} else {
 
 		if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
-			$order_customer_id = get_post_field('post_author', $order_id);
+			$order_customer_id = get_post_field( 'post_author', $order_id );
 		} else {
-			$order_customer_id = get_post_field('post_author', $order_id);
+			$order_customer_id = get_post_field( 'post_author', $order_id );
 		}
 
 		if ( $current_user_id > 0 ) {
@@ -83,7 +84,7 @@ if ( true == $allowed ) {
 
 					if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
 						// HPOS usage is enabled.
-						$order_email = 	$order->get_billing_email();
+						$order_email = $order->get_billing_email();
 					} else {
 						$order_email = get_post_meta( $order_id, '_billing_email', true );
 					}
@@ -155,10 +156,10 @@ $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 	$get_status_shipping = get_option( 'wps_tofw_order_status_in_shipping', array() );
 	$wps_track_order_status = array();
 
-	
+
 	if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
 		// HPOS usage is enabled.
-		$wps_track_order_status = 	$order->get_meta('wps_track_order_status', true );
+		$wps_track_order_status = $order->get_meta( 'wps_track_order_status', true );
 	} else {
 		$wps_track_order_status = get_post_meta( $order_id, 'wps_track_order_status', true );
 	}
@@ -184,17 +185,17 @@ $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 	}
 	$tofw_order = new WC_Order( $order_id );
 
-	
+
 
 	if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
 		// HPOS usage is enabled.
-		$expected_delivery_date = 	$tofw_order->get_meta('wps_tofw_estimated_delivery_date', true );
-		$expected_delivery_time = 	$tofw_order->get_meta('wps_tofw_estimated_delivery_time', true );
-		$order_delivered_date = 	$tofw_order->get_meta('_completed_date', true );
+		$expected_delivery_date = $tofw_order->get_meta( 'wps_tofw_estimated_delivery_date', true );
+		$expected_delivery_time = $tofw_order->get_meta( 'wps_tofw_estimated_delivery_time', true );
+		$order_delivered_date = $tofw_order->get_meta( '_completed_date', true );
 	} else {
 		$expected_delivery_date = get_post_meta( $order_id, 'wps_tofw_estimated_delivery_date', true );
 		$expected_delivery_time = get_post_meta( $order_id, 'wps_tofw_estimated_delivery_time', true );
-		$order_delivered_date =   get_post_meta( $order_id, '_completed_date', true );
+		$order_delivered_date = get_post_meta( $order_id, '_completed_date', true );
 	}
 
 	if ( $allowed ) {
@@ -202,13 +203,13 @@ $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 
 		if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
 			// HPOS usage is enabled.
-			$expected_delivery_date = 	$tofw_order->get_meta('wps_tofw_estimated_delivery_date', true );
-			$expected_delivery_time = 	$tofw_order->get_meta('wps_tofw_estimated_delivery_time', true );
-			$order_delivered_date = 	$tofw_order->get_meta('_completed_date', true );
+			$expected_delivery_date = $tofw_order->get_meta( 'wps_tofw_estimated_delivery_date', true );
+			$expected_delivery_time = $tofw_order->get_meta( 'wps_tofw_estimated_delivery_time', true );
+			$order_delivered_date = $tofw_order->get_meta( '_completed_date', true );
 		} else {
 			$expected_delivery_date = get_post_meta( $order_id, 'wps_tofw_estimated_delivery_date', true );
 			$expected_delivery_time = get_post_meta( $order_id, 'wps_tofw_estimated_delivery_time', true );
-			$order_delivered_date =   get_post_meta( $order_id, '_completed_date', true );
+			$order_delivered_date = get_post_meta( $order_id, '_completed_date', true );
 		}
 
 
@@ -234,15 +235,16 @@ $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 
 		if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
 			// HPOS usage is enabled.
-			$billing_first_name = 	$tofw_order->get_billing_first_name();
-			$billing_last_name = 	$tofw_order->get_billing_last_name();
-			$billing_address = 		$tofw_order->get_billing_address_1() . ' ' . $order->get_billing_address_2();
-			$billing_city = 		$tofw_order->get_billing_city();
-			$billing_state = 		$tofw_order->get_billing_state();
-			$billing_country = 		$tofw_order->get_billing_country();
-			$billing_postcode = 	$tofw_order->get_billing_postcode();
-			$wps_track_order_status = 	$tofw_order->get_meta('wps_track_order_status', true );
-			$wps_phone_number = 		$tofw_order->get_billing_phone();
+			$billing_first_name = $tofw_order->get_billing_first_name();
+			$billing_last_name = $tofw_order->get_billing_last_name();
+			$billing_address = $tofw_order->get_billing_address_1() . ' ' . $order->get_billing_address_2();
+			$billing_city = $tofw_order->get_billing_city();
+			$billing_state = $tofw_order->get_billing_state();
+			$billing_country = $tofw_order->get_billing_country();
+			$billing_postcode = $tofw_order->get_billing_postcode();
+			$wps_track_order_status = $tofw_order->get_meta( 'wps_track_order_status', true );
+			$wps_phone_number = $tofw_order->get_billing_phone();
+			$order_onchange_time = $tofw_order->get_meta( 'wps_track_order_onchange_time', true );
 		} else {
 			$billing_first_name = get_post_meta( $order_id, '_billing_first_name', true );
 			$billing_last_name = get_post_meta( $order_id, '_billing_last_name', true );
@@ -348,10 +350,10 @@ $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 
 		$modified_current_status = 'wc-' . $wps_current_status;
 		$c = 0;
-		
+
 		if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
 			// HPOS usage is enabled.
-			$wps_tofw_enhanced_customer_note = 	$order->get_meta('wps_tofw_enhanced_cn', true );
+			$wps_tofw_enhanced_customer_note = $order->get_meta( 'wps_tofw_enhanced_cn', true );
 		} else {
 			$wps_tofw_enhanced_customer_note = get_post_meta( $order_id, 'wps_tofw_enhanced_cn', true );
 		}
@@ -1087,9 +1089,9 @@ $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 																				<p><span><?php esc_html_e( 'Amount paid', 'track-orders-for-woocommerce' ); ?></span> <span><?php echo wp_kses_post( wc_price( $tofw_order->get_total() ) ); ?></span></p>
 																			</div>
 																			<div class="wps_tofw_user_address">
-																				<?php 
+																				<?php
 																				$wps_billing_phone = OrderUtil::custom_orders_table_usage_is_enabled() ? $order->get_billing_phone() : get_post_meta( $order_id, '_billing_phone', true );
- 																				?>
+																				?>
 																				<h3> <?php echo esc_html( $billing_first_name ) . ' ' . esc_html( $billing_last_name ) . ' ' . esc_html( $wps_billing_phone ); ?></h3>
 																				<p><?php echo esc_html( $billing_address ); ?></p>
 																				<p><?php echo esc_html( $billing_city ) . ', ' . esc_html( $billing_state ) . ' -' . esc_html( $billing_postcode ); ?></p>
