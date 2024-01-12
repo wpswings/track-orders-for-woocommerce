@@ -3,10 +3,10 @@ Contributors: wpswings
 Donate link: https://wpswings.com/
 Tags: shipping, tracker, order Status, order tracking, track order, status tracking, shipment tracking, woocommerce order tracking
 Requires at least: 5.5.0
-Tested up to: 6.2.2
+Tested up to: 6.4.2
 WC requires at least: 5.5.0
-WC tested up to: 7.8.2
-Stable tag: 1.0.0
+WC tested up to: 8.4.0
+Stable tag: 1.0.1
 Requires PHP: 7.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -84,6 +84,16 @@ If you need support or have questions, kindly use our online chat window [**here
 
 > Create and Revamp your eCommerce store with [**WooCommerce Services**](https://wpswings.com/woocommerce-services/?utm_source=wpswings-track-orders-services&utm_medium=track-orders-org-page&utm_campaign=woocommerce-services) 
 
+== THIRD PARTY SERVICES ==
+
+Our plugin relies on some third-party services. Here is more information about it.
+
+**WP Swings Tracking:** We are using our own [**WP Swings Tracking API**](https://tracking.wpswings.com/) for tracking essential user info. By default, our plugin team receives no sensitive data from you or your website end users. We only keep track of the plugin version and the settings that are enabled by you in the plugin. You can read more about the [**plugin’s usage tracking here**](https://wpswings.com/plugin-usage-tracking).
+
+**Integration with Google Maps:** To make things work smoothly our plugin relies on [**Google Maps API**](https://maps.googleapis.com) to show the accurate information of different Geo locations where the order has been gone through. Users require a Google Maps API key to add Google Maps to their website, They can obtain the API key from the [**Google Cloud API Services**](https://console.cloud.google.com/apis/library) and can learn more about Google Maps' Terms and Conditions from [**here**](https://www.google.com/help/terms_maps/).
+
+**Integration with Hubspot HSforms:** To make the onboarding process smoother we are relying on [**Hubspot HSforms**](https://developers.hubspot.com/docs/cms/building-blocks/forms). Which only gathers the necessary and nonsensitive info like (Plugin Name, Version, and Plugin Deactivation Reasons). You can read more about their [**privacy policy here**](https://legal.hubspot.com/legal-stuff).
+
 == Installation ==
 
 = Automatic installation =
@@ -142,6 +152,13 @@ Check out [**Track Orders  for WooCommerce Knowledge Base**](https://support.wps
 
 == Changelog ==
 
+= 1.0.2 - Released on 12 January 2024 =
+
+* Support : HPOS compatibility .
+* Support : Latest WP (6.4.2) and WC (8.4.0)
+
+* Fix: Minor Bug Fixes
+
 = 1.0.0 - Released on 21 July 2023 =
 
 * First version
@@ -149,6 +166,7 @@ Check out [**Track Orders  for WooCommerce Knowledge Base**](https://support.wps
 
 == Upgrade Notice ==
 
-= 1.0.0 - Released on 21 July 2023 =
+= 1.0.2 - Released on 12 January 2024 =
 
-* First version
+* Support : HPOS compatibility .
+* Support : Latest WP (6.4.2) and WC (8.4.0)
