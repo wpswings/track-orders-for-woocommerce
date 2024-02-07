@@ -223,9 +223,9 @@ class Track_Orders_For_Woocommerce {
 		$this->loader->add_action( 'wp_ajax_wps_tofw_insert_address_for_tracking', $tofw_plugin_admin, 'wps_tofw_insert_address_for_tracking' );
 		$this->loader->add_action( 'admin_menu', $tofw_plugin_admin, 'wps_tofw_tracking_order_meta_box' );
 
-		$this->loader->add_action( 'save_post', $tofw_plugin_admin, 'wps_tofw_save_delivery_date_meta' );
-		$this->loader->add_action( 'save_post', $tofw_plugin_admin, 'wps_tofw_save_shipping_services_meta' );
-		$this->loader->add_action( 'save_post', $tofw_plugin_admin, 'wps_tofw_save_custom_shipping_cities_meta' );
+		$this->loader->add_action( 'woocommerce_process_shop_order_meta', $tofw_plugin_admin, 'wps_tofw_save_delivery_date_meta',10,2 );
+		$this->loader->add_action( 'woocommerce_process_shop_order_meta', $tofw_plugin_admin, 'wps_tofw_save_shipping_services_meta',10,2 );
+		$this->loader->add_action( 'woocommerce_process_shop_order_meta', $tofw_plugin_admin, 'wps_tofw_save_custom_shipping_cities_meta',10,2 );
 
 	}
 

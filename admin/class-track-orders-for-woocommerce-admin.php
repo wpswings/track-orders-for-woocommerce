@@ -1237,32 +1237,29 @@ class Track_Orders_For_Woocommerce_Admin {
 	 *  @param int $post_id is the array data.
 	 * @return void
 	 */
-	public function wps_tofw_save_delivery_date_meta( $post_id ) {
-		global $post;
-		if ( isset( $post->ID ) ) {
-			$wps_track_order_status = array();
-			$post_id = $post->ID;
-			$order = new WC_Order( $post_id );
+	public function wps_tofw_save_delivery_date_meta( $order_id, $order ) {
+		if ( isset( $order ) ) {
+			$post_id = $order->id;
+			$order_obj = wc_get_order( $order->id );
 			$value_check = isset( $_POST['wps_tofw_delivery_nonce_name'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_delivery_nonce_name'] ) ) : '';
 			wp_verify_nonce( $value_check, 'wps_tofw_delivery_nonce' );
 
 			if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
-				// HPOS usage is enabled.
 				if ( isset( $_POST['wps_tofw_est_delivery_date'] ) && sanitize_text_field( wp_unslash( $_POST['wps_tofw_est_delivery_date'] ) ) != '' ) {
-					$order->update_meta_data( 'wps_tofw_estimated_delivery_date', sanitize_text_field( wp_unslash( $_POST['wps_tofw_est_delivery_date'] ) ) );
-					$order->save();
+					$order_obj->update_meta_data( 'wps_tofw_estimated_delivery_date', $_POST['wps_tofw_est_delivery_date'] );
+					$order_obj->save();
 				} else {
-					$order->update_meta_data( 'wps_tofw_estimated_delivery_date', false );
-					$order->save();
+					$order_obj->update_meta_data( 'wps_tofw_estimated_delivery_date', false );
+					$order_obj->save();
 				}
 
 				if ( isset( $_POST['wps_tofw_est_delivery_time'] ) && sanitize_text_field( wp_unslash( $_POST['wps_tofw_est_delivery_time'] ) ) != '' ) {
 
-					$order->update_meta_data( 'wps_tofw_estimated_delivery_time', sanitize_text_field( wp_unslash( $_POST['wps_tofw_est_delivery_time'] ) ) );
-					$order->save();
+					$order_obj->update_meta_data( 'wps_tofw_estimated_delivery_time', sanitize_text_field( wp_unslash( $_POST['wps_tofw_est_delivery_time'] ) ) );
+					$order_obj->save();
 				} else {
-					$order->update_meta_data( 'wps_tofw_estimated_delivery_time', false );
-					$order->save();}
+					$order_obj->update_meta_data( 'wps_tofw_estimated_delivery_time', false );
+					$order_obj->save();}
 			} else {
 
 				if ( isset( $_POST['wps_tofw_est_delivery_date'] ) && sanitize_text_field( wp_unslash( $_POST['wps_tofw_est_delivery_date'] ) ) != '' ) {
@@ -1285,15 +1282,22 @@ class Track_Orders_For_Woocommerce_Admin {
 	 *
 	 * @return void
 	 */
-	public function wps_tofw_save_shipping_services_meta() {
-		global $post;
-		if ( isset( $post->ID ) ) {
-			$post_id = $post->ID;
+	public function wps_tofw_save_shipping_services_meta( $order_id, $order ) {
+		if ( isset( $order ) ) {
+			$post_id = $order->id;
+			$order_obj = wc_get_order( $order->id );
 			$value_check = isset( $_POST['wps_tofw_selected_shipping_services_nonce_name'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_selected_shipping_services_nonce_name'] ) ) : '';
 			wp_verify_nonce( $value_check, 'wps_tofw_selected_shipping_services_nonce' );
 			if ( isset( $_POST['wps_tofw_selected_shipping_services'] ) && isset( $_POST['wps_tofw_tracking_number'] ) && sanitize_text_field( wp_unslash( $_POST['wps_tofw_tracking_number'] ) ) != '' && ! empty( sanitize_text_field( wp_unslash( $_POST['wps_tofw_selected_shipping_services'] ) ) ) ) {
-				update_post_meta( $post_id, 'wps_tofw_selected_shipping_service', sanitize_text_field( wp_unslash( $_POST['wps_tofw_selected_shipping_services'] ) ) );
-				update_post_meta( $post_id, 'wps_tofw_package_tracking_number', sanitize_text_field( wp_unslash( $_POST['wps_tofw_tracking_number'] ) ) );
+
+				if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+					$order_obj->update_meta_data( 'wps_tofw_selected_shipping_service', sanitize_text_field( wp_unslash( $_POST['wps_tofw_selected_shipping_services'] ) ) );
+					$order_obj->update_meta_data( 'wps_tofw_package_tracking_number', sanitize_text_field( wp_unslash( $_POST['wps_tofw_tracking_number'] ) ) );
+					$order_obj->save();
+				} else {
+					update_post_meta( $post_id, 'wps_tofw_selected_shipping_service', sanitize_text_field( wp_unslash( $_POST['wps_tofw_selected_shipping_services'] ) ) );
+					update_post_meta( $post_id, 'wps_tofw_package_tracking_number', sanitize_text_field( wp_unslash( $_POST['wps_tofw_tracking_number'] ) ) );
+				}
 
 				$headers = array();
 				$order = wc_get_order( $post_id );
@@ -1434,16 +1438,40 @@ class Track_Orders_For_Woocommerce_Admin {
 					</div>
 				</body>
 				</html>';
-				$wps_mail_already_send = get_post_meta( $post_id, 'wps_tofw_tracking_id_sent', true );
+
+				if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+					$wps_mail_already_send = $order_obj->get_meta( 'wps_tofw_tracking_id_sent', true );
+				} else {
+					$wps_mail_already_send = get_post_meta( $post_id, 'wps_tofw_tracking_id_sent', true );
+				}
+
 				if ( 1 != $wps_mail_already_send ) {
 					wc_mail( $to, $subject, $message, $headers );
-					update_post_meta( $post_id, 'wps_tofw_tracking_id_sent', 1 );
+
+					if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+						$order_obj->update_meta_data( 'wps_tofw_tracking_id_sent', 1 );
+					} else {
+						update_post_meta( $post_id, 'wps_tofw_tracking_id_sent', 1 );
+					}
 				}
 			} elseif ( isset( $_POST['wps_tofw_tracking_number'] ) && '' != $_POST['wps_tofw_tracking_number'] ) {
-				update_post_meta( $post_id, 'wps_tofw_package_tracking_number', sanitize_text_field( wp_unslash( $_POST['wps_tofw_tracking_number'] ) ) );
+
+				if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+					$order_obj->update_meta_data( 'wps_tofw_package_tracking_number', sanitize_text_field( wp_unslash( $_POST['wps_tofw_tracking_number'] ) ) );
+					$order_obj->save();
+				} else {
+					update_post_meta( $post_id, 'wps_tofw_package_tracking_number', sanitize_text_field( wp_unslash( $_POST['wps_tofw_tracking_number'] ) ) );
+				}
 			} else {
-				update_post_meta( $post_id, 'wps_tofw_selected_shipping_service', '' );
-				update_post_meta( $post_id, 'wps_tofw_package_tracking_number', '' );
+
+				if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+					$order_obj->update_meta_data( 'wps_tofw_selected_shipping_service', sanitize_text_field( wp_unslash( $_POST['wps_tofw_selected_shipping_services'] ) ) );
+					$order_obj->update_meta_data( 'wps_tofw_package_tracking_number', sanitize_text_field( wp_unslash( $_POST['wps_tofw_tracking_number'] ) ) );
+					$order_obj->save();
+				} else {
+					update_post_meta( $post_id, 'wps_tofw_selected_shipping_service', '' );
+					update_post_meta( $post_id, 'wps_tofw_package_tracking_number', '' );
+				}
 			}
 		}
 
@@ -1454,10 +1482,9 @@ class Track_Orders_For_Woocommerce_Admin {
 	 *
 	 * @return void
 	 */
-	public function wps_tofw_save_custom_shipping_cities_meta() {
-		global $post;
-		if ( isset( $post->ID ) ) {
-			$order = wc_get_order( $post->ID );
+	public function wps_tofw_save_custom_shipping_cities_meta( $order_id, $order ) {
+		if ( isset( $order ) ) {
+			$order_obj = wc_get_order( $order->id );
 			if ( isset( $order ) && ! empty( $order ) ) {
 
 				$orderdata = $order->get_data();
@@ -1467,14 +1494,14 @@ class Track_Orders_For_Woocommerce_Admin {
 
 				$wps_tofw_all_selected_cities = get_option( 'wps_tofw_old_addresses', false );
 
-				if ( is_array( get_post_meta( $post->ID, 'wps_tofw_track_custom_cities', true ) ) ) {
-					$wps_tofw_previous_saved_cities = get_post_meta( $post->ID, 'wps_tofw_track_custom_cities', true );
+				if ( is_array( get_post_meta( $order->id, 'wps_tofw_track_custom_cities', true ) ) ) {
+					$wps_tofw_previous_saved_cities = get_post_meta( $order->id, 'wps_tofw_track_custom_cities', true );
 				} else {
 					$wps_tofw_previous_saved_cities = array();
 				}
 
-				if ( is_array( get_post_meta( $post->ID, 'wps_tofw_custom_change_time', true ) ) ) {
-					$wps_tofw_previous_saved_changed_time = get_post_meta( $post->ID, 'wps_tofw_custom_change_time', true );
+				if ( is_array( get_post_meta( $order->id, 'wps_tofw_custom_change_time', true ) ) ) {
+					$wps_tofw_previous_saved_changed_time = get_post_meta( $order->id, 'wps_tofw_custom_change_time', true );
 				} else {
 					$wps_tofw_previous_saved_changed_time = array();
 				}
@@ -1487,27 +1514,44 @@ class Track_Orders_For_Woocommerce_Admin {
 
 							$wps_tofw_previous_saved_cities[ $current_order_status ][] = $wps_tofw_all_selected_cities[ sanitize_text_field( wp_unslash( $_POST['wps_tofw_custom_shipping_cities'] ) ) ];
 							$wps_tofw_previous_saved_changed_time[ $current_order_status ][] = $converted_order_modified_date;
-							update_post_meta( $post->ID, 'wps_tofw_track_custom_cities', $wps_tofw_previous_saved_cities );
-							update_post_meta( $post->ID, 'wps_tofw_custom_change_time', $wps_tofw_previous_saved_changed_time );
+
+							if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+								$order_obj->update_meta_data( 'wps_tofw_track_custom_cities', $wps_tofw_previous_saved_cities );
+								$order_obj->update_meta_data( 'wps_tofw_custom_change_time', $wps_tofw_previous_saved_changed_time );
+								$order_obj->save();
+							} else {
+								update_post_meta( $order->id, 'wps_tofw_track_custom_cities', $wps_tofw_previous_saved_cities );
+								update_post_meta( $order->id, 'wps_tofw_custom_change_time', $wps_tofw_previous_saved_changed_time );
+							}
 						}
 					} else {
 						if ( array_key_exists( isset( $_POST['wps_tofw_custom_shipping_cities'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_custom_shipping_cities'] ) ) : '', $wps_tofw_all_selected_cities ) ) {
 
 							$wps_tofw_previous_saved_cities[ $current_order_status ][] = $wps_tofw_all_selected_cities[ sanitize_text_field( wp_unslash( $_POST['wps_tofw_custom_shipping_cities'] ) ) ];
 							$wps_tofw_previous_saved_changed_time[ $current_order_status ][] = $converted_order_modified_date;
-							update_post_meta( $post->ID, 'wps_tofw_track_custom_cities', $wps_tofw_previous_saved_cities );
-							update_post_meta( $post->ID, 'wps_tofw_custom_change_time', $wps_tofw_previous_saved_changed_time );
+
+							if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+								$order_obj->update_meta_data( 'wps_tofw_track_custom_cities', $wps_tofw_previous_saved_cities );
+								$order_obj->update_meta_data( 'wps_tofw_custom_change_time', $wps_tofw_previous_saved_changed_time );
+								$order_obj->save();
+							} else {
+
+								update_post_meta( $order->id, 'wps_tofw_track_custom_cities', $wps_tofw_previous_saved_cities );
+								update_post_meta( $order->id, 'wps_tofw_custom_change_time', $wps_tofw_previous_saved_changed_time );
+
+							}
 						}
 					}
-
-					update_post_meta( $post->ID, 'wps_tofw_save_selected_city', isset( $_POST['wps_tofw_custom_shipping_cities'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_custom_shipping_cities'] ) ) : '' );
+					if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+						$order_obj->update_meta_data( 'wps_tofw_save_selected_city', isset( $_POST['wps_tofw_custom_shipping_cities'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_custom_shipping_cities'] ) ) : '' );
+						$order_obj->save();
+					} else {
+						update_post_meta( $order->id, 'wps_tofw_save_selected_city', isset( $_POST['wps_tofw_custom_shipping_cities'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_custom_shipping_cities'] ) ) : '' );
+					}
 				}
 			}
 		}
 
 	}
-
-
-
 
 }
