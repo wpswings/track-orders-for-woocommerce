@@ -1089,8 +1089,15 @@ class Track_Orders_For_Woocommerce_Admin {
 		if ( null != $order->get_id() ) {
 			$order_id = $order->get_id();
 
-			$wps_tofw_saved_selected_cities = get_post_meta( $order_id, 'wps_tofw_save_selected_city', true );
 			$wps_tofw_all_selected_cities = get_option( 'wps_tofw_selected_address', false );
+
+			if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+				// HPOS usage is enabled.
+				$wps_tofw_saved_selected_cities = $order->get_meta( 'wps_tofw_save_selected_city', true );
+			} else {
+				$wps_tofw_saved_selected_cities = get_post_meta( $order_id, 'wps_tofw_save_selected_city', true );
+			}
+		
 			?>
 			<div class="wps_tofw_shipping_service_wrapper">
 				<select name="wps_tofw_custom_shipping_cities" id="wps_tofw_custom_shipping_cities">
