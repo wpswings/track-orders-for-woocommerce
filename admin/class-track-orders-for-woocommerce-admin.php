@@ -1097,7 +1097,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			} else {
 				$wps_tofw_saved_selected_cities = get_post_meta( $order_id, 'wps_tofw_save_selected_city', true );
 			}
-		
+
 			?>
 			<div class="wps_tofw_shipping_service_wrapper">
 				<select name="wps_tofw_custom_shipping_cities" id="wps_tofw_custom_shipping_cities">
@@ -1241,7 +1241,8 @@ class Track_Orders_For_Woocommerce_Admin {
 	/**
 	 * Function to save data.
 	 *
-	 *  @param int $post_id is the array data.
+	 * @param int    $order_id order id.
+	 * @param object $order is the order object.
 	 * @return void
 	 */
 	public function wps_tofw_save_delivery_date_meta( $order_id, $order ) {
@@ -1253,7 +1254,7 @@ class Track_Orders_For_Woocommerce_Admin {
 
 			if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
 				if ( isset( $_POST['wps_tofw_est_delivery_date'] ) && sanitize_text_field( wp_unslash( $_POST['wps_tofw_est_delivery_date'] ) ) != '' ) {
-					$order_obj->update_meta_data( 'wps_tofw_estimated_delivery_date', $_POST['wps_tofw_est_delivery_date'] );
+					$order_obj->update_meta_data( 'wps_tofw_estimated_delivery_date', sanitize_text_field( wp_unslash( $_POST['wps_tofw_est_delivery_date'] ) ) );
 					$order_obj->save();
 				} else {
 					$order_obj->update_meta_data( 'wps_tofw_estimated_delivery_date', false );
@@ -1287,6 +1288,8 @@ class Track_Orders_For_Woocommerce_Admin {
 	/**
 	 * Function to save service meta.
 	 *
+	 * @param int    $order_id order id.
+	 * @param object $order is the order object.
 	 * @return void
 	 */
 	public function wps_tofw_save_shipping_services_meta( $order_id, $order ) {
@@ -1487,6 +1490,8 @@ class Track_Orders_For_Woocommerce_Admin {
 	/**
 	 * Function to save.
 	 *
+	 *  @param int    $order_id order id.
+	 *  @param object $order is the order object.
 	 * @return void
 	 */
 	public function wps_tofw_save_custom_shipping_cities_meta( $order_id, $order ) {

@@ -32,7 +32,7 @@ if ( true == $allowed ) {
 	}
 
 	// check order id is valid.
-	$order = new WC_Order( $order_id );
+	$order_obj = new WC_Order( $order_id );
 	if ( ! is_numeric( $order_id ) ) {
 
 		if ( get_current_user_id() > 0 ) {
@@ -84,7 +84,7 @@ if ( true == $allowed ) {
 
 					if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
 						// HPOS usage is enabled.
-						$order_email = $order->get_meta( '_billing_email', true );
+						$order_email = $order_obj->get_meta( '_billing_email', true );
 					} else {
 						$order_email = get_post_meta( $order_id, '_billing_email', true );
 					}
@@ -149,7 +149,7 @@ $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 
 if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
 	// HPOS usage is enabled.
-	$wps_tofw_enhanced_customer_note = $order->get_meta( 'wps_tofw_enhanced_cn', true );
+	$wps_tofw_enhanced_customer_note = $order_obj->get_meta( 'wps_tofw_enhanced_cn', true );
 } else {
 	$wps_tofw_enhanced_customer_note = get_post_meta( $order_id, 'wps_tofw_enhanced_cn', true );
 }
@@ -173,7 +173,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 
 	if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
 		// HPOS usage is enabled.
-		$wps_track_order_status = $order->get_meta( 'wps_track_order_status', true );
+		$wps_track_order_status = $order_obj->get_meta( 'wps_track_order_status', true );
 	} else {
 		$wps_track_order_status = get_post_meta( $order_id, 'wps_track_order_status', true );
 	}
@@ -214,9 +214,9 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 
 		if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
 			// HPOS usage is enabled.
-			$expected_delivery_date = $order->get_meta( 'wps_tofw_estimated_delivery_date', true );
-			$conexpected_delivery_timeverted_ = $order->get_meta( 'wps_tofw_estimated_delivery_time', true );
-			$order_delivered_date = $order->get_meta( '_completed_date', true );
+			$expected_delivery_date = $tofw_order->get_meta( 'wps_tofw_estimated_delivery_date', true );
+			$conexpected_delivery_timeverted_ = $tofw_order->get_meta( 'wps_tofw_estimated_delivery_time', true );
+			$order_delivered_date = $tofw_order->get_meta( '_completed_date', true );
 		} else {
 			$expected_delivery_date = get_post_meta( $order_id, 'wps_tofw_estimated_delivery_date', true );
 			$expected_delivery_time = get_post_meta( $order_id, 'wps_tofw_estimated_delivery_time', true );

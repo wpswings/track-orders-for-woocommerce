@@ -32,7 +32,7 @@ if ( true == $allowed ) {
 	}
 
 	// check order id is valid.
-	$order = new WC_Order( $order_id );
+	$order_obj = new WC_Order( $order_id );
 
 
 	if ( ! is_numeric( $order_id ) ) {
@@ -88,7 +88,7 @@ if ( true == $allowed ) {
 					$tofw_user_email = $_SESSION['wps_tofw_email'];
 					if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
 						// HPOS usage is enabled.
-						$order_email = $order->get_meta( '_billing_email', true );
+						$order_email = $order_obj->get_meta( '_billing_email', true );
 					} else {
 						$order_email = get_post_meta( $order_id, '_billing_email', true );
 					}
@@ -140,8 +140,8 @@ do_action( 'woocommerce_before_main_content' );
 	$wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
 	// HPOS usage is enabled.
-	$wps_tofw_enhanced_customer_note = $order->get_meta( 'wps_tofw_enhanced_cn', true );
-	$wps_order_number = $order->get_meta( '_order_number', true );
+	$wps_tofw_enhanced_customer_note = $order_obj->get_meta( 'wps_tofw_enhanced_cn', true );
+	$wps_order_number = $order_obj->get_meta( '_order_number', true );
 } else {
 	$wps_tofw_enhanced_customer_note = get_post_meta( $order_id, 'wps_tofw_enhanced_cn', true );
 	$wps_order_number = get_post_meta( $order_id, '_order_number', true );
@@ -186,7 +186,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 
 				if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
 					// HPOS usage is enabled.
-					$wps_status_change_time  = $order->get_meta( 'wps_track_order_onchange_time', true );
+					$wps_status_change_time  = $tofw_order->get_meta( 'wps_track_order_onchange_time', true );
 				} else {
 					$wps_status_change_time = get_post_meta( $order_id, 'wps_track_order_onchange_time', true );
 				}
@@ -207,7 +207,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 
 					if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
 						// HPOS usage is enabled.
-						$wps_status_change_time = $order->get_meta( 'wps_track_order_onchange_time', true );
+						$wps_status_change_time = $tofw_order->get_meta( 'wps_track_order_onchange_time', true );
 					} else {
 						$wps_status_change_time = get_post_meta( $order_id, 'wps_track_order_onchange_time', true );
 					}
@@ -223,7 +223,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 				// HPOS usage is enabled.
 				$billing_first_name = $tofw_order->get_billing_first_name();
 				$billing_last_name = $tofw_order->get_billing_last_name();
-				$billing_address = $tofw_order->get_billing_address_1() . ' ' . $order->get_billing_address_2();
+				$billing_address = $tofw_order->get_billing_address_1() . ' ' . $tofw_order->get_billing_address_2();
 				$billing_city = $tofw_order->get_billing_city();
 				$billing_state = $tofw_order->get_billing_state();
 				$billing_country = $tofw_order->get_billing_country();
@@ -454,7 +454,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 
 			if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
 				// HPOS usage is enabled.
-				$wps_track_order_status = $order->get_meta( 'wps_track_order_status', true );
+				$wps_track_order_status = $order_obj->get_meta( 'wps_track_order_status', true );
 			} else {
 				$wps_track_order_status = get_post_meta( $order_id, 'wps_track_order_status', true );
 			}

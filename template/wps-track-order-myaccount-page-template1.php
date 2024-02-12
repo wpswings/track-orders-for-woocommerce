@@ -33,7 +33,7 @@ if ( true == $allowed ) {
 	}
 
 	// check order id is valid.
-	$order = new WC_Order( $order_id );
+	$order_obj = new WC_Order( $order_id );
 	if ( ! is_numeric( $order_id ) ) {
 
 		if ( get_current_user_id() > 0 ) {
@@ -84,7 +84,7 @@ if ( true == $allowed ) {
 
 					if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
 						// HPOS usage is enabled.
-						$order_email = $order->get_billing_email();
+						$order_email = $order_obj->get_billing_email();
 					} else {
 						$order_email = get_post_meta( $order_id, '_billing_email', true );
 					}
@@ -159,7 +159,7 @@ $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 
 	if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
 		// HPOS usage is enabled.
-		$wps_track_order_status = $order->get_meta( 'wps_track_order_status', true );
+		$wps_track_order_status = $order_obj->get_meta( 'wps_track_order_status', true );
 	} else {
 		$wps_track_order_status = get_post_meta( $order_id, 'wps_track_order_status', true );
 	}
