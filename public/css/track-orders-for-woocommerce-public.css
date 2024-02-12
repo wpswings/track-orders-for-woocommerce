@@ -3292,3 +3292,7 @@ table.wps-product-details-table tbody tr td .wps-design-division .wps-controller
  margin-right: 7px;
  vertical-align: middle;
 }
+
+p.order-again {
+  margin: 4px 4px 0 0;
+}
