@@ -1494,7 +1494,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			$order_obj = wc_get_order( $order->id );
 			if ( isset( $order ) && ! empty( $order ) ) {
 
-				$orderdata = $order->get_data();
+				$orderdata = $order_obj->get_data();
 				$order_modified_date = $orderdata['date_modified'];
 				$converted_order_modified_date = date_i18n( 'F d, Y g:i a', strtotime( $order_modified_date ) );
 				$current_order_status = $order->get_status();

@@ -169,6 +169,7 @@ class Track_Orders_For_Woocommerce_Public {
 		if ( 'on' != $wps_tofw_enable_track_order_feature ) {
 			return $template;
 		}
+		$page_id = '';
 		if ( 'on' == $wps_tofw_enable_track_order_feature && 'on' == $wps_tofw_google_map_setting ) {
 			$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
 			$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
@@ -179,8 +180,11 @@ class Track_Orders_For_Woocommerce_Public {
 		} else {
 
 			$wps_tofw_pages = get_option( 'wps_tofw_tracking_page', false );
-			$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
-			if ( is_page( $page_id ) ) {
+			if (is_array($wps_tofw_pages) && isset($wps_tofw_pages['pages']) && is_array($wps_tofw_pages['pages'])) {
+				// Access the page_id only if the structure is as expected.
+				$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
+			}
+			if ( is_page( $page_id ) && isset($page_id)) {
 				if ( ' ' != $selected_template && null != $selected_template ) {
 					$path = '';
 					if ( 'template4' === $selected_template || 'newtemplate1' === $selected_template || 'newtemplate2' === $selected_template || 'newtemplate3' === $selected_template ) {
