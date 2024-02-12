@@ -187,7 +187,7 @@ class Track_Orders_For_Woocommerce_Public {
 			if ( is_page( $page_id ) && isset($page_id)) {
 				if ( ' ' != $selected_template && null != $selected_template ) {
 					$path = '';
-					if ( 'template4' === $selected_template || 'newtemplate1' === $selected_template || 'newtemplate2' === $selected_template || 'newtemplate3' === $selected_template ) {
+					if ( ('template4' === $selected_template || 'newtemplate1' === $selected_template || 'newtemplate2' === $selected_template || 'newtemplate3' === $selected_template ) && (is_plugin_active('track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php')) ) {
 						$path = TRACK_ORDERS_FOR_WOOCOMMERCE_PRO_DIR_PATH;
 					} else {
 						$path = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH;
