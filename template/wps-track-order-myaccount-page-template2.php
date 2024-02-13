@@ -245,7 +245,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 			// HPOS usage is enabled.
 			$billing_first_name = $tofw_order->get_billing_first_name();
 			$billing_last_name = $tofw_order->get_billing_last_name();
-			$billing_address = $tofw_order->get_billing_address_1() . ' ' . $order->get_billing_address_2();
+			$billing_address = $tofw_order->get_billing_address_1() . ' ' . $tofw_order->get_billing_address_2();
 			$billing_city = $tofw_order->get_billing_city();
 			$billing_state = $tofw_order->get_billing_state();
 			$billing_country = $tofw_order->get_billing_country();

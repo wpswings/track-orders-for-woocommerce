@@ -237,7 +237,7 @@ $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 			// HPOS usage is enabled.
 			$billing_first_name = $tofw_order->get_billing_first_name();
 			$billing_last_name = $tofw_order->get_billing_last_name();
-			$billing_address = $tofw_order->get_billing_address_1() . ' ' . $order->get_billing_address_2();
+			$billing_address = $tofw_order->get_billing_address_1() . ' ' . $tofw_order->get_billing_address_2();
 			$billing_city = $tofw_order->get_billing_city();
 			$billing_state = $tofw_order->get_billing_state();
 			$billing_country = $tofw_order->get_billing_country();
@@ -353,7 +353,7 @@ $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 
 		if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
 			// HPOS usage is enabled.
-			$wps_tofw_enhanced_customer_note = $order->get_meta( 'wps_tofw_enhanced_cn', true );
+			$wps_tofw_enhanced_customer_note = $tofw_order->get_meta( 'wps_tofw_enhanced_cn', true );
 		} else {
 			$wps_tofw_enhanced_customer_note = get_post_meta( $order_id, 'wps_tofw_enhanced_cn', true );
 		}
@@ -1090,7 +1090,7 @@ $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 																			</div>
 																			<div class="wps_tofw_user_address">
 																				<?php
-																				$wps_billing_phone = OrderUtil::custom_orders_table_usage_is_enabled() ? $order->get_billing_phone() : get_post_meta( $order_id, '_billing_phone', true );
+																				$wps_billing_phone = OrderUtil::custom_orders_table_usage_is_enabled() ? $tofw_order->get_billing_phone() : get_post_meta( $order_id, '_billing_phone', true );
 																				?>
 																				<h3> <?php echo esc_html( $billing_first_name ) . ' ' . esc_html( $billing_last_name ) . ' ' . esc_html( $wps_billing_phone ); ?></h3>
 																				<p><?php echo esc_html( $billing_address ); ?></p>
