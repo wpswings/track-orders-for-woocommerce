@@ -180,14 +180,14 @@ class Track_Orders_For_Woocommerce_Public {
 		} else {
 
 			$wps_tofw_pages = get_option( 'wps_tofw_tracking_page', false );
-			if (is_array($wps_tofw_pages) && isset($wps_tofw_pages['pages']) && is_array($wps_tofw_pages['pages'])) {
+			if ( is_array( $wps_tofw_pages ) && isset( $wps_tofw_pages['pages'] ) && is_array( $wps_tofw_pages['pages'] ) ) {
 				// Access the page_id only if the structure is as expected.
 				$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
 			}
-			if ( is_page( $page_id ) && isset($page_id)) {
+			if ( is_page( $page_id ) && isset( $page_id ) ) {
 				if ( ' ' != $selected_template && null != $selected_template ) {
 					$path = '';
-					if ( ('template4' === $selected_template || 'newtemplate1' === $selected_template || 'newtemplate2' === $selected_template || 'newtemplate3' === $selected_template ) && (is_plugin_active('track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php')) ) {
+					if ( ( 'template4' === $selected_template || 'newtemplate1' === $selected_template || 'newtemplate2' === $selected_template || 'newtemplate3' === $selected_template ) && ( is_plugin_active( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php' ) ) ) {
 						$path = TRACK_ORDERS_FOR_WOOCOMMERCE_PRO_DIR_PATH;
 					} else {
 						$path = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH;
