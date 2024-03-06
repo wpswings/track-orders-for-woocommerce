@@ -432,7 +432,7 @@ class Track_Orders_For_Woocommerce_Common {
 
 				$subject = __( 'Your Order Status for Order #', 'track-orders-for-woocommerce' ) . $order_id;
 				$message = __( 'Your Order Status is ', 'track-orders-for-woocommerce' ) . $statuses[ $new_status ];
-				$mail_header = __( 'Current Order Status is ', 'track-orders-for-woocommerce' ) . $statuses[ $new_status ];
+				$mail_header = __( 'Current Order Status is 2', 'track-orders-for-woocommerce' ) . $statuses[ $new_status ];
 				$mail_footer = '';
 
 			} else {
@@ -444,7 +444,7 @@ class Track_Orders_For_Woocommerce_Common {
 				$to = $billing_address['email'];
 				$subject = __( 'Your Order Status for Order #', 'track-orders-for-woocommerce' ) . $order_id;
 				$message = __( 'Your Order Status is ', 'track-orders-for-woocommerce' ) . $statuses[ $new_status ];
-				$mail_header = __( 'Current Order Status is ', 'track-orders-for-woocommerce' ) . $statuses[ $new_status ];
+				$mail_header = __( 'Current Order Status is 3', 'track-orders-for-woocommerce' ) . $statuses[ $new_status ];
 				$mail_footer = '';
 
 			}

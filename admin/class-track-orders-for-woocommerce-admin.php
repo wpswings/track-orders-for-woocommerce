@@ -1326,7 +1326,7 @@ class Track_Orders_For_Woocommerce_Admin {
 				}
 				$subject = __( 'Your Order Status for Order #', 'track-orders-for-woocommerce' ) . $post_id;
 				$message = __( 'Your Order Status is ', 'track-orders-for-woocommerce' ) . $statuses[ $new_status ];
-				$mail_header = __( 'Current Order Status is ', 'track-orders-for-woocommerce' ) . $statuses[ $new_status ];
+				$mail_header = __( 'Current Order Status is 1', 'track-orders-for-woocommerce' ) . $statuses[ $new_status ];
 				$mail_footer = '';
 				$message = '<html>
 				<body>
