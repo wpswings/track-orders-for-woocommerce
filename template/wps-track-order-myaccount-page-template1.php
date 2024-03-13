@@ -144,11 +144,17 @@ do_action( 'woocommerce_before_main_content' );
 	 */
 
 
-$wps_main_wrapper_class = get_option( 'wps_tofw_track_order_class' );
-$wps_child_wrapper_class = get_option( 'wps_tofw_track_order_child_class' );
-$wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
+$wps_main_wrapper_class = get_option( 'wps_tofw_main_wrapper_class_theme' );
+$wps_child_wrapper_class = get_option( 'wps_tofw_child_wrapper_class' );
+$wps_track_order_css = get_option( 'wps_tofw_custom_css_name' );
+$wps_track_order_js = get_option( 'wps_tofw_custom_js_name' );
 ?>
-<style>	<?php echo esc_html( $wps_track_order_css ); ?>	</style>
+<style id="wps-tofw-global-css" type="text/css">
+<?php echo wp_kses_post( $wps_track_order_css ); ?>	
+</style>
+<script id="wps-tofw-global-js" type="text/javascript">
+<?php echo wp_kses_post( wp_unslash( $wps_track_order_js ) ); ?>
+</script>
 <div class="wps-tofw-order-tracking-section <?php echo esc_attr( $wps_main_wrapper_class ); ?>">
 	<?php
 	$get_status_approval = get_option( 'wps_tofw_order_status_in_approval', array() );
@@ -364,7 +370,7 @@ $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 			$wps_tofw_enhanced_customer_note = '';
 		}
 		?>
-		<div class="wps_tofw_order_tab">
+		<div class="wps_tofw_order_tab <?php echo esc_attr( $wps_child_wrapper_class ); ?>">
 			<ul class="wps_tofw_order_track_link">
 				<li id="wps_order_detail_section" ><a href="javascript:;"><?php esc_html_e( 'Order Details', 'track-orders-for-woocommerce' ); ?></a></li>
 				<li id="wps_order_track_section" ><a href="javascript:;"><?php esc_html_e( 'Track Order', 'track-orders-for-woocommerce' ); ?></a></li>

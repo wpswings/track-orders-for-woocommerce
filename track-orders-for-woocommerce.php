@@ -15,7 +15,7 @@
  * Plugin Name:       Track Orders for WooCommerce
  * Plugin URI:        https://wpswings.com/product/track-orders-for-woocommerce/
  * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
- * Version:           1.0.1
+ * Version:           1.0.2
  * Author:            WPSwings
  * Author URI:        https://wpswings.com/
  * Text Domain:       track-orders-for-woocommerce
@@ -26,7 +26,7 @@
  * WC requires at least: 5.5.0
  * WC tested up to:      8.5.2
  * Requires PHP:         7.2
- * Stable tag:           1.0.1
+ * Stable tag:           1.0.2
  *
  * License:           GNU General Public License v3.0
  * License URI:       http://www.gnu.org/licenses/gpl-3.0.html

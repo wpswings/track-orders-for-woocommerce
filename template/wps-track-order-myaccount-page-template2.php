@@ -143,9 +143,10 @@ do_action( 'woocommerce_before_main_content' );
 	 * @hooked woocommerce_output_content_wrapper - 10 (outputs opening divs for the content)
 	 * @hooked woocommerce_breadcrumb - 20
 	 */
-$wps_main_wrapper_class = get_option( 'wps_tofw_track_order_class' );
-$wps_child_wrapper_class = get_option( 'wps_tofw_track_order_child_class' );
-$wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
+	$wps_main_wrapper_class = get_option( 'wps_tofw_main_wrapper_class_theme' );
+	$wps_child_wrapper_class = get_option( 'wps_tofw_child_wrapper_class' );
+	$wps_track_order_css = get_option( 'wps_tofw_custom_css_name' );
+	$wps_track_order_js = get_option( 'wps_tofw_custom_js_name' );
 
 if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
 	// HPOS usage is enabled.
@@ -162,7 +163,12 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 }
 ?>
 
-<style>	<?php echo esc_html( $wps_track_order_css ); ?>	</style>
+<style id="wps-tofw-global-css" type="text/css">
+<?php echo wp_kses_post( $wps_track_order_css ); ?>	
+</style>
+<script id="wps-tofw-global-js" type="text/javascript">
+<?php echo wp_kses_post( wp_unslash( $wps_track_order_js ) ); ?>
+</script>
 
 <div class="wps-tofw-order-tracking-section <?php echo esc_attr( $wps_main_wrapper_class ); ?>">
 	<?php
@@ -360,7 +366,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 			}
 		}
 		?>
-		<section class="wps_tofw_header wps_tofw_header--template2">
+		<section class="wps_tofw_header wps_tofw_header--template2 <?php echo esc_attr( $wps_child_wrapper_class ); ?>">
 			<div class="wps_tofw_header-wrapper">
 				<div class="wps_tofw_oder-tracker_gifimg">
 					
