@@ -87,7 +87,7 @@ class Track_Orders_For_Woocommerce_Common {
 		$wps_tofw_purchase_code = ( ! empty( $_POST['purchase_code'] ) ) ? sanitize_text_field( wp_unslash( $_POST['purchase_code'] ) ) : '';
 		$wps_tofw_response = self::track_orders_for_woocommerce_license_code_update( $wps_tofw_purchase_code );
 		if ( is_wp_error( $wps_tofw_response ) ) {
-			echo json_encode(
+			echo wp_json_encode(
 				array(
 					'status' => false,
 					'msg' => __(
@@ -96,6 +96,7 @@ class Track_Orders_For_Woocommerce_Common {
 					),
 				)
 			);
+			
 		} else {
 			$wps_tofw_license_data = json_decode( wp_remote_retrieve_body( $wps_tofw_response ) );
 
@@ -103,7 +104,7 @@ class Track_Orders_For_Woocommerce_Common {
 				update_option( 'wps_tofw_license_key', $wps_tofw_purchase_code );
 				update_option( 'wps_tofw_license_check', true );
 
-				echo json_encode(
+				echo wp_json_encode(
 					array(
 						'status' => true,
 						'msg' => __(
@@ -112,13 +113,15 @@ class Track_Orders_For_Woocommerce_Common {
 						),
 					)
 				);
+				
 			} else {
-				echo json_encode(
+				echo wp_json_encode(
 					array(
 						'status' => false,
 						'msg' => $wps_tofw_license_data->message,
 					)
 				);
+				
 			}
 		}
 		wp_die();

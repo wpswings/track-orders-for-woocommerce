@@ -1031,7 +1031,7 @@ class Track_Orders_For_Woocommerce_Admin {
 		}
 
 		$wps_tofw_address_array_value = get_option( 'wps_tofw_old_addresses', false );
-		echo json_encode( $wps_tofw_address_array_value );
+		echo wp_json_encode( $wps_tofw_address_array_value );
 		wp_die();
 	}
 

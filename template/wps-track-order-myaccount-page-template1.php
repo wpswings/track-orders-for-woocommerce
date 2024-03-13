@@ -924,9 +924,7 @@ $wps_track_order_js = get_option( 'wps_tofw_custom_js_name' );
 																	</section>
 																	<div class="wps_tofw_header" id="wps_product">
 																		<div class="section wps_tofw_product-details-section-template ">
-																			<?
-																			?>
-																			
+																		
 																			<table class="wps_tofw_shop_table order_details wps-product-details-table wps-product-details-table-template">
 																				<thead>
 																					<tr>

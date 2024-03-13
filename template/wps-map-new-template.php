@@ -416,7 +416,7 @@ if ( $allowed ) {
 					$wps_tofw_order_send_to_cities[] = $valuemap;
 					$wps_tofw_order_send_to_cities = array_unique( $wps_tofw_order_send_to_cities );
 					$wps_tofw_order_send_to_cities = array_values( $wps_tofw_order_send_to_cities );
-					$wps_tofw_order_sent_cities = json_encode( $wps_tofw_order_send_to_cities );
+					$wps_tofw_order_sent_cities = wp_json_encode( $wps_tofw_order_send_to_cities );
 				}
 			}
 		}
@@ -428,7 +428,8 @@ if ( $allowed ) {
 		$wps_tofw_order_production_add = get_option( 'wps_tofw_order_production_address', false );
 		$address[] = $wps_tofw_order_production_add;
 		$wps_tofw_order_sent_cities = $address;
-		echo '<input type="hidden" name="wps_tofw_google_distance_map" id="wps_tofw_google_distance_map" value="' . esc_attr( htmlspecialchars( json_encode( $wps_tofw_order_sent_cities ) ) ) . '">';
+		echo '<input type="hidden" name="wps_tofw_google_distance_map" id="wps_tofw_google_distance_map" value="' . esc_attr( wp_json_encode( $wps_tofw_order_sent_cities ) ) . '">';
+
 	}
 
 	$wps_tofw_order_production_add = get_option( 'wps_tofw_order_production_address', false );
@@ -452,8 +453,12 @@ if ( $allowed ) {
 	} else {
 		if ( ! empty( $address ) ) {
 
-			$geocode = file_get_contents( 'https://maps.google.com/maps/api/geocode/json?address=' . urlencode( $address ) . '&key=' . $wps_tofw_google_api_key );
+			$response = wp_remote_get( 'https://maps.google.com/maps/api/geocode/json?address=' . urlencode( $address ) . '&key=' . $wps_tofw_google_api_key );
 
+			if ( ! is_wp_error( $response ) ) {
+				$geocode = wp_remote_retrieve_body( $response );
+			}
+			
 			$output = json_decode( $geocode );
 
 			if ( isset( $output->results[0] ) && ! empty( $output->results[0] ) ) {

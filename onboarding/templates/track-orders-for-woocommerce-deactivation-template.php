@@ -24,9 +24,11 @@ apply_filters( 'wps_msp_deactivation_form_fields', array() );
 
 ?>
 <?php if ( ! empty( $msp_onboarding_form_deactivate ) ) : ?>
-	<div id="<?php echo esc_attr( $wps_plugin_onboarding_popup_id ); ?>" class="mdc-dialog mdc-dialog--scrollable <? echo 
-	//desc - filter for trial.
-	apply_filters('wps_stand_dialog_classes', 'track-orders-for-woocommerce' )?>">
+		<div id="<?php echo esc_attr( $wps_plugin_onboarding_popup_id ); ?>" class="mdc-dialog mdc-dialog--scrollable <?php
+				//desc - filter for trial.
+				echo esc_attr( apply_filters('wps_stand_dialog_classes', 'track-orders-for-woocommerce' ) );
+		?>">
+
 		<div class="wps-msp-on-boarding-wrapper-background mdc-dialog__container">
 			<div class="wps-msp-on-boarding-wrapper mdc-dialog__surface" role="alertdialog" aria-modal="true" aria-labelledby="my-dialog-title" aria-describedby="my-dialog-content">
 				<div class="mdc-dialog__content">
@@ -48,9 +50,10 @@ apply_filters( 'wps_msp_deactivation_form_fields', array() );
 								<input type="submit" class="wps-msp-on-boarding-submit wps-on-boarding-verify mdc-button mdc-button--raised" value="Send Us">
 							</div>
 							<div class="wps-msp-on-boarding-form-no_thanks">
-								<a href="#" id="<?php echo esc_attr( $wps_plugin_deactivation_id ); ?>" class="<? echo 
-								//desc - filter for trial.
-								apply_filters('wps_stand_no_thank_classes', 'track-orders-for-woocommerce-no_thanks' )?> mdc-button"><?php esc_html_e( 'Skip and Deactivate Now', 'track-orders-for-woocommerce' ); ?></a>
+								<a href="#" id="<?php echo esc_attr( $wps_plugin_deactivation_id ); ?>" class="<?php
+									//desc - filter for trial.
+									echo esc_attr( apply_filters('wps_stand_no_thank_classes', 'track-orders-for-woocommerce-no_thanks' ) );
+								?> mdc-button"><?php esc_html_e( 'Skip and Deactivate Now', 'track-orders-for-woocommerce' ); ?></a>
 							</div>
 						</div>
 					</form>

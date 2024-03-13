@@ -579,7 +579,8 @@ class Track_Orders_For_Woocommerce {
 		$tofw_system_status['php_max_execution_time'] = function_exists( 'ini_get' ) ? ini_get( 'max_execution_time' ) : __( 'N/A (ini_get function does not exist)', 'track-orders-for-woocommerce' );
 
 		// Get outgoing IP address.
-		$tofw_system_status['outgoing_ip'] = function_exists( 'file_get_contents' ) ? file_get_contents( 'http://ipecho.net/plain' ) : __( 'N/A (file_get_contents function does not exist)', 'track-orders-for-woocommerce' );
+		$tofw_system_status['outgoing_ip'] = function_exists( 'wp_remote_get' ) ? wp_remote_retrieve_body( wp_remote_get( 'http://ipecho.net/plain' ) ) : __( 'N/A (wp_remote_get function does not exist)', 'track-orders-for-woocommerce' );
+
 
 		$tofw_system_data['php'] = $tofw_system_status;
 		$tofw_system_data['wp']  = $tofw_wordpress_status;

@@ -257,7 +257,7 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 	public function wps_msp_skip_onboarding_popup() {
 
 		$get_skipped_timstamp = update_option( 'wps_msp_onboarding_data_skipped', time() );
-		echo json_encode( 'true' );
+		echo wp_json_encode( 'true' );
 		wp_die();
 	}
 
@@ -298,7 +298,7 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 			 * Email field with label. ( auto filled with admin email )
 			 */
 
-			rand() => array(
+			wp_rand() => array(
 				'id' => 'wps-msp-monthly-revenue',
 				'title' => esc_html__( 'What is your monthly revenue?', 'track-orders-for-woocommerce' ),
 				'type' => 'radio',
@@ -317,7 +317,7 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 				),
 			),
 
-			rand() => array(
+			wp_rand() => array(
 				'id' => 'wps_msp_industry_type',
 				'title' => esc_html__( 'What industry defines your business?', 'track-orders-for-woocommerce' ),
 				'type' => 'select',
@@ -354,7 +354,7 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 				),
 			),
 
-			rand() => array(
+			wp_rand() => array(
 				'id' => 'wps-msp-onboard-email',
 				'title' => esc_html__( 'What is the best email address to contact you?', 'track-orders-for-woocommerce' ),
 				'type' => 'email',
@@ -366,7 +366,7 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 				'class' => 'tofw-text-class',
 			),
 
-			rand() => array(
+			wp_rand() => array(
 				'id' => 'wps-msp-onboard-number',
 				'title' => esc_html__( 'What is your contact number?', 'track-orders-for-woocommerce' ),
 				'type' => 'text',
@@ -378,7 +378,7 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 				'class' => '',
 			),
 
-			rand() => array(
+			wp_rand() => array(
 				'id' => 'wps-msp-store-name',
 				'title' => '',
 				'description' => '',
@@ -390,7 +390,7 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 				'class' => '',
 			),
 
-			rand() => array(
+			wp_rand() => array(
 				'id' => 'wps-msp-store-url',
 				'title' => '',
 				'description' => '',
@@ -402,7 +402,7 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 				'class' => '',
 			),
 
-			rand() => array(
+			wp_rand() => array(
 				'id' => 'wps-msp-show-counter',
 				'title' => '',
 				'description' => '',
@@ -414,7 +414,7 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 				'class' => '',
 			),
 
-			rand() => array(
+			wp_rand() => array(
 				'id' => 'wps-msp-plugin-name',
 				'title' => '',
 				'description' => '',
@@ -461,7 +461,7 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 			 * Email field with label. ( auto filled with admin email )
 			 */
 
-			rand() => array(
+			wp_rand() => array(
 				'id' => 'wps-msp-deactivation-reason',
 				'title' => '',
 				'description' => '',
@@ -482,7 +482,7 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 				),
 			),
 
-			rand() => array(
+			wp_rand() => array(
 				'id' => 'wps-msp-deactivation-reason-text',
 				'title' => esc_html__( 'Let us know why you are deactivating Track Orders For Woocommerce so we can improve the plugin. ', 'track-orders-for-woocommerce' ) . self::$wps_msp_plugin_name_label . esc_html__( ' so we can improve the plugin', 'track-orders-for-woocommerce' ),
 				'type' => 'textarea',
@@ -494,7 +494,7 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 				'class' => 'wps-keep-hidden',
 			),
 
-			rand() => array(
+			wp_rand() => array(
 				'id' => 'wps-msp-admin-email',
 				'title' => '',
 				'description' => '',
@@ -506,7 +506,7 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 				'class' => '',
 			),
 
-			rand() => array(
+			wp_rand() => array(
 				'id' => 'wps-msp-store-name',
 				'title' => '',
 				'description' => '',
@@ -518,7 +518,7 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 				'class' => '',
 			),
 
-			rand() => array(
+			wp_rand() => array(
 				'id' => 'wps-msp-store-url',
 				'title' => '',
 				'description' => '',
@@ -530,7 +530,7 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 				'class' => '',
 			),
 
-			rand() => array(
+			wp_rand() => array(
 				'id' => 'wps-msp-plugin-name',
 				'title' => '',
 				'description' => '',
@@ -621,7 +621,7 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 			}
 		} catch ( Exception $e ) {
 
-			echo json_encode( $e->getMessage() );
+			echo wp_json_encode( $e->getMessage() );
 			wp_die();
 		}
 
@@ -629,7 +629,7 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 			 $get_skipped_timstamp = update_option( 'wps_msp_onboarding_data_sent', 'sent' );
 		}
 
-		echo json_encode( $formatted_data );
+		echo wp_json_encode( $formatted_data );
 		wp_die();
 	}
 
@@ -684,7 +684,7 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 			'Content-Type' => 'application/json',
 		);
 
-		$form_data = json_encode(
+		$form_data = wp_json_encode(
 			array(
 				'fields' => $form_data,
 				'context'  => array(
