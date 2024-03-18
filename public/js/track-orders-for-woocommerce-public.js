@@ -85,6 +85,8 @@ jQuery( document ).ready( function()
 	jQuery('.woocommerce-orders-table__cell').on('click','a.thickbox',function(){
 		var wps_tofw_iframe_obj = jQuery(document).find('#TB_window');
 	});
+	
+	jQuery('#site-navigation-menu-toggle').hide();
 	var completed_condition_data = jQuery('.wps_completed_condition > img').attr('data-completed_data');
 	var cancelled_condition_data = jQuery('.wps_cancelled_condition > img').attr('data-cancelled_data');
 	if(completed_condition_data == 1)

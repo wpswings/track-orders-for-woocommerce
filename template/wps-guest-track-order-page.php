@@ -63,8 +63,9 @@ $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 			}
 			?>
 			<?php
-			$wps_tofw_enable_track_17track_feature = get_option( 'wps_tofwp_enable_17track_integration', 'no' );
-			if ( ! empty( $wps_tofw_enable_track_17track_feature ) && 'on' == $wps_tofw_enable_track_17track_feature ) {
+			// $wps_tofw_enable_track_17track_feature = get_option( 'wps_tofwp_enable_17track_integration', 'no' );
+			$wps_tofw_enable_track_17track_feature = get_option( 'wps_tofwp_general_settings_saved', false );
+			if ( ! empty( $wps_tofw_enable_track_17track_feature['enable_plugin'] ) && 'on' == $wps_tofw_enable_track_17track_feature['enable_plugin'] ) {
 				?>
 			<p class="woocommerce-FormRow woocommerce-FormRow--wide form-row form-row-wide">
 			<label><?php esc_html_e( 'Enter Your 17TrackingNo', 'track-orders-for-woocommerce' ); ?></label>

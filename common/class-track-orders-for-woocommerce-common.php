@@ -435,7 +435,7 @@ class Track_Orders_For_Woocommerce_Common {
 
 				$subject = __( 'Your Order Status for Order #', 'track-orders-for-woocommerce' ) . $order_id;
 				$message = __( 'Your Order Status is ', 'track-orders-for-woocommerce' ) . $statuses[ $new_status ];
-				$mail_header = __( 'Current Order Status is 2', 'track-orders-for-woocommerce' ) . $statuses[ $new_status ];
+				$mail_header = __( 'Current Order Status is ', 'track-orders-for-woocommerce' ) . $statuses[ $new_status ];
 				$mail_footer = '';
 
 			} else {
@@ -447,7 +447,7 @@ class Track_Orders_For_Woocommerce_Common {
 				$to = $billing_address['email'];
 				$subject = __( 'Your Order Status for Order #', 'track-orders-for-woocommerce' ) . $order_id;
 				$message = __( 'Your Order Status is ', 'track-orders-for-woocommerce' ) . $statuses[ $new_status ];
-				$mail_header = __( 'Current Order Status is 3', 'track-orders-for-woocommerce' ) . $statuses[ $new_status ];
+				$mail_header = __( 'Current Order Status is ', 'track-orders-for-woocommerce' ) . $statuses[ $new_status ];
 				$mail_footer = '';
 
 			}
@@ -584,38 +584,40 @@ class Track_Orders_For_Woocommerce_Common {
 								$message .= '</tbody>
 							</table>
 						</div>
-						<div class="Customer-detail">
-							<h4>' . __( 'Customer details', 'track-orders-for-woocommerce' ) . '</h4>
-							<ul>
-								<li>
-									<p class="info">
-										<span class="bold">' . __( 'Email', 'track-orders-for-woocommerce' ) . ': </span>' . OrderUtil::custom_orders_table_usage_is_enabled() ? $order->get_meta( '_billing_email', true ) : get_post_meta( $order->id, '_billing_email', true ) . '
-									</p>
-								</li>
-								<li>
-									<p class="info">
-										<span class="bold">' . __( 'Tel', 'track-orders-for-woocommerce' ) . ': </span>' . $wps_billing_phone . '
-									</p>
-								</li>
-							</ul>
-						</div>
-						<div class="details">
-							<div class="Shipping-detail">
-								<h4>' . __( 'Shipping Address', 'track-orders-for-woocommerce' ) . '</h4>
-								' . $order->get_formatted_shipping_address() . '
-							</div>
-							<div class="Billing-detail">
-								<h4>' . __( 'Billing Address', 'track-orders-for-woocommerce' ) . '</h4>
-								' . $order->get_formatted_billing_address() . '
-							</div>
-							<div class="clear"></div>
-						</div>
-					</div>
 					<div style="text-align: center; padding: 10px;" class="footer">
 						' . $mail_footer . '
 					</div>
 				</body>
 				</html>';
+
+				$message .='<div class="Customer-detail">
+				<h4>' . __( 'Customer details', 'track-orders-for-woocommerce' ) . '</h4>
+				<ul>
+					<li>
+						<p class="info">
+							<span class="bold">' . __( 'Email', 'track-orders-for-woocommerce' ) . ': </span>' . OrderUtil::custom_orders_table_usage_is_enabled() ? $order->get_meta( '_billing_email', true ) : get_post_meta( $order->id, '_billing_email', true ) . '
+						</p>
+					</li>
+					<li>
+						<p class="info">
+							<span class="bold">' . __( 'Tel', 'track-orders-for-woocommerce' ) . ': </span>' . $wps_billing_phone . '
+						</p>
+					</li>
+				</ul>
+			</div>
+			<div class="details">
+				<div class="Shipping-detail">
+					<h4>' . __( 'Shipping Address', 'track-orders-for-woocommerce' ) . '</h4>
+					' . $order->get_formatted_shipping_address() . '
+				</div>
+				<div class="Billing-detail">
+					<h4>' . __( 'Billing Address', 'track-orders-for-woocommerce' ) . '</h4>
+					' . $order->get_formatted_billing_address() . '
+				</div>
+				<div class="clear"></div>
+			</div>
+		</div>';
+				// die($message);
 				wc_mail( $to, $subject, $message, $headers );
 
 		}
