@@ -738,7 +738,6 @@ class Track_Orders_For_Woocommerce_Common {
 			$_orders_temp = wc_get_orders(
 				array(
 					'status'      => array_keys( wc_get_order_statuses() ),
-					'customer'    => get_current_user_id(),
 					'numberposts' => -1,
 					'return'      => 'ids', // Specify 'ids' to get only the order IDs.
 				)
@@ -746,7 +745,8 @@ class Track_Orders_For_Woocommerce_Common {
 
 			if ( ! empty( $_orders_temp ) && is_array( $_orders_temp ) ) {
 				foreach ( $_orders_temp as $key => $id ) {
-					$_order = wc_get_order( $id );
+
+					$_order = new WC_Order( $id );
 					if ( $_order->get_billing_email() == $email ) {
 						$_orders[] = $id;
 					}
