@@ -871,6 +871,13 @@ class Track_Orders_For_Woocommerce_Admin {
 			apply_filters( 'tofw_shipping_services_settings_array', array() );
 			$wps_settings_save_progress = true;
 		}
+		if ( isset( $_POST['wps_tofp_enhance_tracking_save'] ) ) {
+			$wps_msp_gen_flag     = false;
+			$tofw_genaral_settings =
+			// desc - filter for trial.
+			apply_filters( 'wps_tofp_enhance_tracking__array', array() );
+			$wps_settings_save_progress = true;
+		}
 
 		if ( $wps_settings_save_progress ) {
 
