@@ -15,18 +15,18 @@
  * Plugin Name:       Track Orders for WooCommerce
  * Plugin URI:        https://wpswings.com/product/track-orders-for-woocommerce/
  * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
- * Version:           1.0.2
+ * Version:           1.0.3
  * Author:            WPSwings
  * Author URI:        https://wpswings.com/
  * Text Domain:       track-orders-for-woocommerce
  * Domain Path:       /languages
  *
  * Requires at least:    5.5.0
- * Tested up to:         6.4.3
+ * Tested up to:         6.5.2
  * WC requires at least: 5.5.0
- * WC tested up to:      8.7.0
+ * WC tested up to:      8.8.2
  * Requires PHP:         7.2
- * Stable tag:           1.0.2
+ * Stable tag:           1.0.3
  *
  * License:           GNU General Public License v3.0
  * License URI:       http://www.gnu.org/licenses/gpl-3.0.html
@@ -59,11 +59,42 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 	 * @since 1.0.0
 	 */
 	function define_track_orders_for_woocommerce_constants() {
-		track_orders_for_woocommerce_constants( 'TRACK_ORDERS_FOR_WOOCOMMERCE_VERSION', '1.0.2' );
+		track_orders_for_woocommerce_constants( 'TRACK_ORDERS_FOR_WOOCOMMERCE_VERSION', '1.0.3' );
 		track_orders_for_woocommerce_constants( 'TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH', plugin_dir_path( __FILE__ ) );
 		track_orders_for_woocommerce_constants( 'TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL', plugin_dir_url( __FILE__ ) );
 		track_orders_for_woocommerce_constants( 'TRACK_ORDERS_FOR_WOOCOMMERCE_SERVER_URL', 'https://wpswings.com' );
 		track_orders_for_woocommerce_constants( 'TRACK_ORDERS_FOR_WOOCOMMERCE_ITEM_REFERENCE', 'Track Orders For WooCommerce' );
+	}
+
+
+	add_action( 'init', 'wps_otfw_create_images_folder_inside_uploads' );
+
+	/**
+	 * Function for create directory for saving the qr image.
+	 *
+	 * @return void
+	 */
+	function wps_otfw_create_images_folder_inside_uploads() {
+		$upload = wp_upload_dir();
+		$upload_dir = $upload['basedir'];
+		$upload_dir = $upload_dir . '/tracking_images';
+		
+		// Check if the directory doesn't exist.
+		if ( ! is_dir( $upload_dir ) ) {
+			// Attempt to create the directory using WP_Filesystem.
+			if ( function_exists( 'WP_Filesystem' ) ) {
+				WP_Filesystem(); // Initialize the filesystem.
+		
+				global $wp_filesystem;
+				if ( ! is_wp_error( $wp_filesystem ) ) {
+				// Create the directory using WP_Filesystem.
+				if ( ! $wp_filesystem->is_dir( $upload_dir ) ) {
+					$wp_filesystem->mkdir( $upload_dir, 0777 );
+				}
+				}
+			}
+		}
+		
 	}
 
 	/**

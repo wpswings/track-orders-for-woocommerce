@@ -30,9 +30,6 @@
 	 */
 
 })( jQuery );
-
-
-
 	jQuery(document).ready(function($){
 		jQuery(document).on( 'click', '.wps_export', function(e){
 			e.preventDefault();

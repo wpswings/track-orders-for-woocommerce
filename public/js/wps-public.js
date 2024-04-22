@@ -3,8 +3,6 @@
 jQuery(document).ready(function () {
 
     initmap();
-
-
     function initmap() {
         var directionsService = new google.maps.DirectionsService();
         var directionsDisplay = new google.maps.DirectionsRenderer();
@@ -49,8 +47,6 @@ jQuery(document).ready(function () {
                 window.alert('Directions request failed due to ' + status);
             }
         });
-
-
 
     }
 

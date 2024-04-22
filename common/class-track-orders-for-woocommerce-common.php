@@ -275,6 +275,53 @@ class Track_Orders_For_Woocommerce_Common {
 	 * @return void
 	 */
 	public function wps_tofw_track_order_status( $order_id, $old_status, $new_status ) {
+
+
+		require_once TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'package/lib/phpqrcode/phpqrcode.php';
+
+		$order = wc_get_order( $order_id );
+
+		// $billing_email = $order->get_billing_email();
+		// $ticket_number = 'QWERTYU';
+		// $site_url is link in the barcode.
+		$site_url = get_site_url() . '/track-your-order-5/?' . esc_html( $order_id ) .'';
+		$uploads = wp_upload_dir();
+		$path = $uploads['basedir'] . '/tracking_images/';
+		$file  = $path . $order_id  . 'tracking_checkin.png';  // address of the image od barcode in which  url is saved.
+		if ( file_exists( $file ) ) {
+
+			wp_delete_file($file);
+		}
+
+		$path = $uploads['basedir'] . '/tracking_images/';
+		$file = $path . $order_id . 'tracking_checkin.png'; // path  of the image.
+		$ecc = 'M';
+		$pixel_size = 20;
+		$frame_size = 20;
+		// Generate the PNG QR code.
+		QRcode::png( $site_url, $file, $ecc, $pixel_size, $frame_size );
+
+		// // Convert PNG to JPEG.
+		// $image = imagecreatefrompng( $file );
+		// $image_path = $path . $order_id . 'checkin.jpg';
+		// imagejpeg( $image, $image_path, 100 );
+
+		// // Remove the original PNG file.
+		// wp_delete_file($file);
+
+		// Return the path to the JPEG file.
+		
+
+
+
+
+
+
+
+
+
+
+
 		$old_status = 'wc-' . $old_status;
 		$new_status = 'wc-' . $new_status;
 		$wps_tofw_email_notifier = get_option( 'wps_tofw_email_notifier', 'no' );
@@ -617,10 +664,10 @@ class Track_Orders_For_Woocommerce_Common {
 				<div class="clear"></div>
 			</div>
 		</div>';
-				// die($message);
+				$wps_etmfw_qr_size  = '180';
+				$message .= '<img src="' . esc_url($file) . '" alt="QR Code" class = "wps_tracking_image_qr" height="' . $wps_etmfw_qr_size . '" width="' . $wps_etmfw_qr_size .'"/>';
 				wc_mail( $to, $subject, $message, $headers );
-
-		}
+			}
 	}
 
 
