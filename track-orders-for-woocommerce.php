@@ -75,25 +75,21 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 	 * @return void
 	 */
 	function wps_otfw_create_images_folder_inside_uploads() {
-		$upload = wp_upload_dir();
-		$upload_dir = $upload['basedir'];
-		$upload_dir = $upload_dir . '/tracking_images';
-		
-		// Check if the directory doesn't exist.
-		if ( ! is_dir( $upload_dir ) ) {
-			// Attempt to create the directory using WP_Filesystem.
-			if ( function_exists( 'WP_Filesystem' ) ) {
-				WP_Filesystem(); // Initialize the filesystem.
-		
-				global $wp_filesystem;
-				if ( ! is_wp_error( $wp_filesystem ) ) {
-				// Create the directory using WP_Filesystem.
-				if ( ! $wp_filesystem->is_dir( $upload_dir ) ) {
-					$wp_filesystem->mkdir( $upload_dir, 0777 );
-				}
+			// Get the uploads directory path
+			$wp_upload_dir = wp_upload_dir();
+
+			// Define the new folder name
+			$new_folder_name = 'tracking_images';
+
+			// Create the full path for the new folder
+			$new_folder_path = $wp_upload_dir['basedir'] . '/' . $new_folder_name;
+
+			// Check if the folder doesn't exist already
+			if ( ! file_exists( $new_folder_path ) ) {
+				// Create the new folder
+				if ( wp_mkdir_p( $new_folder_path ) ) {
 				}
 			}
-		}
 		
 	}
 

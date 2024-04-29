@@ -276,15 +276,22 @@ class Track_Orders_For_Woocommerce_Common {
 	 */
 	public function wps_tofw_track_order_status( $order_id, $old_status, $new_status ) {
 
-
 		require_once TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'package/lib/phpqrcode/phpqrcode.php';
 
-		$order = wc_get_order( $order_id );
+		$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
+		$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
+		$track_order_url = get_permalink( $page_id );
 
-		// $billing_email = $order->get_billing_email();
-		// $ticket_number = 'QWERTYU';
-		// $site_url is link in the barcode.
-		$site_url = get_site_url() . '/track-your-order-5/?' . esc_html( $order_id ) .'';
+
+			// Parse the URL
+			$url_parts = parse_url($track_order_url);
+			$path = $url_parts['path'];
+			$path = trim($path, '/');
+			$path_parts = explode('/', $path);
+			$last_part = end($path_parts);
+
+		$order = wc_get_order( $order_id );
+		$site_url = get_site_url() . '/'.$last_part.'/?' . esc_html( $order_id ) .'';
 		$uploads = wp_upload_dir();
 		$path = $uploads['basedir'] . '/tracking_images/';
 		$file  = $path . $order_id  . 'tracking_checkin.png';  // address of the image od barcode in which  url is saved.
@@ -300,27 +307,6 @@ class Track_Orders_For_Woocommerce_Common {
 		$frame_size = 20;
 		// Generate the PNG QR code.
 		QRcode::png( $site_url, $file, $ecc, $pixel_size, $frame_size );
-
-		// // Convert PNG to JPEG.
-		// $image = imagecreatefrompng( $file );
-		// $image_path = $path . $order_id . 'checkin.jpg';
-		// imagejpeg( $image, $image_path, 100 );
-
-		// // Remove the original PNG file.
-		// wp_delete_file($file);
-
-		// Return the path to the JPEG file.
-		
-
-
-
-
-
-
-
-
-
-
 
 		$old_status = 'wc-' . $old_status;
 		$new_status = 'wc-' . $new_status;
@@ -665,10 +651,9 @@ class Track_Orders_For_Woocommerce_Common {
 			</div>
 		</div>';
 				$wps_etmfw_qr_size  = '180';
-				// $file = 'https://img.freepik.com/premium-vector/sample-qr-code-icon_322958-669.jpg';
 				if('on' == get_option( 'wps_tofw_qr_redirect' )){
-				$message .= '<img src="' . esc_url($file) . '" alt="QR Code" class = "wps_tracking_image_qr" height="' . $wps_etmfw_qr_size . '" width="' . $wps_etmfw_qr_size .'"/>';
-				}
+				$message .= '<img src="' . get_site_url() . '/' . str_replace( ABSPATH, '', $file ) . '" alt= "QR" width="100" height="100" />';
+			}
 				wc_mail( $to, $subject, $message, $headers );
 			}
 	}
