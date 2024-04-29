@@ -1507,9 +1507,8 @@ class Track_Orders_For_Woocommerce_Admin {
 			if ( isset( $order ) && ! empty( $order ) && isset($order_obj ) && is_object( $order )) {
 
 				if ( method_exists( $order_obj, 'get_data' ) ) {
-					$orderdata = $order_obj->get_data();
-					// Further processing with $orderdata.
-				}
+				$orderdata = $order_obj->get_data();
+
 				$order_modified_date = $orderdata['date_modified'];
 				$converted_order_modified_date = date_i18n( 'F d, Y g:i a', strtotime( $order_modified_date ) );
 				$current_order_status = $order->get_status();
@@ -1572,6 +1571,7 @@ class Track_Orders_For_Woocommerce_Admin {
 					}
 				}
 			}
+		}
 		}
 
 	}
