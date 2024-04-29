@@ -611,49 +611,19 @@ class Track_Orders_For_Woocommerce_Common {
 									</tr>';
 				$total = $total + ( $product->get_price() * $item['qty'] );
 			}
-								$message .= '<tr>
-								<th colspan = "2">' . __( 'Total', 'track-orders-for-woocommerce' ) . '</th>
-								<td>' . wc_price( $total ) . '</td>';
-								$message .= '</tbody>
-							</table>
-						</div>
-					<div style="text-align: center; padding: 10px;" class="footer">
-						' . $mail_footer . '
-					</div>
-				</body>
-				</html>';
 
-				$message .='<div class="Customer-detail">
-				<h4>' . __( 'Customer details', 'track-orders-for-woocommerce' ) . '</h4>
-				<ul>
-					<li>
-						<p class="info">
-							<span class="bold">' . __( 'Email', 'track-orders-for-woocommerce' ) . ': </span>' . OrderUtil::custom_orders_table_usage_is_enabled() ? $order->get_meta( '_billing_email', true ) : get_post_meta( $order->id, '_billing_email', true ) . '
-						</p>
-					</li>
-					<li>
-						<p class="info">
-							<span class="bold">' . __( 'Tel', 'track-orders-for-woocommerce' ) . ': </span>' . $wps_billing_phone . '
-						</p>
-					</li>
-				</ul>
-			</div>
-			<div class="details">
-				<div class="Shipping-detail">
-					<h4>' . __( 'Shipping Address', 'track-orders-for-woocommerce' ) . '</h4>
-					' . $order->get_formatted_shipping_address() . '
-				</div>
-				<div class="Billing-detail">
-					<h4>' . __( 'Billing Address', 'track-orders-for-woocommerce' ) . '</h4>
-					' . $order->get_formatted_billing_address() . '
-				</div>
-				<div class="clear"></div>
-			</div>
-		</div>';
-				$wps_etmfw_qr_size  = '180';
-				if('on' == get_option( 'wps_tofw_qr_redirect' )){
-				$message .= '<img src="' . get_site_url() . '/' . str_replace( ABSPATH, '', $file ) . '" alt= "QR" width="100" height="100" />';
+						$message .= '<tr>
+						<th colspan = "2">' . __( 'Total', 'track-orders-for-woocommerce' ) . '</th>
+						<td>' . wc_price( $total ) . '</td>';
+						$message .= '</tbody>
+					</table>
+				</div>';
+			if('on' == get_option( 'wps_tofw_qr_redirect' )){
+			$message .= '<div><img src="' . get_site_url() . '/' . str_replace( ABSPATH, '', $file ) . '" alt= "QR" style="display: block; margin: 0 auto; width: 300px; height: 300px;" /></div>';
 			}
+			$message .= '</body>
+			</html>';
+
 				wc_mail( $to, $subject, $message, $headers );
 			}
 	}
