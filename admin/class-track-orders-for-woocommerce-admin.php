@@ -1504,9 +1504,12 @@ class Track_Orders_For_Woocommerce_Admin {
 	public function wps_tofw_save_custom_shipping_cities_meta( $order_id, $order ) {
 		if ( isset( $order ) ) {
 			$order_obj = wc_get_order( $order->id );
-			if ( isset( $order ) && ! empty( $order ) && isset($order_obj )) {
+			if ( isset( $order ) && ! empty( $order ) && isset($order_obj ) && is_object( $order )) {
 
-				$orderdata = $order_obj->get_data();
+				if ( method_exists( $order_obj, 'get_data' ) ) {
+					$orderdata = $order_obj->get_data();
+					// Further processing with $orderdata.
+				}
 				$order_modified_date = $orderdata['date_modified'];
 				$converted_order_modified_date = date_i18n( 'F d, Y g:i a', strtotime( $order_modified_date ) );
 				$current_order_status = $order->get_status();
