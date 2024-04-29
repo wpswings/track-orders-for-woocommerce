@@ -665,7 +665,10 @@ class Track_Orders_For_Woocommerce_Common {
 			</div>
 		</div>';
 				$wps_etmfw_qr_size  = '180';
+				// $file = 'https://img.freepik.com/premium-vector/sample-qr-code-icon_322958-669.jpg';
+				if('on' == get_option( 'wps_tofw_qr_redirect' )){
 				$message .= '<img src="' . esc_url($file) . '" alt="QR Code" class = "wps_tracking_image_qr" height="' . $wps_etmfw_qr_size . '" width="' . $wps_etmfw_qr_size .'"/>';
+				}
 				wc_mail( $to, $subject, $message, $headers );
 			}
 	}
