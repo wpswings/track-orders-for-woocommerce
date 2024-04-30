@@ -284,7 +284,7 @@ class Track_Orders_For_Woocommerce_Common {
 
 
 			// Parse the URL
-			$url_parts = parse_url($track_order_url);
+			$url_parts = wp_parse_url($track_order_url);
 			$path = $url_parts['path'];
 			$path = trim($path, '/');
 			$path_parts = explode('/', $path);
