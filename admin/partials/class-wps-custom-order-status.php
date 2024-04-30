@@ -134,11 +134,13 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 	public function column_image( $item ) {
 		$wpsimageurl = get_option( 'wps_tofw_new_custom_order_image', false );
 		foreach ( $item as $key => $value ) {
+			if (is_array($wpsimageurl) && array_key_exists($key, $wpsimageurl)) {
 			$wps_image = $wpsimageurl[ $key ];
 			return sprintf(
 				'<img src="%s" height="100px" width="100px"/>',
 				$wps_image
 			);
+		}
 		}
 	}
 
