@@ -3,14 +3,15 @@ Contributors: wpswings
 Donate link: https://wpswings.com/
 Tags: shipping, live order tracking, track order, status tracking, shipment tracking, woocommerce order tracking
 Requires at least: 5.5.0
-Tested up to: 6.4.3
+Tested up to: 6.5.2
 WC requires at least: 5.5.0
-WC tested up to: 8.7.0
-Stable tag: 1.0.2
+WC tested up to: 8.8.3
+Stable tag: 1.0.3
 Requires PHP: 7.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Let customers track WooCommerce orders through interactive templates, customizable tracking stages & real-time updates. 
+
 == Description ==
 **KEEP YOUR CUSTOMERS INFORMED WITH REAL-TIME ORDER TRACKING AND ENGAGE THEIR MINDS AS THEY WAIT. ADD STAGES TO THE SHIPPING JOURNEY BASED ON YOUR FULFILLMENT PROCESS AND RENDER A COMPLETE ORDER TRACKING EXPERIENCE TO THE CUSTOMERS.**
 
@@ -23,7 +24,7 @@ It lets you optimize the custom carrier tracking module to make waiting less bor
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/tQ5tJTjDJTE?si=X1njyU3KIUgMJ3Mn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-== KEY FEATURES OF TRACK ORDERS FOR WOOCOMMERCE PLUGIN: == 
+=== KEY FEATURES OF TRACK ORDERS FOR WOOCOMMERCE PLUGIN: ===
 
 **1) Track Order Using Pre-Built Templates**
 WooCommerce Order Tracker provides a diverse range of three distinct order-tracking templates, which enables you to incorporate captivating visual representations for different order statuses, such as on-hold, processing, delivery, and more. 
@@ -34,8 +35,8 @@ Order tracker for WooCommerce allows you to create and use custom order statuses
 **3) Track Order With Google Maps**
 The Track Order with Google Maps feature allows customers to track their orders in real-time using Google Maps API integration. You have to provide the Google Maps API key, the order production house address, and the lessons of the order transit locations. Once enabled, customers can view the progress of their order on a Google Maps map.
 
-**4) Third-party Shipment Tracking (FedEx)**
-Through the integration with FedEx's shipment tracking system, the WooCommerce order tracker plugin allows customers to track their packages in real time using the provided tracking code.
+**4) Third-party Live Shipment Tracking (FedEx)**
+Through the integration with FedEx's live shipment tracking system, the WooCommerce order tracker plugin allows customers to track their packages in real time using the provided tracking code.
 
 **5) Replace Order Status Text With Icons**
 You can replace the order status text with relevant icons in the order details table, allowing customers to quickly grasp the status of their orders at a glance. 
@@ -68,8 +69,8 @@ By utilizing the page shortcode, you can add an Order Tracking page anywhere on 
 * Quick order tracker button for customers 
 * Show the icon for order status in the order table
 * Track orders using the unique order id only
-* Third-party Shipment Tracking (FedEx)
-* Enable Google Maps tracking for customers 
+* Third-party Live Shipment Tracking (FedEx)
+* Enable Live Map Package Tracking Using Google Map
 * Let customers & guests export orders in a CSV file
 * Email notifications for order status in WooCommerce
 * Show additional order details 
@@ -93,11 +94,12 @@ Track Orders for Woocommerce is compatible with various themes that are suitable
 * Shortcode to create Order Tracking page
 * Shortcode to create Order Tracking form
 * Let customers track their orders in the pop-up box
-* Third-party Shipment Tracking (USPS & Canada Post) 
-* Tracking With Google Maps
+* Third-party Live Shipment Tracking (USPS & Canada Post) 
+* Live Map Package Tracking With Google maps
 * Tracking With 17track.net
 * Custom Status for Bulk Action
 * Customization with Custom JS and CSS
+* Track Orders by scanning QR Code
 
 == Take Advantage of the Exclusive Features of the Track Orders For WooCommerce Pro Plugin == 
 
@@ -123,14 +125,16 @@ Our plugin relies on some third-party services. Here is more information about i
 
 * **Integration with Hubspot HSforms:** To make the onboarding process smoother we are relying on [**Hubspot HSforms**](https://developers.hubspot.com/docs/cms/building-blocks/forms). Which only gathers the necessary and nonsensitive info like (Plugin Name, Version, and Plugin Deactivation Reasons). You can read more about their [**privacy policy here**](https://legal.hubspot.com/legal-stuff).
 
-== INSTALLATIONS ==
+== Installation ==
 
 = Automatic installation =
+
 Automatic installation is the easiest option as WordPress handles the file transfers itself and you don't need to leave your web browser. To do an automatic install of the plugin, log in to your WordPress dashboard, navigate to the Plugins menu, and click Add New.
 
 In the search field type **Track Orders for WooCommerce** and click Search Plugins. Once you've found our Track Orders for WooCommerce plugin you can view details about it such as the point release, rating, and description. Most importantly, of course, you can install it by simply clicking **Install Now**.
 
 = Manual installation =
+
 The manual installation method involves downloading our Track Orders for WooCommerce and uploading it to your web server via your favorite FTP application. The WordPress codex contains [**instructions on how to do this here**](https://wordpress.org/support/article/managing-plugins/#manual-plugin-installation).
 
 == Screenshots ==
@@ -177,6 +181,10 @@ Firstly enable the Logged-in User to export orders from the general settings. Th
 Check out [**Track Orders  for WooCommerce Knowledge Base**](https://support.wpswings.com/wordpress-plugins-knowledge-base/category/woocommerce-order-tracker/?utm_source=wpswings-ot-kb&utm_medium=ot-org-page&utm_campaign=kb)
 
 == Changelog ==
+
+= 1.0.3 - Released on 30 April 2024 = 
+* Improved: Compatibility with the latest WP (6.5.2) and WC (8.8.3)
+
 = 1.0.2 - Released on 22 March 2024 = 
 * Fixes: Error/Warning on template
 * Improved: Compatibility with the latest WP(6.4.3) and WC(8.7.0)
@@ -189,6 +197,5 @@ Check out [**Track Orders  for WooCommerce Knowledge Base**](https://support.wps
 *  First version
 
 == Upgrade Notice ==
-= 1.0.2 - Released on 22 March 2024 =
-* Fixes: Error/Warning on template
-* Improved: Compatibility with the latest WP(6.4.3) and WC(8.7.0)
+= 1.0.3 - Released on 30 April 2024 = 
+* Improved: Compatibility with the latest WP (6.5.2) and WC (8.8.3)
