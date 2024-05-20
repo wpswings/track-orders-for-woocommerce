@@ -1482,8 +1482,9 @@ class Track_Orders_For_Woocommerce_Admin {
 			} else {
 
 				if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
-					$order_obj->update_meta_data( 'wps_tofw_selected_shipping_service', sanitize_text_field( wp_unslash( $_POST['wps_tofw_selected_shipping_services'] ) ) );
-					$order_obj->update_meta_data( 'wps_tofw_package_tracking_number', sanitize_text_field( wp_unslash( $_POST['wps_tofw_tracking_number'] ) ) );
+					isset($_POST['wps_tofw_selected_shipping_services']) && $order_obj->update_meta_data('wps_tofw_selected_shipping_service', sanitize_text_field(wp_unslash($_POST['wps_tofw_selected_shipping_services'])));
+
+					isset($_POST['wps_tofw_tracking_number']) && $order_obj->update_meta_data('wps_tofw_package_tracking_number', sanitize_text_field(wp_unslash($_POST['wps_tofw_tracking_number'])));
 					$order_obj->save();
 				} else {
 					update_post_meta( $post_id, 'wps_tofw_selected_shipping_service', '' );
