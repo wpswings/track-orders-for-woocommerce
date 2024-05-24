@@ -1507,7 +1507,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			$order_obj = wc_get_order( $order->id );
 			if ( isset( $order ) && ! empty( $order ) && isset($order_obj ) && is_object( $order )) {
 
-				if ( method_exists( $order_obj, 'get_data' ) ) {
+				if ( is_object( $order_obj ) && method_exists( $order_obj, 'get_data' ) ) {
 				$orderdata = $order_obj->get_data();
 
 				$order_modified_date = $orderdata['date_modified'];
@@ -1571,6 +1571,8 @@ class Track_Orders_For_Woocommerce_Admin {
 						update_post_meta( $order->id, 'wps_tofw_save_selected_city', isset( $_POST['wps_tofw_custom_shipping_cities'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_custom_shipping_cities'] ) ) : '' );
 					}
 				}
+			} else {
+				error_log('Error: $order_obj is not an object or does not have get_data method.');
 			}
 		}
 		}
