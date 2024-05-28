@@ -1,16 +1,17 @@
-=== Track Orders for WooCommerce - Shipment Tracking, Order Status, Order Monitoring Templates & Google Maps Integration ===
+=== Track Orders for WooCommerce – Shipment Tracking, Order Status, Order Monitoring Templates & Google Maps Integration ===
 Contributors: wpswings
 Donate link: https://wpswings.com/
-Tags: shipping, live order tracking, track order, status tracking, shipment tracking, woocommerce order tracking
+Tags: shipping, track orders, status tracking, shipment tracking, order tracking
 Requires at least: 5.5.0
-Tested up to: 6.5.2
+Tested up to: 6.5.3
 WC requires at least: 5.5.0
-WC tested up to: 8.8.3
-Stable tag: 1.0.3
+WC tested up to: 8.9.1
+Stable tag: 1.0.4
 Requires PHP: 7.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
-Let customers track WooCommerce orders through interactive templates, customizable tracking stages & real-time updates. 
+
+Effortlessly track orders with our advanced order tracking. Get real-time shipment tracking and status updates with our comprehensive shipping system.
 
 == Description ==
 **KEEP YOUR CUSTOMERS INFORMED WITH REAL-TIME ORDER TRACKING AND ENGAGE THEIR MINDS AS THEY WAIT. ADD STAGES TO THE SHIPPING JOURNEY BASED ON YOUR FULFILLMENT PROCESS AND RENDER A COMPLETE ORDER TRACKING EXPERIENCE TO THE CUSTOMERS.**
@@ -86,7 +87,7 @@ Track Orders for Woocommerce is compatible with various themes that are suitable
 * [**Elementor**](https://elementor.com/) – Create, Design, and Host your Website
 * [**WC Vendors**](https://www.wcvendors.com/themes/) – A Modern WordPress Theme
 * [**DIVI Theme**](https://www.elegantthemes.com/gallery/divi/) – The Ultimate WordPress Theme
-* [**Event Ticket Manager For WooCommerce**](https://wordpress.org/plugins/event-tickets-manager-for-woocommerce/) & [**Event Ticket Manager For WooCommerce Pro**](https://wpswings.com/product/membership-for-woocommerce-pro/?utm_source=wpswings-events-pro&utm_medium=ot-org-page&utm_campaign=events-pro) - Events and Bookings Calendar, Registration, Event Check-in Using Emails, Edit Your Ticket Content by WP Swings 
+* [**Event Ticket Manager For WooCommerce**](https://wordpress.org/plugins/event-tickets-manager-for-woocommerce/) & [**Event Ticket Manager For WooCommerce Pro**](https://wpswings.com/product/membership-for-woocommerce-pro/?utm_source=wpswings-events-pro&utm_medium=ot-org-page&utm_campaign=events-pro) – Events and Bookings Calendar, Registration, Event Check-in Using Emails, Edit Your Ticket Content by WP Swings 
 
 == WHAT PREMIUM VERSION OF WOOCOMMERCE ORDER TRACKER OFFERS == 
 
@@ -100,6 +101,7 @@ Track Orders for Woocommerce is compatible with various themes that are suitable
 * Custom Status for Bulk Action
 * Customization with Custom JS and CSS
 * Track Orders by scanning QR Code
+* Order notifications to customers via text messages with Twilio's API.
 
 == Take Advantage of the Exclusive Features of the Track Orders For WooCommerce Pro Plugin == 
 
@@ -181,21 +183,25 @@ Firstly enable the Logged-in User to export orders from the general settings. Th
 Check out [**Track Orders  for WooCommerce Knowledge Base**](https://support.wpswings.com/wordpress-plugins-knowledge-base/category/woocommerce-order-tracker/?utm_source=wpswings-ot-kb&utm_medium=ot-org-page&utm_campaign=kb)
 
 == Changelog ==
+= 1.0.4 – Released on 28 May 2024 = 
+* Fixes : Tracking page not showing issue
+* New: Latest Compatibility WP (6.5.3) and WC (8.9.1) 
 
-= 1.0.3 - Released on 30 April 2024 = 
+= 1.0.3 – Released on 30 April 2024 = 
 * Improved: Compatibility with the latest WP (6.5.2) and WC (8.8.3)
 
-= 1.0.2 - Released on 22 March 2024 = 
+= 1.0.2 – Released on 22 March 2024 = 
 * Fixes: Error/Warning on template
 * Improved: Compatibility with the latest WP(6.4.3) and WC(8.7.0)
 
-= 1.0.1 - Released on 13 Feb 2024 = 
+= 1.0.1 – Released on 13 Feb 2024 = 
 * Fixes: Woo fixes implementation 
 * Improved: Compatibility with the latest WP(6.4.3) and WC(8.5.2)
 
-= 1.0.0 - Released on 30 Jan 2024 =
+= 1.0.0 – Released on 30 Jan 2024 =
 *  First version
 
 == Upgrade Notice ==
-= 1.0.3 - Released on 30 April 2024 = 
-* Improved: Compatibility with the latest WP (6.5.2) and WC (8.8.3)
+= 1.0.4 – Released on 28 May 2024 = 
+* Fixes : Tracking page not showing issue 
+* New: Latest Compatibility WP (6.5.3) and WC (8.9.1) 
