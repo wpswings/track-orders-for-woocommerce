@@ -484,146 +484,449 @@ class Track_Orders_For_Woocommerce_Common {
 				$mail_footer = '';
 
 			}
-
-			$message = '<html>
-			<body>
-				<style>
-					body {
-						box-shadow: 2px 2px 10px #ccc;
-						color: #767676;
-						font-family: Arial,sans-serif;
-						margin: 80px auto;
-						max-width: 700px;
-						padding-bottom: 30px;
-						width: 100%;
-					}
-
-					h2 {
-						font-size: 30px;
-						margin-top: 0;
-						color: #fff;
-						padding: 40px;
-						background-color: #557da1;
-					}
-
-					h4 {
-						color: #557da1;
-						font-size: 20px;
-						margin-bottom: 10px;
-					}
-
-					.content {
-						padding: 0 40px;
-					}
-
-					.Customer-detail ul li p {
-						margin: 0;
-					}
-
-					.details .Shipping-detail {
-						width: 40%;
-						float: right;
-					}
-
-					.details .Billing-detail {
-						width: 60%;
-						float: left;
-					}
-
-					.details .Shipping-detail ul li,.details .Billing-detail ul li {
-						list-style-type: none;
-						margin: 0;
-					}
-
-					.details .Billing-detail ul,.details .Shipping-detail ul {
-						margin: 0;
-						padding: 0;
-					}
-
-					.clear {
-						clear: both;
-					}
-
-					table,td,th {
-						border: 2px solid #ccc;
-						padding: 15px;
-						text-align: left;
-					}
-
-					table {
-						border-collapse: collapse;
-						width: 100%;
-					}
-
-					.info {
-						display: inline-block;
-					}
-
-					.bold {
-						font-weight: bold;
-					}
-
-					.footer {
-						margin-top: 30px;
-						text-align: center;
-						color: #99B1D8;
-						font-size: 12px;
-					}
-					dl.variation dd {
-						font-size: 12px;
-						margin: 0;
-					}
-				</style>
-
-				<div style="padding: 36px 48px; background-color:#557DA1;color: #fff; font-size: 30px; font-weight: 300; font-family:helvetica;" class="header">
-					' . $mail_header . '
-				</div>		
-
-				<div class="content">
-
-					<div class="Order">
+			$wps_mail_template = get_option( 'wps_tofw_email_notifier_template');
+			if('template_1' == $wps_mail_template){
+					$message = '<html>
+					<body>
+					<style>
+						body {
+							box-shadow: 2px 2px 10px #ccc;
+							color: #333;
+							font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+							margin: 40px auto;
+							max-width: 700px;
+							padding: 30px;
+							width: 100%;
+							background-color: #f8f9fa;
+						}
+					
+						h2 {
+							font-size: 28px;
+							margin-top: 0;
+							color: #fff;
+							padding: 20px;
+							background-color: #343a40;
+							text-align: center;
+						}
+					
+						h4 {
+							color: #343a40;
+							font-size: 18px;
+							margin-bottom: 10px;
+						}
+					
+						.content {
+							padding: 0 20px;
+						}
+					
+						.Customer-detail ul li p {
+							margin: 0;
+						}
+					
+						.details .Shipping-detail,
+						.details .Billing-detail {
+							display: inline-block;
+							width: 48%;
+							vertical-align: top;
+						}
+					
+						.details .Shipping-detail ul li,
+						.details .Billing-detail ul li {
+							list-style-type: none;
+							margin: 0;
+							padding: 5px 0;
+						}
+					
+						table, td, th {
+							border: 1px solid #ccc;
+							padding: 10px;
+							text-align: left;
+						}
+					
+						table {
+							border-collapse: collapse;
+							width: 100%;
+							margin-bottom: 20px;
+						}
+					
+						.info {
+							display: inline-block;
+						}
+					
+						.bold {
+							font-weight: bold;
+						}
+					
+						.footer {
+							margin-top: 30px;
+							text-align: center;
+							color: #6c757d;
+							font-size: 12px;
+						}
+					
+						dl.variation dd {
+							font-size: 12px;
+							margin: 0;
+						}
+					</style>
+					
+					<div style="padding: 20px; background-color:#343a40;color: #fff; font-size: 24px; font-weight: 300; text-align: center;" class="header">
+						' . $mail_header . '
+					</div>       
+					
+					<div class="content">
 						<h4>Order #' . $order_id . '</h4>
 						<table>
-							<tbody>
+							<thead>
 								<tr>
 									<th>' . __( 'Product', 'track-orders-for-woocommerce' ) . '</th>
 									<th>' . __( 'Quantity', 'track-orders-for-woocommerce' ) . '</th>
 									<th>' . __( 'Price', 'track-orders-for-woocommerce' ) . '</th>
-								</tr>';
+								</tr>
+							</thead>
+							<tbody>';
+					
+					$order = new WC_Order( $order_id );
+					$total = 0;
+					foreach ( $order->get_items() as $item_id => $item ) {
+						$product = apply_filters( 'woocommerce_order_item_product', $item->get_product(), $item );
+						$item_meta = new WC_Order_Item_Meta( $item, $product );
+						$item_meta_html = $item_meta->display( true, true );
+						$wps_billing_phone = OrderUtil::custom_orders_table_usage_is_enabled() ? $order->get_meta( '_billing_phone', true ) : get_post_meta( $order->id, '_billing_phone', true );
+					
+						$message .= '<tr>
+							<td>' . $item['name'] . '<br><small>' . $item_meta_html . '</small></td>
+							<td>' . $item['qty'] . '</td>
+							<td>' . wc_price( $product->get_price() ) . '</td>
+						</tr>';
+					
+						$total += $product->get_price() * $item['qty'];
+					}
+					
+					$message .= '<tr>
+						<th colspan="2">' . __( 'Total', 'track-orders-for-woocommerce' ) . '</th>
+						<td>' . wc_price( $total ) . '</td>
+					</tr>
+					</tbody>
+					</table>
+					</div>';
+					
+					if('on' == get_option( 'wps_tofw_qr_redirect' )){
+						$message .= '<div style="text-align: center; margin-top: 20px;">
+							<img src="' . get_site_url() . '/' . str_replace( ABSPATH, '', $file ) . '" alt="QR" style="width: 200px; height: 200px;" />
+						</div>';
+					}
+					
+					$message .= '<div class="footer">
+						&copy; ' . date("Y") . ' Your Company. All rights reserved.
+					</div>
+					</body>
+					</html>';
 
-								$order = new WC_Order( $order_id );
-								$total = 0;
-			foreach ( $order->get_items() as $item_id => $item ) {
-				/**
-				 * Woocommerce order items.
-				 *
-				 * @since 1.0.0
-				 */
-				$product = apply_filters( 'woocommerce_order_item_product', $item->get_product(), $item );
-				$item_meta      = new WC_Order_Item_Meta( $item, $product );
-				$item_meta_html = $item_meta->display( true, true );
-				$wps_billing_phone = OrderUtil::custom_orders_table_usage_is_enabled() ? $order->get_meta( '_billing_phone', true ) : get_post_meta( $order->id, '_billing_phone', true );
-				$message .= '<tr>
-									<td>' . $item['name'] . '<br>';
-					$message .= '<small>' . $item_meta_html . '</small>
-										<td>' . $item['qty'] . '</td>
-										<td>' . wc_price( $product->get_price() ) . '</td>
-									</tr>';
-				$total = $total + ( $product->get_price() * $item['qty'] );
-			}
+			} elseif('template_2' == $wps_mail_template){
+			// 2nd Email notification template.
+			$message = '<html>
+						<body>
+						<style>
+							body {
+								font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+								background-color: #f4f4f4;
+								margin: 0;
+								padding: 0;
+								width: 100%;
+							}
+
+							.container {
+								max-width: 700px;
+								margin: 40px auto;
+								background-color: #fff;
+								box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+								overflow: hidden;
+								border-radius: 8px;
+							}
+
+							.header {
+								background-color: #4a90e2;
+								color: #fff;
+								text-align: center;
+								padding: 20px 0;
+								font-size: 24px;
+								font-weight: bold;
+							}
+
+							.content {
+								padding: 20px;
+							}
+
+							.content h4 {
+								color: #333;
+								font-size: 20px;
+								margin-bottom: 20px;
+							}
+
+							.order-details {
+								background-color: #f9f9f9;
+								padding: 20px;
+								border-radius: 8px;
+							}
+
+							.order-details table {
+								width: 100%;
+								border-collapse: collapse;
+								margin-bottom: 20px;
+							}
+
+							.order-details th, .order-details td {
+								padding: 12px;
+								text-align: left;
+								border-bottom: 1px solid #ddd;
+							}
+
+							.order-details th {
+								background-color: #e9ecef;
+								font-weight: bold;
+							}
+
+							.order-details .total {
+								font-size: 18px;
+								font-weight: bold;
+								text-align: right;
+							}
+
+							.qr-code {
+								text-align: center;
+								margin: 20px 0;
+							}
+
+							.qr-code img {
+								width: 150px;
+								height: 150px;
+							}
+
+							.footer {
+								background-color: #4a90e2;
+								color: #fff;
+								text-align: center;
+								padding: 10px 0;
+								font-size: 12px;
+							}
+						</style>
+
+						<div class="container">
+							<div class="header">
+								' . $mail_header . '
+							</div>
+							<div class="content">
+								<h4>Order #' . $order_id . '</h4>
+								<div class="order-details">
+									<table>
+										<thead>
+											<tr>
+												<th>' . __( 'Product', 'track-orders-for-woocommerce' ) . '</th>
+												<th>' . __( 'Quantity', 'track-orders-for-woocommerce' ) . '</th>
+												<th>' . __( 'Price', 'track-orders-for-woocommerce' ) . '</th>
+											</tr>
+										</thead>
+										<tbody>';
+
+						$order = new WC_Order( $order_id );
+						$total = 0;
+						foreach ( $order->get_items() as $item_id => $item ) {
+							$product = apply_filters( 'woocommerce_order_item_product', $item->get_product(), $item );
+							$item_meta = new WC_Order_Item_Meta( $item, $product );
+							$item_meta_html = $item_meta->display( true, true );
+
+							$message .= '<tr>
+								<td>' . $item['name'] . '<br><small>' . $item_meta_html . '</small></td>
+								<td>' . $item['qty'] . '</td>
+								<td>' . wc_price( $product->get_price() ) . '</td>
+							</tr>';
+
+							$total += $product->get_price() * $item['qty'];
+						}
 
 						$message .= '<tr>
-						<th colspan = "2">' . __( 'Total', 'track-orders-for-woocommerce' ) . '</th>
-						<td>' . wc_price( $total ) . '</td>';
-						$message .= '</tbody>
-					</table>
-				</div>';
-			if('on' == get_option( 'wps_tofw_qr_redirect' )){
-			$message .= '<div><img src="' . get_site_url() . '/' . str_replace( ABSPATH, '', $file ) . '" alt= "QR" style="display: block; margin: 0 auto; width: 300px; height: 300px;" /></div>';
-			}
-			$message .= '</body>
-			</html>';
+							<td colspan="2" class="total">' . __( 'Total', 'track-orders-for-woocommerce' ) . '</td>
+							<td class="total">' . wc_price( $total ) . '</td>
+						</tr>
+						</tbody>
+						</table>
+						</div>';
 
+						if('on' == get_option( 'wps_tofw_qr_redirect' )){
+							$message .= '<div class="qr-code">
+								<img src="' . get_site_url() . '/' . str_replace( ABSPATH, '', $file ) . '" alt="QR" />
+							</div>';
+						}
+						$site_name = get_bloginfo('name');
+						$message .= '<div class="footer">
+							&copy; ' . date("Y") . ' Your Company. All rights reserved.
+						</div>
+						</div>
+						</body>
+						</html>';
+
+} elseif('template_3' == $wps_mail_template){
+// template 3
+$message = '<html>
+				<body>
+				<style>
+					body {
+						font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+						background-color: #f4f4f4;
+						margin: 0;
+						padding: 0;
+						width: 100%;
+					}
+
+					.container {
+						max-width: 700px;
+						margin: 40px auto;
+						background-color: #fff;
+						box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+						overflow: hidden;
+						border-radius: 10px;
+					}
+
+					.header {
+						background-color: #4a90e2;
+						color: #fff;
+						text-align: center;
+						padding: 30px 0;
+						font-size: 26px;
+						font-weight: bold;
+						border-bottom: 5px solid #0073e6;
+					}
+
+					.content {
+						padding: 30px 40px;
+					}
+
+					.content h4 {
+						color: #333;
+						font-size: 22px;
+						margin-bottom: 20px;
+						border-bottom: 2px solid #eee;
+						padding-bottom: 10px;
+					}
+
+					.order-details {
+						background-color: #f9f9f9;
+						padding: 20px;
+						border-radius: 8px;
+						margin-bottom: 20px;
+						border: 1px solid #ddd;
+					}
+
+					.order-details table {
+						width: 100%;
+						border-collapse: collapse;
+						margin-bottom: 20px;
+					}
+
+					.order-details th, .order-details td {
+						padding: 15px;
+						text-align: left;
+						border-bottom: 1px solid #ddd;
+					}
+
+					.order-details th {
+						background-color: #e9ecef;
+						font-weight: bold;
+						text-transform: uppercase;
+					}
+
+					.order-details .total {
+						font-size: 18px;
+						font-weight: bold;
+						text-align: right;
+					}
+
+					.qr-code {
+						text-align: center;
+						margin: 20px 0;
+					}
+
+					.qr-code img {
+						width: 150px;
+						height: 150px;
+						border: 1px solid #ddd;
+						border-radius: 10px;
+					}
+
+					.footer {
+						background-color: #4a90e2;
+						color: #fff;
+						text-align: center;
+						padding: 15px 0;
+						font-size: 12px;
+						border-top: 5px solid #0073e6;
+					}
+
+					.footer a {
+						color: #fff;
+						text-decoration: underline;
+					}
+
+					.footer a:hover {
+						text-decoration: none;
+					}
+				</style>
+
+				<div class="container">
+					<div class="header">
+						' . $mail_header . '
+					</div>
+					<div class="content">
+						<h4>Order #' . $order_id . '</h4>
+						<div class="order-details">
+							<table>
+								<thead>
+									<tr>
+										<th>' . __( 'Product', 'track-orders-for-woocommerce' ) . '</th>
+										<th>' . __( 'Quantity', 'track-orders-for-woocommerce' ) . '</th>
+										<th>' . __( 'Price', 'track-orders-for-woocommerce' ) . '</th>
+									</tr>
+								</thead>
+								<tbody>';
+
+				$order = new WC_Order( $order_id );
+				$total = 0;
+				foreach ( $order->get_items() as $item_id => $item ) {
+					$product = apply_filters( 'woocommerce_order_item_product', $item->get_product(), $item );
+					$item_meta = new WC_Order_Item_Meta( $item, $product );
+					$item_meta_html = $item_meta->display( true, true );
+
+					$message .= '<tr>
+						<td>' . $item['name'] . '<br><small>' . $item_meta_html . '</small></td>
+						<td>' . $item['qty'] . '</td>
+						<td>' . wc_price( $product->get_price() ) . '</td>
+					</tr>';
+
+					$total += $product->get_price() * $item['qty'];
+				}
+
+				$message .= '<tr>
+					<td colspan="2" class="total">' . __( 'Total', 'track-orders-for-woocommerce' ) . '</td>
+					<td class="total">' . wc_price( $total ) . '</td>
+				</tr>
+				</tbody>
+				</table>
+				</div>';
+
+				if('on' == get_option( 'wps_tofw_qr_redirect' )){
+					$message .= '<div class="qr-code">
+						<img src="' . get_site_url() . '/' . str_replace( ABSPATH, '', $file ) . '" alt="QR" />
+					</div>';
+				}
+				$site_name = get_bloginfo('name');
+				$message .= '<div class="footer">
+					&copy; ' . date("Y") . ' ' . $site_name . ' All rights reserved. <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+				</div>
+				</div>
+				</body>
+				</html>';
+			}
 				wc_mail( $to, $subject, $message, $headers );
 			}
 	}

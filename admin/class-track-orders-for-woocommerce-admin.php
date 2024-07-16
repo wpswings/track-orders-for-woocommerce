@@ -418,7 +418,19 @@ class Track_Orders_For_Woocommerce_Admin {
 					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
 				),
 			),
-
+			array(
+				'title' => __( 'Select E-mail Notification Template', 'track-orders-for-woocommerce' ),
+				'type'  => 'select',
+				'description'  => __( 'Select the E-Mail Notification Template to the Customer on Changing Order Status', 'track-orders-for-woocommerce' ),
+				'id'    => 'wps_tofw_email_notifier_template',
+				'value' => get_option( 'wps_tofw_email_notifier_template' ),
+				'class' => 'wps_tofw_email_notifier_template',
+				'options' => array(
+					'template_1' => __( 'Template One', 'track-orders-for-woocommerce' ),
+					'template_2' => __( 'Template Two', 'track-orders-for-woocommerce' ),
+					'template_3' => __( 'Template Three', 'track-orders-for-woocommerce' ),
+				),
+			)
 		);
 
 		$tofw_settings_general =
