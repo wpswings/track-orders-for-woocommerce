@@ -484,7 +484,7 @@ class Track_Orders_For_Woocommerce_Common {
 				$mail_footer = '';
 
 			}
-			$wps_mail_template = get_option( 'wps_tofw_email_notifier_template');
+			$wps_mail_template = get_option( 'tofw_invoice_template');
 			if('template_1' == $wps_mail_template){
 					$message = '<html>
 					<body>
@@ -618,7 +618,7 @@ class Track_Orders_For_Woocommerce_Common {
 					}
 					
 					$message .= '<div class="footer">
-						&copy; ' . date("Y") . ' Your Company. All rights reserved.
+						&copy; ' . date("Y") . ' ' . $site_name . ' Your Company. All rights reserved.
 					</div>
 					</body>
 					</html>';
@@ -760,7 +760,7 @@ class Track_Orders_For_Woocommerce_Common {
 						}
 						$site_name = get_bloginfo('name');
 						$message .= '<div class="footer">
-							&copy; ' . date("Y") . ' Your Company. All rights reserved.
+							&copy; ' . date("Y") . ' ' . $site_name . ' Your Company. All rights reserved.
 						</div>
 						</div>
 						</body>
@@ -771,106 +771,156 @@ class Track_Orders_For_Woocommerce_Common {
 $message = '<html>
 				<body>
 				<style>
-					body {
-						font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-						background-color: #f4f4f4;
-						margin: 0;
-						padding: 0;
-						width: 100%;
-					}
-
-					.container {
-						max-width: 700px;
-						margin: 40px auto;
-						background-color: #fff;
-						box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-						overflow: hidden;
-						border-radius: 10px;
-					}
-
-					.header {
-						background-color: #4a90e2;
-						color: #fff;
-						text-align: center;
-						padding: 30px 0;
-						font-size: 26px;
-						font-weight: bold;
-						border-bottom: 5px solid #0073e6;
-					}
-
-					.content {
-						padding: 30px 40px;
-					}
-
-					.content h4 {
-						color: #333;
-						font-size: 22px;
-						margin-bottom: 20px;
-						border-bottom: 2px solid #eee;
-						padding-bottom: 10px;
-					}
-
-					.order-details {
-						background-color: #f9f9f9;
-						padding: 20px;
-						border-radius: 8px;
-						margin-bottom: 20px;
-						border: 1px solid #ddd;
-					}
-
-					.order-details table {
-						width: 100%;
-						border-collapse: collapse;
-						margin-bottom: 20px;
-					}
-
-					.order-details th, .order-details td {
-						padding: 15px;
-						text-align: left;
-						border-bottom: 1px solid #ddd;
-					}
-
-					.order-details th {
-						background-color: #e9ecef;
-						font-weight: bold;
-						text-transform: uppercase;
-					}
-
-					.order-details .total {
-						font-size: 18px;
-						font-weight: bold;
-						text-align: right;
-					}
-
-					.qr-code {
-						text-align: center;
-						margin: 20px 0;
-					}
-
-					.qr-code img {
-						width: 150px;
-						height: 150px;
-						border: 1px solid #ddd;
-						border-radius: 10px;
-					}
-
-					.footer {
-						background-color: #4a90e2;
-						color: #fff;
-						text-align: center;
-						padding: 15px 0;
-						font-size: 12px;
-						border-top: 5px solid #0073e6;
-					}
-
-					.footer a {
-						color: #fff;
-						text-decoration: underline;
-					}
-
-					.footer a:hover {
-						text-decoration: none;
-					}
+				body {
+					font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+					background-color: #f4f4f4;
+					margin: 0;
+					padding: 0;
+					width: 100%;
+				}
+				
+				.container {
+					max-width: 700px;
+					margin: 40px auto;
+					background-color: #fff;
+					box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+					overflow: hidden;
+					border-radius: 10px;
+				}
+				
+				.header {
+					background-color: #ff6f61; /* New color */
+					color: #fff;
+					text-align: center;
+					padding: 30px 0;
+					font-size: 26px;
+					font-weight: bold;
+					border-bottom: 5px solid #ff6347; /* New color */
+				}
+				
+				.content {
+					padding: 30px 40px;
+				}
+				
+				.content h4 {
+					color: #333;
+					font-size: 22px;
+					margin-bottom: 20px;
+					border-bottom: 2px solid #eee;
+					padding-bottom: 10px;
+				}
+				
+				.order-details {
+					background-color: #f9f9f9;
+					padding: 20px;
+					border-radius: 8px;
+					margin-bottom: 20px;
+					border: 1px solid #ddd;
+				}
+				
+				.order-details table {
+					width: 100%;
+					border-collapse: collapse;
+					margin-bottom: 20px;
+				}
+				
+				.order-details th, .order-details td {
+					padding: 15px;
+					text-align: left;
+					border-bottom: 1px solid #ddd;
+				}
+				
+				.order-details th {
+					background-color: #e9ecef; /* Existing color */
+					font-weight: bold;
+					text-transform: uppercase;
+				}
+				
+				.order-details .total {
+					font-size: 18px;
+					font-weight: bold;
+					text-align: right;
+					color: #ff6f61; /* New color */
+				}
+				
+				.qr-code {
+					text-align: center;
+					margin: 20px 0;
+				}
+				
+				.qr-code img {
+					width: 150px;
+					height: 150px;
+					border: 1px solid #ddd;
+					border-radius: 10px;
+				}
+				
+				.footer {
+					background-color: #ff6f61; /* New color */
+					color: #fff;
+					text-align: center;
+					padding: 15px 0;
+					font-size: 12px;
+					border-top: 5px solid #ff6347; /* New color */
+				}
+				
+				.footer a {
+					color: #fff;
+					text-decoration: underline;
+				}
+				
+				.footer a:hover {
+					text-decoration: none;
+					color: #ff4500; /* New color for hover */
+				}
+				
+				/* New Elements with Different Colors */
+				
+				.header.alt {
+					background-color: #50c878; /* New color */
+					border-bottom: 5px solid #32cd32; /* New color */
+				}
+				
+				.header.alt2 {
+					background-color: #ffa500; /* New color */
+					border-bottom: 5px solid #ff8c00; /* New color */
+				}
+				
+				.header.alt3 {
+					background-color: #d2691e; /* New color */
+					border-bottom: 5px solid #8b4513; /* New color */
+				}
+				
+				.order-details.alt {
+					background-color: #d3f8e2; /* New color */
+					border: 1px solid #adebad; /* New color */
+				}
+				
+				.order-details.alt2 {
+					background-color: #fff7e6; /* New color */
+					border: 1px solid #ffcc99; /* New color */
+				}
+				
+				.order-details.alt3 {
+					background-color: #e6e6fa; /* New color */
+					border: 1px solid #dcdcdc; /* New color */
+				}
+				
+				.footer.alt {
+					background-color: #50c878; /* New color */
+					border-top: 5px solid #32cd32; /* New color */
+				}
+				
+				.footer.alt2 {
+					background-color: #ffa500; /* New color */
+					border-top: 5px solid #ff8c00; /* New color */
+				}
+				
+				.footer.alt3 {
+					background-color: #d2691e; /* New color */
+					border-top: 5px solid #8b4513; /* New color */
+				}
+				
 				</style>
 
 				<div class="container">

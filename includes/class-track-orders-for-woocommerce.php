@@ -888,6 +888,36 @@ class Track_Orders_For_Woocommerce {
 							</div>
 								<?php
 							break;
+							case 'temp-select':
+								?>
+									<div class="wps-form-group wps-wpg-<?php echo esc_attr( array_key_exists( 'type',$tofw_component ) ? $tofw_component['type'] : '' ); ?>">
+										<div class="wps-form-group__label">
+											<label for="<?php echo esc_attr( array_key_exists( 'id', $tofw_component ) ?$tofw_component['id'] : '' ); ?>" class="wps-form-label"><?php echo esc_html( array_key_exists( 'title', $tofw_component ) ? $tofw_component['title'] : '' ); ?></label>
+										</div>
+										<div class="wps-form-group__control">
+										<?php
+										foreach ( $tofw_component['value'] as $tofw_sub_component ) {
+											?>
+												<span  class="wpg_invoice_preview_wrap">
+												<img src="<?php echo ( isset( $tofw_sub_component['src'] ) ? esc_attr( $tofw_sub_component['src'] ) : '' ); ?>" width="100"  alt="">
+												<input 
+												class="<?php echo esc_attr( array_key_exists( 'class', $tofw_sub_component ) ? $tofw_sub_component['class'] : '' ); ?>" 
+												name="<?php echo esc_attr( array_key_exists( 'name', $tofw_sub_component ) ? $tofw_sub_component['name'] : '' ); ?>"
+												id="<?php echo esc_attr( array_key_exists( 'id', $tofw_sub_component ) ? $tofw_sub_component['id'] : '' ); ?>"
+												type="<?php echo esc_attr( array_key_exists( 'type', $tofw_sub_component ) ? $tofw_sub_component['type'] : '' ); ?>"
+												value="<?php echo esc_attr( array_key_exists( 'value', $tofw_sub_component ) ?$tofw_sub_component['value'] : '' ); ?>"
+												<?php checked( $tofw_component['selected'], $tofw_sub_component['value'] ); ?>
+	
+												>
+											</span>
+											<?php } ?>
+											<div class="mdc-text-field-helper-line">
+												<div class="mdc-text-field-helper-text--persistent wps-helper-text" id="" aria-hidden="true"><?php echo wp_kses_post( array_key_exists( 'description', $tofw_component ) ? $tofw_component['description'] : '' ); ?></div>
+											</div>
+										</div>
+									</div>
+										<?php
+								break;
 						case 'color':
 						case 'date':
 						case 'file':
