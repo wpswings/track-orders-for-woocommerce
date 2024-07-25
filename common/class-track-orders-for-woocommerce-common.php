@@ -449,6 +449,13 @@ class Track_Orders_For_Woocommerce_Common {
 			}
 		}
 
+		$plugin_path = 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php';
+		$wps_pro_is_active = false;
+		// Check if the plugin is active.
+		if ( is_plugin_active( $plugin_path ) ) {
+			$wps_pro_is_active = true;
+		}
+
 		if ( 'on' == $wps_tofw_email_notifier && 'wc-completed' != $new_status ) {
 			if ( '3.0.0' > WC()->version ) {
 				$order_id = $order->id;
@@ -483,6 +490,7 @@ class Track_Orders_For_Woocommerce_Common {
 				$mail_footer = '';
 
 			}
+			if($wps_pro_is_active){
 			$wps_mail_template = get_option( 'tofw_invoice_template' );
 			if ( 'template_1' == $wps_mail_template ) {
 					$message = '<html>
@@ -1009,6 +1017,162 @@ class Track_Orders_For_Woocommerce_Common {
 				</body>
 				</html>';
 			}
+		}
+
+        if( !$wps_pro_is_active){
+		$message = '<html>
+		<body>
+			<style>
+				body {
+					box-shadow: 2px 2px 10px #ccc;
+					color: #767676;
+					font-family: Arial,sans-serif;
+					margin: 80px auto;
+					max-width: 700px;
+					padding-bottom: 30px;
+					width: 100%;
+				}
+
+				h2 {
+					font-size: 30px;
+					margin-top: 0;
+					color: #fff;
+					padding: 40px;
+					background-color: #557da1;
+				}
+
+				h4 {
+					color: #557da1;
+					font-size: 20px;
+					margin-bottom: 10px;
+				}
+
+				.content {
+					padding: 0 40px;
+				}
+
+				.Customer-detail ul li p {
+					margin: 0;
+				}
+
+				.details .Shipping-detail {
+					width: 40%;
+					float: right;
+				}
+
+				.details .Billing-detail {
+					width: 60%;
+					float: left;
+				}
+
+				.details .Shipping-detail ul li,.details .Billing-detail ul li {
+					list-style-type: none;
+					margin: 0;
+				}
+
+				.details .Billing-detail ul,.details .Shipping-detail ul {
+					margin: 0;
+					padding: 0;
+				}
+
+				.clear {
+					clear: both;
+				}
+
+				table,td,th {
+					border: 2px solid #ccc;
+					padding: 15px;
+					text-align: left;
+				}
+
+				table {
+					border-collapse: collapse;
+					width: 100%;
+				}
+
+				.info {
+					display: inline-block;
+				}
+
+				.bold {
+					font-weight: bold;
+				}
+
+				.footer {
+					margin-top: 30px;
+					text-align: center;
+					color: #99B1D8;
+					font-size: 12px;
+				}
+				dl.variation dd {
+					font-size: 12px;
+					margin: 0;
+				}
+			</style>
+
+			<div style="padding: 36px 48px; background-color:#557DA1;color: #fff; font-size: 30px; font-weight: 300; font-family:helvetica;" class="header">
+				' . $mail_header . '
+			</div>		
+
+			<div class="content">
+
+				<div class="Order">
+					<h4>Order #' . $order_id . '</h4>
+					<table>
+						<tbody>
+							<tr>
+								<th>' . __( 'Product', 'track-orders-for-woocommerce' ) . '</th>
+								<th>' . __( 'Quantity', 'track-orders-for-woocommerce' ) . '</th>
+								<th>' . __( 'Price', 'track-orders-for-woocommerce' ) . '</th>
+							</tr>';
+
+							$order = new WC_Order( $order_id );
+							$total = 0;
+		foreach ( $order->get_items() as $item_id => $item ) {
+			/**
+			 * Woocommerce order items.
+			 *
+			 * @since 1.0.0
+			 */
+			$product = apply_filters( 'woocommerce_order_item_product', $item->get_product(), $item );
+			$item_meta      = new WC_Order_Item_Meta( $item, $product );
+			$item_meta_html = $item_meta->display( true, true );
+			$wps_billing_phone = OrderUtil::custom_orders_table_usage_is_enabled() ? $order->get_meta( '_billing_phone', true ) : get_post_meta( $order->id, '_billing_phone', true );
+			
+			$taxes = $item->get_taxes();
+
+			// Loop through each tax class.
+			foreach ( $taxes as $tax_class => $tax ) {
+			// Add tax amount to total tax.
+			$total_tax += array_sum( $tax );
+			}
+
+
+			$message .= '<tr>
+								<td>' . $item['name'] . '<br>';
+				$message .= '<small>' . $item_meta_html . '</small>
+									<td>' . $item['qty'] . '</td>
+									<td>' . wc_price( $product->get_price() ) . '</td>
+								</tr>';
+			$total = $total + ( $product->get_price() * $item['qty'] );
+		}
+
+		foreach ( $order->get_order_item_totals() as $key => $total ) {
+
+			$message .= '<tr>
+						<th colspan = "2">' . esc_html( $total['label'] ) . '</th><td>' . wp_kses_post( $total['value'] ) . '</td></tr>';
+		}
+
+					$message .= '</tbody>
+				</table>
+			</div>';
+		if('on' == get_option( 'wps_tofw_qr_redirect' )){
+		$message .= '<div><img src="' . get_site_url() . '/' . str_replace( ABSPATH, '', $file ) . '" alt= "QR" style="display: block; margin: 0 auto; width: 300px; height: 300px;" /></div>';
+		}
+		$message .= '</body>
+		</html>';
+
+	}
 				wc_mail( $to, $subject, $message, $headers );
 		}
 	}
