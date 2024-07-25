@@ -56,7 +56,7 @@ class Track_Orders_For_Woocommerce_Common {
 	 */
 	public function tofw_common_enqueue_styles() {
 		wp_enqueue_style( $this->plugin_name . 'common', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'common/css/track-orders-for-woocommerce-common.css', array(), $this->version, 'all' );
-		// wp_enqueue_style( 'bootstrap', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'common/css/bootstrap.css', array(), $this->version, 'all' );
+		// wp_enqueue_style( 'bootstrap', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'common/css/bootstrap.css', array(), $this->version, 'all' );.
 	}
 
 	/**
@@ -96,7 +96,7 @@ class Track_Orders_For_Woocommerce_Common {
 					),
 				)
 			);
-			
+
 		} else {
 			$wps_tofw_license_data = json_decode( wp_remote_retrieve_body( $wps_tofw_response ) );
 
@@ -113,7 +113,7 @@ class Track_Orders_For_Woocommerce_Common {
 						),
 					)
 				);
-				
+
 			} else {
 				echo wp_json_encode(
 					array(
@@ -121,7 +121,7 @@ class Track_Orders_For_Woocommerce_Common {
 						'msg' => $wps_tofw_license_data->message,
 					)
 				);
-				
+
 			}
 		}
 		wp_die();
@@ -282,22 +282,21 @@ class Track_Orders_For_Woocommerce_Common {
 		$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
 		$track_order_url = get_permalink( $page_id );
 
-
-			// Parse the URL
-			$url_parts = wp_parse_url($track_order_url);
+			// Parse the URL.
+			$url_parts = wp_parse_url( $track_order_url );
 			$path = $url_parts['path'];
-			$path = trim($path, '/');
-			$path_parts = explode('/', $path);
-			$last_part = end($path_parts);
+			$path = trim( $path, '/' );
+			$path_parts = explode( '/', $path );
+			$last_part = end( $path_parts );
 
 		$order = wc_get_order( $order_id );
-		$site_url = get_site_url() . '/'.$last_part.'/?' . esc_html( $order_id ) .'';
+		$site_url = get_site_url() . '/' . $last_part . '/?' . esc_html( $order_id ) . '';
 		$uploads = wp_upload_dir();
 		$path = $uploads['basedir'] . '/tracking_images/';
-		$file  = $path . $order_id  . 'tracking_checkin.png';  // address of the image od barcode in which  url is saved.
+		$file  = $path . $order_id . 'tracking_checkin.png';  // address of the image od barcode in which  url is saved.
 		if ( file_exists( $file ) ) {
 
-			wp_delete_file($file);
+			wp_delete_file( $file );
 		}
 
 		$path = $uploads['basedir'] . '/tracking_images/';
@@ -484,8 +483,8 @@ class Track_Orders_For_Woocommerce_Common {
 				$mail_footer = '';
 
 			}
-			$wps_mail_template = get_option( 'tofw_invoice_template');
-			if('template_1' == $wps_mail_template){
+			$wps_mail_template = get_option( 'tofw_invoice_template' );
+			if ( 'template_1' == $wps_mail_template ) {
 					$message = '<html>
 					<body>
 					<style>
@@ -585,47 +584,58 @@ class Track_Orders_For_Woocommerce_Common {
 								</tr>
 							</thead>
 							<tbody>';
-					
+
 					$order = new WC_Order( $order_id );
 					$total = 0;
-					foreach ( $order->get_items() as $item_id => $item ) {
-						$product = apply_filters( 'woocommerce_order_item_product', $item->get_product(), $item );
-						$item_meta = new WC_Order_Item_Meta( $item, $product );
-						$item_meta_html = $item_meta->display( true, true );
-						$wps_billing_phone = OrderUtil::custom_orders_table_usage_is_enabled() ? $order->get_meta( '_billing_phone', true ) : get_post_meta( $order->id, '_billing_phone', true );
-					
-						$message .= '<tr>
+				foreach ( $order->get_items() as $item_id => $item ) {
+					$product = apply_filters( 'woocommerce_order_item_product', $item->get_product(), $item );
+					$item_meta = new WC_Order_Item_Meta( $item, $product );
+					$item_meta_html = $item_meta->display( true, true );
+					$wps_billing_phone = OrderUtil::custom_orders_table_usage_is_enabled() ? $order->get_meta( '_billing_phone', true ) : get_post_meta( $order->id, '_billing_phone', true );
+
+					$taxes = $item->get_taxes();
+
+					// Loop through each tax class.
+					foreach ( $taxes as $tax_class => $tax ) {
+						// Add tax amount to total tax.
+						$total_tax += array_sum( $tax );
+					}
+
+					$message .= '<tr>
 							<td>' . $item['name'] . '<br><small>' . $item_meta_html . '</small></td>
 							<td>' . $item['qty'] . '</td>
 							<td>' . wc_price( $product->get_price() ) . '</td>
 						</tr>';
-					
-						$total += $product->get_price() * $item['qty'];
-					}
-					
+
+					$total += $product->get_price() * $item['qty'];
+				}
+
+				foreach ( $order->get_order_item_totals() as $key => $total ) {
+
 					$message .= '<tr>
-						<th colspan="2">' . __( 'Total', 'track-orders-for-woocommerce' ) . '</th>
-						<td>' . wc_price( $total ) . '</td>
-					</tr>
+						<th colspan = "2">' . esc_html( $total['label'] ) . '</th><td>' . wp_kses_post( $total['value'] ) . '</td></tr>';
+				}
+
+					$message .= '
 					</tbody>
 					</table>
 					</div>';
-					
-					if('on' == get_option( 'wps_tofw_qr_redirect' )){
-						$message .= '<div style="text-align: center; margin-top: 20px;">
+
+				if ( 'on' == get_option( 'wps_tofw_qr_redirect' ) ) {
+					$message .= '<div style="text-align: center; margin-top: 20px;">
 							<img src="' . get_site_url() . '/' . str_replace( ABSPATH, '', $file ) . '" alt="QR" style="width: 200px; height: 200px;" />
 						</div>';
-					}
-					
+				}
+
 					$message .= '<div class="footer">
-						&copy; ' . date("Y") . ' ' . $site_name . ' Your Company. All rights reserved.
+						&copy; ' . gmdate( 'Y' ) . ' ' . $site_name . ' Your Company. All rights reserved.
 					</div>
 					</body>
 					</html>';
 
-			} elseif('template_2' == $wps_mail_template){
-			// 2nd Email notification template.
-			$message = '<html>
+			} elseif ( 'template_2' == $wps_mail_template ) {
+				// 2nd Email notification template.
+				$message = '<html>
 						<body>
 						<style>
 							body {
@@ -731,44 +741,55 @@ class Track_Orders_For_Woocommerce_Common {
 
 						$order = new WC_Order( $order_id );
 						$total = 0;
-						foreach ( $order->get_items() as $item_id => $item ) {
-							$product = apply_filters( 'woocommerce_order_item_product', $item->get_product(), $item );
-							$item_meta = new WC_Order_Item_Meta( $item, $product );
-							$item_meta_html = $item_meta->display( true, true );
+				foreach ( $order->get_items() as $item_id => $item ) {
+					$product = apply_filters( 'woocommerce_order_item_product', $item->get_product(), $item );
+					$item_meta = new WC_Order_Item_Meta( $item, $product );
+					$item_meta_html = $item_meta->display( true, true );
 
-							$message .= '<tr>
+					$taxes = $item->get_taxes();
+
+					// Loop through each tax class.
+					foreach ( $taxes as $tax_class => $tax ) {
+						// Add tax amount to total tax.
+						$total_tax += array_sum( $tax );
+					}
+
+					$message .= '<tr>
 								<td>' . $item['name'] . '<br><small>' . $item_meta_html . '</small></td>
 								<td>' . $item['qty'] . '</td>
 								<td>' . wc_price( $product->get_price() ) . '</td>
 							</tr>';
 
-							$total += $product->get_price() * $item['qty'];
-						}
+					$total += $product->get_price() * $item['qty'];
+				}
 
-						$message .= '<tr>
-							<td colspan="2" class="total">' . __( 'Total', 'track-orders-for-woocommerce' ) . '</td>
-							<td class="total">' . wc_price( $total ) . '</td>
-						</tr>
+				foreach ( $order->get_order_item_totals() as $key => $total ) {
+
+					$message .= '<tr>
+								<th colspan = "2">' . esc_html( $total['label'] ) . '</th><td>' . wp_kses_post( $total['value'] ) . '</td></tr>';
+				}
+
+						$message .= '
 						</tbody>
 						</table>
 						</div>';
 
-						if('on' == get_option( 'wps_tofw_qr_redirect' )){
-							$message .= '<div class="qr-code">
+				if ( 'on' == get_option( 'wps_tofw_qr_redirect' ) ) {
+					$message .= '<div class="qr-code">
 								<img src="' . get_site_url() . '/' . str_replace( ABSPATH, '', $file ) . '" alt="QR" />
 							</div>';
-						}
-						$site_name = get_bloginfo('name');
+				}
+						$site_name = get_bloginfo( 'name' );
 						$message .= '<div class="footer">
-							&copy; ' . date("Y") . ' ' . $site_name . ' Your Company. All rights reserved.
+							&copy; ' . gmdate( 'Y' ) . ' ' . $site_name . ' Your Company. All rights reserved.
 						</div>
 						</div>
 						</body>
 						</html>';
 
-} elseif('template_3' == $wps_mail_template){
-// template 3
-$message = '<html>
+			} elseif ( 'template_3' == $wps_mail_template ) {
+				// template 3.
+				$message = '<html>
 				<body>
 				<style>
 				body {
@@ -947,38 +968,49 @@ $message = '<html>
 					$item_meta = new WC_Order_Item_Meta( $item, $product );
 					$item_meta_html = $item_meta->display( true, true );
 
-					$message .= '<tr>
-						<td>' . $item['name'] . '<br><small>' . $item_meta_html . '</small></td>
-						<td>' . $item['qty'] . '</td>
-						<td>' . wc_price( $product->get_price() ) . '</td>
-					</tr>';
+					$taxes = $item->get_taxes();
 
-					$total += $product->get_price() * $item['qty'];
+							// Loop through each tax class.
+					foreach ( $taxes as $tax_class => $tax ) {
+						// Add tax amount to total tax.
+						$total_tax += array_sum( $tax );
+					}
+
+							$message .= '<tr>
+								<td>' . $item['name'] . '<br><small>' . $item_meta_html . '</small></td>
+								<td>' . $item['qty'] . '</td>
+								<td>' . wc_price( $product->get_price() ) . '</td>
+							</tr>';
+
+							$total += $product->get_price() * $item['qty'];
 				}
 
-				$message .= '<tr>
-					<td colspan="2" class="total">' . __( 'Total', 'track-orders-for-woocommerce' ) . '</td>
-					<td class="total">' . wc_price( $total ) . '</td>
-				</tr>
+				foreach ( $order->get_order_item_totals() as $key => $total ) {
+
+					$message .= '<tr>
+								<th colspan = "2">' . esc_html( $total['label'] ) . '</th><td>' . wp_kses_post( $total['value'] ) . '</td></tr>';
+				}
+
+				$message .= '
 				</tbody>
 				</table>
 				</div>';
 
-				if('on' == get_option( 'wps_tofw_qr_redirect' )){
+				if ( 'on' == get_option( 'wps_tofw_qr_redirect' ) ) {
 					$message .= '<div class="qr-code">
 						<img src="' . get_site_url() . '/' . str_replace( ABSPATH, '', $file ) . '" alt="QR" />
 					</div>';
 				}
-				$site_name = get_bloginfo('name');
+				$site_name = get_bloginfo( 'name' );
 				$message .= '<div class="footer">
-					&copy; ' . date("Y") . ' ' . $site_name . ' All rights reserved. <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+					&copy; ' . gmdate( 'Y' ) . ' ' . $site_name . ' All rights reserved. <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
 				</div>
 				</div>
 				</body>
 				</html>';
 			}
 				wc_mail( $to, $subject, $message, $headers );
-			}
+		}
 	}
 
 
