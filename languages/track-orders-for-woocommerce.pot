@@ -1,8 +1,8 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Track Orders for WooCommerce 1.0.4\n"
-"POT-Creation-Date: 2024-05-28 15:49+0530\n"
+"Project-Id-Version: Track Orders for WooCommerce 1.0.5\n"
+"POT-Creation-Date: 2024-07-25 17:57+0530\n"
 "PO-Revision-Date: 2023-09-08 12:29+0530\n"
 "Last-Translator: \n"
 "Language-Team: WP Swings\n"
@@ -56,8 +56,8 @@ msgstr ""
 
 #: admin/class-track-orders-for-woocommerce-admin.php:221
 #: onboarding/templates/track-orders-for-woocommerce-deactivation-template.php:41
-#: track-orders-for-woocommerce.php:136 track-orders-for-woocommerce.php:142
-#: track-orders-for-woocommerce.php:332
+#: track-orders-for-woocommerce.php:137 track-orders-for-woocommerce.php:143
+#: track-orders-for-woocommerce.php:333
 msgid "Track Orders For Woocommerce"
 msgstr ""
 
@@ -75,11 +75,11 @@ msgstr ""
 #: admin/class-track-orders-for-woocommerce-admin.php:393
 #: admin/class-track-orders-for-woocommerce-admin.php:405
 #: admin/class-track-orders-for-woocommerce-admin.php:417
-#: admin/class-track-orders-for-woocommerce-admin.php:484
-#: admin/class-track-orders-for-woocommerce-admin.php:496
-#: admin/class-track-orders-for-woocommerce-admin.php:641
-#: admin/class-track-orders-for-woocommerce-admin.php:728
-#: admin/class-track-orders-for-woocommerce-admin.php:750
+#: admin/class-track-orders-for-woocommerce-admin.php:483
+#: admin/class-track-orders-for-woocommerce-admin.php:495
+#: admin/class-track-orders-for-woocommerce-admin.php:640
+#: admin/class-track-orders-for-woocommerce-admin.php:727
+#: admin/class-track-orders-for-woocommerce-admin.php:749
 #: admin/partials/track-orders-for-woocommerce-welcome.php:47
 msgid "YES"
 msgstr ""
@@ -90,11 +90,11 @@ msgstr ""
 #: admin/class-track-orders-for-woocommerce-admin.php:394
 #: admin/class-track-orders-for-woocommerce-admin.php:406
 #: admin/class-track-orders-for-woocommerce-admin.php:418
-#: admin/class-track-orders-for-woocommerce-admin.php:485
-#: admin/class-track-orders-for-woocommerce-admin.php:497
-#: admin/class-track-orders-for-woocommerce-admin.php:642
-#: admin/class-track-orders-for-woocommerce-admin.php:729
-#: admin/class-track-orders-for-woocommerce-admin.php:751
+#: admin/class-track-orders-for-woocommerce-admin.php:484
+#: admin/class-track-orders-for-woocommerce-admin.php:496
+#: admin/class-track-orders-for-woocommerce-admin.php:641
+#: admin/class-track-orders-for-woocommerce-admin.php:728
+#: admin/class-track-orders-for-woocommerce-admin.php:750
 #: admin/partials/track-orders-for-woocommerce-welcome.php:48
 msgid "NO"
 msgstr ""
@@ -140,52 +140,52 @@ msgstr ""
 msgid "Send the E-Mail Notification to the Customer on Changing Order Status"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:434
-#: admin/class-track-orders-for-woocommerce-admin.php:556
-#: admin/class-track-orders-for-woocommerce-admin.php:618
-#: admin/class-track-orders-for-woocommerce-admin.php:705
-#: admin/class-track-orders-for-woocommerce-admin.php:807
+#: admin/class-track-orders-for-woocommerce-admin.php:433
+#: admin/class-track-orders-for-woocommerce-admin.php:555
+#: admin/class-track-orders-for-woocommerce-admin.php:617
+#: admin/class-track-orders-for-woocommerce-admin.php:704
+#: admin/class-track-orders-for-woocommerce-admin.php:806
 msgid "Save Settings"
+msgstr ""
+
+#: admin/class-track-orders-for-woocommerce-admin.php:452
+#: admin/class-track-orders-for-woocommerce-admin.php:570
+#: common/class-track-orders-for-woocommerce-common.php:1342
+#: common/class-track-orders-for-woocommerce-common.php:1418
+msgid "Order Packed"
 msgstr ""
 
 #: admin/class-track-orders-for-woocommerce-admin.php:453
 #: admin/class-track-orders-for-woocommerce-admin.php:571
-#: common/class-track-orders-for-woocommerce-common.php:793
-#: common/class-track-orders-for-woocommerce-common.php:869
-msgid "Order Packed"
+#: common/class-track-orders-for-woocommerce-common.php:1355
+#: common/class-track-orders-for-woocommerce-common.php:1416
+msgid "Order Dispatched"
 msgstr ""
 
 #: admin/class-track-orders-for-woocommerce-admin.php:454
 #: admin/class-track-orders-for-woocommerce-admin.php:572
-#: common/class-track-orders-for-woocommerce-common.php:806
-#: common/class-track-orders-for-woocommerce-common.php:867
-msgid "Order Dispatched"
-msgstr ""
-
-#: admin/class-track-orders-for-woocommerce-admin.php:455
-#: admin/class-track-orders-for-woocommerce-admin.php:573
-#: common/class-track-orders-for-woocommerce-common.php:819
-#: common/class-track-orders-for-woocommerce-common.php:868
+#: common/class-track-orders-for-woocommerce-common.php:1368
+#: common/class-track-orders-for-woocommerce-common.php:1417
 msgid "Order Shipped"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:478
+#: admin/class-track-orders-for-woocommerce-admin.php:477
 msgid "Enable Track Orders Feature"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:490
+#: admin/class-track-orders-for-woocommerce-admin.php:489
 msgid "Enable Use Of Custom Order Status"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:502
+#: admin/class-track-orders-for-woocommerce-admin.php:501
 msgid "hidden_status"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:504
+#: admin/class-track-orders-for-woocommerce-admin.php:503
 msgid "Select Custom status to enhance tracking."
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:513
+#: admin/class-track-orders-for-woocommerce-admin.php:512
 #: template/wps-track-order-myaccount-page-template1.php:539
 #: template/wps-track-order-myaccount-page-template2.php:451
 #: template/wps-track-order-myaccount-page-template2.php:462
@@ -193,22 +193,22 @@ msgstr ""
 msgid "Approval"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:515
+#: admin/class-track-orders-for-woocommerce-admin.php:514
 msgid "Select Custom Order Status for the Approval Stage."
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:523
+#: admin/class-track-orders-for-woocommerce-admin.php:522
 #: template/wps-track-order-myaccount-page-template2.php:475
 #: template/wps-track-order-myaccount-page-template2.php:486
 #: template/wps-track-order-myaccount-page-template2.php:496
 msgid "Processing"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:525
+#: admin/class-track-orders-for-woocommerce-admin.php:524
 msgid "Select Custom Order Status for the Processing Stage."
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:533
+#: admin/class-track-orders-for-woocommerce-admin.php:532
 #: template/wps-track-order-myaccount-page-template1.php:776
 #: template/wps-track-order-myaccount-page-template2.php:512
 #: template/wps-track-order-myaccount-page-template2.php:523
@@ -217,181 +217,181 @@ msgstr ""
 msgid "Shipping"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:535
+#: admin/class-track-orders-for-woocommerce-admin.php:534
 msgid "Select Custom Order Status for the Shipping Stage."
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:585
+#: admin/class-track-orders-for-woocommerce-admin.php:584
 msgid "Custom Order Statuses"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:587
+#: admin/class-track-orders-for-woocommerce-admin.php:586
 msgid "Select Custom Statuses to Use in Tracking."
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:634
+#: admin/class-track-orders-for-woocommerce-admin.php:633
 msgid "Enable Google Map For Tracking"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:636
+#: admin/class-track-orders-for-woocommerce-admin.php:635
 msgid "Track Your Order With Google Map ApI."
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:646
+#: admin/class-track-orders-for-woocommerce-admin.php:645
 msgid "Enter Google Map API Key"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:656
+#: admin/class-track-orders-for-woocommerce-admin.php:655
 msgid "Enter Order Production House Address"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:666
+#: admin/class-track-orders-for-woocommerce-admin.php:665
 msgid "Enter Addresses From Where Your Order Has Gone Through"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:678
+#: admin/class-track-orders-for-woocommerce-admin.php:677
 msgid "Add Address"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:683
+#: admin/class-track-orders-for-woocommerce-admin.php:682
 msgid "Selected Addresses"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:685
+#: admin/class-track-orders-for-woocommerce-admin.php:684
 msgid "Select Your Hub Point Addresses From Where Your Order Has Gone Through."
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:721
+#: admin/class-track-orders-for-woocommerce-admin.php:720
 msgid "Enable Third Party Tracking API"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:733
+#: admin/class-track-orders-for-woocommerce-admin.php:732
 msgid "Enter The Shop Address "
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:743
+#: admin/class-track-orders-for-woocommerce-admin.php:742
 msgid "Enable FedEx Shipment Tracking"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:755
+#: admin/class-track-orders-for-woocommerce-admin.php:754
 msgid "Enter Your FedEx User Key  "
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:765
+#: admin/class-track-orders-for-woocommerce-admin.php:764
 msgid "Enter Your FedEx User Password   "
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:775
+#: admin/class-track-orders-for-woocommerce-admin.php:774
 msgid "Enter Your FedEx Account Number"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:785
+#: admin/class-track-orders-for-woocommerce-admin.php:784
 msgid "Enter Your FedEx Meter Number    "
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:904
+#: admin/class-track-orders-for-woocommerce-admin.php:903
 msgid "Id of some field is missing"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:907
+#: admin/class-track-orders-for-woocommerce-admin.php:906
 #: admin/partials/track-orders-for-woocommerce-admin-dashboard.php:42
 msgid "Settings saved !"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:968
-#: admin/class-track-orders-for-woocommerce-admin.php:1003
-#: admin/class-track-orders-for-woocommerce-admin.php:1021
+#: admin/class-track-orders-for-woocommerce-admin.php:967
+#: admin/class-track-orders-for-woocommerce-admin.php:1002
+#: admin/class-track-orders-for-woocommerce-admin.php:1020
 msgid "success"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:1005
+#: admin/class-track-orders-for-woocommerce-admin.php:1004
 msgid "failed"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:1062
-#: admin/class-track-orders-for-woocommerce-admin.php:1074
+#: admin/class-track-orders-for-woocommerce-admin.php:1061
+#: admin/class-track-orders-for-woocommerce-admin.php:1073
 msgid "Enter Estimated Delivery Date"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:1066
-#: admin/class-track-orders-for-woocommerce-admin.php:1078
+#: admin/class-track-orders-for-woocommerce-admin.php:1065
+#: admin/class-track-orders-for-woocommerce-admin.php:1077
 msgid "Select Service For Tracking Your Package"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:1071
-#: admin/class-track-orders-for-woocommerce-admin.php:1083
+#: admin/class-track-orders-for-woocommerce-admin.php:1070
+#: admin/class-track-orders-for-woocommerce-admin.php:1082
 msgid "Select City When Your Package Reaches The Desire City"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:1111
+#: admin/class-track-orders-for-woocommerce-admin.php:1110
 msgid "none"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:1111
+#: admin/class-track-orders-for-woocommerce-admin.php:1110
 msgid "Select shipping Cities"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:1161
+#: admin/class-track-orders-for-woocommerce-admin.php:1160
 msgid "Delivery Date"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:1162
+#: admin/class-track-orders-for-woocommerce-admin.php:1161
 msgid "Enter Delivery Date"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:1163
+#: admin/class-track-orders-for-woocommerce-admin.php:1162
 msgid "Delivery Time"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:1164
+#: admin/class-track-orders-for-woocommerce-admin.php:1163
 msgid "Enter Delivery time"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:1213
+#: admin/class-track-orders-for-woocommerce-admin.php:1212
 msgid "---Select shipping Services---"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:1232
+#: admin/class-track-orders-for-woocommerce-admin.php:1231
 msgid "Tracking Number"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:1233
+#: admin/class-track-orders-for-woocommerce-admin.php:1232
 msgid "Enter Tracking Number"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:1239
+#: admin/class-track-orders-for-woocommerce-admin.php:1238
 msgid "17Track Number"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:1240
+#: admin/class-track-orders-for-woocommerce-admin.php:1239
 msgid "Enter 17 Tracking Number"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:1334
-#: common/class-track-orders-for-woocommerce-common.php:469
-#: common/class-track-orders-for-woocommerce-common.php:481
+#: admin/class-track-orders-for-woocommerce-admin.php:1333
+#: common/class-track-orders-for-woocommerce-common.php:475
+#: common/class-track-orders-for-woocommerce-common.php:487
 msgid "Your Order Status for Order #"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:1335
-#: common/class-track-orders-for-woocommerce-common.php:470
-#: common/class-track-orders-for-woocommerce-common.php:482
+#: admin/class-track-orders-for-woocommerce-admin.php:1334
+#: common/class-track-orders-for-woocommerce-common.php:476
+#: common/class-track-orders-for-woocommerce-common.php:488
 msgid "Your Order Status is "
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:1336
-#: common/class-track-orders-for-woocommerce-common.php:471
-#: common/class-track-orders-for-woocommerce-common.php:483
+#: admin/class-track-orders-for-woocommerce-admin.php:1335
+#: common/class-track-orders-for-woocommerce-common.php:477
+#: common/class-track-orders-for-woocommerce-common.php:489
 msgid "Current Order Status is "
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:1439
-#: common/class-track-orders-for-woocommerce-common.php:674
+#: admin/class-track-orders-for-woocommerce-admin.php:1438
+#: common/class-track-orders-for-woocommerce-common.php:1223
 #: template/wps-track-order-myaccount-page-template1.php:1088
 msgid "Order Id"
 msgstr ""
 
-#: admin/class-track-orders-for-woocommerce-admin.php:1440
+#: admin/class-track-orders-for-woocommerce-admin.php:1439
 msgid "Tracking Number "
 msgstr ""
 
@@ -451,12 +451,12 @@ msgid "Nonce Not verified"
 msgstr ""
 
 #: admin/partials/track-orders-for-woocommerce-admin-dashboard.php:34
-#: track-orders-for-woocommerce.php:226
+#: track-orders-for-woocommerce.php:227
 msgid "Documentation"
 msgstr ""
 
 #: admin/partials/track-orders-for-woocommerce-admin-dashboard.php:36
-#: track-orders-for-woocommerce.php:227
+#: track-orders-for-woocommerce.php:228
 msgid "Support"
 msgstr ""
 
@@ -674,63 +674,66 @@ msgid "Successfully Verified. Please Wait."
 msgstr ""
 
 #: common/class-track-orders-for-woocommerce-common.php:589
+#: common/class-track-orders-for-woocommerce-common.php:743
+#: common/class-track-orders-for-woocommerce-common.php:965
+#: common/class-track-orders-for-woocommerce-common.php:1124
 msgid "Product"
 msgstr ""
 
 #: common/class-track-orders-for-woocommerce-common.php:590
+#: common/class-track-orders-for-woocommerce-common.php:744
+#: common/class-track-orders-for-woocommerce-common.php:966
+#: common/class-track-orders-for-woocommerce-common.php:1125
 #: template/wps-track-order-myaccount-page-template1.php:937
 #: template/wps-track-order-myaccount-page-template3.php:310
 msgid "Quantity"
 msgstr ""
 
 #: common/class-track-orders-for-woocommerce-common.php:591
+#: common/class-track-orders-for-woocommerce-common.php:745
+#: common/class-track-orders-for-woocommerce-common.php:967
+#: common/class-track-orders-for-woocommerce-common.php:1126
 msgid "Price"
 msgstr ""
 
-#: common/class-track-orders-for-woocommerce-common.php:616
-#: template/wps-track-order-myaccount-page-template1.php:1068
-#: template/wps-track-order-myaccount-page-template3.php:439
-msgid "Total"
-msgstr ""
-
-#: common/class-track-orders-for-woocommerce-common.php:675
+#: common/class-track-orders-for-woocommerce-common.php:1224
 msgid "Order Status"
 msgstr ""
 
-#: common/class-track-orders-for-woocommerce-common.php:676
+#: common/class-track-orders-for-woocommerce-common.php:1225
 msgid "Order Total"
 msgstr ""
 
-#: common/class-track-orders-for-woocommerce-common.php:677
+#: common/class-track-orders-for-woocommerce-common.php:1226
 msgid "Order Items"
 msgstr ""
 
-#: common/class-track-orders-for-woocommerce-common.php:678
+#: common/class-track-orders-for-woocommerce-common.php:1227
 msgid "Payment Method"
 msgstr ""
 
-#: common/class-track-orders-for-woocommerce-common.php:679
+#: common/class-track-orders-for-woocommerce-common.php:1228
 msgid "Billing Name"
 msgstr ""
 
-#: common/class-track-orders-for-woocommerce-common.php:680
+#: common/class-track-orders-for-woocommerce-common.php:1229
 msgid "Billing Email"
 msgstr ""
 
-#: common/class-track-orders-for-woocommerce-common.php:681
+#: common/class-track-orders-for-woocommerce-common.php:1230
 msgid "Billing Address"
 msgstr ""
 
-#: common/class-track-orders-for-woocommerce-common.php:682
+#: common/class-track-orders-for-woocommerce-common.php:1231
 msgid "Billing Contact"
 msgstr ""
 
-#: common/class-track-orders-for-woocommerce-common.php:683
+#: common/class-track-orders-for-woocommerce-common.php:1232
 #: template/wps-track-order-myaccount-page-template1.php:1089
 msgid "Order date"
 msgstr ""
 
-#: common/class-track-orders-for-woocommerce-common.php:812
+#: common/class-track-orders-for-woocommerce-common.php:1361
 #, php-format
 msgid "Order Dispatched <span class=\"count\">(%s)</span>"
 msgstr ""
@@ -903,7 +906,7 @@ msgstr ""
 msgid "N/A (wp_remote_get function does not exist)"
 msgstr ""
 
-#: includes/class-track-orders-for-woocommerce.php:907
+#: includes/class-track-orders-for-woocommerce.php:937
 msgid "max="
 msgstr ""
 
@@ -978,12 +981,12 @@ msgid "Click The Below To Track Your Order"
 msgstr ""
 
 #: public/class-track-orders-for-woocommerce-public.php:108
-#: template/wps-guest-track-order-page.php:96
+#: template/wps-guest-track-order-page.php:95
 msgid "TRACK ORDER"
 msgstr ""
 
 #: public/class-track-orders-for-woocommerce-public.php:152
-#: template/wps-guest-track-order-page.php:115
+#: template/wps-guest-track-order-page.php:114
 msgid "Export Orders"
 msgstr ""
 
@@ -1011,23 +1014,23 @@ msgstr ""
 msgid "ERROR"
 msgstr ""
 
-#: template/wps-guest-track-order-page.php:71
+#: template/wps-guest-track-order-page.php:70
 msgid "Enter Your 17TrackingNo"
 msgstr ""
 
-#: template/wps-guest-track-order-page.php:81
+#: template/wps-guest-track-order-page.php:80
 msgid "Enter Order Id"
 msgstr ""
 
-#: template/wps-guest-track-order-page.php:88
+#: template/wps-guest-track-order-page.php:87
 msgid "Enter Order Email"
 msgstr ""
 
-#: template/wps-guest-track-order-page.php:110
+#: template/wps-guest-track-order-page.php:109
 msgid "!------ Export Your All Orders Using Email ------!"
 msgstr ""
 
-#: template/wps-guest-track-order-page.php:112
+#: template/wps-guest-track-order-page.php:111
 msgid "Enter Email"
 msgstr ""
 
@@ -1330,6 +1333,11 @@ msgstr ""
 msgid "Sub Total"
 msgstr ""
 
+#: template/wps-track-order-myaccount-page-template1.php:1068
+#: template/wps-track-order-myaccount-page-template3.php:439
+msgid "Total"
+msgstr ""
+
 #: template/wps-track-order-myaccount-page-template1.php:1088
 msgid " items"
 msgstr ""
@@ -1411,27 +1419,27 @@ msgstr ""
 msgid "by "
 msgstr ""
 
-#: track-orders-for-woocommerce.php:210
+#: track-orders-for-woocommerce.php:211
 msgid "Settings"
 msgstr ""
 
-#: track-orders-for-woocommerce.php:225
+#: track-orders-for-woocommerce.php:226
 msgid "Demo"
 msgstr ""
 
-#: track-orders-for-woocommerce.php:290
+#: track-orders-for-woocommerce.php:291
 msgid "OrderId or Email is Invalidss"
 msgstr ""
 
-#: track-orders-for-woocommerce.php:299
+#: track-orders-for-woocommerce.php:300
 msgid "OrderId is Invalid"
 msgstr ""
 
-#: track-orders-for-woocommerce.php:333
+#: track-orders-for-woocommerce.php:334
 msgid "WooCommerce"
 msgstr ""
 
-#: track-orders-for-woocommerce.php:336
+#: track-orders-for-woocommerce.php:337
 #, php-format
 msgid ""
 "%1$s requires %2$s to function correctly. Please activate %2$s before "
