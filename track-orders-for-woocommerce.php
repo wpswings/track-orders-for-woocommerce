@@ -20,7 +20,7 @@
  * Author URI:        https://wpswings.com/
  * Text Domain:       track-orders-for-woocommerce
  * Domain Path:       /languages
- * 
+ *
  * Requires Plugins:  woocommerce
  * Requires at least:    5.5.0
  * Tested up to:         6.5.5
@@ -76,22 +76,23 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 	 * @return void
 	 */
 	function wps_otfw_create_images_folder_inside_uploads() {
-			// Get the uploads directory path
+			// Get the uploads directory path.
 			$wp_upload_dir = wp_upload_dir();
 
-			// Define the new folder name
+			// Define the new folder name.
 			$new_folder_name = 'tracking_images';
 
-			// Create the full path for the new folder
+			// Create the full path for the new folder.
 			$new_folder_path = $wp_upload_dir['basedir'] . '/' . $new_folder_name;
 
-			// Check if the folder doesn't exist already
-			if ( ! file_exists( $new_folder_path ) ) {
-				// Create the new folder
-				if ( wp_mkdir_p( $new_folder_path ) ) {
-				}
+			// Check if the folder doesn't exist already.
+		if ( ! file_exists( $new_folder_path ) ) {
+			// Create the new folder.
+			if ( wp_mkdir_p( $new_folder_path ) ) {
+				return;
 			}
-		
+		}
+
 	}
 
 	/**

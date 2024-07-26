@@ -855,10 +855,10 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 																			$f = 1;
 																			$value_key = str_replace( '-', '_', $value );
 																			$value_key = 'wps_tofw_' . $value_key . '_text';
-																			if (array_key_exists($value, $woo_statuses)) {
-																				$message = __( 'Your Order status is ', 'track-orders-for-woocommerce' ) . $woo_statuses[$value];
+																			if ( array_key_exists( $value, $woo_statuses ) ) {
+																				$message = __( 'Your Order status is ', 'track-orders-for-woocommerce' ) . $woo_statuses[ $value ];
 																			} else {
-																				// Handle the case where the key does not exist
+																				// Handle the case where the key does not exist.
 																				$message = __( 'Custom Order Status Not Set.', 'track-orders-for-woocommerce' );
 																			}
 																			$current_status = get_option( $value_key, '' );
@@ -875,7 +875,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 																			}
 																			?>
 																				<ul class="wps-tofw-order-info">
-																					<li><?php echo esc_html( array_key_exists($value, $woo_statuses) ? $woo_statuses[$value] : __( 'Custom Order Status Not Set', 'track-orders-for-woocommerce' ) ); ?></li>
+																					<li><?php echo esc_html( array_key_exists( $value, $woo_statuses ) ? $woo_statuses[ $value ] : __( 'Custom Order Status Not Set', 'track-orders-for-woocommerce' ) ); ?></li>
 																					<li><?php echo esc_html( $onchange_shipping_date ); ?></li>
 																					<li><?php echo esc_html( $current_status ); ?></li></ul>
 																					<?php
