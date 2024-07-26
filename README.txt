@@ -1,12 +1,12 @@
 === Track Orders for WooCommerce – Shipment Tracking, Order Status, Order Monitoring Templates & Google Maps Integration ===
 Contributors: wpswings
 Donate link: https://wpswings.com/
-Tags: shipping, track orders, status tracking, shipment tracking, order tracking
+Tags: shipping, track shipped orders, status tracking, shipment tracking, order tracking
 Requires at least: 5.5.0
-Tested up to: 6.5.3
+Tested up to: 6.5.5
 WC requires at least: 5.5.0
-WC tested up to: 8.9.1
-Stable tag: 1.0.4
+WC tested up to: 9.1.2
+Stable tag: 1.0.5
 Requires PHP: 7.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -102,6 +102,7 @@ Track Orders for Woocommerce is compatible with various themes that are suitable
 * Customization with Custom JS and CSS
 * Track Orders by scanning QR Code
 * Order notifications to customers via text messages with Twilio's API.
+* New Email Notification Templates
 
 == Take Advantage of the Exclusive Features of the Track Orders For WooCommerce Pro Plugin == 
 
@@ -183,15 +184,19 @@ Firstly enable the Logged-in User to export orders from the general settings. Th
 Check out [**Track Orders  for WooCommerce Knowledge Base**](https://support.wpswings.com/wordpress-plugins-knowledge-base/category/woocommerce-order-tracker/?utm_source=wpswings-ot-kb&utm_medium=ot-org-page&utm_campaign=kb)
 
 == Changelog ==
+
+= 1.0.5 – Released on 26 July 2024 = 
+* New: Latest Compatibility WP (6.5.5) and WC (9.1.2) 
+
 = 1.0.4 – Released on 28 May 2024 = 
-* Fixes : Tracking page not showing issue
+* Fixes : Order Tracking page not showing issue
 * New: Latest Compatibility WP (6.5.3) and WC (8.9.1) 
 
 = 1.0.3 – Released on 30 April 2024 = 
 * Improved: Compatibility with the latest WP (6.5.2) and WC (8.8.3)
 
 = 1.0.2 – Released on 22 March 2024 = 
-* Fixes: Error/Warning on template
+* Fixes: Error/Warning on Tracking template
 * Improved: Compatibility with the latest WP(6.4.3) and WC(8.7.0)
 
 = 1.0.1 – Released on 13 Feb 2024 = 
@@ -202,6 +207,5 @@ Check out [**Track Orders  for WooCommerce Knowledge Base**](https://support.wps
 *  First version
 
 == Upgrade Notice ==
-= 1.0.4 – Released on 28 May 2024 = 
-* Fixes : Tracking page not showing issue 
-* New: Latest Compatibility WP (6.5.3) and WC (8.9.1) 
+= 1.0.5 – Released on 26 July 2024 = 
+* New: Latest Compatibility WP (6.5.5) and WC (9.1.2) 
