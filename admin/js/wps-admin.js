@@ -29,7 +29,16 @@ jQuery(document).ready(function() {
 		var refunded =  wps_admin_param.wps_file_include + 'image/revert.png';
 		var dispatched =  wps_admin_param.wps_file_include + 'image/dispatch.png';
 		var shipped =  wps_admin_param.wps_file_include + 'image/shipped.png';
-		var packed =  wps_admin_param.wps_file_include + 'image/order-packed.png';
+		var packed = wps_admin_param.wps_file_include + 'image/order-packed.png';
+		var return_requested = wps_admin_param.wps_file_include + 'image/product-return.png';
+		var return_approved = wps_admin_param.wps_file_include + 'image/product-approved.png';
+		var return_cancelled = wps_admin_param.wps_file_include + 'image/product-cancelled.png';
+		//exchange_request
+		var exchange_requested = wps_admin_param.wps_file_include + 'image/exchange_request.svg';
+		var exchange_approved = wps_admin_param.wps_file_include + 'image/exchange_approved.svg';
+		var exchange_cancel = wps_admin_param.wps_file_include + 'image/exchange_cancel.svg';
+		var partially_cancel = wps_admin_param.wps_file_include + 'image/partially_cancelled.svg';
+
 			jQuery('.wp-list-table .status-processing .order_status ').html('<mark class="order-status status-processing" ><img src="' + processing + '" height="50" width="50"></mark> ');
 			jQuery('.wp-list-table .status-completed .order_status ').html('<mark class="order-status status-completed" ><img src="' + completed + '" height="50" width="50"></mark> ');
 			jQuery('.wp-list-table .status-on-hold .order_status ').html('<mark class="order-status status-on-hold" ><img src="' + on_hold + '" height="50" width="50"></mark> ');
@@ -39,14 +48,35 @@ jQuery(document).ready(function() {
 			jQuery('.wp-list-table .status-refunded .order_status ').html('<mark class="order-status status-refunded" ><img src="' + refunded + '" height="50" width="50"></mark> ');
 			jQuery('.wp-list-table .status-dispatched .order_status ').html('<mark class="order-status status-dispatched" ><img src="' + dispatched + '" height="50" width="50"></mark> ');
 			jQuery('.wp-list-table .status-shipped .order_status ').html('<mark class="order-status status-shipped" ><img src="' + shipped + '" height="50" width="50"></mark> ');
-			jQuery('.wp-list-table .status-packed .order_status ').html('<mark class="order-status status-packed" ><img src="' + packed + '" height="50" width="50"></mark> ');
+		jQuery('.wp-list-table .status-packed .order_status ').html('<mark class="order-status status-packed" ><img src="' + packed + '" height="50" width="50"></mark> ');
+
+		jQuery('.wp-list-table .status-return-requested .order_status ').html('<mark class="order-status status-return-requested" ><img src="' + return_requested + '" height="50" width="50"></mark> ');
+
+
+		jQuery('.wp-list-table .status-return-approved .order_status ').html('<mark class="order-status status-return-approved" ><img src="' + return_approved + '" height="50" width="50"></mark> ');
+
+
+
+		jQuery('.wp-list-table .status-return-cancelled .order_status ').html('<mark class="order-status status-return-cancelled" ><img src="' + return_cancelled + '" height="50" width="50"></mark> ');
+
+
+		//RMA Exchange.
+		jQuery('.wp-list-table .status-exchange-request .order_status ').html('<mark class="order-status status-exchange-request" ><img src="' + exchange_requested + '" height="50" width="50"></mark> ');
+
+
+		jQuery('.wp-list-table .status-exchange-approve .order_status ').html('<mark class="order-status status-exchange-approve" ><img src="' + exchange_approved + '" height="50" width="50"></mark> ');
+
+
+		jQuery('.wp-list-table .status-exchange-cancel .order_status ').html('<mark class="order-status status-exchange-cancel" ><img src="' + exchange_cancel + '" height="50" width="50"></mark> ');
+
+
+		jQuery('.wp-list-table .status-partial-cancel .order_status ').html('<mark class="order-status status-partial-cancel" ><img src="' + partially_cancel + '" height="50" width="50"></mark> ');
 	   
 		var custom_url = wps_admin_param.custom_order_status_url;
 		
 			if( custom_url != '' ){
 			   
 				jQuery.each(custom_url, function (key, value) {
-					console.log('prince');
 				   jQuery('.wp-list-table .status-' + key + ' .order_status ').html('<mark class="order-status status-'+ key +'" ><img src="' + value + '" height="50" width="50"></mark> ');
 				 });
 			   

@@ -228,26 +228,27 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 
 			if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
 				// HPOS usage is enabled.
-				$billing_first_name = $tofw_order->get_billing_first_name();
-				$billing_last_name = $tofw_order->get_billing_last_name();
-				$billing_address = $tofw_order->get_billing_address_1() . ' ' . $tofw_order->get_billing_address_2();
-				$billing_city = $tofw_order->get_billing_city();
-				$billing_state = $tofw_order->get_billing_state();
-				$billing_country = $tofw_order->get_billing_country();
-				$billing_postcode = $tofw_order->get_billing_postcode();
-				$wps_track_order_status = $tofw_order->get_meta( 'wps_track_order_status', true );
-				$wps_phone_number = $tofw_order->get_billing_phone();
+				$billing_first_name = $tofw_order->get_billing_first_name() ?? esc_html_e( 'Not available', 'track-orders-for-woocommerce' );
+				$billing_last_name = $tofw_order->get_billing_last_name() ?? esc_html_e( 'Not available', 'track-orders-for-woocommerce' );
+				$billing_address = ( $tofw_order->get_billing_address_1() ?? '' ) . ' ' . ( $tofw_order->get_billing_address_2() ?? '' );
+				$billing_city = $tofw_order->get_billing_city() ?? esc_html_e( 'Not available', 'track-orders-for-woocommerce' );
+				$billing_state = $tofw_order->get_billing_state() ?? esc_html_e( 'Not available', 'track-orders-for-woocommerce' );
+				$billing_country = $tofw_order->get_billing_country() ?? esc_html_e( 'Not available', 'track-orders-for-woocommerce' );
+				$billing_postcode = $tofw_order->get_billing_postcode() ?? esc_html_e( 'Not available', 'track-orders-for-woocommerce' );
+				$wps_track_order_status = $tofw_order->get_meta( 'wps_track_order_status', true ) ?? esc_html_e( 'Not available', 'track-orders-for-woocommerce' );
+				$wps_phone_number = $tofw_order->get_billing_phone() ?? esc_html_e( 'Not available', 'track-orders-for-woocommerce' );
 			} else {
-				$billing_first_name = get_post_meta( $order_id, '_billing_first_name', true );
-				$billing_last_name = get_post_meta( $order_id, '_billing_last_name', true );
-				$billing_address = get_post_meta( $order_id, '_billing_address_1', true ) . ' ' . get_post_meta( $order_id, '_billing_address_2', true );
-				$billing_city = get_post_meta( $order_id, '_billing_city', true );
-				$billing_state = get_post_meta( $order_id, '_billing_state', true );
-				$billing_country = get_post_meta( $order_id, '_billing_country', true );
-				$billing_postcode = get_post_meta( $order_id, '_billing_postcode', true );
-				$wps_track_order_status = get_post_meta( $order_id, 'wps_track_order_status', true );
-				$wps_phone_number = get_post_meta( $order_id, '_billing_phone', true );
+				$billing_first_name = get_post_meta( $order_id, '_billing_first_name', true ) ?? esc_html_e( 'Not available', 'track-orders-for-woocommerce' );
+				$billing_last_name = get_post_meta( $order_id, '_billing_last_name', true ) ?? esc_html_e( 'Not available', 'track-orders-for-woocommerce' );
+				$billing_address = ( get_post_meta( $order_id, '_billing_address_1', true ) ?? '' ) . ' ' . ( get_post_meta( $order_id, '_billing_address_2', true ) ?? '' );
+				$billing_city = get_post_meta( $order_id, '_billing_city', true ) ?? esc_html_e( 'Not available', 'track-orders-for-woocommerce' );
+				$billing_state = get_post_meta( $order_id, '_billing_state', true ) ?? esc_html_e( 'Not available', 'track-orders-for-woocommerce' );
+				$billing_country = get_post_meta( $order_id, '_billing_country', true ) ?? esc_html_e( 'Not available', 'track-orders-for-woocommerce' );
+				$billing_postcode = get_post_meta( $order_id, '_billing_postcode', true ) ?? esc_html_e( 'Not available', 'track-orders-for-woocommerce' );
+				$wps_track_order_status = get_post_meta( $order_id, 'wps_track_order_status', true ) ?? esc_html_e( 'Not available', 'track-orders-for-woocommerce' );
+				$wps_phone_number = get_post_meta( $order_id, '_billing_phone', true ) ?? esc_html_e( 'Not available', 'track-orders-for-woocommerce' );
 			}
+			
 
 
 			$order_status_key = str_replace( '-', '_', $order_status );
