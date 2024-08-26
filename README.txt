@@ -3,10 +3,10 @@ Contributors: wpswings
 Donate link: https://wpswings.com/
 Tags: shipping, track shipped orders, status tracking, shipment tracking, order tracking
 Requires at least: 5.5.0
-Tested up to: 6.5.5
+Tested up to: 6.6.1
 WC requires at least: 5.5.0
-WC tested up to: 9.1.2
-Stable tag: 1.0.5
+WC tested up to: 9.2.2
+Stable tag: 1.0.6
 Requires PHP: 7.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -16,11 +16,11 @@ Effortlessly track orders with our advanced order tracking. Get real-time shipme
 == Description ==
 **KEEP YOUR CUSTOMERS INFORMED WITH REAL-TIME ORDER TRACKING AND ENGAGE THEIR MINDS AS THEY WAIT. ADD STAGES TO THE SHIPPING JOURNEY BASED ON YOUR FULFILLMENT PROCESS AND RENDER A COMPLETE ORDER TRACKING EXPERIENCE TO THE CUSTOMERS.**
 
-Track Orders for WooCommerce is the only order-tracking system you’ll ever need. Using this extension, you can enable customers to monitor the delivery process. They can track the shipment from order placement to doorstep delivery. [**Track Order for Woocommerce Pro**](https://wpswings.com/product/track-orders-for-woocommerce-pro/?utm_source=wpswings-ot-pro&utm_medium=ot-org-page&utm_campaign=ot-pro) goes beyond WooCommerce tracking.
+Track Orders for WooCommerce is the only order-tracking system you’ll ever need. Using this extension, you can enable customers to monitor the delivery process. They can track the shipment from order placement to doorstep delivery. [**Track Order for Woocommerce Pro**](https://wpswings.com/product/track-orders-for-woocommerce-pro/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=ot-pro) goes beyond WooCommerce tracking.
 
 It lets you optimize the custom carrier tracking module to make waiting less boring for your customers. On top of that, you can tailor the tracking stages to your shipping process.
 
-[**Track Orders for Woocommerce Demo**](https://demo.wpswings.com/track-orders-for-woocommerce-pro/?utm_source=wpswings-ot-demo&utm_medium=ot-org-page&utm_campaign=ot-demo) | [**Track Orders Documentation**](https://docs.wpswings.com/track-orders-for-woocommerce/?utm_source=wpswings-ot-doc-free&utm_medium=ot-org-page&utm_campaign=ot-doc-free) | [**Contact Us**](https://wpswings.com/contact-us/?utm_source=wpswings-ot-contact-us&utm_medium=ot-org-page&utm_campaign=contact-us) 
+[**Track Orders for Woocommerce Demo**](https://demo.wpswings.com/track-orders-for-woocommerce-pro/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=ot-demo) | [**Track Orders Documentation**](https://docs.wpswings.com/track-orders-for-woocommerce/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=ot-doc-free) | [**Contact Us**](https://wpswings.com/contact-us/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=contact-us) 
 
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/tQ5tJTjDJTE?si=X1njyU3KIUgMJ3Mn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
@@ -60,9 +60,9 @@ By utilizing the page shortcode, you can add an Order Tracking page anywhere on 
 
 == LIVE DEMO OF ORDER TRACKER PLUGIN ==
 
-* [**Track Orders Frontend Demo**](https://demo.wpswings.com/track-orders-for-woocommerce-pro/?utm_source=wpswings-ot-demo&utm_medium=ot-org-page&utm_campaign=frontend-demo) 
+* [**Track Orders Frontend Demo**](https://demo.wpswings.com/track-orders-for-woocommerce-pro/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=frontend-demo) 
 
-* [**Track Orders Backend Demo**](https://demo.wpswings.com/track-orders-for-woocommerce-pro/?utm_source=wpswings-ot-demo&utm_medium=ot-org-page&utm_campaign=backend-demo)
+* [**Track Orders Backend Demo**](https://demo.wpswings.com/track-orders-for-woocommerce-pro/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=backend-demo)
 
 == WITH THE TRACK ORDERS FOR WOOCOMMERCE PLUGIN YOU CAN: ==
 
@@ -87,7 +87,7 @@ Track Orders for Woocommerce is compatible with various themes that are suitable
 * [**Elementor**](https://elementor.com/) – Create, Design, and Host your Website
 * [**WC Vendors**](https://www.wcvendors.com/themes/) – A Modern WordPress Theme
 * [**DIVI Theme**](https://www.elegantthemes.com/gallery/divi/) – The Ultimate WordPress Theme
-* [**Event Ticket Manager For WooCommerce**](https://wordpress.org/plugins/event-tickets-manager-for-woocommerce/) & [**Event Ticket Manager For WooCommerce Pro**](https://wpswings.com/product/membership-for-woocommerce-pro/?utm_source=wpswings-events-pro&utm_medium=ot-org-page&utm_campaign=events-pro) – Events and Bookings Calendar, Registration, Event Check-in Using Emails, Edit Your Ticket Content by WP Swings 
+* [**Event Ticket Manager For WooCommerce**](https://wordpress.org/plugins/event-tickets-manager-for-woocommerce/) & [**Event Ticket Manager For WooCommerce Pro**](https://wpswings.com/product/membership-for-woocommerce-pro/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=events-pro) – Events and Bookings Calendar, Registration, Event Check-in Using Emails, Edit Your Ticket Content by WP Swings 
 
 == WHAT PREMIUM VERSION OF WOOCOMMERCE ORDER TRACKER OFFERS == 
 
@@ -96,11 +96,11 @@ Track Orders for Woocommerce is compatible with various themes that are suitable
 * Shortcode to create Order Tracking form
 * Let customers track their orders in the pop-up box
 * Third-party Live Shipment Tracking (USPS & Canada Post) 
-* Live Map Package Tracking With Google maps
+* Live Map Package Tracking With Google Maps
 * Tracking With 17track.net
 * Custom Status for Bulk Action
 * Customization with Custom JS and CSS
-* Track Orders by scanning QR Code
+* Track Orders by scanning the QR Code
 * Order notifications to customers via text messages with Twilio's API.
 * New Email Notification Templates
 
@@ -108,15 +108,15 @@ Track Orders for Woocommerce is compatible with various themes that are suitable
 
 Track Orders for WooCommerce Pro enables the addition of multiple shipping services, customization of the tracking process to match specific business needs, and the sending of email reminders with payment links for pending orders, it offers features like tracking templates for engaging customers, shortcodes for creating custom tracking pages and forms, and a Track Your Order popup box for convenient order monitoring within the My Account section.
 
->**Note**: Get [**Track Orders For WooCommerce Pro**](https://wpswings.com/product/track-orders-for-woocommerce-pro/?utm_source=wpswings-ot-pro&utm_medium=ot-org-page&utm_campaign=ot-pro)
+>**Note**: Get [**Track Orders For WooCommerce Pro**](https://wpswings.com/product/track-orders-for-woocommerce-pro/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=ot-pro)
 
 == SUPPORT ==
-If you need support or have questions, kindly use our online chat window [**here**](https://wpswings.com/?utm_source=wpswings-official&utm_medium=ot-org-page&utm_campaign=official) 
-or connect with us then [**Generate a ticket**](https://wpswings.com/submit-query/?utm_source=wpswings-ot-submit-query&utm_medium=ot-org-page&utm_campaign=submit-query)
+If you need support or have questions, kindly use our online chat window [**here**](https://wpswings.com/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=official) 
+or connect with us then [**Generate a ticket**](https://wpswings.com/submit-query/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=submit-query)
 
-* If our documentation doesn’t contain the solution to your problem, you can visit the [**WP Swings Forums Community**](https://forums.wpswings.com/?utm_source=wpswings-forums&utm_medium=ot-org-page&utm_campaign=forum)
-* Create and Revamp your eCommerce store with [**WooCommerce Services**](https://wpswings.com/woocommerce-services/?utm_source=wpswings-ot-services&utm_medium=ot-org-page&utm_campaign=woocommerce-services) 
-* Get Huge Discounts on Track Orders for Woocommerce Plugin – [**Get More Offers**](https://wpswings.com/offers/?utm_source=wpswings-ot-offers&utm_medium=ot-org-page&utm_campaign=offers)
+* If our documentation doesn’t contain the solution to your problem, you can visit the [**WP Swings Forums Community**](https://forums.wpswings.com/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=forum)
+* Create and Revamp your eCommerce store with [**WooCommerce Services**](https://wpswings.com/woocommerce-services/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=woocommerce-services) 
+* Get Huge Discounts on Track Orders for Woocommerce Plugin – [**Get More Offers**](https://wpswings.com/offers/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=offers)
 
 == THIRD PARTY SERVICES ==
 
@@ -181,12 +181,15 @@ Firstly enable the Logged-in User to export orders from the general settings. Th
 
 = My Question is not listed? =
 
-Check out [**Track Orders  for WooCommerce Knowledge Base**](https://support.wpswings.com/wordpress-plugins-knowledge-base/category/woocommerce-order-tracker/?utm_source=wpswings-ot-kb&utm_medium=ot-org-page&utm_campaign=kb)
+Check out [**Track Orders  for WooCommerce Knowledge Base**](https://support.wpswings.com/wordpress-plugins-knowledge-base/category/woocommerce-order-tracker/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=kb)
 
 == Changelog ==
 
+= 1.0.6 – Released on 26 August 2024 = 
+* New: Latest Compatibility WP (6.6.1) and WC (9.2.2) 
+
 = 1.0.5 – Released on 26 July 2024 = 
-* New: Latest Compatibility WP (6.5.5) and WC (9.1.2) 
+* New: Latest Compatibility WP (6.6) and WC (9.1.2) 
 
 = 1.0.4 – Released on 28 May 2024 = 
 * Fixes : Order Tracking page not showing issue
@@ -207,5 +210,5 @@ Check out [**Track Orders  for WooCommerce Knowledge Base**](https://support.wps
 *  First version
 
 == Upgrade Notice ==
-= 1.0.5 – Released on 26 July 2024 = 
-* New: Latest Compatibility WP (6.5.5) and WC (9.1.2) 
+= 1.0.6 – Released on 26 August 2024 = 
+* New: Latest Compatibility WP (6.6.1) and WC (9.2.2) 
