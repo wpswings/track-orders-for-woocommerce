@@ -3296,3 +3296,9 @@ table.wps-product-details-table tbody tr td .wps-design-division .wps-controller
 p.order-again {
   margin: 4px 4px 0 0;
 }
+
+.wps_apv_facebook_share_content, .wps_apv_twitter_share_content, .wps_apv_mail_share_content, .wps_apv_whatsapp_content, .wps_apv_pinterset_share_content {
+  display: inline-block;
+  margin: 10px 15px 15px 0;
+  vertical-align: middle;
+}

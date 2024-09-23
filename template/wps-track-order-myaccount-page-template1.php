@@ -1086,6 +1086,15 @@ $wps_track_order_js = get_option( 'wps_tofw_custom_js_name' );
 																		<div class="wps_tofw_order-details-wrap">
 																			<div class="wps_tofw_oders-detail">
 																				<h3><?php esc_html_e( 'Order Details', 'track-orders-for-woocommerce' ); ?></h3>
+
+																				<?php $wps_whatswpp_share = get_option( 'tofw_enable_whatsapp_share_track_order' ); 
+																				if('on' == $wps_whatswpp_share){
+																				?>
+																				<div class="wps_apv_whatsapp_content"><a target="_blank" class="wps_swatch_whatsapp_link" href="https://api.whatsapp.com/send?text='<?php echo home_url( add_query_arg( null, null ));  ?>'"><img src="<?php echo (TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL); ?>images/wht-g.png"></a></div>
+																				<?php
+																																								}
+																				?>
+
 																				<p><span><?php esc_html_e( 'Order Id', 'track-orders-for-woocommerce' ); ?></span><span><?php echo esc_html( $order_id ); ?><?php echo '(' . count( $tofw_order->get_items() ) . esc_html_e( ' items', 'track-orders-for-woocommerce' ) . ')'; ?></span></p>
 																				<p><span><?php esc_html_e( 'Order date', 'track-orders-for-woocommerce' ); ?></span> <span>
 																								   <?php

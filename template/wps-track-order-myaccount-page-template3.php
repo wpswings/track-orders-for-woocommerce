@@ -259,6 +259,13 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 
 				<div class="wps-order-details-header">
 					<h2><?php esc_html_e( 'Order Details', 'track-orders-for-woocommerce' ); ?></h2>
+					<?php $wps_whatswpp_share = get_option( 'tofw_enable_whatsapp_share_track_order' ); 
+																	if('on' == $wps_whatswpp_share){
+																	?>
+																	<div class="wps_apv_whatsapp_content"><a target="_blank" class="wps_swatch_whatsapp_link" href="https://api.whatsapp.com/send?text='<?php echo home_url( add_query_arg( null, null ));  ?>'"><img src="<?php echo (TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL); ?>images/wht-g.png"></a></div>
+																	<?php
+																	}
+																	?>
 				</div>
 				
 				<div class="wps-order-details-div">

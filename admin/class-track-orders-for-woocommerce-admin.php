@@ -498,6 +498,18 @@ class Track_Orders_For_Woocommerce_Admin {
 			),
 
 			array(
+				'title' => __( 'Enable WhatsApp Feature', 'track-orders-for-woocommerce' ),
+				'type'  => 'radio-switch',
+				'id'    => 'tofw_enable_whatsapp_share_track_order',
+				'value' => get_option( 'tofw_enable_whatsapp_share_track_order' ),
+				'class' => 'tofw-radio-switch-class',
+				'options' => array(
+					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
+					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
+				),
+			),
+
+			array(
 				'title' => __( 'hidden_status', 'track-orders-for-woocommerce' ),
 				'type'  => 'multiselect',
 				'description'  => __( 'Select Custom status to enhance tracking.', 'track-orders-for-woocommerce' ),
