@@ -232,24 +232,6 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 	}
 	add_filter( 'plugin_row_meta', 'track_orders_for_woocommerce_custom_settings_at_plugin_tab', 10, 2 );
 
-	add_action( 'activated_plugin', 'wps_standard_redirect_on_settings' );
-	if ( ! function_exists( 'wps_standard_redirect_on_settings' ) ) {
-
-		/**
-		 * Function to redirect.
-		 *
-		 * @param string $plugin is string.
-		 * @return void
-		 */
-		function wps_standard_redirect_on_settings( $plugin ) {
-			if ( plugin_basename( __FILE__ ) === $plugin ) {
-				$general_settings_url = admin_url( 'admin.php?page=track_orders_for_woocommerce_menu' );
-				wp_redirect( esc_url( $general_settings_url ) );
-				exit();
-			}
-		}
-	}
-
 
 	/**
 	 * This function checks session is set or not
