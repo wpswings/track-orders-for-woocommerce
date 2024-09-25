@@ -76,9 +76,9 @@ if ( true == $allowed ) {
 		} else // Check order associated to customer account or not for guest user.
 		{
 			if ( 'on' != get_option( 'wps_tofw_enable_track_order_using_order_id', 'no' ) ) {
-
-				if ( isset( $_SESSION['wps_tofw_email'] ) ) {
-					$tofw_user_email = $_SESSION['wps_tofw_email'];
+				$tofw_user_email = filter_var( isset( $_SESSION['wps_tofw_email'] ), FILTER_SANITIZE_EMAIL );
+				if ( filter_var( $tofw_user_email, FILTER_VALIDATE_EMAIL ) ) {
+					$tofw_user_email = filter_var( isset( $_SESSION['wps_tofw_email'] ), FILTER_SANITIZE_EMAIL );
 
 					if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
 						// HPOS usage is enabled.
@@ -458,7 +458,7 @@ if ( $allowed ) {
 			if ( ! is_wp_error( $response ) ) {
 				$geocode = wp_remote_retrieve_body( $response );
 			}
-			
+
 			$output = json_decode( $geocode );
 
 			if ( isset( $output->results[0] ) && ! empty( $output->results[0] ) ) {
