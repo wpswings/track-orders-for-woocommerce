@@ -53,7 +53,8 @@ $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 			?>
 			</h2>
 			<?php
-			if ( isset( $_SESSION['wps_tofw_notification'] ) && ! empty( $_SESSION['wps_tofw_notification'] ) ) {
+			$tofw_notification = isset( $_SESSION['wps_tofw_notification'] ) ? htmlspecialchars( $_SESSION['wps_tofw_notification'], ENT_QUOTES, 'UTF-8' ) : '';
+			if ( isset( $tofw_notification ) && ! empty( $tofw_notification ) ) {
 				$tofw_notification = isset( $_SESSION['wps_tofw_notification'] ) ? htmlspecialchars( $_SESSION['wps_tofw_notification'], ENT_QUOTES, 'UTF-8' ) : '';
 
 				?>
