@@ -54,7 +54,8 @@ $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 			</h2>
 			<?php
 			if ( isset( $_SESSION['wps_tofw_notification'] ) && ! empty( $_SESSION['wps_tofw_notification'] ) ) {
-				$tofw_notification = filter_var( $_SESSION['wps_tofw_notification'], FILTER_SANITIZE_STRING );
+				$tofw_notification = isset( $_SESSION['wps_tofw_notification'] ) ? htmlspecialchars( $_SESSION['wps_tofw_notification'], ENT_QUOTES, 'UTF-8' ) : '';
+
 				?>
 				<ul class="woocommerce-error">
 						<li><strong><?php esc_html_e( 'ERROR', 'track-orders-for-woocommerce' ); ?></strong>: <?php echo esc_html( $tofw_notification ); ?></li>
