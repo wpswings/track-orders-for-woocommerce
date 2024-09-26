@@ -490,9 +490,9 @@ class Track_Orders_For_Woocommerce_Common {
 				$mail_footer = '';
 
 			}
-			if($wps_pro_is_active){
-			$wps_mail_template = get_option( 'tofw_invoice_template' );
-			if ( 'template_1' == $wps_mail_template ) {
+			if ( $wps_pro_is_active ) {
+				$wps_mail_template = get_option( 'tofw_invoice_template' );
+				if ( 'template_1' == $wps_mail_template ) {
 					$message = '<html>
 					<body>
 					<style>
@@ -595,45 +595,45 @@ class Track_Orders_For_Woocommerce_Common {
 
 					$order = new WC_Order( $order_id );
 					$total = 0;
-				foreach ( $order->get_items() as $item_id => $item ) {
-					$product = apply_filters( 'woocommerce_order_item_product', $item->get_product(), $item );
-					$item_meta = new WC_Order_Item_Meta( $item, $product );
-					$item_meta_html = $item_meta->display( true, true );
-					$wps_billing_phone = OrderUtil::custom_orders_table_usage_is_enabled() ? $order->get_meta( '_billing_phone', true ) : get_post_meta( $order->id, '_billing_phone', true );
+					foreach ( $order->get_items() as $item_id => $item ) {
+						$product = apply_filters( 'woocommerce_order_item_product', $item->get_product(), $item );
+						$item_meta = new WC_Order_Item_Meta( $item, $product );
+						$item_meta_html = $item_meta->display( true, true );
+						$wps_billing_phone = OrderUtil::custom_orders_table_usage_is_enabled() ? $order->get_meta( '_billing_phone', true ) : get_post_meta( $order->id, '_billing_phone', true );
 
-					$taxes = $item->get_taxes();
+						$taxes = $item->get_taxes();
 
-					// Loop through each tax class.
-					foreach ( $taxes as $tax_class => $tax ) {
-						// Add tax amount to total tax.
-						$total_tax += array_sum( $tax );
-					}
+						// Loop through each tax class.
+						foreach ( $taxes as $tax_class => $tax ) {
+							// Add tax amount to total tax.
+							$total_tax += array_sum( $tax );
+						}
 
-					$message .= '<tr>
+						$message .= '<tr>
 							<td>' . $item['name'] . '<br><small>' . $item_meta_html . '</small></td>
 							<td>' . $item['qty'] . '</td>
 							<td>' . wc_price( $product->get_price() ) . '</td>
 						</tr>';
 
-					$total += $product->get_price() * $item['qty'];
-				}
+						$total += $product->get_price() * $item['qty'];
+					}
 
-				foreach ( $order->get_order_item_totals() as $key => $total ) {
+					foreach ( $order->get_order_item_totals() as $key => $total ) {
 
-					$message .= '<tr>
+						$message .= '<tr>
 						<th colspan = "2">' . esc_html( $total['label'] ) . '</th><td>' . wp_kses_post( $total['value'] ) . '</td></tr>';
-				}
+					}
 
 					$message .= '
 					</tbody>
 					</table>
 					</div>';
 
-				if ( 'on' == get_option( 'wps_tofw_qr_redirect' ) ) {
-					$message .= '<div style="text-align: center; margin-top: 20px;">
+					if ( 'on' == get_option( 'wps_tofw_qr_redirect' ) ) {
+						$message .= '<div style="text-align: center; margin-top: 20px;">
 							<img src="' . get_site_url() . '/' . str_replace( ABSPATH, '', $file ) . '" alt="QR" style="width: 200px; height: 200px;" />
 						</div>';
-				}
+					}
 
 					$message .= '<div class="footer">
 						&copy; ' . gmdate( 'Y' ) . ' ' . $site_name . ' Your Company. All rights reserved.
@@ -641,9 +641,9 @@ class Track_Orders_For_Woocommerce_Common {
 					</body>
 					</html>';
 
-			} elseif ( 'template_2' == $wps_mail_template ) {
-				// 2nd Email notification template.
-				$message = '<html>
+				} elseif ( 'template_2' == $wps_mail_template ) {
+					// 2nd Email notification template.
+					$message = '<html>
 						<body>
 						<style>
 							body {
@@ -749,44 +749,44 @@ class Track_Orders_For_Woocommerce_Common {
 
 						$order = new WC_Order( $order_id );
 						$total = 0;
-				foreach ( $order->get_items() as $item_id => $item ) {
-					$product = apply_filters( 'woocommerce_order_item_product', $item->get_product(), $item );
-					$item_meta = new WC_Order_Item_Meta( $item, $product );
-					$item_meta_html = $item_meta->display( true, true );
+					foreach ( $order->get_items() as $item_id => $item ) {
+						$product = apply_filters( 'woocommerce_order_item_product', $item->get_product(), $item );
+						$item_meta = new WC_Order_Item_Meta( $item, $product );
+						$item_meta_html = $item_meta->display( true, true );
 
-					$taxes = $item->get_taxes();
+						$taxes = $item->get_taxes();
 
-					// Loop through each tax class.
-					foreach ( $taxes as $tax_class => $tax ) {
-						// Add tax amount to total tax.
-						$total_tax += array_sum( $tax );
-					}
+						// Loop through each tax class.
+						foreach ( $taxes as $tax_class => $tax ) {
+							// Add tax amount to total tax.
+							$total_tax += array_sum( $tax );
+						}
 
-					$message .= '<tr>
+						$message .= '<tr>
 								<td>' . $item['name'] . '<br><small>' . $item_meta_html . '</small></td>
 								<td>' . $item['qty'] . '</td>
 								<td>' . wc_price( $product->get_price() ) . '</td>
 							</tr>';
 
-					$total += $product->get_price() * $item['qty'];
-				}
+						$total += $product->get_price() * $item['qty'];
+					}
 
-				foreach ( $order->get_order_item_totals() as $key => $total ) {
+					foreach ( $order->get_order_item_totals() as $key => $total ) {
 
-					$message .= '<tr>
+						$message .= '<tr>
 								<th colspan = "2">' . esc_html( $total['label'] ) . '</th><td>' . wp_kses_post( $total['value'] ) . '</td></tr>';
-				}
+					}
 
 						$message .= '
 						</tbody>
 						</table>
 						</div>';
 
-				if ( 'on' == get_option( 'wps_tofw_qr_redirect' ) ) {
-					$message .= '<div class="qr-code">
+					if ( 'on' == get_option( 'wps_tofw_qr_redirect' ) ) {
+						$message .= '<div class="qr-code">
 								<img src="' . get_site_url() . '/' . str_replace( ABSPATH, '', $file ) . '" alt="QR" />
 							</div>';
-				}
+					}
 						$site_name = get_bloginfo( 'name' );
 						$message .= '<div class="footer">
 							&copy; ' . gmdate( 'Y' ) . ' ' . $site_name . ' Your Company. All rights reserved.
@@ -795,9 +795,9 @@ class Track_Orders_For_Woocommerce_Common {
 						</body>
 						</html>';
 
-			} elseif ( 'template_3' == $wps_mail_template ) {
-				// template 3.
-				$message = '<html>
+				} elseif ( 'template_3' == $wps_mail_template ) {
+					// template 3.
+					$message = '<html>
 				<body>
 				<style>
 				body {
@@ -969,20 +969,20 @@ class Track_Orders_For_Woocommerce_Common {
 								</thead>
 								<tbody>';
 
-				$order = new WC_Order( $order_id );
-				$total = 0;
-				foreach ( $order->get_items() as $item_id => $item ) {
-					$product = apply_filters( 'woocommerce_order_item_product', $item->get_product(), $item );
-					$item_meta = new WC_Order_Item_Meta( $item, $product );
-					$item_meta_html = $item_meta->display( true, true );
+					$order = new WC_Order( $order_id );
+					$total = 0;
+					foreach ( $order->get_items() as $item_id => $item ) {
+						$product = apply_filters( 'woocommerce_order_item_product', $item->get_product(), $item );
+						$item_meta = new WC_Order_Item_Meta( $item, $product );
+						$item_meta_html = $item_meta->display( true, true );
 
-					$taxes = $item->get_taxes();
+						$taxes = $item->get_taxes();
 
 							// Loop through each tax class.
-					foreach ( $taxes as $tax_class => $tax ) {
-						// Add tax amount to total tax.
-						$total_tax += array_sum( $tax );
-					}
+						foreach ( $taxes as $tax_class => $tax ) {
+							// Add tax amount to total tax.
+							$total_tax += array_sum( $tax );
+						}
 
 							$message .= '<tr>
 								<td>' . $item['name'] . '<br><small>' . $item_meta_html . '</small></td>
@@ -991,36 +991,36 @@ class Track_Orders_For_Woocommerce_Common {
 							</tr>';
 
 							$total += $product->get_price() * $item['qty'];
-				}
+					}
 
-				foreach ( $order->get_order_item_totals() as $key => $total ) {
+					foreach ( $order->get_order_item_totals() as $key => $total ) {
 
-					$message .= '<tr>
+						$message .= '<tr>
 								<th colspan = "2">' . esc_html( $total['label'] ) . '</th><td>' . wp_kses_post( $total['value'] ) . '</td></tr>';
-				}
+					}
 
-				$message .= '
+					$message .= '
 				</tbody>
 				</table>
 				</div>';
 
-				if ( 'on' == get_option( 'wps_tofw_qr_redirect' ) ) {
-					$message .= '<div class="qr-code">
+					if ( 'on' == get_option( 'wps_tofw_qr_redirect' ) ) {
+						$message .= '<div class="qr-code">
 						<img src="' . get_site_url() . '/' . str_replace( ABSPATH, '', $file ) . '" alt="QR" />
 					</div>';
-				}
-				$site_name = get_bloginfo( 'name' );
-				$message .= '<div class="footer">
+					}
+					$site_name = get_bloginfo( 'name' );
+					$message .= '<div class="footer">
 					&copy; ' . gmdate( 'Y' ) . ' ' . $site_name . ' All rights reserved. <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
 				</div>
 				</div>
 				</body>
 				</html>';
+				}
 			}
-		}
 
-        if( !$wps_pro_is_active){
-		$message = '<html>
+			if ( ! $wps_pro_is_active ) {
+				$message = '<html>
 		<body>
 			<style>
 				body {
@@ -1128,51 +1128,50 @@ class Track_Orders_For_Woocommerce_Common {
 
 							$order = new WC_Order( $order_id );
 							$total = 0;
-		foreach ( $order->get_items() as $item_id => $item ) {
-			/**
-			 * Woocommerce order items.
-			 *
-			 * @since 1.0.0
-			 */
-			$product = apply_filters( 'woocommerce_order_item_product', $item->get_product(), $item );
-			$item_meta      = new WC_Order_Item_Meta( $item, $product );
-			$item_meta_html = $item_meta->display( true, true );
-			$wps_billing_phone = OrderUtil::custom_orders_table_usage_is_enabled() ? $order->get_meta( '_billing_phone', true ) : get_post_meta( $order->id, '_billing_phone', true );
-			
-			$taxes = $item->get_taxes();
+				foreach ( $order->get_items() as $item_id => $item ) {
+					/**
+					 * Woocommerce order items.
+					 *
+					 * @since 1.0.0
+					 */
+					$product = apply_filters( 'woocommerce_order_item_product', $item->get_product(), $item );
+					$item_meta      = new WC_Order_Item_Meta( $item, $product );
+					$item_meta_html = $item_meta->display( true, true );
+					$wps_billing_phone = OrderUtil::custom_orders_table_usage_is_enabled() ? $order->get_meta( '_billing_phone', true ) : get_post_meta( $order->id, '_billing_phone', true );
 
-			// Loop through each tax class.
-			foreach ( $taxes as $tax_class => $tax ) {
-			// Add tax amount to total tax.
-			$total_tax += array_sum( $tax );
-			}
+					$taxes = $item->get_taxes();
 
+					// Loop through each tax class.
+					foreach ( $taxes as $tax_class => $tax ) {
+						// Add tax amount to total tax.
+						$total_tax += array_sum( $tax );
+					}
 
-			$message .= '<tr>
+					$message .= '<tr>
 								<td>' . $item['name'] . '<br>';
-				$message .= '<small>' . $item_meta_html . '</small>
+					$message .= '<small>' . $item_meta_html . '</small>
 									<td>' . $item['qty'] . '</td>
 									<td>' . wc_price( $product->get_price() ) . '</td>
 								</tr>';
-			$total = $total + ( $product->get_price() * $item['qty'] );
-		}
+					$total = $total + ( $product->get_price() * $item['qty'] );
+				}
 
-		foreach ( $order->get_order_item_totals() as $key => $total ) {
+				foreach ( $order->get_order_item_totals() as $key => $total ) {
 
-			$message .= '<tr>
+					$message .= '<tr>
 						<th colspan = "2">' . esc_html( $total['label'] ) . '</th><td>' . wp_kses_post( $total['value'] ) . '</td></tr>';
-		}
+				}
 
 					$message .= '</tbody>
 				</table>
 			</div>';
-		if('on' == get_option( 'wps_tofw_qr_redirect' )){
-		$message .= '<div><img src="' . get_site_url() . '/' . str_replace( ABSPATH, '', $file ) . '" alt= "QR" style="display: block; margin: 0 auto; width: 300px; height: 300px;" /></div>';
-		}
-		$message .= '</body>
+				if ( 'on' == get_option( 'wps_tofw_qr_redirect' ) ) {
+					$message .= '<div><img src="' . get_site_url() . '/' . str_replace( ABSPATH, '', $file ) . '" alt= "QR" style="display: block; margin: 0 auto; width: 300px; height: 300px;" /></div>';
+				}
+				$message .= '</body>
 		</html>';
 
-	}
+			}
 				wc_mail( $to, $subject, $message, $headers );
 		}
 	}
@@ -1296,19 +1295,27 @@ class Track_Orders_For_Woocommerce_Common {
 					'return'      => 'ids', // Specify 'ids' to get only the order IDs.
 				)
 			);
-
+			$wps_check = 'failed';
 			if ( ! empty( $_orders_temp ) && is_array( $_orders_temp ) ) {
 				foreach ( $_orders_temp as $key => $id ) {
 
 					$_order = new WC_Order( $id );
 					if ( $_order->get_billing_email() == $email ) {
 						$_orders[] = $id;
+						$main_arr = array(
+							'status' => 'successs',
+							'file_name' => 'wps_order_details',
+						);
+						$wps_check = 'success';
+					} else {
+						$main_arr = array(
+							'status' => 'failed',
+						);
 					}
 				}
 				$order_details = $this->wps_tofw_get_csv_order_details( $_orders );
 				$main_arr = array(
-					'status' => 'success',
-					'file_name' => 'wps_order_details',
+					'status' => $wps_check,
 					'order_data' => $order_details,
 				);
 			}

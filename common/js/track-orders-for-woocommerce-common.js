@@ -89,6 +89,8 @@
 					   
 					   var encodedUri = encodeURI(csvContent);
 							download(filename, encodedUri);
+					} else {
+						alert('The email address you provided is not recognized. Please try again.');
 					}
 				
 				}	
