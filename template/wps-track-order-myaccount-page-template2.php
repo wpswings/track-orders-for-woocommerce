@@ -215,7 +215,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 		$expected_delivery_time = get_post_meta( $order_id, 'wps_tofw_estimated_delivery_time', true );
 		$order_delivered_date = get_post_meta( $order_id, '_completed_date', true );
 	}
-
+	$allowed = true;
 	if ( $allowed ) {
 		$tofw_order = new WC_Order( $order_id );
 

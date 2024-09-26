@@ -135,7 +135,7 @@ get_header( 'shop' );
  */
 do_action( 'woocommerce_before_main_content' );
 
-
+$allowed = true;
 if ( $allowed ) {
 
 	if ( isset( $order_id ) && ! empty( $order_id ) ) {

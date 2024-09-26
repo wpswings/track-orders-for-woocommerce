@@ -169,7 +169,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 	<div class="wps-tofw-order-tracking-section <?php echo esc_attr( $wps_main_wrapper_class ); ?>">
 		<?php
 
-
+		$allowed = true;
 		if ( true == $allowed ) {
 
 			$tofw_order = new WC_Order( $order_id );
