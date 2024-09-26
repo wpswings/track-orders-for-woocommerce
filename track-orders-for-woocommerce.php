@@ -239,9 +239,9 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 	 * @link http://www.wpswings.com/
 	 */
 	function wps_tofw_set_session() {
+		ob_start(); // Start output buffering.
 		if ( ! session_id() ) {
-
-			session_start();
+			session_start(); // Start the session.
 		}
 		$value_check = isset( $_POST['track_order_nonce_name'] ) ? sanitize_text_field( wp_unslash( $_POST['track_order_nonce_name'] ) ) : '';
 		wp_verify_nonce( $value_check, 'track_order_nonce' );
@@ -283,6 +283,7 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 				$_SESSION['wps_tofw_notification'] = __( 'OrderId is Invalid', 'woocommerce-order-tracker' );
 			}
 		}
+		ob_end_flush();
 	}
 	add_action( 'init', 'wps_tofw_set_session' );
 } else {
