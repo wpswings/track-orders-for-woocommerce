@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 $secure_nonce      = wp_create_nonce( 'wps-upsell-auth-nonce' );
 $id_nonce_verified = wp_verify_nonce( $secure_nonce, 'wps-upsell-auth-nonce' );
 if ( ! $id_nonce_verified ) {
-wp_die( esc_html__( 'Nonce Not verified', 'upsell-order-bump-offer-for-woocommerce' ) );
+	wp_die( esc_html__( 'Nonce Not verified', 'upsell-order-bump-offer-for-woocommerce' ) );
 }
 global $wps_tofw_obj, $error_notice;
 $tofw_active_tab = isset( $_GET['tofw_tab'] ) ? sanitize_key( $_GET['tofw_tab'] ) : 'track-orders-for-woocommerce-general';
@@ -28,12 +28,25 @@ $tofw_default_tabs = $wps_tofw_obj->wps_std_plug_default_tabs();
 	<?php
 	// desc - This hook is used for trial.
 	do_action( 'wps_tofw_settings_saved_notice' );
+	$plugin_path = 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php';
+	$wps_pro_is_active = false;
+	// Check if the plugin is active.
+	if ( is_plugin_active( $plugin_path ) ) {
+		$wps_pro_is_active = true;
+	}
 	?>
 	<div class="wps-header-container wps-bg-white wps-r-8">
+	<?php if ( ! $wps_pro_is_active ) { ?>
 		<h1 class="wps-header-title"><?php echo esc_attr( strtoupper( str_replace( '-', ' ', $wps_tofw_obj->tofw_get_plugin_name() ) ) ); ?></h1>
 		<a href="https://docs.wpswings.com/track-orders-for-woocommerce/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=ot-doc-free" target="_blank" class="wps-link"><?php esc_html_e( 'Documentation', 'track-orders-for-woocommerce' ); ?></a>
 		<span>|</span>
 		<a href="https://wpswings.com/contact-us/" target="_blank" class="wps-link"><?php esc_html_e( 'Support', 'track-orders-for-woocommerce' ); ?></a>
+	<?php } else { ?>
+		<h1 class="wps-header-title"><?php echo esc_attr( strtoupper( str_replace( '-', ' ', 'track-orders-for-woocommerce-pro' ) ) ); ?></h1>
+		<a href="https://docs.wpswings.com/track-orders-for-woocommerce-pro/?utm_source=wpswings-ot-doc&utm_medium=ot-pro-page&utm_campaign=documentation" target="_blank" class="wps-link"><?php esc_html_e( 'Documentation', 'track-orders-for-woocommerce' ); ?></a>
+		<span>|</span>
+		<a href="https://wpswings.com/contact-us/" target="_blank" class="wps-link"><?php esc_html_e( 'Support', 'track-orders-for-woocommerce' ); ?></a>
+		<?php } ?>
 	</div>
 </header>
 <?php
