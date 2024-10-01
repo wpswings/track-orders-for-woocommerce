@@ -9,6 +9,7 @@
  * @subpackage Track_Orders_For_Woocommerce/common
  */
 
+use Automattic\WooCommerce\Utilities\OrderUtil;
 /**
  * The common functionality of the plugin.
  *
@@ -55,7 +56,7 @@ class Track_Orders_For_Woocommerce_Common {
 	 */
 	public function tofw_common_enqueue_styles() {
 		wp_enqueue_style( $this->plugin_name . 'common', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'common/css/track-orders-for-woocommerce-common.css', array(), $this->version, 'all' );
-
+		// wp_enqueue_style( 'bootstrap', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'common/css/bootstrap.css', array(), $this->version, 'all' );.
 	}
 
 	/**
@@ -89,33 +90,35 @@ class Track_Orders_For_Woocommerce_Common {
 			echo wp_json_encode(
 				array(
 					'status' => false,
-					'msg' => esc_html__(
+					'msg' => __(
 						'An unexpected error occurred. Please try again.',
 						'track-orders-for-woocommerce'
 					),
 				)
 			);
+
 		} else {
 			$wps_tofw_license_data = json_decode( wp_remote_retrieve_body( $wps_tofw_response ) );
 
 			if ( isset( $wps_tofw_license_data->result ) && 'success' === $wps_tofw_license_data->result ) {
-				update_option( 'track_orders_license_key', $wps_tofw_purchase_code );
-				update_option( 'track_orders_license_check', true );
+				update_option( 'wps_tofw_license_key', $wps_tofw_purchase_code );
+				update_option( 'wps_tofw_license_check', true );
 
 				echo wp_json_encode(
 					array(
 						'status' => true,
-						'msg' => esc_html__(
+						'msg' => __(
 							'Successfully Verified. Please Wait.',
 							'track-orders-for-woocommerce'
 						),
 					)
 				);
+
 			} else {
 				echo wp_json_encode(
 					array(
 						'status' => false,
-						'msg'    => esc_html( $wps_tofw_license_data->message ),
+						'msg' => $wps_tofw_license_data->message,
 					)
 				);
 
@@ -133,11 +136,11 @@ class Track_Orders_For_Woocommerce_Common {
 	public function tofw_wpswings_tracker_send_event( $override = false ) {
 		require_once WC()->plugin_path() . '/includes/class-wc-tracker.php';
 
-		$last_send = get_option( 'track_orders_tracker_last_send' );
+		$last_send = get_option( 'wpswings_tracker_last_send' );
 		if ( ! apply_filters( 'wpswings_tracker_send_override', $override ) ) {
 			// Send a maximum of once per week by default.
 			$last_send = $this->wps_tofw_last_send_time();
-			if ( $last_send && $last_send > apply_filters( 'track_orders_tracker_last_send_interval', strtotime( '-1 week' ) ) ) {
+			if ( $last_send && $last_send > apply_filters( 'wpswings_tracker_last_send_interval', strtotime( '-1 week' ) ) ) {
 				return;
 			}
 		} else {
@@ -151,7 +154,7 @@ class Track_Orders_For_Woocommerce_Common {
 		$api_route = 'mp';
 		$api_route .= 's';
 		// Update time first before sending to ensure it is set.
-		update_option( 'track_orders_tracker_last_send', time() );
+		update_option( 'wpswings_tracker_last_send', time() );
 		$params = WC_Tracker::get_tracking_data();
 		$params = apply_filters( 'wpswings_tracker_params', $params );
 		$api_url = 'https://tracking.wpswings.com/wp-json/' . $api_route . '-route/v1/' . $api_route . '-testing-data/';
@@ -172,7 +175,7 @@ class Track_Orders_For_Woocommerce_Common {
 	 * @since 1.0.0
 	 */
 	public function wps_tofw_last_send_time() {
-		return apply_filters( 'track_orders_tracker_last_send_time', get_option( 'track_orders_tracker_last_send', false ) );
+		return apply_filters( 'wpswings_tracker_last_send_time', get_option( 'wpswings_tracker_last_send', false ) );
 	}
 
 	/**
@@ -186,34 +189,34 @@ class Track_Orders_For_Woocommerce_Common {
 
 		$term_accpted = ! empty( $_POST['consetCheck'] ) ? sanitize_text_field( wp_unslash( $_POST['consetCheck'] ) ) : ' ';
 		if ( ! empty( $term_accpted ) && 'yes' == $term_accpted ) {
-			update_option( 'track_orders_enable_tracking', 'on' );
+			update_option( 'tofw_enable_tracking', 'on' );
 		}
 		// settings fields.
-		$first_name = ! empty( $_POST['track_orders_firstname'] ) ? sanitize_text_field( wp_unslash( $_POST['track_orders_firstname'] ) ) : '';
-		update_option( 'track_orders_firstname', $first_name );
+		$first_name = ! empty( $_POST['firstName'] ) ? sanitize_text_field( wp_unslash( $_POST['firstName'] ) ) : '';
+		update_option( 'firstname', $first_name );
 
-		$email = ! empty( $_POST['track_orders_email'] ) ? sanitize_text_field( wp_unslash( $_POST['track_orders_email'] ) ) : '';
-		update_option( 'track_orders_email', $email );
+		$email = ! empty( $_POST['email'] ) ? sanitize_text_field( wp_unslash( $_POST['email'] ) ) : '';
+		update_option( 'email', $email );
 
-		$desc = ! empty( $_POST['track_orders_desc'] ) ? sanitize_text_field( wp_unslash( $_POST['track_orders_desc'] ) ) : '';
-		update_option( 'track_orders_desc', $desc );
+		$desc = ! empty( $_POST['desc'] ) ? sanitize_text_field( wp_unslash( $_POST['desc'] ) ) : '';
+		update_option( 'desc', $desc );
 
-		$age = ! empty( $_POST['track_orders_age'] ) ? sanitize_text_field( wp_unslash( $_POST['track_orders_age'] ) ) : '';
-		update_option( 'track_orders_age', $age );
+		$age = ! empty( $_POST['age'] ) ? sanitize_text_field( wp_unslash( $_POST['age'] ) ) : '';
+		update_option( 'age', $age );
 
-		$track_orders_first_checkbox = ! empty( $_POST['FirstCheckbox'] ) ? sanitize_text_field( wp_unslash( $_POST['FirstCheckbox'] ) ) : '';
-		update_option( 'track_orders_first_checkbox', $track_orders_first_checkbox );
+		$first_checkbox = ! empty( $_POST['FirstCheckbox'] ) ? sanitize_text_field( wp_unslash( $_POST['FirstCheckbox'] ) ) : '';
+		update_option( 'first_checkbox', $first_checkbox );
 
 		$checked_first_switch = ! empty( $_POST['checkedA'] ) ? sanitize_text_field( wp_unslash( $_POST['checkedA'] ) ) : '';
 		if ( ! empty( $checked_first_switch ) && $checked_first_switch ) {
-			update_option( 'track_orders_radio_switch_demo', 'on' );
+			update_option( 'tofw_radio_switch_demo', 'on' );
 		}
 
 		$checked_second_switch = ! empty( $_POST['checkedB'] ) ? sanitize_text_field( wp_unslash( $_POST['checkedB'] ) ) : '';
 		if ( ! empty( $checked_second_switch ) && $checked_second_switch ) {
-			update_option( 'track_orders_radio_reset_license', 'on' );
+			update_option( 'tofw_radio_reset_license', 'on' );
 		}
-		update_option( 'track_orders_for_woocommerce_multistep_done', 'yes' );
+		update_option( 'wps_track_orders_for_woocommerce_multistep_done', 'yes' );
 
 		wp_send_json( 'yes' );
 	}
@@ -225,14 +228,14 @@ class Track_Orders_For_Woocommerce_Common {
 	 * @return string
 	 */
 	public function wps_tofw_include_track_order_page( $template ) {
-		$selected_template = get_option( 'track_orders_activated_template' );
+		$selected_template = get_option( 'wps_tofw_activated_template' );
 		$wps_tofw_google_map_setting = get_option( 'wps_tofw_trackorder_with_google_map', false );
 		$wps_tofw_enable_track_order_feature = get_option( 'tofw_enable_track_order', 'no' );
 		if ( 'on' != $wps_tofw_enable_track_order_feature ) {
 			return $template;
 		}
 		if ( 'on' == $wps_tofw_enable_track_order_feature && 'on' == $wps_tofw_google_map_setting ) {
-			$wps_tofw_pages = get_option( 'track_orders_tracking_page' );
+			$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
 			$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
 			if ( is_page( $page_id ) ) {
 				$new_template = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'template/wps-map-new-template.php';
@@ -240,7 +243,7 @@ class Track_Orders_For_Woocommerce_Common {
 			}
 		} else {
 
-			$wps_tofw_pages = get_option( 'track_orders_tracking_page', false );
+			$wps_tofw_pages = get_option( 'wps_tofw_tracking_page', false );
 			$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
 			if ( is_page( $page_id ) ) {
 				if ( ' ' != $selected_template && null != $selected_template ) {
@@ -272,6 +275,38 @@ class Track_Orders_For_Woocommerce_Common {
 	 * @return void
 	 */
 	public function wps_tofw_track_order_status( $order_id, $old_status, $new_status ) {
+
+		require_once TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'package/lib/phpqrcode/phpqrcode.php';
+
+		$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
+		$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
+		$track_order_url = get_permalink( $page_id );
+
+			// Parse the URL.
+			$url_parts = wp_parse_url( $track_order_url );
+			$path = $url_parts['path'];
+			$path = trim( $path, '/' );
+			$path_parts = explode( '/', $path );
+			$last_part = end( $path_parts );
+
+		$order = wc_get_order( $order_id );
+		$site_url = get_site_url() . '/' . $last_part . '/?' . esc_html( $order_id ) . '';
+		$uploads = wp_upload_dir();
+		$path = $uploads['basedir'] . '/tracking_images/';
+		$file  = $path . $order_id . 'tracking_checkin.png';  // address of the image od barcode in which  url is saved.
+		if ( file_exists( $file ) ) {
+
+			wp_delete_file( $file );
+		}
+
+		$path = $uploads['basedir'] . '/tracking_images/';
+		$file = $path . $order_id . 'tracking_checkin.png'; // path  of the image.
+		$ecc = 'M';
+		$pixel_size = 20;
+		$frame_size = 20;
+		// Generate the PNG QR code.
+		QRcode::png( $site_url, $file, $ecc, $pixel_size, $frame_size );
+
 		$old_status = 'wc-' . $old_status;
 		$new_status = 'wc-' . $new_status;
 		$wps_tofw_email_notifier = get_option( 'wps_tofw_email_notifier', 'no' );
@@ -291,9 +326,18 @@ class Track_Orders_For_Woocommerce_Common {
 
 		$wps_status_change_time = array();
 		$wps_status_change_time_temp = array();
-		$wps_status_change_time = get_post_meta( $order_id, 'wps_track_order_onchange_time', true );
-		$wps_status_change_time_temp = get_post_meta( $order_id, 'wps_track_order_onchange_time_temp', true );
-		$wps_status_change_time_template2 = get_post_meta( $order_id, 'wps_track_order_onchange_time_template', true );
+
+		if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+			// HPOS usage is enabled.
+			$wps_status_change_time = $order->get_meta( 'wps_track_order_onchange_time', true );
+			$wps_status_change_time_temp = $order->get_meta( 'wps_track_order_onchange_time_temp', true );
+			$wps_status_change_time_template2 = $order->get_meta( 'wps_track_order_onchange_time_template', true );
+		} else {
+			$wps_status_change_time = get_post_meta( $order_id, 'wps_track_order_onchange_time', true );
+			$wps_status_change_time_temp = get_post_meta( $order_id, 'wps_track_order_onchange_time_temp', true );
+			$wps_status_change_time_template2 = get_post_meta( $order_id, 'wps_track_order_onchange_time_template', true );
+		}
+
 		$order_index = 'wc-' . $change_order_status;
 		if ( is_array( $wps_status_change_time_temp ) && ! empty( $wps_status_change_time_temp ) ) {
 			if ( is_array( $wps_status_change_time_temp ) ) {
@@ -326,7 +370,13 @@ class Track_Orders_For_Woocommerce_Common {
 		}
 		$statuses = wc_get_order_statuses();
 
-		$wps_track_order_status = get_post_meta( $order_id, 'wps_track_order_status', true );
+		if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+			// HPOS usage is enabled.
+			$wps_track_order_status = $order->get_meta( 'wps_track_order_status', true );
+		} else {
+			$wps_track_order_status = get_post_meta( $order_id, 'wps_track_order_status', true );
+		}
+
 		if ( is_array( $wps_track_order_status ) && ! empty( $wps_track_order_status ) ) {
 			$c = count( $wps_track_order_status );
 			if ( $wps_track_order_status[ $c - 1 ] === $old_status ) {
@@ -339,18 +389,40 @@ class Track_Orders_For_Woocommerce_Common {
 				}
 
 				$wps_track_order_status[] = $new_status;
-				update_post_meta( $order_id, 'wps_track_order_status', $wps_track_order_status );
-				update_post_meta( $order_id, 'wps_track_order_onchange_time', $wps_status_change_time );
-				update_post_meta( $order_id, 'wps_track_order_onchange_time_temp', $wps_status_change_time_temp );
-				update_post_meta( $order_id, 'wps_track_order_onchange_time_template', $wps_status_change_time_template2 );
+
+				if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+					// HPOS usage is enabled.
+					$order->update_meta_data( 'wps_track_order_status', $wps_track_order_status );
+					$order->update_meta_data( 'wps_track_order_onchange_time', $wps_status_change_time );
+					$order->update_meta_data( 'wps_track_order_onchange_time_temp', $wps_status_change_time_temp );
+					$order->update_meta_data( 'wps_track_order_onchange_time_template', $wps_status_change_time_template2 );
+					$order->save();
+
+				} else {
+					update_post_meta( $order_id, 'wps_track_order_status', $wps_track_order_status );
+					update_post_meta( $order_id, 'wps_track_order_onchange_time', $wps_status_change_time );
+					update_post_meta( $order_id, 'wps_track_order_onchange_time_temp', $wps_status_change_time_temp );
+					update_post_meta( $order_id, 'wps_track_order_onchange_time_template', $wps_status_change_time_template2 );
+				}
 			} else {
 
 				$wps_track_order_status[] = $old_status;
 				$wps_track_order_status[] = $new_status;
-				update_post_meta( $order_id, 'wps_track_order_status', $wps_track_order_status );
-				update_post_meta( $order_id, 'wps_track_order_onchange_time', $wps_status_change_time );
-				update_post_meta( $order_id, 'wps_track_order_onchange_time_temp', $wps_status_change_time_temp );
-				update_post_meta( $order_id, 'wps_track_order_onchange_time_template', $wps_status_change_time_template2 );
+
+				if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+					// HPOS usage is enabled.
+					$order->update_meta_data( 'wps_track_order_status', $wps_track_order_status );
+					$order->update_meta_data( 'wps_track_order_onchange_time', $wps_status_change_time );
+					$order->update_meta_data( 'wps_track_order_onchange_time_temp', $wps_status_change_time_temp );
+					$order->update_meta_data( 'wps_track_order_onchange_time_template', $wps_status_change_time_template2 );
+					$order->save();
+
+				} else {
+					update_post_meta( $order_id, 'wps_track_order_status', $wps_track_order_status );
+					update_post_meta( $order_id, 'wps_track_order_onchange_time', $wps_status_change_time );
+					update_post_meta( $order_id, 'wps_track_order_onchange_time_temp', $wps_status_change_time_temp );
+					update_post_meta( $order_id, 'wps_track_order_onchange_time_template', $wps_status_change_time_template2 );
+				}
 			}
 		} else {
 
@@ -361,10 +433,27 @@ class Track_Orders_For_Woocommerce_Common {
 			$wps_track_order_status[] = $old_status;
 			$wps_track_order_status[] = $new_status;
 
-			update_post_meta( $order_id, 'wps_track_order_status', $wps_track_order_status );
-			update_post_meta( $order_id, 'wps_track_order_onchange_time', $wps_status_change_time );
-			update_post_meta( $order_id, 'wps_track_order_onchange_time_temp', $wps_status_change_time_temp );
-			update_post_meta( $order_id, 'wps_track_order_onchange_time_template', $wps_status_change_time_template2 );
+			if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+				// HPOS usage is enabled.
+				$order->update_meta_data( 'wps_track_order_status', $wps_track_order_status );
+				$order->update_meta_data( 'wps_track_order_onchange_time', $wps_status_change_time );
+				$order->update_meta_data( 'wps_track_order_onchange_time_temp', $wps_status_change_time_temp );
+				$order->update_meta_data( 'wps_track_order_onchange_time_template', $wps_status_change_time_template2 );
+				$order->save();
+
+			} else {
+				update_post_meta( $order_id, 'wps_track_order_status', $wps_track_order_status );
+				update_post_meta( $order_id, 'wps_track_order_onchange_time', $wps_status_change_time );
+				update_post_meta( $order_id, 'wps_track_order_onchange_time_temp', $wps_status_change_time_temp );
+				update_post_meta( $order_id, 'wps_track_order_onchange_time_template', $wps_status_change_time_template2 );
+			}
+		}
+
+		$plugin_path = 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php';
+		$wps_pro_is_active = false;
+		// Check if the plugin is active.
+		if ( is_plugin_active( $plugin_path ) ) {
+			$wps_pro_is_active = true;
 		}
 
 		if ( 'on' == $wps_tofw_email_notifier && 'wc-completed' != $new_status ) {
@@ -372,9 +461,17 @@ class Track_Orders_For_Woocommerce_Common {
 				$order_id = $order->id;
 				$headers = array();
 				$headers[] = 'Content-Type: text/html; charset=UTF-8';
-				$fname = get_post_meta( $order_id, '_billing_first_name', true );
-				$lname = get_post_meta( $order_id, '_billing_last_name', true );
-				$to = get_post_meta( $order_id, '_billing_email', true );
+				if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+					// HPOS usage is enabled.
+					$fname = $order->get_meta( '_billing_first_name', true );
+					$lname = $order->get_meta( '_billing_last_name', true );
+					$to = $order->get_meta( '_billing_email', true );
+				} else {
+					$fname = get_post_meta( $order_id, '_billing_first_name', true );
+					$lname = get_post_meta( $order_id, '_billing_last_name', true );
+					$to = get_post_meta( $order_id, '_billing_email', true );
+				}
+
 				$subject = __( 'Your Order Status for Order #', 'track-orders-for-woocommerce' ) . $order_id;
 				$message = __( 'Your Order Status is ', 'track-orders-for-woocommerce' ) . $statuses[ $new_status ];
 				$mail_header = __( 'Current Order Status is ', 'track-orders-for-woocommerce' ) . $statuses[ $new_status ];
@@ -386,180 +483,696 @@ class Track_Orders_For_Woocommerce_Common {
 				$wps_all_data = $order->get_data();
 				$billing_address = $wps_all_data['billing'];
 				$shipping_address = $wps_all_data['shipping'];
-				$to = get_post_meta( $order_id, '_billing_email', true );
+				$to = $billing_address['email'];
 				$subject = __( 'Your Order Status for Order #', 'track-orders-for-woocommerce' ) . $order_id;
 				$message = __( 'Your Order Status is ', 'track-orders-for-woocommerce' ) . $statuses[ $new_status ];
 				$mail_header = __( 'Current Order Status is ', 'track-orders-for-woocommerce' ) . $statuses[ $new_status ];
 				$mail_footer = '';
 
 			}
-
-			$message = '<html>
-			<body>
-				<style>
-					body {
-						box-shadow: 2px 2px 10px #ccc;
-						color: #767676;
-						font-family: Arial,sans-serif;
-						margin: 80px auto;
-						max-width: 700px;
-						padding-bottom: 30px;
-						width: 100%;
-					}
-
-					h2 {
-						font-size: 30px;
-						margin-top: 0;
-						color: #fff;
-						padding: 40px;
-						background-color: #557da1;
-					}
-
-					h4 {
-						color: #557da1;
-						font-size: 20px;
-						margin-bottom: 10px;
-					}
-
-					.content {
-						padding: 0 40px;
-					}
-
-					.Customer-detail ul li p {
-						margin: 0;
-					}
-
-					.details .Shipping-detail {
-						width: 40%;
-						float: right;
-					}
-
-					.details .Billing-detail {
-						width: 60%;
-						float: left;
-					}
-
-					.details .Shipping-detail ul li,.details .Billing-detail ul li {
-						list-style-type: none;
-						margin: 0;
-					}
-
-					.details .Billing-detail ul,.details .Shipping-detail ul {
-						margin: 0;
-						padding: 0;
-					}
-
-					.clear {
-						clear: both;
-					}
-
-					table,td,th {
-						border: 2px solid #ccc;
-						padding: 15px;
-						text-align: left;
-					}
-
-					table {
-						border-collapse: collapse;
-						width: 100%;
-					}
-
-					.info {
-						display: inline-block;
-					}
-
-					.bold {
-						font-weight: bold;
-					}
-
-					.footer {
-						margin-top: 30px;
-						text-align: center;
-						color: #99B1D8;
-						font-size: 12px;
-					}
-					dl.variation dd {
-						font-size: 12px;
-						margin: 0;
-					}
-				</style>
-
-				<div style="padding: 36px 48px; background-color:#557DA1;color: #fff; font-size: 30px; font-weight: 300; font-family:helvetica;" class="header">
-					' . $mail_header . '
-				</div>		
-
-				<div class="content">
-
-					<div class="Order">
+			if ( $wps_pro_is_active ) {
+				$wps_mail_template = get_option( 'tofw_invoice_template' );
+				if ( 'template_1' == $wps_mail_template ) {
+					$message = '<html>
+					<body>
+					<style>
+						body {
+							box-shadow: 2px 2px 10px #ccc;
+							color: #333;
+							font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+							margin: 40px auto;
+							max-width: 700px;
+							padding: 30px;
+							width: 100%;
+							background-color: #f8f9fa;
+						}
+					
+						h2 {
+							font-size: 28px;
+							margin-top: 0;
+							color: #fff;
+							padding: 20px;
+							background-color: #343a40;
+							text-align: center;
+						}
+					
+						h4 {
+							color: #343a40;
+							font-size: 18px;
+							margin-bottom: 10px;
+						}
+					
+						.content {
+							padding: 0 20px;
+						}
+					
+						.Customer-detail ul li p {
+							margin: 0;
+						}
+					
+						.details .Shipping-detail,
+						.details .Billing-detail {
+							display: inline-block;
+							width: 48%;
+							vertical-align: top;
+						}
+					
+						.details .Shipping-detail ul li,
+						.details .Billing-detail ul li {
+							list-style-type: none;
+							margin: 0;
+							padding: 5px 0;
+						}
+					
+						table, td, th {
+							border: 1px solid #ccc;
+							padding: 10px;
+							text-align: left;
+						}
+					
+						table {
+							border-collapse: collapse;
+							width: 100%;
+							margin-bottom: 20px;
+						}
+					
+						.info {
+							display: inline-block;
+						}
+					
+						.bold {
+							font-weight: bold;
+						}
+					
+						.footer {
+							margin-top: 30px;
+							text-align: center;
+							color: #6c757d;
+							font-size: 12px;
+						}
+					
+						dl.variation dd {
+							font-size: 12px;
+							margin: 0;
+						}
+					</style>
+					
+					<div style="padding: 20px; background-color:#343a40;color: #fff; font-size: 24px; font-weight: 300; text-align: center;" class="header">
+						' . $mail_header . '
+					</div>       
+					
+					<div class="content">
 						<h4>Order #' . $order_id . '</h4>
 						<table>
-							<tbody>
+							<thead>
 								<tr>
 									<th>' . __( 'Product', 'track-orders-for-woocommerce' ) . '</th>
 									<th>' . __( 'Quantity', 'track-orders-for-woocommerce' ) . '</th>
 									<th>' . __( 'Price', 'track-orders-for-woocommerce' ) . '</th>
-								</tr>';
+								</tr>
+							</thead>
+							<tbody>';
 
-								$order = new WC_Order( $order_id );
-								$total = 0;
-			foreach ( $order->get_items() as $item_id => $item ) {
-				/**
-				 * Woocommerce order items.
-				 *
-				 * @since 1.0.0
-				 */
-				$product = apply_filters( 'woocommerce_order_item_product', $item->get_product(), $item );
-				$item_meta      = new WC_Order_Item_Meta( $item, $product );
-				$item_meta_html = $item_meta->display( true, true );
+					$order = new WC_Order( $order_id );
+					$total = 0;
+					foreach ( $order->get_items() as $item_id => $item ) {
+						$product = apply_filters( 'woocommerce_order_item_product', $item->get_product(), $item );
+						$item_meta = new WC_Order_Item_Meta( $item, $product );
+						$item_meta_html = $item_meta->display( true, true );
+						$wps_billing_phone = OrderUtil::custom_orders_table_usage_is_enabled() ? $order->get_meta( '_billing_phone', true ) : get_post_meta( $order->id, '_billing_phone', true );
 
-				$message .= '<tr>
-									<td>' . $item['name'] . '<br>';
-					$message .= '<small>' . $item_meta_html . '</small>
-										<td>' . $item['qty'] . '</td>
-										<td>' . wc_price( $product->get_price() ) . '</td>
-									</tr>';
-				$total = $total + ( $product->get_price() * $item['qty'] );
-			}
-								$message .= '<tr>
-								<th colspan = "2">' . __( 'Total', 'track-orders-for-woocommerce' ) . '</th>
-								<td>' . wc_price( $total ) . '</td>';
-								$message .= '</tbody>
-							</table>
-						</div>
-						<div class="Customer-detail">
-							<h4>' . __( 'Customer details', 'track-orders-for-woocommerce' ) . '</h4>
-							<ul>
-								<li>
-									<p class="info">
-										<span class="bold">' . __( 'track_orders_email', 'track-orders-for-woocommerce' ) . ': </span>' . get_post_meta( $order->id, '_billing_email', true ) . '
-									</p>
-								</li>
-								<li>
-									<p class="info">
-										<span class="bold">' . __( 'Tel', 'track-orders-for-woocommerce' ) . ': </span>' . get_post_meta( $order->id, '_billing_phone', true ) . '
-									</p>
-								</li>
-							</ul>
-						</div>
-						<div class="details">
-							<div class="Shipping-detail">
-								<h4>' . __( 'Shipping Address', 'track-orders-for-woocommerce' ) . '</h4>
-								' . $order->get_formatted_shipping_address() . '
-							</div>
-							<div class="Billing-detail">
-								<h4>' . __( 'Billing Address', 'track-orders-for-woocommerce' ) . '</h4>
-								' . $order->get_formatted_billing_address() . '
-							</div>
-							<div class="clear"></div>
-						</div>
+						$taxes = $item->get_taxes();
+
+						// Loop through each tax class.
+						foreach ( $taxes as $tax_class => $tax ) {
+							// Add tax amount to total tax.
+							$total_tax += array_sum( $tax );
+						}
+
+						$message .= '<tr>
+							<td>' . $item['name'] . '<br><small>' . $item_meta_html . '</small></td>
+							<td>' . $item['qty'] . '</td>
+							<td>' . wc_price( $product->get_price() ) . '</td>
+						</tr>';
+
+						$total += $product->get_price() * $item['qty'];
+					}
+
+					foreach ( $order->get_order_item_totals() as $key => $total ) {
+
+						$message .= '<tr>
+						<th colspan = "2">' . esc_html( $total['label'] ) . '</th><td>' . wp_kses_post( $total['value'] ) . '</td></tr>';
+					}
+
+					$message .= '
+					</tbody>
+					</table>
+					</div>';
+
+					if ( 'on' == get_option( 'wps_tofw_qr_redirect' ) ) {
+						$message .= '<div style="text-align: center; margin-top: 20px;">
+							<img src="' . get_site_url() . '/' . str_replace( ABSPATH, '', $file ) . '" alt="QR" style="width: 200px; height: 200px;" />
+						</div>';
+					}
+
+					$message .= '<div class="footer">
+						&copy; ' . gmdate( 'Y' ) . ' ' . $site_name . ' Your Company. All rights reserved.
 					</div>
-					<div style="text-align: center; padding: 10px;" class="footer">
-						' . $mail_footer . '
+					</body>
+					</html>';
+
+				} elseif ( 'template_2' == $wps_mail_template ) {
+					// 2nd Email notification template.
+					$message = '<html>
+						<body>
+						<style>
+							body {
+								font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+								background-color: #f4f4f4;
+								margin: 0;
+								padding: 0;
+								width: 100%;
+							}
+
+							.container {
+								max-width: 700px;
+								margin: 40px auto;
+								background-color: #fff;
+								box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+								overflow: hidden;
+								border-radius: 8px;
+							}
+
+							.header {
+								background-color: #4a90e2;
+								color: #fff;
+								text-align: center;
+								padding: 20px 0;
+								font-size: 24px;
+								font-weight: bold;
+							}
+
+							.content {
+								padding: 20px;
+							}
+
+							.content h4 {
+								color: #333;
+								font-size: 20px;
+								margin-bottom: 20px;
+							}
+
+							.order-details {
+								background-color: #f9f9f9;
+								padding: 20px;
+								border-radius: 8px;
+							}
+
+							.order-details table {
+								width: 100%;
+								border-collapse: collapse;
+								margin-bottom: 20px;
+							}
+
+							.order-details th, .order-details td {
+								padding: 12px;
+								text-align: left;
+								border-bottom: 1px solid #ddd;
+							}
+
+							.order-details th {
+								background-color: #e9ecef;
+								font-weight: bold;
+							}
+
+							.order-details .total {
+								font-size: 18px;
+								font-weight: bold;
+								text-align: right;
+							}
+
+							.qr-code {
+								text-align: center;
+								margin: 20px 0;
+							}
+
+							.qr-code img {
+								width: 150px;
+								height: 150px;
+							}
+
+							.footer {
+								background-color: #4a90e2;
+								color: #fff;
+								text-align: center;
+								padding: 10px 0;
+								font-size: 12px;
+							}
+						</style>
+
+						<div class="container">
+							<div class="header">
+								' . $mail_header . '
+							</div>
+							<div class="content">
+								<h4>Order #' . $order_id . '</h4>
+								<div class="order-details">
+									<table>
+										<thead>
+											<tr>
+												<th>' . __( 'Product', 'track-orders-for-woocommerce' ) . '</th>
+												<th>' . __( 'Quantity', 'track-orders-for-woocommerce' ) . '</th>
+												<th>' . __( 'Price', 'track-orders-for-woocommerce' ) . '</th>
+											</tr>
+										</thead>
+										<tbody>';
+
+						$order = new WC_Order( $order_id );
+						$total = 0;
+					foreach ( $order->get_items() as $item_id => $item ) {
+						$product = apply_filters( 'woocommerce_order_item_product', $item->get_product(), $item );
+						$item_meta = new WC_Order_Item_Meta( $item, $product );
+						$item_meta_html = $item_meta->display( true, true );
+
+						$taxes = $item->get_taxes();
+
+						// Loop through each tax class.
+						foreach ( $taxes as $tax_class => $tax ) {
+							// Add tax amount to total tax.
+							$total_tax += array_sum( $tax );
+						}
+
+						$message .= '<tr>
+								<td>' . $item['name'] . '<br><small>' . $item_meta_html . '</small></td>
+								<td>' . $item['qty'] . '</td>
+								<td>' . wc_price( $product->get_price() ) . '</td>
+							</tr>';
+
+						$total += $product->get_price() * $item['qty'];
+					}
+
+					foreach ( $order->get_order_item_totals() as $key => $total ) {
+
+						$message .= '<tr>
+								<th colspan = "2">' . esc_html( $total['label'] ) . '</th><td>' . wp_kses_post( $total['value'] ) . '</td></tr>';
+					}
+
+						$message .= '
+						</tbody>
+						</table>
+						</div>';
+
+					if ( 'on' == get_option( 'wps_tofw_qr_redirect' ) ) {
+						$message .= '<div class="qr-code">
+								<img src="' . get_site_url() . '/' . str_replace( ABSPATH, '', $file ) . '" alt="QR" />
+							</div>';
+					}
+						$site_name = get_bloginfo( 'name' );
+						$message .= '<div class="footer">
+							&copy; ' . gmdate( 'Y' ) . ' ' . $site_name . ' Your Company. All rights reserved.
+						</div>
+						</div>
+						</body>
+						</html>';
+
+				} elseif ( 'template_3' == $wps_mail_template ) {
+					// template 3.
+					$message = '<html>
+				<body>
+				<style>
+				body {
+					font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+					background-color: #f4f4f4;
+					margin: 0;
+					padding: 0;
+					width: 100%;
+				}
+				
+				.container {
+					max-width: 700px;
+					margin: 40px auto;
+					background-color: #fff;
+					box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+					overflow: hidden;
+					border-radius: 10px;
+				}
+				
+				.header {
+					background-color: #ff6f61; /* New color */
+					color: #fff;
+					text-align: center;
+					padding: 30px 0;
+					font-size: 26px;
+					font-weight: bold;
+					border-bottom: 5px solid #ff6347; /* New color */
+				}
+				
+				.content {
+					padding: 30px 40px;
+				}
+				
+				.content h4 {
+					color: #333;
+					font-size: 22px;
+					margin-bottom: 20px;
+					border-bottom: 2px solid #eee;
+					padding-bottom: 10px;
+				}
+				
+				.order-details {
+					background-color: #f9f9f9;
+					padding: 20px;
+					border-radius: 8px;
+					margin-bottom: 20px;
+					border: 1px solid #ddd;
+				}
+				
+				.order-details table {
+					width: 100%;
+					border-collapse: collapse;
+					margin-bottom: 20px;
+				}
+				
+				.order-details th, .order-details td {
+					padding: 15px;
+					text-align: left;
+					border-bottom: 1px solid #ddd;
+				}
+				
+				.order-details th {
+					background-color: #e9ecef; /* Existing color */
+					font-weight: bold;
+					text-transform: uppercase;
+				}
+				
+				.order-details .total {
+					font-size: 18px;
+					font-weight: bold;
+					text-align: right;
+					color: #ff6f61; /* New color */
+				}
+				
+				.qr-code {
+					text-align: center;
+					margin: 20px 0;
+				}
+				
+				.qr-code img {
+					width: 150px;
+					height: 150px;
+					border: 1px solid #ddd;
+					border-radius: 10px;
+				}
+				
+				.footer {
+					background-color: #ff6f61; /* New color */
+					color: #fff;
+					text-align: center;
+					padding: 15px 0;
+					font-size: 12px;
+					border-top: 5px solid #ff6347; /* New color */
+				}
+				
+				.footer a {
+					color: #fff;
+					text-decoration: underline;
+				}
+				
+				.footer a:hover {
+					text-decoration: none;
+					color: #ff4500; /* New color for hover */
+				}
+				
+				/* New Elements with Different Colors */
+				
+				.header.alt {
+					background-color: #50c878; /* New color */
+					border-bottom: 5px solid #32cd32; /* New color */
+				}
+				
+				.header.alt2 {
+					background-color: #ffa500; /* New color */
+					border-bottom: 5px solid #ff8c00; /* New color */
+				}
+				
+				.header.alt3 {
+					background-color: #d2691e; /* New color */
+					border-bottom: 5px solid #8b4513; /* New color */
+				}
+				
+				.order-details.alt {
+					background-color: #d3f8e2; /* New color */
+					border: 1px solid #adebad; /* New color */
+				}
+				
+				.order-details.alt2 {
+					background-color: #fff7e6; /* New color */
+					border: 1px solid #ffcc99; /* New color */
+				}
+				
+				.order-details.alt3 {
+					background-color: #e6e6fa; /* New color */
+					border: 1px solid #dcdcdc; /* New color */
+				}
+				
+				.footer.alt {
+					background-color: #50c878; /* New color */
+					border-top: 5px solid #32cd32; /* New color */
+				}
+				
+				.footer.alt2 {
+					background-color: #ffa500; /* New color */
+					border-top: 5px solid #ff8c00; /* New color */
+				}
+				
+				.footer.alt3 {
+					background-color: #d2691e; /* New color */
+					border-top: 5px solid #8b4513; /* New color */
+				}
+				
+				</style>
+
+				<div class="container">
+					<div class="header">
+						' . $mail_header . '
 					</div>
+					<div class="content">
+						<h4>Order #' . $order_id . '</h4>
+						<div class="order-details">
+							<table>
+								<thead>
+									<tr>
+										<th>' . __( 'Product', 'track-orders-for-woocommerce' ) . '</th>
+										<th>' . __( 'Quantity', 'track-orders-for-woocommerce' ) . '</th>
+										<th>' . __( 'Price', 'track-orders-for-woocommerce' ) . '</th>
+									</tr>
+								</thead>
+								<tbody>';
+
+					$order = new WC_Order( $order_id );
+					$total = 0;
+					foreach ( $order->get_items() as $item_id => $item ) {
+						$product = apply_filters( 'woocommerce_order_item_product', $item->get_product(), $item );
+						$item_meta = new WC_Order_Item_Meta( $item, $product );
+						$item_meta_html = $item_meta->display( true, true );
+
+						$taxes = $item->get_taxes();
+
+							// Loop through each tax class.
+						foreach ( $taxes as $tax_class => $tax ) {
+							// Add tax amount to total tax.
+							$total_tax += array_sum( $tax );
+						}
+
+							$message .= '<tr>
+								<td>' . $item['name'] . '<br><small>' . $item_meta_html . '</small></td>
+								<td>' . $item['qty'] . '</td>
+								<td>' . wc_price( $product->get_price() ) . '</td>
+							</tr>';
+
+							$total += $product->get_price() * $item['qty'];
+					}
+
+					foreach ( $order->get_order_item_totals() as $key => $total ) {
+
+						$message .= '<tr>
+								<th colspan = "2">' . esc_html( $total['label'] ) . '</th><td>' . wp_kses_post( $total['value'] ) . '</td></tr>';
+					}
+
+					$message .= '
+				</tbody>
+				</table>
+				</div>';
+
+					if ( 'on' == get_option( 'wps_tofw_qr_redirect' ) ) {
+						$message .= '<div class="qr-code">
+						<img src="' . get_site_url() . '/' . str_replace( ABSPATH, '', $file ) . '" alt="QR" />
+					</div>';
+					}
+					$site_name = get_bloginfo( 'name' );
+					$message .= '<div class="footer">
+					&copy; ' . gmdate( 'Y' ) . ' ' . $site_name . ' All rights reserved. <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+				</div>
+				</div>
 				</body>
 				</html>';
-				wc_mail( $to, $subject, $message, $headers );
+				}
+			}
 
+			if ( ! $wps_pro_is_active ) {
+				$message = '<html>
+		<body>
+			<style>
+				body {
+					box-shadow: 2px 2px 10px #ccc;
+					color: #767676;
+					font-family: Arial,sans-serif;
+					margin: 80px auto;
+					max-width: 700px;
+					padding-bottom: 30px;
+					width: 100%;
+				}
+
+				h2 {
+					font-size: 30px;
+					margin-top: 0;
+					color: #fff;
+					padding: 40px;
+					background-color: #557da1;
+				}
+
+				h4 {
+					color: #557da1;
+					font-size: 20px;
+					margin-bottom: 10px;
+				}
+
+				.content {
+					padding: 0 40px;
+				}
+
+				.Customer-detail ul li p {
+					margin: 0;
+				}
+
+				.details .Shipping-detail {
+					width: 40%;
+					float: right;
+				}
+
+				.details .Billing-detail {
+					width: 60%;
+					float: left;
+				}
+
+				.details .Shipping-detail ul li,.details .Billing-detail ul li {
+					list-style-type: none;
+					margin: 0;
+				}
+
+				.details .Billing-detail ul,.details .Shipping-detail ul {
+					margin: 0;
+					padding: 0;
+				}
+
+				.clear {
+					clear: both;
+				}
+
+				table,td,th {
+					border: 2px solid #ccc;
+					padding: 15px;
+					text-align: left;
+				}
+
+				table {
+					border-collapse: collapse;
+					width: 100%;
+				}
+
+				.info {
+					display: inline-block;
+				}
+
+				.bold {
+					font-weight: bold;
+				}
+
+				.footer {
+					margin-top: 30px;
+					text-align: center;
+					color: #99B1D8;
+					font-size: 12px;
+				}
+				dl.variation dd {
+					font-size: 12px;
+					margin: 0;
+				}
+			</style>
+
+			<div style="padding: 36px 48px; background-color:#557DA1;color: #fff; font-size: 30px; font-weight: 300; font-family:helvetica;" class="header">
+				' . $mail_header . '
+			</div>		
+
+			<div class="content">
+
+				<div class="Order">
+					<h4>Order #' . $order_id . '</h4>
+					<table>
+						<tbody>
+							<tr>
+								<th>' . __( 'Product', 'track-orders-for-woocommerce' ) . '</th>
+								<th>' . __( 'Quantity', 'track-orders-for-woocommerce' ) . '</th>
+								<th>' . __( 'Price', 'track-orders-for-woocommerce' ) . '</th>
+							</tr>';
+
+							$order = new WC_Order( $order_id );
+							$total = 0;
+				foreach ( $order->get_items() as $item_id => $item ) {
+					/**
+					 * Woocommerce order items.
+					 *
+					 * @since 1.0.0
+					 */
+					$product = apply_filters( 'woocommerce_order_item_product', $item->get_product(), $item );
+					$item_meta      = new WC_Order_Item_Meta( $item, $product );
+					$item_meta_html = $item_meta->display( true, true );
+					$wps_billing_phone = OrderUtil::custom_orders_table_usage_is_enabled() ? $order->get_meta( '_billing_phone', true ) : get_post_meta( $order->id, '_billing_phone', true );
+
+					$taxes = $item->get_taxes();
+
+					// Loop through each tax class.
+					foreach ( $taxes as $tax_class => $tax ) {
+						// Add tax amount to total tax.
+						$total_tax += array_sum( $tax );
+					}
+
+					$message .= '<tr>
+								<td>' . $item['name'] . '<br>';
+					$message .= '<small>' . $item_meta_html . '</small>
+									<td>' . $item['qty'] . '</td>
+									<td>' . wc_price( $product->get_price() ) . '</td>
+								</tr>';
+					$total = $total + ( $product->get_price() * $item['qty'] );
+				}
+
+				foreach ( $order->get_order_item_totals() as $key => $total ) {
+
+					$message .= '<tr>
+						<th colspan = "2">' . esc_html( $total['label'] ) . '</th><td>' . wp_kses_post( $total['value'] ) . '</td></tr>';
+				}
+
+					$message .= '</tbody>
+				</table>
+			</div>';
+				if ( 'on' == get_option( 'wps_tofw_qr_redirect' ) ) {
+					$message .= '<div><img src="' . get_site_url() . '/' . str_replace( ABSPATH, '', $file ) . '" alt= "QR" style="display: block; margin: 0 auto; width: 300px; height: 300px;" /></div>';
+				}
+				$message .= '</body>
+		</html>';
+
+			}
+				wc_mail( $to, $subject, $message, $headers );
 		}
 	}
 
@@ -570,18 +1183,14 @@ class Track_Orders_For_Woocommerce_Common {
 	 * @return void
 	 */
 	public function wps_tofw_export_my_orders_callback() {
-		$current_user_id = get_current_user_id();
-
-		// Get orders for the current user.
-		$customer_orders = wc_get_orders(
+		$_orders = wc_get_orders(
 			array(
-				'customer' => $current_user_id,
-				'status'   => array_keys( wc_get_order_statuses() ),
+				'status'      => array_keys( wc_get_order_statuses() ),
+				'customer'    => get_current_user_id(),
+				'numberposts' => -1,
+				'return'      => 'ids', // Specify 'ids' to get only the order IDs.
 			)
 		);
-
-		// Extract order IDs from the orders.
-		$_orders = wp_list_pluck( $customer_orders, 'ID' );
 
 		if ( ! empty( $_orders ) ) {
 			$order_details = $this->wps_tofw_get_csv_order_details( $_orders );
@@ -590,14 +1199,13 @@ class Track_Orders_For_Woocommerce_Common {
 				'file_name' => 'wps_order_details',
 				'order_data' => $order_details,
 			);
-
 		} else {
 
 			$main_arr = array(
 				'status' => 'failed',
 			);
 		}
-		wp_send_json( wp_json_encode( $main_arr ) );
+		echo wp_json_encode( $main_arr );
 		wp_die();
 	}
 
@@ -677,30 +1285,37 @@ class Track_Orders_For_Woocommerce_Common {
 	 */
 	public function wps_tofw_export_my_orders_guest_user_callback() {
 		check_ajax_referer( 'tofw_common_param_nonce', 'nonce' );
-		$email = isset( $_POST['track_orders_email'] ) ? sanitize_text_field( wp_unslash( $_POST['track_orders_email'] ) ) : '';
+		$email = isset( $_POST['email'] ) ? sanitize_text_field( wp_unslash( $_POST['email'] ) ) : '';
 		$_orders = array();
-
 		if ( ! empty( $email ) ) {
-			$_orders_temp = get_posts(
+			$_orders_temp = wc_get_orders(
 				array(
-
-					'post_status' => array_keys( wc_get_order_statuses() ),
-					'post_type'   => 'shop_order',
+					'status'      => array_keys( wc_get_order_statuses() ),
 					'numberposts' => -1,
-					'fields' => 'ids',
+					'return'      => 'ids', // Specify 'ids' to get only the order IDs.
 				)
 			);
+			$wps_check = 'failed';
 			if ( ! empty( $_orders_temp ) && is_array( $_orders_temp ) ) {
 				foreach ( $_orders_temp as $key => $id ) {
-					$_order = wc_get_order( $id );
+
+					$_order = new WC_Order( $id );
 					if ( $_order->get_billing_email() == $email ) {
 						$_orders[] = $id;
+						$main_arr = array(
+							'status' => 'successs',
+							'file_name' => 'wps_order_details',
+						);
+						$wps_check = 'success';
+					} else {
+						$main_arr = array(
+							'status' => 'failed',
+						);
 					}
 				}
 				$order_details = $this->wps_tofw_get_csv_order_details( $_orders );
 				$main_arr = array(
-					'status' => 'success',
-					'file_name' => 'wps_order_details',
+					'status' => $wps_check,
 					'order_data' => $order_details,
 				);
 			}
@@ -710,7 +1325,7 @@ class Track_Orders_For_Woocommerce_Common {
 			);
 		}
 
-		wp_send_json( wp_json_encode( $main_arr ) );
+		echo wp_json_encode( $main_arr );
 		wp_die();
 
 	}
@@ -767,7 +1382,7 @@ class Track_Orders_For_Woocommerce_Common {
 			)
 		);
 
-		$custom_statuses = get_option( 'track_orders_new_custom_order_status', array() );
+		$custom_statuses = get_option( 'wps_tofw_new_custom_order_status', array() );
 
 		if ( is_array( $custom_statuses ) && ! empty( $custom_statuses ) ) {
 			foreach ( $custom_statuses as $key => $value ) {
@@ -801,9 +1416,9 @@ class Track_Orders_For_Woocommerce_Common {
 		if ( 'on' != $wps_tofw_enable_track_order_feature || 'on' != $wps_tofw_enable_custom_order_feature ) {
 			return $order_statuses;
 		}
-			$custom_order = get_option( 'track_orders_new_custom_order_status', array() );
+			$custom_order = get_option( 'wps_tofw_new_custom_order_status', array() );
 			$statuses = get_option( 'tofw_selected_custom_order_status', array() );
-			$wps_tofw_statuses = get_option( 'track_orders_new_settings_custom_statuses_for_order_tracking', array() );
+			$wps_tofw_statuses = get_option( 'wps_tofw_new_settings_custom_statuses_for_order_tracking', array() );
 
 			$custom_order[] = array( 'dispatched' => __( 'Order Dispatched', 'track-orders-for-woocommerce' ) );
 			$custom_order[] = array( 'shipped' => __( 'Order Shipped', 'track-orders-for-woocommerce' ) );

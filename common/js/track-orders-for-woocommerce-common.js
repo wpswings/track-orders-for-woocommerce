@@ -30,9 +30,6 @@
 	 */
 
 })( jQuery );
-
-
-
 	jQuery(document).ready(function($){
 		jQuery(document).on( 'click', '.wps_export', function(e){
 			e.preventDefault();
@@ -40,13 +37,11 @@
 			jQuery.ajax({
 				url:tofw_common_param.ajaxurl,
 				type:"POST",
-				dataType: 'JSON',
+				datatType: 'JSON',
 				data: {
 					action : 'wps_wot_export_my_orders',
 					// nonce : tofw_common_param.nonce,
-				},
-				success: function (response) {
-					
+				},success:function(response){
 					var result = JSON.parse(response);
 					if( 'success' == result.status ) {
 						var filename = result.file_name;
@@ -58,7 +53,7 @@
 						   csvContent += row + "\r\n";
 								 });
 					   
-						var encodedUri = encodeURI(csvContent);
+					   var encodedUri = encodeURI(csvContent);
 							download(filename, encodedUri);
 					}
 				
@@ -75,10 +70,10 @@
 			jQuery.ajax({
 				url:tofw_common_param.ajaxurl,
 				type:"POST",
-				dataType: 'JSON',
+				datatType: 'JSON',
 				data: {
 					action : 'wps_tofw_export_my_orders_guest_user',
-					track_orders_email  : email,
+					email  : email,
 					nonce : tofw_common_param.nonce,
 				},success:function(response){
 					var result = JSON.parse(response);
@@ -95,7 +90,7 @@
 					   var encodedUri = encodeURI(csvContent);
 							download(filename, encodedUri);
 					} else {
-						alert('No Order Found on This Email!');
+						alert('The email address you provided is not recognized. Please try again.');
 					}
 				
 				}	

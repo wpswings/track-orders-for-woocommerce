@@ -29,7 +29,7 @@ class Track_Orders_For_Woocommerce_Activator {
 	 */
 	public static function track_orders_for_woocommerce_activate() {
 		$email = get_option( 'admin_email', false );
-		$admin = get_user_by( 'track_orders_email', $email );
+		$admin = get_user_by( 'email', $email );
 		$admin_id = $admin->ID;
 
 		$wps_tofw_tracking = array(
@@ -75,7 +75,7 @@ class Track_Orders_For_Woocommerce_Activator {
 			$wps_tofw_pages['pages']['wps_fedex_track_order'] = $page_id;
 		}
 
-		update_option( 'track_orders_tracking_page', $wps_tofw_pages );
+		update_option( 'wps_tofw_tracking_page', $wps_tofw_pages );
 
 		wp_clear_scheduled_hook( 'wpswings_tracker_send_event' );
 		wp_schedule_event( time() + 10, apply_filters( 'wpswings_tracker_event_recurrence', 'daily' ), 'wpswings_tracker_send_event' );

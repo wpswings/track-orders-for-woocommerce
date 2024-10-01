@@ -6,10 +6,6 @@
  * @package  Woocommece_Order_Tracker/template
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
-}
-
 $current_user_id = get_current_user_id();
 if ( $current_user_id > 0 ) {
 	$myaccount_page = get_option( 'woocommerce_myaccount_page_id' );
@@ -57,18 +53,21 @@ $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 			?>
 			</h2>
 			<?php
-			if ( isset( $_SESSION['wps_tofw_notification'] ) && ! empty( $_SESSION['wps_tofw_notification'] ) ) {
+			$tofw_notification = isset( $_SESSION['wps_tofw_notification'] ) ? esc_attr( htmlspecialchars( sanitize_text_field( wp_unslash( $_SESSION['wps_tofw_notification'] ) ) ), ENT_QUOTES, 'UTF-8' ) : '';
+			if ( isset( $tofw_notification ) && ! empty( $tofw_notification ) ) {
+				$tofw_notification = isset( $_SESSION['wps_tofw_notification'] ) ? esc_attr( htmlspecialchars( sanitize_text_field( wp_unslash( $_SESSION['wps_tofw_notification'] ) ) ), ENT_QUOTES, 'UTF-8' ) : '';
+
 				?>
 				<ul class="woocommerce-error">
-						<li><strong><?php esc_html_e( 'ERROR', 'track-orders-for-woocommerce' ); ?></strong>: <?php echo esc_html( sanitize_text_field( wp_unslash( $_SESSION['wps_tofw_notification'] ) ) ); ?></li>
+						<li><strong><?php esc_html_e( 'ERROR', 'track-orders-for-woocommerce' ); ?></strong>: <?php echo esc_html( $tofw_notification ); ?></li>
 				</ul>
 				<?php
-				unset( $_SESSION['wps_tofw_notification'] );
+				unset( $tofw_notification );
 			}
 			?>
 			<?php
-			$wps_tofw_enable_track_17track_feature = get_option( 'wps_tofwp_enable_17track_integration', 'no' );
-			if ( ! empty( $wps_tofw_enable_track_17track_feature ) && 'on' == $wps_tofw_enable_track_17track_feature ) {
+			$wps_tofw_enable_track_17track_feature = get_option( 'wps_tofwp_general_settings_saved', false );
+			if ( ! empty( $wps_tofw_enable_track_17track_feature['enable_plugin'] ) && 'on' == $wps_tofw_enable_track_17track_feature['enable_plugin'] ) {
 				?>
 			<p class="woocommerce-FormRow woocommerce-FormRow--wide form-row form-row-wide">
 			<label><?php esc_html_e( 'Enter Your 17TrackingNo', 'track-orders-for-woocommerce' ); ?></label>

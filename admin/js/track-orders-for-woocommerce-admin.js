@@ -133,15 +133,6 @@ jQuery(document).ready(function ($) {
     }
   });
   
-  $('#wps_tofw_create_order_name').on('keypress', function(e) {
-    var regex = new RegExp("^[a-zA-Z0-9\s ]+$"); // Regular expression to allow only alphanumeric characters
-    var key = String.fromCharCode(!e.charCode ? e.which : e.charCode);
-    if (!regex.test(key)) {
-		alert(tofw_admin_param.custom_order_msg);
-		
-      return false;
-    }
-  });
   
   jQuery(document).on('click','input#wps_tofw_create_custom_order_status',function(){
     jQuery('#wps_tofw_send_loading').show();
@@ -563,6 +554,19 @@ jQuery(document).ready(function ($) {
 	else if( pre_length <= hidden_length )
 	{
 		var i = 0;
+		// jQuery.grep(hidden_value, function(el) {
+
+		// 	if (jQuery.inArray(el, previously_selected_value) == -1) 
+		// 	{
+		// 		jQuery("#wps_tofw_order_status_in_processing option[value="+el+"]").remove();
+		// 		jQuery("#wps_tofw_order_status_in_shipping option[value="+el+"]").remove();
+
+		// 	}
+
+
+		// 	i++;
+
+		// });
 	}
 
 } );
@@ -619,6 +623,15 @@ jQuery(document).ready(function ($) {
 		{
 			var i = 0;
 			jQuery.grep(hidden_value, function(el) {
+
+				if (jQuery.inArray(el, previously_selected_value) == -1) 
+				{
+
+					// jQuery("#wps_tofw_order_status_in_approval option[value="+el+"]").remove();
+					// jQuery("#wps_tofw_order_status_in_shipping option[value="+el+"]").remove();
+
+				}
+
 
 				i++;
 
@@ -679,12 +692,20 @@ jQuery(document).ready(function ($) {
 		var i = 0;
 		jQuery.grep(hidden_value, function(el) {
 
+			if (jQuery.inArray(el, previously_selected_value) == -1) 
+			{
+
+				// jQuery("#wps_tofw_order_status_in_processing option[value="+el+"]").remove();
+				// jQuery("#wps_tofw_order_status_in_approval option[value="+el+"]").remove();
+
+			}
+
 			i++;
 		});
 	}
 } );
 
-  // Fedex js.
+  // Fedex js
 
   jQuery('#wps_fedex_userkey').closest('tr').hide();
 	jQuery('#wps_fedex_userpassword').closest('tr').hide();
@@ -797,7 +818,7 @@ jQuery(document).ready(function ($) {
 		element.setAttribute('download', filename);
 		element.style.display = 'none';
 		document.body.appendChild(element);
-		// automatically run the click event for anchor tag.
+		// automatically run the click event for anchor tag
 		element.click();
    
 		document.body.removeChild(element);
@@ -839,5 +860,10 @@ jQuery(document).ready(function ($) {
 			jQuery('.wps_tofw_empty_adrress_validation').html('<span>'+tofw_admin_param.address_validation+'</span>');
 		}
 	});
+
+
+
+
+
   
 });

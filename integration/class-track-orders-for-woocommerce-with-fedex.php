@@ -6,6 +6,7 @@
  * @package  Woocommece_Order_Tracker/Include
  */
 
+// phpcs:ignoreFile.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -25,6 +26,8 @@ if ( ! class_exists( 'Track_Orders_For_Woocommerce_With_FedEx' ) ) {
 		 */
 		public function __construct() {
 			require_once( 'fedex-common.php5' );
+			ini_set( 'soap.wsdl_cache_enabled', 0 );
+			ini_set( 'soap.wsdl_cache_ttl', 0 );
 		}
 
 		/**

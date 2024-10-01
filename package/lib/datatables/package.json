@@ -21,7 +21,7 @@
   "_resolved": "https://registry.npmjs.org/datatables/-/datatables-1.10.18.tgz",
   "_shasum": "fee16e82aa70b17c5faf1a6954ac68f404f33a70",
   "_spec": "datatables@^1.10.18",
-  "_where": "",
+  "_where": "/home/cedcoss/Local Sites/woocommerce/app/public/wp-content/plugins/wallet-system-for-woocommerce",
   "author": {
     "name": "Allan Jardine",
     "url": "http://sprymedia.co.uk"

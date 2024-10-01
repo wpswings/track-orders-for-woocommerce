@@ -11,7 +11,4 @@
  * @subpackage Track_Orders_For_Woocommerce
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
-}
 esc_html_e( 'oops looks like nothing is here', 'track-orders-for-woocommerce' );

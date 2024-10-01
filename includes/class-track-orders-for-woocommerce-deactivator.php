@@ -33,7 +33,7 @@ class Track_Orders_For_Woocommerce_Deactivator {
 		delete_option( 'wps_tofw_warning_notification_message' );
 		delete_option( 'wps_tofw_warning_notification' );
 
-		$wps_tofw_pages = get_option( 'track_orders_tracking_page' );
+		$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
 
 		if ( isset( $wps_tofw_pages['pages'] ) && ! empty( $wps_tofw_pages['pages'] ) ) {
 			$pages = $wps_tofw_pages['pages'];
@@ -41,7 +41,7 @@ class Track_Orders_For_Woocommerce_Deactivator {
 				wp_delete_post( $page_id, true );
 			}
 		}
-		delete_option( 'track_orders_tracking_page' );
+		delete_option( 'wps_tofw_tracking_page' );
 
 	}
 

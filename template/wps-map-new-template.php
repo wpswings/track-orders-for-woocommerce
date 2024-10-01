@@ -1,18 +1,22 @@
 <?php
 /**
- * Map New track order page.
+ * Guest track order page.
  *
  * @version  1.0.0
  * @package  Woocommece_Order_Tracker/template
  */
 
- if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+use Automattic\WooCommerce\Utilities\OrderUtil;
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 $allowed = true;
-$current_user_id = get_current_user_id();
 
-if ( $allowed ) {
+$current_user_id = get_current_user_id();
+$wps_tofw_enable_track_order_popup = get_option( 'wps_tofwp_enable_track_order_popup' );
+if ( true == $allowed ) {
+
 	$check_value = isset( $_POST['woocommerce-process-checkout-nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['woocommerce-process-checkout-nonce'] ) ) : '';
 	wp_verify_nonce( $check_value, 'woocommerce-process_checkout' );
 	if ( isset( $_POST['order_id'] ) ) {
@@ -25,28 +29,36 @@ if ( $allowed ) {
 			$order_id = $link_array[ count( $link_array ) - 1 ];
 		}
 	}
+
 	// check order id is valid.
+	$order_obj = new WC_Order( $order_id );
 	if ( ! is_numeric( $order_id ) ) {
 
 		if ( get_current_user_id() > 0 ) {
 			$myaccount_page = get_option( 'woocommerce_myaccount_page_id' );
 			$myaccount_page_url = get_permalink( $myaccount_page );
 		} else {
-			$wps_tofw_pages = get_option( 'track_orders_tracking_page' );
-			$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
+			$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
+			$page_id = $wps_tofw_pages['pages']['wps_guest_track_order_page'];
 			$myaccount_page_url = get_permalink( $page_id );
 		}
 		$allowed = false;
 		$reason = __( 'Please choose an Order.', 'track-orders-for-woocommerce' ) . '<a href="' . $myaccount_page_url . '">' . __( 'Click Here', 'track-orders-for-woocommerce' ) . '</a>';
 
 		/**
-		 * Add more setting.
+		 * Add reason.
 		 *
 		 * @since 1.0.0
 		 */
 		$reason = apply_filters( 'wps_tofw_track_choose_order', $reason );
 	} else {
-		$order_customer_id = get_post_meta( $order_id, '_customer_user', true );
+
+		if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+			$order_customer_id = get_post_field( 'post_author', $order_id );
+		} else {
+			$order_customer_id = get_post_field( 'post_author', $order_id );
+		}
+
 		if ( $current_user_id > 0 ) {
 			if ( $order_customer_id != $current_user_id ) {
 				$myaccount_page = get_option( 'woocommerce_myaccount_page_id' );
@@ -55,23 +67,46 @@ if ( $allowed ) {
 				$reason = __( 'This order #', 'track-orders-for-woocommerce' ) . $order_id . __( 'is not associated to your account.', 'track-orders-for-woocommerce' ) . "<a href='$myaccount_page_url'>" . __( 'Click Here ', 'track-orders-for-woocommerce' ) . '</a>';
 
 				/**
-				 * Add more setting.
+				 * Add reason.
 				 *
 				 * @since 1.0.0
 				 */
 				$reason = apply_filters( 'wps_tofw_track_choose_order', $reason );
 			}
-		} else // check order associated to customer account or not for guest user.
+		} else // Check order associated to customer account or not for guest user.
 		{
-			if ( isset( $_SESSION['wps_tofw_email'] ) ) {
-				$tofw_user_email = sanitize_text_field( wp_unslash( $_SESSION['wps_tofw_email'] ) );
-				$order_email = get_post_meta( $order_id, '_billing_email', true );
-				if ( $tofw_user_email != $order_email ) {
+			if ( 'on' != get_option( 'wps_tofw_enable_track_order_using_order_id', 'no' ) ) {
+				$tofw_user_email = filter_var( isset( $_SESSION['wps_tofw_email'] ), FILTER_SANITIZE_EMAIL );
+				if ( filter_var( $tofw_user_email, FILTER_VALIDATE_EMAIL ) ) {
+					$tofw_user_email = filter_var( isset( $_SESSION['wps_tofw_email'] ), FILTER_SANITIZE_EMAIL );
+
+					if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+						// HPOS usage is enabled.
+						$order_email = $order_obj->get_billing_email();
+					} else {
+						$order_email = get_post_meta( $order_id, '_billing_email', true );
+					}
+
+					if ( $tofw_user_email != $order_email ) {
+						$allowed = false;
+						$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
+						$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
+						$myaccount_page_url = get_permalink( $page_id );
+						$reason = __( 'This order #', 'track-orders-for-woocommerce' ) . $order_id . __( 'is not associated to your account.', 'track-orders-for-woocommerce' ) . "<a href='$myaccount_page_url'>" . __( 'Click Here ', 'track-orders-for-woocommerce' ) . '</a>';
+
+						/**
+						 * Add reason.
+						 *
+						 * @since 1.0.0
+						 */
+						$reason = apply_filters( 'wps_tofw_track_choose_order', $reason );
+					}
+				} else {
+
+					$myaccount_page = get_option( 'woocommerce_myaccount_page_id' );
+					$myaccount_page_url = get_permalink( $myaccount_page );
 					$allowed = false;
-					$wps_tofw_pages = get_option( 'track_orders_tracking_page' );
-					$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
-					$myaccount_page_url = get_permalink( $page_id );
-					$reason = __( 'This order #', 'track-orders-for-woocommerce' ) . $order_id . __( 'is not associated to your account.', 'track-orders-for-woocommerce' ) . "<a href='$myaccount_page_url'>" . __( 'Click Here ', 'track-orders-for-woocommerce' ) . '</a>';
+					$reason = __( 'This order #', 'track-orders-for-woocommerce' ) . $order_id . __( ' is not associated to your account.', 'track-orders-for-woocommerce' ) . "<a href='$myaccount_page_url'>" . __( 'Click Here ', 'track-orders-for-woocommerce' ) . '</a>';
 
 					/**
 					 * Add reason.
@@ -80,27 +115,16 @@ if ( $allowed ) {
 					 */
 					$reason = apply_filters( 'wps_tofw_track_choose_order', $reason );
 				}
-			} else {
-				$myaccount_page = get_option( 'woocommerce_myaccount_page_id' );
-				$myaccount_page_url = get_permalink( $myaccount_page );
-				$allowed = false;
-				$reason = __( 'This order #', 'track-orders-for-woocommerce' ) . $order_id . __( ' is not associated to your account.', 'track-orders-for-woocommerce' ) . "<a href='$myaccount_page_url'>" . __( 'Click Here ', 'track-orders-for-woocommerce' ) . '</a>';
-
-				/**
-				 *  Add reason.
-				 *
-				 * @since 1.0.0
-				 */
-				$reason = apply_filters( 'wps_tofw_track_choose_order', $reason );
 			}
 		}
 	}
 } else {
-	$wps_tofw_pages = get_option( 'track_orders_tracking_page' );
+	$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
 	$page_id = $wps_tofw_pages['pages']['wps_guest_track_order_page'];
 	$track_order_url = get_permalink( $page_id );
 	header( 'Location: ' . $track_order_url );
 }
+
 get_header( 'shop' );
 
 
@@ -111,13 +135,17 @@ get_header( 'shop' );
  */
 do_action( 'woocommerce_before_main_content' );
 
+$allowed = true;
 if ( $allowed ) {
 
 	if ( isset( $order_id ) && ! empty( $order_id ) ) {
 		$tofw_order = wc_get_order( $order_id );
+
 		$order_data = $tofw_order->get_data();
 
+
 		$wps_tofw_all_saved_cities = get_option( 'wps_tofw_save_selected_city', false );
+
 		if ( is_array( $wps_tofw_all_saved_cities ) && ! empty( $wps_tofw_all_saved_cities ) ) {
 			foreach ( $wps_tofw_all_saved_cities as $saved_key => $saved_value ) {
 
@@ -125,8 +153,16 @@ if ( $allowed ) {
 			}
 		}
 
-		$wps_tofw_previous_saved_cities = get_post_meta( $order_id, 'wps_tofw_track_custom_cities', true );
-		$wps_tofw_previous_saved_changed_time = get_post_meta( $order_id, 'wps_tofw_custom_change_time', true );
+		if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+			// HPOS usage is enabled.
+			$wps_tofw_previous_saved_cities = $tofw_order->get_meta( 'wps_tofw_track_custom_cities', true );
+			$wps_tofw_previous_saved_changed_time = $tofw_order->get_meta( 'wps_tofw_custom_change_time', true );
+		} else {
+			$wps_tofw_previous_saved_cities = get_post_meta( $order_id, 'wps_tofw_track_custom_cities', true );
+			$wps_tofw_previous_saved_changed_time = get_post_meta( $order_id, 'wps_tofw_custom_change_time', true );
+		}
+
+
 
 
 		$billing_addresses = $tofw_order->get_formatted_billing_address();
@@ -138,15 +174,23 @@ if ( $allowed ) {
 	$wps_tofw_google_api_key = get_option( 'wps_tofw_google_api_key', false );
 	$wps_admin_shop_location = get_option( 'wps_tofw_order_production_address', false );
 
-	$wps_order_delivery_date = get_post_meta( $order_id, 'wps_tofw_estimated_delivery_date', true );
-	$wps_order_delivery_time = get_post_meta( $order_id, 'wps_tofw_estimated_delivery_time', true );
+
+
+	if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+		// HPOS usage is enabled.
+		$wps_order_delivery_date = $tofw_order->get_meta( 'wps_tofw_estimated_delivery_date', true );
+		$wps_order_delivery_time = $tofw_order->get_meta( 'wps_tofw_estimated_delivery_time', true );
+	} else {
+		$wps_order_delivery_date = get_post_meta( $order_id, 'wps_tofw_estimated_delivery_date', true );
+		$wps_order_delivery_time = get_post_meta( $order_id, 'wps_tofw_estimated_delivery_time', true );
+	}
 	?>
 	<div class="wps-track-order-main-wrapper">
 		<div class="wps-track-order-content">
 			<div class="wps-track-order-tracking-section">
 				<div class="wps-track-order-tooltip">
 					<div class="wps-track-order-tooltip-wrap">
-						<span><?php esc_html_e( 'Order Placed Successfully ', 'track-orders-for-woocommerce' ); ?></span>
+						<span><?php esc_html_e( 'Order Placed Successfully', 'track-orders-for-woocommerce' ); ?></span>
 						<span><?php esc_html_e( ' On ', 'track-orders-for-woocommerce' ); ?><?php echo esc_html( $converted_created_date ); ?></span>
 						<span>
 						<?php
@@ -222,7 +266,7 @@ if ( $allowed ) {
 							<?php
 						}
 						?>
-						<span><?php echo esc_html( $order_data['billing']['address_1'] ) . ', ' . esc_html( $order_data['billing']['address_2'] ) . '</br>' . esc_html( $order_data['billing']['city'] ) . ', ' . esc_html( $order_data['billing']['state'] ) . '</br>' . esc_html( $tofw_order->get_billing_email() ); ?></span>
+						<span><?php echo esc_html( $order_data['billing']['address_1'] ) . ', ' . esc_html( $order_data['billing']['address_2'] ) . '</br>' . esc_html( $order_data['billing']['city'] ) . ', ' . esc_html( $order_data['billing']['state'] ) . '</br>' . esc_html( $order_data['billing']['email'] ); ?></span>
 					</div>
 					<span class="wps-track-order-last-inner-circle"></span>
 					<span class="wps-track-order-outer-inner-circle"></span>
@@ -274,7 +318,7 @@ if ( $allowed ) {
 										echo wp_kses_post( $thumbnail );
 									} else {
 										?>
-										<p><img alt="<?php esc_html_e( 'Placeholder', 'track-orders-for-woocommerce' ); ?>"  class="wps_tofw_attachment-thumbnail size-thumbnail wp-post-image wps-img-responsive" src="<?php echo esc_url( plugin_dir_url( __FILE__ ) . 'woocommerce/assets/images/placeholder.png' ); ?>"></p>
+										<p><img alt="<?php esc_html_e( 'Placeholder', 'track-orders-for-woocommerce' ); ?>"  class="wps_tofw_attachment-thumbnail size-thumbnail wp-post-image wps-img-responsive" src="<?php echo esc_attr( home_url() ); ?>/wp-content/plugins/woocommerce/assets/images/placeholder.png"></p>
 										<?php
 									}
 									?>
@@ -341,7 +385,7 @@ if ( $allowed ) {
 										echo wp_kses_post( $thumbnail );
 									} else {
 										?>
-										<p><img alt="<?php esc_attr_e( 'Placeholder', 'track-orders-for-woocommerce' ); ?>"  class="wps_tofw_attachment-thumbnail size-thumbnail wp-post-image wps-img-responsive" src="<?php echo esc_url( plugin_dir_url( __FILE__ ) . 'woocommerce/assets/images/placeholder.png' ); ?>"></p>
+										<p><img alt="<?php esc_attr_e( 'Placeholder', 'track-orders-for-woocommerce' ); ?>"  class="wps_tofw_attachment-thumbnail size-thumbnail wp-post-image wps-img-responsive" src="<?php echo esc_attr( home_url() ); ?>/wp-content/plugins/woocommerce/assets/images/placeholder.png"></p>
 										<?php
 									}
 									?>
@@ -379,71 +423,55 @@ if ( $allowed ) {
 	}
 
 	if ( isset( $wps_tofw_order_sent_cities ) && ( '' != $wps_tofw_order_sent_cities || null != $wps_tofw_order_sent_cities ) ) {
-
 		echo '<input type="hidden" name="wps_tofw_google_distance_map" id="wps_tofw_google_distance_map" value="' . esc_attr( htmlspecialchars( $wps_tofw_order_sent_cities ) ) . '">';
 	} else {
 		$wps_tofw_order_production_add = get_option( 'wps_tofw_order_production_address', false );
 		$address[] = $wps_tofw_order_production_add;
 		$wps_tofw_order_sent_cities = $address;
-		echo '<input type="hidden" name="wps_tofw_google_distance_map" id="wps_tofw_google_distance_map" value="' . esc_attr( htmlspecialchars( wp_json_encode( $wps_tofw_order_sent_cities ) ) ) . '">';
+		echo '<input type="hidden" name="wps_tofw_google_distance_map" id="wps_tofw_google_distance_map" value="' . esc_attr( wp_json_encode( $wps_tofw_order_sent_cities ) ) . '">';
+
 	}
 
 	$wps_tofw_order_production_add = get_option( 'wps_tofw_order_production_address', false );
 	$address = $wps_tofw_order_production_add;
+
 	$wps_tofw_billing_add = $order_data['billing']['city'] . '+' . $order_data['billing']['state'];
 
-	$wps_tofw_origin_location = get_option( 'track_orders_address_get_correct', false );
+	$wps_tofw_origin_location = get_option( 'wps_tofw_address_get_correct', false );
+
+
 	if ( isset( $wps_tofw_origin_location ) && ( '' != $wps_tofw_origin_location || null != $wps_tofw_origin_location ) ) {
-		$lat = get_option( 'track_orders_address_latitude', false );
-		$long = get_option( 'track_orders_address_longitude', false );
+		$lat = get_option( 'wps_tofw_address_latitude', false );
+		$long = get_option( 'wps_tofw_address_longitude', false );
+
 		?>
 		<input type="hidden" id="start_hidden" value="<?php echo esc_attr( $lat ); ?>">
 		<input type="hidden" id="end_hidden" value="<?php echo esc_attr( $long ); ?>">
 		<input type="hidden" id="billing_hidden" value="<?php echo esc_attr( $wps_tofw_billing_add ); ?>">
 		<?php
+
 	} else {
 		if ( ! empty( $address ) ) {
-			/**
-			 * Function to get url.
-			 *
-			 * @param string $url contains url.
-			 * @return string
-			 */
-			function track_orders_wpswings_url_get_contents( $url ) {
-				// Check if allow_url_fopen is enabled.
-				if ( ! ini_get( 'allow_url_fopen' ) ) {
-					die( 'allow_url_fopen is not enabled!' );
-				}
 
-				// Use file_get_contents to retrieve the content of the URL.
-				$output = file_get_contents( $url );
+			$response = wp_remote_get( 'https://maps.google.com/maps/api/geocode/json?address=' . urlencode( $address ) . '&key=' . $wps_tofw_google_api_key );
 
-				if ( false === $output ) {
-					// Handle error if file_get_contents fails.
-					die( 'Failed to get contents from ' . esc_url( $url ) );
-				}
-
-				return $output;
+			if ( ! is_wp_error( $response ) ) {
+				$geocode = wp_remote_retrieve_body( $response );
 			}
 
-			$geocode = track_orders_wpswings_url_get_contents( 'https://maps.google.com/maps/api/geocode/json?address=' . urlencode( $address ) . '&key=' . $wps_tofw_google_api_key );
-
-
 			$output = json_decode( $geocode );
-
 
 			if ( isset( $output->results[0] ) && ! empty( $output->results[0] ) ) {
 				$lat = $output->results[0]->geometry->location->lat;
 				$long = $output->results[0]->geometry->location->lng;
-
 				?>
 				<input type="hidden" id="start_hidden" value="<?php echo esc_attr( $lat ); ?>">
 				<input type="hidden" id="end_hidden" value="<?php echo esc_attr( $long ); ?>">
 				<input type="hidden" id="billing_hidden" value="<?php echo esc_attr( $wps_tofw_billing_add ); ?>">
 				<?php
-				update_option( 'track_orders_address_get_correct', 'on' );
-				update_option( 'track_orders_address_latitude', $lat );
-				update_option( 'track_orders_address_longitude', $long );
+				update_option( 'wps_tofw_address_get_correct', 'on' );
+				update_option( 'wps_tofw_address_latitude', $lat );
+				update_option( 'wps_tofw_address_longitude', $long );
 
 			}
 		}

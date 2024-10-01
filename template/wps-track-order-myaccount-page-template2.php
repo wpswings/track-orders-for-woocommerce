@@ -6,6 +6,7 @@
  * @package  Woocommece_Order_Tracker/template
  */
 
+use Automattic\WooCommerce\Utilities\OrderUtil;
 /**
  * Exit if accessed directly
  */
@@ -31,14 +32,14 @@ if ( true == $allowed ) {
 	}
 
 	// check order id is valid.
-
+	$order_obj = new WC_Order( $order_id );
 	if ( ! is_numeric( $order_id ) ) {
 
 		if ( get_current_user_id() > 0 ) {
 			$myaccount_page = get_option( 'woocommerce_myaccount_page_id' );
 			$myaccount_page_url = get_permalink( $myaccount_page );
 		} else {
-			$wps_tofw_pages = get_option( 'track_orders_tracking_page' );
+			$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
 			$page_id = $wps_tofw_pages['pages']['wps_guest_track_order_page'];
 			$myaccount_page_url = get_permalink( $page_id );
 		}
@@ -52,7 +53,12 @@ if ( true == $allowed ) {
 		 */
 		$reason = apply_filters( 'wps_tofw_track_choose_order', $reason );
 	} else {
-		$order_customer_id = get_post_meta( $order_id, '_customer_user', true );
+		if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+			// HPOS usage is enabled.
+			$order_customer_id = get_post_field( 'post_author', $order_id );
+		} else {
+			$order_customer_id = get_post_field( 'post_author', $order_id );
+		}
 
 		if ( $current_user_id > 0 ) {
 			if ( $order_customer_id != $current_user_id ) {
@@ -72,12 +78,22 @@ if ( true == $allowed ) {
 		{
 			if ( 'on' != get_option( 'wps_tofw_enable_track_order_using_order_id', 'no' ) ) {
 
-				if ( isset( $_SESSION['wps_tofw_email'] ) ) {
-					$tofw_user_email = sanitize_text_field( wp_unslash( $_SESSION['wps_tofw_email'] ) );
-					$order_email = get_post_meta( $order_id, '_billing_email', true );
+				$tofw_user_email = filter_var( isset( $_SESSION['wps_tofw_email'] ), FILTER_SANITIZE_EMAIL );
+				if ( filter_var( $tofw_user_email, FILTER_VALIDATE_EMAIL ) ) {
+					$tofw_user_email = filter_var( isset( $_SESSION['wps_tofw_email'] ), FILTER_SANITIZE_EMAIL );
+
+
+					if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+						// HPOS usage is enabled.
+						$order_email = $order_obj->get_meta( '_billing_email', true );
+					} else {
+						$order_email = get_post_meta( $order_id, '_billing_email', true );
+					}
+
+
 					if ( $tofw_user_email != $order_email ) {
 						$allowed = false;
-						$wps_tofw_pages = get_option( 'track_orders_tracking_page' );
+						$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
 						$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
 						$myaccount_page_url = get_permalink( $page_id );
 						$reason = __( 'This order #', 'track-orders-for-woocommerce' ) . $order_id . __( 'is not associated to your account.', 'track-orders-for-woocommerce' ) . "<a href='$myaccount_page_url'>" . __( 'Click Here ', 'track-orders-for-woocommerce' ) . '</a>';
@@ -107,7 +123,7 @@ if ( true == $allowed ) {
 		}
 	}
 } else {
-	$wps_tofw_pages = get_option( 'track_orders_tracking_page' );
+	$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
 	$page_id = $wps_tofw_pages['pages']['wps_guest_track_order_page'];
 	$track_order_url = get_permalink( $page_id );
 	header( 'Location: ' . $track_order_url );
@@ -123,15 +139,24 @@ get_header( 'shop' );
 do_action( 'woocommerce_before_main_content' );
 
 /**
- * Woocommerce_before_main_content hook.
- *
- * @hooked woocommerce_output_content_wrapper - 10 (outputs opening divs for the content)
- * @hooked woocommerce_breadcrumb - 20
- */
-$wps_main_wrapper_class = get_option( 'wps_tofw_track_order_class' );
-$wps_child_wrapper_class = get_option( 'wps_tofw_track_order_child_class' );
-$wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
-$wps_tofw_enhanced_customer_note = get_post_meta( $order_id, 'wps_tofw_enhanced_cn', true );
+	 * Woocommerce_before_main_content hook.
+	 *
+	 * @hooked woocommerce_output_content_wrapper - 10 (outputs opening divs for the content)
+	 * @hooked woocommerce_breadcrumb - 20
+	 */
+	$wps_main_wrapper_class = get_option( 'wps_tofw_main_wrapper_class_theme' );
+	$wps_child_wrapper_class = get_option( 'wps_tofw_child_wrapper_class' );
+	$wps_track_order_css = get_option( 'wps_tofw_custom_css_name' );
+	$wps_track_order_js = get_option( 'wps_tofw_custom_js_name' );
+
+if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+	// HPOS usage is enabled.
+	$wps_tofw_enhanced_customer_note = $order_obj->get_meta( 'wps_tofw_enhanced_cn', true );
+} else {
+	$wps_tofw_enhanced_customer_note = get_post_meta( $order_id, 'wps_tofw_enhanced_cn', true );
+}
+
+
 if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 	$wps_tofw_enhanced_customer_note = $wps_tofw_enhanced_customer_note;
 } else {
@@ -139,7 +164,12 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 }
 ?>
 
-<style>	<?php echo esc_html( $wps_track_order_css ); ?>	</style>
+<style id="wps-tofw-global-css" type="text/css">
+<?php echo wp_kses_post( $wps_track_order_css ); ?>	
+</style>
+<script id="wps-tofw-global-js" type="text/javascript">
+<?php echo wp_kses_post( wp_unslash( $wps_track_order_js ) ); ?>
+</script>
 
 <div class="wps-tofw-order-tracking-section <?php echo esc_attr( $wps_main_wrapper_class ); ?>">
 	<?php
@@ -147,7 +177,14 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 	$get_status_processing = get_option( 'wps_tofw_order_status_in_processing', array() );
 	$get_status_shipping = get_option( 'wps_tofw_order_status_in_shipping', array() );
 	$wps_track_order_status = array();
-	$wps_track_order_status = get_post_meta( $order_id, 'wps_track_order_status', true );
+
+	if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+		// HPOS usage is enabled.
+		$wps_track_order_status = $order_obj->get_meta( 'wps_track_order_status', true );
+	} else {
+		$wps_track_order_status = get_post_meta( $order_id, 'wps_track_order_status', true );
+	}
+
 	$woo_statuses = wc_get_order_statuses();
 	$status_process = 0;
 	$status_shipped = 0;
@@ -167,15 +204,33 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 		}
 	}
 	$tofw_order = new WC_Order( $order_id );
-	$expected_delivery_date = get_post_meta( $order_id, 'wps_tofw_estimated_delivery_date', true );
-	$expected_delivery_time = get_post_meta( $order_id, 'wps_tofw_estimated_delivery_time', true );
-	$order_delivered_date = get_post_meta( $order_id, '_completed_date', true );
 
-	if ( $allowed ) {
-		$tofw_order = new WC_Order( $order_id );
+	if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+		// HPOS usage is enabled.
+		$expected_delivery_date = $tofw_order->get_meta( 'wps_tofw_estimated_delivery_date', true );
+		$expected_delivery_time = $tofw_order->get_meta( 'wps_tofw_estimated_delivery_time', true );
+		$order_delivered_date = $tofw_order->get_meta( '_completed_date', true );
+	} else {
 		$expected_delivery_date = get_post_meta( $order_id, 'wps_tofw_estimated_delivery_date', true );
 		$expected_delivery_time = get_post_meta( $order_id, 'wps_tofw_estimated_delivery_time', true );
 		$order_delivered_date = get_post_meta( $order_id, '_completed_date', true );
+	}
+	$allowed = true;
+	if ( $allowed ) {
+		$tofw_order = new WC_Order( $order_id );
+
+		if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+			// HPOS usage is enabled.
+			$expected_delivery_date = $tofw_order->get_meta( 'wps_tofw_estimated_delivery_date', true );
+			$conexpected_delivery_timeverted_ = $tofw_order->get_meta( 'wps_tofw_estimated_delivery_time', true );
+			$order_delivered_date = $tofw_order->get_meta( '_completed_date', true );
+		} else {
+			$expected_delivery_date = get_post_meta( $order_id, 'wps_tofw_estimated_delivery_date', true );
+			$expected_delivery_time = get_post_meta( $order_id, 'wps_tofw_estimated_delivery_time', true );
+			$order_delivered_date = get_post_meta( $order_id, '_completed_date', true );
+		}
+
+
 		if ( WC()->version < '3.0.0' ) {
 			$order_status = $tofw_order->post_status;
 			$ordered_by = $tofw_order->post->post_author;
@@ -192,15 +247,33 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 				$ordered_by = $ordered_by->data->display_name;
 			}
 		}
-		$billing_first_name = get_post_meta( $order_id, '_billing_first_name', true );
-		$billing_last_name = get_post_meta( $order_id, '_billing_last_name', true );
-		$billing_address = get_post_meta( $order_id, '_billing_address_1', true ) . ' ' . get_post_meta( $order_id, '_billing_address_2', true );
-		$billing_city = get_post_meta( $order_id, '_billing_city', true );
-		$billing_state = get_post_meta( $order_id, '_billing_state', true );
-		$billing_country = get_post_meta( $order_id, '_billing_country', true );
-		$billing_postcode = get_post_meta( $order_id, '_billing_postcode', true );
-		$wps_track_order_status = get_post_meta( $order_id, 'wps_track_order_status', true );
-		$order_onchange_time = get_post_meta( $order_id, 'wps_track_order_onchange_time', true );
+
+		if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+			// HPOS usage is enabled.
+			$billing_first_name = $tofw_order->get_billing_first_name();
+			$billing_last_name = $tofw_order->get_billing_last_name();
+			$billing_address = $tofw_order->get_billing_address_1() . ' ' . $tofw_order->get_billing_address_2();
+			$billing_city = $tofw_order->get_billing_city();
+			$billing_state = $tofw_order->get_billing_state();
+			$billing_country = $tofw_order->get_billing_country();
+			$billing_postcode = $tofw_order->get_billing_postcode();
+			$wps_track_order_status = $tofw_order->get_meta( 'wps_track_order_status', true );
+			$wps_phone_number = $tofw_order->get_billing_phone();
+			$order_onchange_time = $tofw_order->get_meta( 'wps_track_order_onchange_time', true );
+		} else {
+			$billing_first_name = get_post_meta( $order_id, '_billing_first_name', true );
+			$billing_last_name = get_post_meta( $order_id, '_billing_last_name', true );
+			$billing_address = get_post_meta( $order_id, '_billing_address_1', true ) . ' ' . get_post_meta( $order_id, '_billing_address_2', true );
+			$billing_city = get_post_meta( $order_id, '_billing_city', true );
+			$billing_state = get_post_meta( $order_id, '_billing_state', true );
+			$billing_country = get_post_meta( $order_id, '_billing_country', true );
+			$billing_postcode = get_post_meta( $order_id, '_billing_postcode', true );
+			$wps_track_order_status = get_post_meta( $order_id, 'wps_track_order_status', true );
+			$order_onchange_time = get_post_meta( $order_id, 'wps_track_order_onchange_time', true );
+		}
+
+
+
 		$order_status_key = str_replace( '-', '_', $order_status );
 		$order_status_key = 'wps_tofw_' . $order_status_key . '_text';
 		$total = 0;
@@ -294,7 +367,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 			}
 		}
 		?>
-		<section class="wps_tofw_header wps_tofw_header--template2">
+		<section class="wps_tofw_header wps_tofw_header--template2 <?php echo esc_attr( $wps_child_wrapper_class ); ?>">
 			<div class="wps_tofw_header-wrapper">
 				<div class="wps_tofw_oder-tracker_gifimg">
 					
@@ -783,7 +856,12 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 																			$f = 1;
 																			$value_key = str_replace( '-', '_', $value );
 																			$value_key = 'wps_tofw_' . $value_key . '_text';
-																			$message = __( 'Your Order status is ', 'track-orders-for-woocommerce' ) . $woo_statuses[ $value ];
+																			if ( array_key_exists( $value, $woo_statuses ) ) {
+																				$message = __( 'Your Order status is ', 'track-orders-for-woocommerce' ) . $woo_statuses[ $value ];
+																			} else {
+																				// Handle the case where the key does not exist.
+																				$message = __( 'Custom Order Status Not Set.', 'track-orders-for-woocommerce' );
+																			}
 																			$current_status = get_option( $value_key, '' );
 																			if ( '' == $current_status ) {
 																				$current_status = $message;
@@ -798,7 +876,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 																			}
 																			?>
 																				<ul class="wps-tofw-order-info">
-																					<li><?php echo esc_html( $woo_statuses[ $value ] ); ?></li>
+																					<li><?php echo esc_html( array_key_exists( $value, $woo_statuses ) ? $woo_statuses[ $value ] : __( 'Custom Order Status Not Set', 'track-orders-for-woocommerce' ) ); ?></li>
 																					<li><?php echo esc_html( $onchange_shipping_date ); ?></li>
 																					<li><?php echo esc_html( $current_status ); ?></li></ul>
 																					<?php
@@ -907,6 +985,15 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 
 																		</div>
 																	</section>
+
+																	<?php
+																	$wps_whatswpp_share = get_option( 'tofw_enable_whatsapp_share_track_order' );
+																	if ( 'on' == $wps_whatswpp_share ) {
+																		?>
+																	<div class="wps_apv_whatsapp_content"><a target="_blank" class="wps_swatch_whatsapp_link" href="https://api.whatsapp.com/send?text='<?php echo esc_url( home_url( add_query_arg( null, null ) ) ); ?>'"><img src="<?php echo esc_url( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ); ?>images/wht-g.png"></a></div>
+																		<?php
+																	}
+																	?>
 																	<?php if ( ! empty( $wps_tofw_enhanced_customer_note ) ) { ?>
 																		<div class="wps-tofw-order-tracking-section ">
 																			<section class="wps_tofw_order_tracker_content">

@@ -14,7 +14,6 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-
 global $wps_tofw_obj;
 $tofw_custom_order_status =
 // desc - filter for trial.

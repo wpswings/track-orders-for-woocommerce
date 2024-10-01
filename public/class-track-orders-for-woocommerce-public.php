@@ -100,7 +100,7 @@ class Track_Orders_For_Woocommerce_Public {
 		if ( 'on' != $wps_tofw_enable_track_order_feature ) {
 			return;
 		}
-		$wps_tofw_pages = get_option( 'track_orders_tracking_page' );
+		$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
 		$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
 		$track_order_url = get_permalink( $page_id );
 		?>
@@ -123,7 +123,7 @@ class Track_Orders_For_Woocommerce_Public {
 			return $actions;
 		}
 
-		$wps_tofw_pages = get_option( 'track_orders_tracking_page' );
+		$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
 		$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
 		if ( '3.0.0' > WC()->version ) {
 			$order_id = $order->id;
@@ -163,14 +163,15 @@ class Track_Orders_For_Woocommerce_Public {
 	 * @return string
 	 */
 	public function wps_tofw_include_track_order_page( $template ) {
-		$selected_template = get_option( 'track_orders_activated_template' );
+		$selected_template = get_option( 'wps_tofw_activated_template' );
 		$wps_tofw_google_map_setting = get_option( 'wps_tofw_trackorder_with_google_map', false );
 		$wps_tofw_enable_track_order_feature = get_option( 'tofw_enable_track_order', 'no' );
 		if ( 'on' != $wps_tofw_enable_track_order_feature ) {
 			return $template;
 		}
+		$page_id = '';
 		if ( 'on' == $wps_tofw_enable_track_order_feature && 'on' == $wps_tofw_google_map_setting ) {
-			$wps_tofw_pages = get_option( 'track_orders_tracking_page' );
+			$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
 			$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
 			if ( is_page( $page_id ) ) {
 				$new_template = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'template/wps-map-new-template.php';
@@ -178,12 +179,15 @@ class Track_Orders_For_Woocommerce_Public {
 			}
 		} else {
 
-			$wps_tofw_pages = get_option( 'track_orders_tracking_page', false );
-			$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
-			if ( is_page( $page_id ) ) {
+			$wps_tofw_pages = get_option( 'wps_tofw_tracking_page', false );
+			if ( is_array( $wps_tofw_pages ) && isset( $wps_tofw_pages['pages'] ) && is_array( $wps_tofw_pages['pages'] ) ) {
+				// Access the page_id only if the structure is as expected.
+				$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
+			}
+			if ( is_page( $page_id ) && isset( $page_id ) ) {
 				if ( ' ' != $selected_template && null != $selected_template ) {
 					$path = '';
-					if ( 'template4' === $selected_template || 'newtemplate1' === $selected_template || 'newtemplate2' === $selected_template || 'newtemplate3' === $selected_template ) {
+					if ( ( 'template4' === $selected_template || 'newtemplate1' === $selected_template || 'newtemplate2' === $selected_template || 'newtemplate3' === $selected_template ) && ( is_plugin_active( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php' ) ) ) {
 						$path = TRACK_ORDERS_FOR_WOOCOMMERCE_PRO_DIR_PATH;
 					} else {
 						$path = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH;
@@ -213,7 +217,7 @@ class Track_Orders_For_Woocommerce_Public {
 		if ( 'on' != $wps_tofw_enable_track_order_feature ) {
 			return $template;
 		}
-		$wps_tofw_pages = get_option( 'track_orders_tracking_page' );
+		$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
 		$page_id = $wps_tofw_pages['pages']['wps_guest_track_order_page'];
 		if ( is_page( $page_id ) ) {
 			$new_template = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'template/wps-guest-track-order-page.php';
@@ -232,7 +236,7 @@ class Track_Orders_For_Woocommerce_Public {
 	 * @return string
 	 */
 	public function wps_ordertracking_page( $template ) {
-		$wps_tofw_pages = get_option( 'track_orders_tracking_page' );
+		$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
 		$page_id = $wps_tofw_pages['pages']['wps_fedex_track_order'];
 		if ( is_page( $page_id ) ) {
 			$new_template = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'template/wps-order-tracking-page.php';
@@ -260,7 +264,7 @@ class Track_Orders_For_Woocommerce_Public {
 			return;
 		}
 
-		$wps_tofw_pages = get_option( 'track_orders_tracking_page' );
+		$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
 		$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
 		$track_order_url = get_permalink( $page_id );
 		$wps_tofw_enable_track_order_api = get_option( 'wps_tofw_enable_third_party_tracking_api', 'no' );
