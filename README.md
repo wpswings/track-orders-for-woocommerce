@@ -1,5 +1,7 @@
 [![Build Status](https://img.shields.io/travis/twbs/bootstrap/v4-dev.svg)](https://travis-ci.org/twbs/bootstrap) ![Active installs](https://img.shields.io/badge/Active-4000%2B-brightgreen) ![License](https://img.shields.io/badge/License-GPLv3%20or%20later-yellowgreen) ![WP tested](https://img.shields.io/badge/WP%20tested-6.6.2-brightgreen) ![WC tested](https://img.shields.io/badge/WC%20tested-9.3.3-brightgreen) ![Requires PHP](https://img.shields.io/badge/Requires%20PHP-7.2.0-blue)
-# Track Orders for WooCommerce – Shipment Tracking, Order Status, Order Monitoring Templates & Google Maps Integration
+
+# Track Orders for WooCommerce – Advance Shipment Tracking, Order Status, WooCommerce Shipping, Order Tracking Templates, Shipment Delivery Notifications
+
 ![Return Refund and Exchange For WooCommerce - Create A Simple Refund System WooCommerce RMA with Exchange, Wallet & Cancel Order Features](https://ps.w.org/track-orders-for-woocommerce/assets/banner-772x250.png?rev=2672154)
 * Contributors: WP Swings
 * Author URI: [**WP Swings**](https://wpswings.com/?utm_source=wpswings-official&utm_medium=rma-github-page&utm_campaign=wpswings-official)
@@ -101,6 +103,17 @@ Track Orders for Woocommerce is compatible with various themes that are suitable
 Track Orders for WooCommerce Pro enables the addition of multiple shipping services, customization of the tracking process to match specific business needs, and the sending of email reminders with payment links for pending orders, it offers features like tracking templates for engaging customers, shortcodes for creating custom tracking pages and forms, and a Track Your Order popup box for convenient order monitoring within the My Account section.
 
 Note: Get [Track Orders For WooCommerce Pro](https://wpswings.com/product/track-orders-for-woocommerce-pro/?utm_source=ot-github&utm_medium=referral&utm_campaign=ot-pro)
+
+⭐⭐⭐⭐⭐ - Excellent plugin and support
+The plugin is very useful and support is quite helpful. Definitely recommend. Kudos to the team!  (@stevecaloo) 
+
+## THIRD PARTY SERVICES
+
+Our plugin relies on some third-party services. Here is more information about it.
+
+* **WP Swings Tracking:** We are using our own [**WP Swings Tracking API**](https://tracking.wpswings.com/) for tracking essential user info. By default, our plugin team receives no sensitive data from you or your website enwpscreate _tracking paged users. We only keep track of the plugin version and the settings that are enabled by you in the plugin. You can read more about the [**plugin’s usage tracking here**](https://wpswings.com/plugin-usage-tracking).
+* **Integration with Google Maps:** To make things work smoothly our plugin relies on [**Google Maps API**](https://maps.googleapis.com) to show the accurate information of different Geo locations where the order has been gone through. Users require a Google Maps API key to add Google Maps to their website, They can obtain the API key from the [**Google Cloud API Services**](https://console.cloud.google.com/apis/library) and can learn more about Google Maps' Terms and Conditions from [**here**](https://www.google.com/help/terms_maps/).
+* **Integration with Hubspot HSforms:** To make the onboarding process smoother we are relying on [**Hubspot HSforms**](https://developers.hubspot.com/docs/cms/building-blocks/forms). Which only gathers the necessary and nonsensitive info like (Plugin Name, Version, and Plugin Deactivation Reasons). You can read more about their [**privacy policy here**](https://legal.hubspot.com/legal-stuff).
 
 
 ## SUPPORT
