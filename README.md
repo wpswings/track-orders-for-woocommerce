@@ -1,4 +1,4 @@
-[![Build Status](https://img.shields.io/travis/twbs/bootstrap/v4-dev.svg)](https://travis-ci.org/twbs/bootstrap) ![Active installs](https://img.shields.io/badge/Active-4000%2B-brightgreen) ![License](https://img.shields.io/badge/License-GPLv3%20or%20later-yellowgreen) ![WP tested](https://img.shields.io/badge/WP%20tested-6.5.5-brightgreen) ![WC tested](https://img.shields.io/badge/WC%20tested-9.1.2-brightgreen) ![Requires PHP](https://img.shields.io/badge/Requires%20PHP-7.2.0-blue)
+[![Build Status](https://img.shields.io/travis/twbs/bootstrap/v4-dev.svg)](https://travis-ci.org/twbs/bootstrap) ![Active installs](https://img.shields.io/badge/Active-4000%2B-brightgreen) ![License](https://img.shields.io/badge/License-GPLv3%20or%20later-yellowgreen) ![WP tested](https://img.shields.io/badge/WP%20tested-6.6.2-brightgreen) ![WC tested](https://img.shields.io/badge/WC%20tested-9.3.3-brightgreen) ![Requires PHP](https://img.shields.io/badge/Requires%20PHP-7.2.0-blue)
 # Track Orders for WooCommerce – Shipment Tracking, Order Status, Order Monitoring Templates & Google Maps Integration
 ![Return Refund and Exchange For WooCommerce - Create A Simple Refund System WooCommerce RMA with Exchange, Wallet & Cancel Order Features](https://ps.w.org/track-orders-for-woocommerce/assets/banner-772x250.png?rev=2672154)
 * Contributors: WP Swings
@@ -58,14 +58,15 @@ By utilizing the page shortcode, you can add an Order Tracking page anywhere on 
 
 - Track order with three immersive templates
 - Order tracker button for customers
-- Show the icon for order status in the order table
-- Track orders using the unique order id only
-- Third-party Live Shipment Tracking (FedEx)
-- Enable Live Map Package Tracking Using Google Map
-- Let customers & guests export orders in a CSV file
-- Email notifications for order status in WooCommerce
-- Show additional order details
+- Show the icon for order status in the order table.
+- Track orders using the unique order id only.
+- Third-party Live Shipment Tracking (FedEx).
+- Enable Live Map Package Tracking Using Google Map.
+- Let customers & guests export orders in a CSV file.
+- Email notifications for order status in WooCommerce.
+- Show additional order details.
 - Create and use the custom order status.
+- Share Tracking URL on WhatsApp.
 
 ### WHAT PREMIUM VERSION OF WOOCOMMERCE ORDER TRACKER OFFERS
 
