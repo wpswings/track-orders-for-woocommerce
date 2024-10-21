@@ -228,7 +228,12 @@ jQuery( document ).ready( function()
 	});
 });
 
-
+jQuery(document).on('click','.wps-tofw-order-tracking-section .wps_tofw_order_tab ul li a', function(){
+		jQuery('.wps-ot_order-track-wrap').parent('.wps_tofw_order_tracker_content-main-alpha-in').css('opacity','0');
+	setTimeout(function(){
+		jQuery('.wps-ot_order-track-wrap').parent('.wps_tofw_order_tracker_content-main-alpha-in').css('opacity','1');
+	},1000);
+});
 
 jQuery('.wps-tooltip-template-fedex').hide();
 jQuery('.wps-tooltip-canadapost').hide();

@@ -240,11 +240,15 @@ jQuery(document).ready(function ($) {
 	jQuery(document).on('click','#wps_tofw_preview_first',function(){
 		jQuery('#wps_template_2').show();
 		jQuery('#wps_template_3').hide();
+		
 		jQuery('#wps_template_1').hide();
 		jQuery('#wps_template_4').hide();
 		jQuery('#wps_new_template_1').hide();
 		jQuery('#wps_new_template_2').hide();
 		jQuery('#wps_new_template_3').hide();
+		jQuery('#wps_new_template_8').hide();
+		jQuery('#wps_new_template_8').hide();
+		jQuery('#wps_template_8').hide();
 	});
 	jQuery(document).on('click','#wps_tofw_preview_second',function(){
 		jQuery('#wps_template_3').show();
@@ -254,6 +258,9 @@ jQuery(document).ready(function ($) {
 		jQuery('#wps_new_template_1').hide();
 		jQuery('#wps_new_template_2').hide();
 		jQuery('#wps_new_template_3').hide();
+		jQuery('#wps_new_template_8').hide();
+		jQuery('#wps_template_8').hide();
+		jQuery('#wps_new_template_8').hide();
 
 	});
 	jQuery(document).on('click','#wps_tofw_preview_third',function(){
@@ -264,6 +271,9 @@ jQuery(document).ready(function ($) {
 		jQuery('#wps_new_template_1').hide();
 		jQuery('#wps_new_template_2').hide();
 		jQuery('#wps_new_template_3').hide();
+		jQuery('#wps_new_template_8').hide();
+		jQuery('#wps_template_8').hide();
+		jQuery('#wps_new_template_8').hide();
 	});
 	jQuery(document).on('click','#wps_tofw_preview_fourth',function(){
 		jQuery('#wps_template_4').show();
@@ -273,6 +283,9 @@ jQuery(document).ready(function ($) {
 		jQuery('#wps_new_template_1').hide();
 		jQuery('#wps_new_template_2').hide();
 		jQuery('#wps_new_template_3').hide();
+		jQuery('#wps_new_template_8').hide();
+		jQuery('#wps_template_8').hide();
+		jQuery('#wps_new_template_8').hide();
 	});
 	jQuery(document).on('click','#wps_tofw_preview_new_template_1',function(){
 		
@@ -283,6 +296,9 @@ jQuery(document).ready(function ($) {
 		jQuery('#wps_template_3').hide();
 		jQuery('#wps_new_template_2').hide();
 		jQuery('#wps_new_template_3').hide();
+		jQuery('#wps_new_template_8').hide();
+		jQuery('#wps_template_8').hide();
+		jQuery('#wps_new_template_8').hide();
 	});
 	jQuery(document).on('click','#wps_tofw_preview_new_template_2',function(){
 		jQuery('#wps_new_template_2').show();
@@ -290,9 +306,11 @@ jQuery(document).ready(function ($) {
 		jQuery('#wps_template_2').hide();
 		jQuery('#wps_template_4').hide();
 		jQuery('#wps_template_3').hide();
+		jQuery('#wps_template_8').hide();
 		jQuery('#wps_new_template_1').hide();
 		jQuery('#wps_new_template_3').hide();
-		
+		jQuery('#wps_new_template_8').hide();
+		jQuery('#wps_new_template_8').hide();
 	});
 	jQuery(document).on('click','#wps_tofw_preview_new_template_3',function(){
 		jQuery('#wps_new_template_3').show();
@@ -300,8 +318,22 @@ jQuery(document).ready(function ($) {
 		jQuery('#wps_template_2').hide();
 		jQuery('#wps_template_4').hide();
 		jQuery('#wps_template_3').hide();
+		jQuery('#wps_template_8').hide();
 		jQuery('#wps_new_template_1').hide();
 		jQuery('#wps_new_template_2').hide();
+		jQuery('#wps_new_template_8').hide();
+		jQuery('#wps_new_template_8').hide();
+	});
+
+	jQuery(document).on('click', '#wps_tofw_preview_new_template_8', function () {
+		jQuery('#wps_new_template_8').show();
+		jQuery('#wps_template_1').hide();
+		jQuery('#wps_template_2').hide();
+		jQuery('#wps_template_4').hide();
+		jQuery('#wps_template_3').hide();
+		jQuery('#wps_new_template_1').hide();
+		jQuery('#wps_new_template_2').hide();
+		jQuery('#wps_new_template_3').hide();
 	});
 	
 
@@ -323,6 +355,9 @@ jQuery(document).ready(function ($) {
 		jQuery(".hidden_wrapper").show();
 	});
 	jQuery(document).on('click','#wps_tofw_preview_new_template_3',function(){
+		jQuery(".hidden_wrapper").show();
+	});
+	jQuery(document).on('click','#wps_tofw_preview_new_template_8',function(){
 		jQuery(".hidden_wrapper").show();
 	});
 	jQuery(document).on('click','#wps_tofw_preview_new_template_2',function(){
@@ -347,6 +382,12 @@ jQuery(document).ready(function ($) {
 		jQuery(".hidden_wrapper").hide();
 	});
 	jQuery(document).on('click','#wps_new_template_3',function(){
+		jQuery(".hidden_wrapper").hide();
+	});
+	jQuery(document).on('click','#wps_new_template_8',function(){
+		jQuery(".hidden_wrapper").hide();
+	});
+	jQuery(document).on('click','#wps_new_template_8',function(){
 		jQuery(".hidden_wrapper").hide();
   });
   

@@ -585,7 +585,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 			</div>
 		</section>
 		<section class="wps_tofw_order_tracker_content approval">
-			<div class="wps-deliver-msg wps-tofw-wps-msg">
+			<div class="wps_tofw_order_tab-temp-alpha wps-deliver-msg wps-tofw-wps-msg">
 				<h3><?php esc_html_e( 'Approval', 'track-orders-for-woocommerce' ); ?></h3>
 				<?php
 				if ( ! empty( $wps_track_order_status ) ) {
@@ -986,14 +986,26 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 																		</div>
 																	</section>
 
-																	<?php
-																	$wps_whatswpp_share = get_option( 'tofw_enable_whatsapp_share_track_order' );
-																	if ( 'on' == $wps_whatswpp_share ) {
-																		?>
-																	<div class="wps_apv_whatsapp_content"><a target="_blank" class="wps_swatch_whatsapp_link" href="https://api.whatsapp.com/send?text='<?php echo esc_url( home_url( add_query_arg( null, null ) ) ); ?>'"><img src="<?php echo esc_url( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ); ?>images/wht-g.png"></a></div>
-																		<?php
-																	}
-																	?>
+																	<div class="wps_apv_share_content_template_alpha">
+				<svg class="wps_apv_share_icon" width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M24.7978 11.6543C27.007 11.6543 28.7978 9.86344 28.7978 7.6543C28.7978 5.44516 27.007 3.6543 24.7978 3.6543C22.5887 3.6543 20.7978 5.44516 20.7978 7.6543C20.7978 9.86344 22.5887 11.6543 24.7978 11.6543Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+					<path d="M8.79782 20.9878C11.007 20.9878 12.7978 19.1969 12.7978 16.9878C12.7978 14.7787 11.007 12.9878 8.79782 12.9878C6.58868 12.9878 4.79782 14.7787 4.79782 16.9878C4.79782 19.1969 6.58868 20.9878 8.79782 20.9878Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+					<path d="M24.7978 30.3213C27.007 30.3213 28.7978 28.5304 28.7978 26.3213C28.7978 24.1122 27.007 22.3213 24.7978 22.3213C22.5887 22.3213 20.7978 24.1122 20.7978 26.3213C20.7978 28.5304 22.5887 30.3213 24.7978 30.3213Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+					<path d="M12.2512 19.001L21.3578 24.3076" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+					<path d="M21.3445 9.66797L12.2512 14.9746" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+				</svg>
+
+				<div class="wps_apv_whatsapp_content_template_alpha-in">
+				<?php
+						$wps_whatswpp_share = get_option( 'tofw_enable_whatsapp_share_track_order' );
+					if ( 'on' == $wps_whatswpp_share ) {
+						?>
+							<a target="_blank" class="wps_swatch_whatsapp_link_template_1" href="https://api.whatsapp.com/send?text='<?php echo esc_url( home_url( add_query_arg( null, null ) ) ); ?>'"><img style="display:inline-block;" src="<?php echo esc_url( ( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) ); ?>images/wht-g.png"> <?php esc_html_e( 'Whatsapp', 'track-orders-for-woocommerce' ); ?></a>
+						<?php
+					}
+				?>
+				</div>
+			</div>
 																	<?php if ( ! empty( $wps_tofw_enhanced_customer_note ) ) { ?>
 																		<div class="wps-tofw-order-tracking-section ">
 																			<section class="wps_tofw_order_tracker_content">
