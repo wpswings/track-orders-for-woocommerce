@@ -68,9 +68,9 @@ class Track_Orders_For_Woocommerce_Public {
 	 * @since    1.0.0
 	 */
 	public function tofw_public_enqueue_scripts() {
-
+		$selected_template = get_option( 'wps_tofw_activated_template' );
 		wp_register_script( $this->plugin_name, TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'public/js/track-orders-for-woocommerce-public.js', array( 'jquery' ), $this->version, false );
-		wp_localize_script( $this->plugin_name, 'tofw_public_param', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
+		wp_localize_script( $this->plugin_name, 'tofw_public_param', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ), 'wps_activated_template' => $selected_template ) );
 		wp_enqueue_script( $this->plugin_name );
 		if ( 0 <= strpos( isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '', '/track-your-order' ) ) {
 			$wps_tofw_google_api_key = get_option( 'wps_tofw_google_api_key', '' );
