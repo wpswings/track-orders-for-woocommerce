@@ -372,7 +372,7 @@ $wps_track_order_js = get_option( 'wps_tofw_custom_js_name' );
 			$wps_tofw_enhanced_customer_note = '';
 		}
 		?>
-		<div class="wps_tofw_order_tab-temp-alpha wps_tofw_order_tab <?php echo esc_attr( $wps_child_wrapper_class ); ?>">
+		<div class="wps_tofw_order_tab <?php echo esc_attr( $wps_child_wrapper_class ); ?>">
 			<ul class="wps_tofw_order_track_link">
 				<li id="wps_order_detail_section" ><a href="javascript:;"><?php esc_html_e( 'Order Details', 'track-orders-for-woocommerce' ); ?></a></li>
 				<li id="wps_order_track_section" ><a href="javascript:;"><?php esc_html_e( 'Track Order', 'track-orders-for-woocommerce' ); ?></a></li>
