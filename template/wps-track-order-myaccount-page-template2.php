@@ -368,7 +368,10 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 		}
 		?>
 		<section class="wps_tofw_header wps_tofw_header--template2 <?php echo esc_attr( $wps_child_wrapper_class ); ?>">
-
+		<?php
+						$wps_whatswpp_share = get_option( 'tofw_enable_whatsapp_share_track_order' );
+					if ( 'on' == $wps_whatswpp_share ) {
+						?>
 		<div class="wps_apv_share_content_template_alpha">
 				<svg class="wps_apv_share_icon" width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<path d="M24.7978 11.6543C27.007 11.6543 28.7978 9.86344 28.7978 7.6543C28.7978 5.44516 27.007 3.6543 24.7978 3.6543C22.5887 3.6543 20.7978 5.44516 20.7978 7.6543C20.7978 9.86344 22.5887 11.6543 24.7978 11.6543Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -379,16 +382,12 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 				</svg>
 
 				<div class="wps_apv_whatsapp_content_template_alpha-in">
-				<?php
-						$wps_whatswpp_share = get_option( 'tofw_enable_whatsapp_share_track_order' );
-					if ( 'on' == $wps_whatswpp_share ) {
-						?>
 							<a target="_blank" class="wps_swatch_whatsapp_link_template_1" href="https://api.whatsapp.com/send?text='<?php echo esc_url( home_url( add_query_arg( null, null ) ) ); ?>'"><img style="display:inline-block;" src="<?php echo esc_url( ( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) ); ?>images/wht-g.png"> <?php esc_html_e( 'Whatsapp', 'track-orders-for-woocommerce' ); ?></a>
-						<?php
-					}
-				?>
 				</div>
 			</div>
+			<?php
+					}
+			?>
 			<div class="wps_tofw_header-wrapper">
 				<div class="wps_tofw_oder-tracker_gifimg">
 					
