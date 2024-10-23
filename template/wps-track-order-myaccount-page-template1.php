@@ -391,16 +391,17 @@ $wps_track_order_js = get_option( 'wps_tofw_custom_js_name' );
 				</svg>
 
 				<div class="wps_apv_whatsapp_content_template_alpha-in">
-				<?php
+					<?php
 						$wps_whatswpp_share = get_option( 'tofw_enable_whatsapp_share_track_order' );
 					if ( 'on' == $wps_whatswpp_share ) {
 						?>
 							<a target="_blank" class="wps_swatch_whatsapp_link_template_1" href="https://api.whatsapp.com/send?text='<?php echo esc_url( home_url( add_query_arg( null, null ) ) ); ?>'"><img style="display:inline-block;" src="<?php echo esc_url( ( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) ); ?>images/wht-g.png"> <?php esc_html_e( 'Whatsapp', 'track-orders-for-woocommerce' ); ?></a>
 						<?php
 					}
-				?>
+					?>
 				</div>
-			</div>									<?php
+			</div>									
+					<?php
 				}
 				?>
 					</li>
@@ -1183,13 +1184,6 @@ $wps_track_order_js = get_option( 'wps_tofw_custom_js_name' );
 																do_action( 'woocommerce_after_main_content' );
 																get_footer( 'shop' );
 															} elseif ( 'on' == $wps_tofw_enable_track_order_popup && $current_user_id > 0 && 0 != $order_id && '' != $order_id && null != $order_id ) {
-																// phpcs:disable
-																?>
-																<link rel="stylesheet" type="text/css" href="<?php echo esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . '/public/css/track-orders-for-woocommerce-public.css'; ?>" media="screen">
-																<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-																<script type="text/javascript" src="<?php echo esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'public/js/track-orders-for-woocommerce-public.js'; ?>"></script>
-																<?php
-																// phpcs:disable
 																/**
 																 * Add content.
 																 *
