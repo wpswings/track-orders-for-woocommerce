@@ -18,6 +18,7 @@ $template4 = __( 'Activate', 'track-orders-for-woocommerce' );
 $new_template1 = __( 'Activate', 'track-orders-for-woocommerce' );
 $new_template2 = __( 'Activate', 'track-orders-for-woocommerce' );
 $new_template3 = __( 'Activate', 'track-orders-for-woocommerce' );
+$new_template8 = __( 'Activate', 'track-orders-for-woocommerce' );
 
 if ( 'template1' == $activated_template ) {
 	$template1 = __( 'Activated', 'track-orders-for-woocommerce' );
@@ -33,6 +34,8 @@ if ( 'template1' == $activated_template ) {
 	$new_template2 = __( 'Activated', 'track-orders-for-woocommerce' );
 } else if ( 'newtemplate3' == $activated_template ) {
 	$new_template3 = __( 'Activated', 'track-orders-for-woocommerce' );
+} else if ( 'template8' == $activated_template ) {
+	$new_template8 = __( 'Activated', 'track-orders-for-woocommerce' );
 }
 ?>
 
@@ -82,7 +85,7 @@ if ( 'template1' == $activated_template ) {
 			</div>
 		</div>
 	</div>
-	<?php do_action( 'wps_tofw_template_tab', $template4, $new_template1, $new_template2, $new_template3 ); ?>
+	<?php do_action( 'wps_tofw_template_tab', $template4, $new_template1, $new_template2, $new_template3 , $new_template8 ); ?>
 </div>
 	
 <div class="hidden_wrapper">

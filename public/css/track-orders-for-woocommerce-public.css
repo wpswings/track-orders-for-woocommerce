@@ -3310,3 +3310,194 @@ p.order-again {
 a.wps_swatch_whatsapp_link_template_1 {
   border: white !important;
 }
+
+/* Alpha Template Start */
+.wps_apv_share_content_template_alpha {
+  position: relative;
+  text-align: right;
+}
+
+.wps_apv_whatsapp_content_template_alpha-in {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: #fff;
+  padding: 10px;
+  min-width: 120px;
+  border-radius: 5px;
+  border: 1px solid #f2f2f2;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  right: 0;
+  top: 100%;
+  opacity: 0;
+  z-index: -1;
+  transition: all 0.3s ease;
+}
+
+.wps_tofw_order_tab-temp-alpha.wps_tofw_order_tab {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.wps_apv_share_content_template_alpha svg.wps_apv_share_icon {
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+}
+
+.wps_apv_whatsapp_content_template_alpha-in a {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #4f4f4f;
+}
+
+.wps_apv_whatsapp_content_template_alpha-in a:hover {
+  color: #000;
+}
+
+.wps_apv_whatsapp_content_template_alpha-in a img {
+  max-width: 24px;
+  height: auto;
+  flex: 24px;
+}
+
+.wps_apv_share_content_template_alpha
+  svg.wps_apv_share_icon:hover
+  + .wps_apv_whatsapp_content_template_alpha-in,
+.wps_apv_whatsapp_content_template_alpha-in:hover {
+  z-index: 1;
+  opacity: 1;
+}
+
+.wps_tofw_order_tab-temp-alpha.wps_tofw_order_tab ul.wps_tofw_order_track_link {
+  margin: 0;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.wps_tofw_order_tab-temp-alpha.wps_tofw_order_tab,
+.wps_tofw_order_tracker_content-main-alpha {
+  padding: 0 15px;
+}
+
+.wps_tofw_order_tracker_content-main-alpha
+  .wps_tofw_header
+  .wps_progress
+  .circle_tofw_wps {
+  border: none;
+}
+
+.wps_tofw_order_tracker_content-main-alpha .wps_tofw_header .wps_progress {
+  min-height: 50px;
+}
+
+.wps_tofw_order_tracker_content-main-alpha
+  .wps_tofw_header
+  .wps_progress
+  .circle_tofw_wps
+  .label {
+  width: 20px;
+  height: 20px;
+  font-size: 0;
+}
+
+.wps_tofw_order_tracker_content-main-alpha-in {
+  padding: 20px;
+  border: 1px solid #e2e2e2;
+  border-radius: 10px;
+  flex: 1;
+  opacity: 1;
+}
+
+.wps_tofw_order_tracker_content-main-alpha-in .wps_tofw_order_tracker_content {
+  margin: 0;
+}
+
+.wps_tofw_order_tab-temp-alpha.wps_tofw_order_tab ul li a {
+  border: 1px solid #e2e2e2;
+  color: #1e1e1e;
+  border-radius: 100px !important;
+}
+
+.wps_tofw_order_tab-temp-alpha.wps_tofw_order_tab ul li.wps_active_tab a {
+  border: 1px solid #36b37e;
+  color: #46965d;
+  background: #e2ffea;
+}
+
+.wps_tofw_order_tracker_content-main-alpha .wps_tofw_header#wps_product {
+  margin: 0;
+}
+
+.wps_tofw_order_tracker_content-main-alpha
+  .wps_tofw_order_tracker_content
+  .order-delivered-info {
+  font-size: 16px;
+  line-height: 1.25;
+}
+
+@media screen and (min-width: 420px) {
+  .wps_apv_share_content_template_alpha svg.wps_apv_share_icon {
+    cursor: pointer;
+    width: 28px;
+    height: 28px;
+  }
+
+  .wps_tofw_order_tab-temp-alpha.wps_tofw_order_tab
+    ul.wps_tofw_order_track_link {
+    margin: 0;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+  }
+
+  .wps_tofw_order_tracker_content-main-alpha {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    margin: 25px auto;
+    max-width: 1000px;
+  }
+
+  .wps_tofw_order_tracker_content-main-alpha .wps_tofw_header .wps_progress {
+    flex-direction: column;
+    margin: 0;
+    gap: 12px;
+  }
+
+  .wps_tofw_order_tracker_content-main-alpha
+    .wps_tofw_header
+    .wps_progress
+    .circle_tofw_wps
+    .title {
+    top: 50%;
+    right: calc(100% + 10px);
+    transform: translate(0, -50%);
+    text-align: right;
+  }
+
+  .wps_tofw_order_tracker_content-main-alpha
+    .wps_tofw_header
+    .wps_progress
+    .bar_tofw_wps {
+    transform: rotate(90deg);
+    z-index: -1;
+  }
+
+  .wps_tofw_order_tracker_content-main-alpha .wps_tofw_header {
+    margin: 0 0 0 95px;
+  }
+}
+
+/* Alpha Template End */
+
+
+
+/* Template 04 */
+.tofw-wps-template-four .wps_apv_share_content_template_alpha{
+  margin: 10px 10px 0 0;
+}

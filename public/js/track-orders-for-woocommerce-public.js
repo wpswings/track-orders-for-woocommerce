@@ -54,7 +54,7 @@ jQuery(window).bind("load", function() {
 });
 jQuery( document ).ready( function()
 {
-	
+
 	jQuery("body").on('click','#wps_live_tracking',function(e){
          e.preventDefault(); 
          var number=jQuery(this).text();
@@ -109,12 +109,24 @@ jQuery( document ).ready( function()
 		jQuery('#wps_order_detail_section').removeClass();
 		jQuery('#wps_order_track_customer_notice').removeClass();
 		jQuery('#wps_order_track_section').addClass('wps_active_tab');
-		jQuery('#wps_progress_bar').show(1700);
-		jQuery('#wps_approval').show(2000);
-		jQuery('div#wps_notice').show(2000);
-		jQuery('#wps_process').show(2000);
-		jQuery('#wps_ship').show(2000);
-		jQuery('#wps_delivery').show(2000);
+
+		if ('template8' == tofw_public_param.wps_activated_template) {
+			jQuery('#wps_progress_bar').show(700);
+			jQuery('#wps_approval').show(1000);
+			jQuery('div#wps_notice').show(1000);
+			jQuery('#wps_process').show(1000);
+			jQuery('#wps_ship').show(1000);
+			jQuery('#wps_delivery').show(1000);
+		} else {
+
+			jQuery('#wps_progress_bar').show(1700);
+			jQuery('#wps_approval').show(2000);
+			jQuery('div#wps_notice').show(2000);
+			jQuery('#wps_process').show(2000);
+			jQuery('#wps_ship').show(2000);
+			jQuery('#wps_delivery').show(2000);
+
+		}
 		
 		var i = 1;
 		jQuery('.wps_progress .circle_tofw_wps').removeClass().addClass('circle_tofw_wps');
@@ -151,8 +163,19 @@ jQuery( document ).ready( function()
 		jQuery('#wps_order_detail_section').addClass('wps_active_tab');
 		jQuery('#wps_order_track_customer_notice').removeClass();
 		jQuery('#wps_order_track_section').removeClass();
-		jQuery('#wps_product').show(1700);
-		jQuery('#wps_order').show(1700);
+
+
+		if ('template8' == tofw_public_param.wps_activated_template) {
+			jQuery('#wps_product').show(700);
+			jQuery('#wps_order').show(700);
+		} else {
+
+			jQuery('#wps_product').show(1700);
+			jQuery('#wps_order').show(1700);
+
+		}
+
+
 		jQuery('#wps_progress_bar').hide();
 		jQuery('div#wps_notice').hide();
 		jQuery('#wps_approval').hide();
@@ -166,7 +189,13 @@ jQuery( document ).ready( function()
 		jQuery('#wps_order_track_customer_notice').addClass('wps_active_tab');
 		jQuery('#wps_order_detail_section').removeClass();
 		jQuery('#wps_order_track_section').removeClass();
-		jQuery('#wps_tofw_enhanced_customer_notice_template2').show(1700);
+	
+		if ('template8' == tofw_public_param.wps_activated_template) {
+			jQuery('#wps_tofw_enhanced_customer_notice_template2').show(700);
+		} else {
+			jQuery('#wps_tofw_enhanced_customer_notice_template2').show(1700);
+		}
+
 		jQuery('#wps_progress_bar').hide();
 		jQuery('#wps_approval').hide();
 		jQuery('#wps_process').hide();
@@ -181,7 +210,13 @@ jQuery( document ).ready( function()
 	jQuery('#wps_shop_location').hide();
 
 	jQuery('#get_current_shop_location').click(function(){
-		jQuery('#wps_shop_location').show(1700);
+		
+		if ('template8' == tofw_public_param.wps_activated_template) {
+			jQuery('#wps_shop_location').show(700);
+		} else {
+			jQuery('#wps_shop_location').show(1700);
+		}
+		
 		jQuery('.wps_header-wrapper').hide();
 		jQuery('.wps_order_tracker_content').hide();
 		jQuery('.wps_product-details-section ').hide();
@@ -192,8 +227,14 @@ jQuery( document ).ready( function()
 		jQuery('#get_current_shop_customer_notice').removeClass();
 		jQuery('#get_current_shop_location').addClass('wps_tofw_active');
 	});
-	jQuery('#wps_tofw_track_order_details').click(function(){
-		jQuery('.wps_product-details-section ').show(1700);
+	jQuery('#wps_tofw_track_order_details').click(function () {
+		
+		if ('template8' == tofw_public_param.wps_activated_template) {
+			jQuery('.wps_product-details-section ').show(700);
+		} else {
+			jQuery('.wps_product-details-section ').show(1700);
+		}
+
 		jQuery('#wps_shop_location').hide();
 		jQuery('.wps_header-wrapper').hide();
 		jQuery('#wps_tofw_enhanced_customer_notice_template4').hide();
@@ -203,9 +244,16 @@ jQuery( document ).ready( function()
 		jQuery('#get_current_shop_customer_notice').removeClass();
 		jQuery('#wps_tofw_track_order_details').addClass('wps_tofw_active');
 	});
-	jQuery('#wps_tofw_track_order_status').click(function(){
-		jQuery('.wps_header-wrapper').show(1700);
-		jQuery('.wps_order_tracker_content').show(1700);
+	jQuery('#wps_tofw_track_order_status').click(function () {
+
+		if ('template8' == tofw_public_param.wps_activated_template) {
+			jQuery('.wps_header-wrapper').show(700);
+			jQuery('.wps_order_tracker_content').show(700);
+		} else {
+			jQuery('.wps_header-wrapper').show(1700);
+			jQuery('.wps_order_tracker_content').show(1700);
+		}
+		
 		jQuery('.wps_product-details-section ').hide();
 		jQuery('#wps_tofw_enhanced_customer_notice_template4').hide();
 		jQuery('#wps_shop_location').hide();
@@ -215,8 +263,15 @@ jQuery( document ).ready( function()
 		jQuery('#get_current_shop_customer_notice').removeClass();
 		jQuery('#wps_tofw_track_order_status').addClass('wps_tofw_active');
 	});
-	jQuery('#get_current_shop_customer_notice').click(function() {
-		jQuery('#wps_tofw_enhanced_customer_notice_template4').show(1700);
+	jQuery('#get_current_shop_customer_notice').click(function () {
+		
+		
+		if ('template8' == tofw_public_param.wps_activated_template) {
+			jQuery('#wps_tofw_enhanced_customer_notice_template4').show(700);
+		} else {
+			jQuery('#wps_tofw_enhanced_customer_notice_template4').show(1700);
+		}
+
 		jQuery('.wps_product-details-section').hide();
 		jQuery('#wps_shop_location').hide();
 		jQuery('.wps_header-wrapper').hide();
@@ -228,7 +283,12 @@ jQuery( document ).ready( function()
 	});
 });
 
-
+jQuery(document).on('click','.wps-tofw-order-tracking-section .wps_tofw_order_tab ul li a', function(){
+		jQuery('.wps-ot_order-track-wrap').parent('.wps_tofw_order_tracker_content-main-alpha-in').css('opacity','0');
+	setTimeout(function(){
+		jQuery('.wps-ot_order-track-wrap').parent('.wps_tofw_order_tracker_content-main-alpha-in').css('opacity','1');
+	},1000);
+});
 
 jQuery('.wps-tooltip-template-fedex').hide();
 jQuery('.wps-tooltip-canadapost').hide();
@@ -237,6 +297,11 @@ jQuery('.wps-tooltip-usps').hide();
 
 jQuery(document).ready(function(){
 	
+	if ('template8' == tofw_public_param.wps_activated_template) {
+		$wps_time = 11000;
+	} else {
+		$wps_time = 12000
+	}
 	var div_height_template2 = jQuery('.wps-tooltip-template-fedex').height()+60;
 	var progress_width_template2 = jQuery('.wps-tofw-outer-template-fedex').attr('data-progress');
 	var progress_width_template2_final = (progress_width_template2*div_height_template2)+(140);
@@ -244,7 +309,8 @@ jQuery(document).ready(function(){
 	jQuery('.wps-tofw-inner-template-fedex').animate(
 	{
 		height : progress_width_template2_final+'px'
-	},12000);	
+		}, $wps_time);
+	
 
 	jQuery('.wps-tooltip-template-fedex').each(function(i,v){
 		jQuery(this).delay(1500*i).fadeIn(800);
