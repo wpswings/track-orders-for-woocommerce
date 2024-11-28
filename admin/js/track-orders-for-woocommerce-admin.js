@@ -137,7 +137,9 @@ jQuery(document).ready(function ($) {
   jQuery(document).on('click','input#wps_tofw_create_custom_order_status',function(){
     jQuery('#wps_tofw_send_loading').show();
     var wps_tofw_create_order_status = jQuery('#wps_tofw_create_order_name').val().trim();
-    var wps_order_image_url = jQuery(document).find('#wps_tofw_other_setting_upload_logo').val();
+	  var wps_order_image_url = jQuery(document).find('#wps_tofw_other_setting_upload_logo').val();
+	  //wps-template-select
+	  var wps_template_select = jQuery(document).find('#wps-template-select').val();
     if(wps_tofw_create_order_status != "" && wps_tofw_create_order_status != null) 
     {
       if( /^[a-zA-Z0-9- ]*$/.test(wps_tofw_create_order_status) )
@@ -151,7 +153,8 @@ jQuery(document).ready(function ($) {
             action : 'wps_tofw_create_custom_order_status',
             wps_tofw_new_role_name : wps_tofw_create_order_status,
             wps_custom_order_image_url : wps_order_image_url,
-            nonce : tofw_admin_param.wps_tofw_nonce,
+			  nonce: tofw_admin_param.wps_tofw_nonce,
+			  wps_template_select : wps_template_select,
           },
           success : function( response ) {
             jQuery('#wps_tofw_send_loading').hide();

@@ -1016,6 +1016,167 @@ class Track_Orders_For_Woocommerce_Common {
 				</div>
 				</body>
 				</html>';
+				} elseif ( 'template_4' == $wps_mail_template ) {
+					
+					$message = '<html>
+					<body>
+					<style>
+						body {
+							background-color: #eef2f6;
+							font-family: "Arial", sans-serif;
+							margin: 0;
+							padding: 0;
+							color: #333333;
+						}
+						.container {
+							max-width: 600px;
+							margin: 40px auto;
+							padding: 20px;
+							background: #ffffff;
+							border-radius: 10px;
+							box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+						}
+						.header {
+							background: linear-gradient(45deg, #4e73df, #1cc88a);
+							color: #ffffff;
+							text-align: center;
+							padding: 20px;
+							border-radius: 10px 10px 0 0;
+							font-size: 22px;
+							font-weight: bold;
+							letter-spacing: 1px;
+						}
+						.content {
+							padding: 20px;
+						}
+						.content h4 {
+							color: #4e73df;
+							font-size: 20px;
+							font-weight: bold;
+							margin-bottom: 15px;
+							text-align: center;
+						}
+						.product-card {
+							display: flex;
+							justify-content: space-between;
+							align-items: center;
+							padding: 15px;
+							margin-bottom: 10px;
+							background-color: #f8f9fc;
+							border: 1px solid #d1d3e2;
+							border-radius: 8px;
+						}
+						.product-card img {
+							max-width: 60px;
+							border-radius: 5px;
+						}
+						.product-card .details {
+							flex-grow: 1;
+							margin-left: 15px;
+						}
+						.product-card .details p {
+							margin: 0;
+							font-size: 14px;
+							color: #5a5c69;
+						}
+						.product-card .price {
+							font-size: 16px;
+							font-weight: bold;
+							color: #1cc88a;
+						}
+						.summary {
+							background-color: #f8f9fc;
+							padding: 15px;
+							border: 1px solid #d1d3e2;
+							border-radius: 8px;
+							margin-top: 20px;
+						}
+						.summary .row {
+							display: flex;
+							justify-content: space-between;
+							margin-bottom: 10px;
+						}
+						.summary .row:last-child {
+							margin-bottom: 0;
+						}
+						.summary .row .label {
+							color: #5a5c69;
+							font-size: 14px;
+						}
+						.summary .row .value {
+							font-size: 14px;
+							font-weight: bold;
+						}
+						.qr-code {
+							text-align: center;
+							margin-top: 20px;
+						}
+						.qr-code img {
+							width: 120px;
+							height: 120px;
+						}
+						.footer {
+							text-align: center;
+							padding: 20px;
+							color: #858796;
+							font-size: 12px;
+							border-top: 1px solid #e3e6f0;
+							margin-top: 20px;
+						}
+					</style>
+					
+					<div class="container">
+						<div class="header">
+							' . $mail_header . '
+						</div>
+						
+						<div class="content">
+							<h4>Order Confirmation: #' . $order_id . '</h4>';
+							
+				foreach ($order->get_items() as $item_id => $item) {
+					$product = $item->get_product();
+					$item_meta_html = wc_display_item_meta($item);
+					$product_image = wp_get_attachment_image_src($product->get_image_id(), 'thumbnail')[0];
+				
+					$message .= '<div class="product-card">
+									<img src="' . esc_url($product_image) . '" alt="' . esc_attr($item->get_name()) . '">
+									<div class="details">
+										<p><strong>' . esc_html($item->get_name()) . '</strong></p>
+										<p>' . $item_meta_html . '</p>
+									</div>
+									<div class="price">  ' . wc_price($item->get_total()) . '</div>
+								</div>';
+				}
+				
+				$message .= '<div class="summary">
+								<div class="row">
+									<span class="label">Subtotal:</span>
+									<span class="value"> ' . wc_price($order->get_subtotal()) . '</span>
+								</div>
+								<div class="row">
+									<span class="label">Tax:</span>
+									<span class="value"> ' . wc_price($order->get_total_tax()) . '</span>
+								</div>
+								<div class="row">
+									<span class="label">Total:</span>
+									<span class="value"> ' . wc_price($order->get_total()) . '</span>
+								</div>
+							</div>';
+				
+				if ('on' === get_option('wps_tofw_qr_redirect')) {
+					$message .= '<div class="qr-code">
+									<img src="' . esc_url($file_url) . '" alt="QR Code">
+								</div>';
+				}
+				
+				$message .= '</div>
+						<div class="footer">
+							&copy; ' . gmdate('Y') . ' ' . esc_html($site_name) . '. All rights reserved.
+						</div>
+					</div>
+					</body>
+				</html>';
+				
 				}
 			}
 
@@ -1419,7 +1580,11 @@ class Track_Orders_For_Woocommerce_Common {
 			$custom_order = get_option( 'wps_tofw_new_custom_order_status', array() );
 			$statuses = get_option( 'tofw_selected_custom_order_status', array() );
 			$wps_tofw_statuses = get_option( 'wps_tofw_new_settings_custom_statuses_for_order_tracking', array() );
-
+			
+			// Ensure it's an array
+			if (!is_array($custom_order)) {
+				$custom_order = [];
+			}
 			$custom_order[] = array( 'dispatched' => __( 'Order Dispatched', 'track-orders-for-woocommerce' ) );
 			$custom_order[] = array( 'shipped' => __( 'Order Shipped', 'track-orders-for-woocommerce' ) );
 			$custom_order[] = array( 'packed' => __( 'Order Packed', 'track-orders-for-woocommerce' ) );

@@ -144,6 +144,36 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 		}
 	}
 
+		/**
+		 * Method for description column
+		 *
+		 * @param array $item An array of DB data.
+		 *
+		 * @return string
+		 */
+		public function column_template( $item ) {
+			// Retrieve the option from the database
+			$templates = get_option( 'wps_tofw_new_custom_template', array() );
+			error_log(print_r($templates, true));
+			// Ensure $templates is an array and properly structured
+			if ( ! is_array( $templates ) || empty( $templates ) ) {
+				return __( 'Not Set', 'track-orders-for-woocommerce' );
+			}
+		
+			// Loop through $item to find a matching key in $templates
+			foreach ( $item as $key => $value ) {
+				if ( array_key_exists( $key, $templates ) ) {
+					return $templates[ $key ]; // Return the matching template
+				}
+			}
+		
+			// Default return if no match is found
+			return __( 'Not Set', 'track-orders-for-woocommerce' );
+		}
+		
+
+
+
 	/**
 	 *  Associative array of columns
 	 *
@@ -153,6 +183,7 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 		$columns = array(
 			'cb'      => '<input type="checkbox" />',
 			'name'    => __( 'Custom Order Status Name', 'track-orders-for-woocommerce' ),
+			'template' => __( 'Template', 'track-orders-for-woocommerce' ), // New column
 			'image' => __( 'Custom Order Status Image', 'track-orders-for-woocommerce' ),
 		);
 		return $columns;
@@ -241,6 +272,23 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 						</th>
 						<td>
 							<input type="text" name="wps_tofw_create_order_name" pattern = '[A-Za-z0-9]' id="wps_tofw_create_order_name" placeholder="<?php esc_attr_e( 'Type Custom Order Status Name Here', 'track-orders-for-woocommerce' ); ?>">	
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row" class="titledesc">
+							<label for="wps_tofw_other_setting_upload_logo"><?php esc_html_e( 'Set Specific Template', 'track-orders-for-woocommerce' ); ?></label>
+						</th>
+						<td class="forminp forminp-text">
+						<select name="template" id="wps-template-select">
+							<option value="template-1">Template-1</option>
+							<option value="template-2">Template-2</option>
+							<option value="template-3">Template-3</option>
+							<option value="template-4">Template-4</option>
+							<option value="new-template-1">New-Template-1</option>
+							<option value="new-template-2">New-Template-2</option>
+							<option value="new-template-3">New-Template-3</option>
+							<option value="new-template-4">New-Template-4</option>
+						</select>
 						</td>
 					</tr>
 					 <tr valign="top">

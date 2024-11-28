@@ -947,10 +947,13 @@ class Track_Orders_For_Woocommerce_Admin {
 	public function wps_tofw_create_custom_order_status_callback() {
 		check_ajax_referer( 'ajax-nonce', 'nonce' );
 		$create_custom_order_status = array();
+		$tem = array();
 		$value = array();
 		$custom_order_image_url = array();
 		$wps_image_url = array();
+		$set_value_temp = array();
 		$value = get_option( 'wps_tofw_new_custom_order_status', false );
+		$set_value_temp = get_option( 'wps_tofw_new_custom_template', false );
 		$custom_order_image_url = get_option( 'wps_tofw_new_custom_order_image', false );
 		if ( is_array( $value ) && ! empty( $value ) ) {
 			$create_custom_order_status = isset( $_POST['wps_tofw_new_role_name'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_new_role_name'] ) ) : '';
@@ -960,8 +963,14 @@ class Track_Orders_For_Woocommerce_Admin {
 			$value[] = array( $key_custom_order_status => $create_custom_order_status );
 			$custom_order_image_url[ $key_custom_order_status ] = $create_custom_order_image_url;
 
+
+			$create_custom_order_status1 = isset( $_POST['wps_tofw_new_role_name'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_new_role_name'] ) ) : '';
+			$tem = isset( $_POST['wps_template_select'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_template_select'] ) ) : '';
+			$set_value_temp[] = array($create_custom_order_status1 => $tem );
+
 			update_option( 'wps_tofw_new_custom_order_status', $value );
 			update_option( 'wps_tofw_new_custom_order_image', $custom_order_image_url );
+			update_option( 'wps_tofw_new_custom_template', $set_value_temp );
 
 		} else {
 
@@ -969,6 +978,12 @@ class Track_Orders_For_Woocommerce_Admin {
 			$create_custom_order_image_url = isset( $_POST['wps_custom_order_image_url'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_custom_order_image_url'] ) ) : '';
 			$key_custom_order_status = str_replace( ' ', '', $create_custom_order_status );
 			$key_custom_order_status = strtolower( $key_custom_order_status );
+
+			// Ensure it's an array
+			if (!is_array($value)) {
+				$value = [];
+			}
+
 			$value[] = array( $key_custom_order_status => $create_custom_order_status );
 			$custom_order_image_url[ $key_custom_order_status ] = $create_custom_order_image_url;
 
@@ -992,6 +1007,7 @@ class Track_Orders_For_Woocommerce_Admin {
 		$wps_custom_key = isset( $_POST['wps_custom_key'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_custom_key'] ) ) : '';
 		if ( isset( $wps_custom_key ) && ! empty( $wps_custom_key ) ) {
 			$custom_order_status_exist = get_option( 'wps_tofw_new_custom_order_status', array() );
+
 			if ( is_array( $custom_order_status_exist ) && ! empty( $custom_order_status_exist ) ) {
 				foreach ( $custom_order_status_exist as $key => $value ) {
 					foreach ( $value as $wps_order_key => $wps_order_status ) {
@@ -1002,6 +1018,21 @@ class Track_Orders_For_Woocommerce_Admin {
 					}
 				}
 				update_option( 'wps_tofw_new_custom_order_status', $custom_order_status_exist );
+
+
+				$custom_order_status_temp = get_option( 'wps_tofw_new_custom_template', array() );
+
+				if ( is_array( $custom_order_status_temp ) && ! empty( $custom_order_status_temp ) ) {
+					foreach ( $custom_order_status_temp as $key => $value ) {
+						foreach ( $value as $wps_order_key => $wps_order_status ) {
+							if ( $wps_order_key === $wps_custom_key ) {
+								unset( $custom_order_status_temp[ $key ] );
+	
+							}
+						}
+					}
+					update_option( 'wps_tofw_new_custom_template', $custom_order_status_temp );
+				}
 
 				if ( is_array( $wps_tofw_old_selected_statuses ) && ! empty( $wps_tofw_old_selected_statuses ) ) {
 					foreach ( $wps_tofw_old_selected_statuses as $old_key => $old_value ) {
