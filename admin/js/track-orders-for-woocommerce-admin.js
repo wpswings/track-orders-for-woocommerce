@@ -192,7 +192,8 @@ jQuery(document).ready(function ($) {
   // delete custom status
   jQuery(document.body).on('click','.wps_delete_costom_order',function(){
 		var wps_action=jQuery(this).data('action');
-		var wps_key=jQuery(this).data('key');
+	  var wps_key = jQuery(this).data('key');
+	
 		jQuery.ajax({
 			url: tofw_admin_param.ajaxurl,
 			type : 'post',

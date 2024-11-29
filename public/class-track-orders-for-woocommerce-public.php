@@ -166,6 +166,8 @@ class Track_Orders_For_Woocommerce_Public {
 		$selected_template = get_option( 'wps_tofw_activated_template' );
 		$wps_tofw_google_map_setting = get_option( 'wps_tofw_trackorder_with_google_map', false );
 		$wps_tofw_enable_track_order_feature = get_option( 'tofw_enable_track_order', 'no' );
+		$status_template_mapping = get_option('wps_tofw_new_custom_template' , array());
+		$status_name = '';
 		if ( 'on' != $wps_tofw_enable_track_order_feature ) {
 			return $template;
 		}
@@ -187,21 +189,75 @@ class Track_Orders_For_Woocommerce_Public {
 			if ( is_page( $page_id ) && isset( $page_id ) ) {
 				if ( ' ' != $selected_template && null != $selected_template ) {
 					$path = '';
-					if ( ( 'template8' === $selected_template || 'template4' === $selected_template || 'newtemplate1' === $selected_template || 'newtemplate2' === $selected_template || 'newtemplate3' === $selected_template ) && ( is_plugin_active( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php' ) ) ) {
+					$link_array = explode( '?', isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '' );
+					if ( empty( $link_array[ count( $link_array ) - 1 ] ) ) {
+						$order_id = $link_array[ count( $link_array ) - 2 ];
+					} else {
+						$order_id = $link_array[ count( $link_array ) - 1 ];
+					}
+					$order = wc_get_order( $order_id );
+	
+					// Retrieve the order status.
+					$status_slug = $order->get_status();
+					$order_statuses = wc_get_order_statuses();
+					if ( isset( $order_statuses[ 'wc-' . $status_slug ] ) ) {
+						$status_name = $order_statuses[ 'wc-' . $status_slug ];
+					} 
+				
+
+					// Retrieve the mapping from the options table.
+					$status_template_mapping = get_option('wps_tofw_new_custom_template');
+
+					// Check if the retrieved data is valid
+					if (is_array($status_template_mapping)) {
+						$current_order_status = $status_name; // Replace this with your dynamic order status.
+						$template1 = false; // Initialize the template variable.
+
+						// Loop through the mapping to find the matching template.
+						foreach ($status_template_mapping as $mapping) {
+							if (isset($mapping[$current_order_status])) {
+								$template1 = $mapping[$current_order_status]; // Assign the matched template.
+								break; // Exit the loop after finding the match.
+							}
+						}
+                 }
+
+				 $found = false;
+				foreach ($status_template_mapping as $sub_array) {
+					if (array_key_exists($status_name, $sub_array)) {
+						$found = true;
+						break; // Exit loop once the key is found.
+					}
+				}
+
+				 if($found){
+					// Determine the path based on the selected template.
+					if ( ( 'template8' === $template1 || 'template4' ===$template1 || 'newtemplate1' === $template1 || 'newtemplate2' === $template1 || 'newtemplate3' === $template1 ) && is_plugin_active( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php' ) ) {
 						$path = TRACK_ORDERS_FOR_WOOCOMMERCE_PRO_DIR_PATH;
 					} else {
 						$path = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH;
 					}
-					$new_template = $path . 'template/wps-track-order-myaccount-page-' . $selected_template . '.php';
+					// Construct the template path.
+					$new_template = $path . 'template/wps-track-order-myaccount-page-' . $template1 . '.php';
 					$template = $new_template;
+
+				} else {
+				if ( ( 'template8' === $selected_template || 'template4' === $selected_template || 'newtemplate1' === $selected_template || 'newtemplate2' === $selected_template || 'newtemplate3' === $selected_template ) && ( is_plugin_active( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php' ) ) ) {
+								$path = TRACK_ORDERS_FOR_WOOCOMMERCE_PRO_DIR_PATH;
+							} else {
+								$path = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH;
+							}
+							$new_template = $path . 'template/wps-track-order-myaccount-page-' . $selected_template . '.php';
+							$template = $new_template;
+				}
 				} else {
 					$new_template = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'template/wps-track-order-myaccount-page-template1.php';
 					$template = $new_template;
 				}
 			}
 		}
-
 		return $template;
+		// return var_dump($status_template_mapping);
 	}
 
 

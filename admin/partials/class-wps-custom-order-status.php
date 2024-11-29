@@ -152,24 +152,22 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 		 * @return string
 		 */
 		public function column_template( $item ) {
-			// Retrieve the option from the database
-			$templates = get_option( 'wps_tofw_new_custom_template', array() );
-			error_log(print_r($templates, true));
-			// Ensure $templates is an array and properly structured
-			if ( ! is_array( $templates ) || empty( $templates ) ) {
-				return __( 'Not Set', 'track-orders-for-woocommerce' );
-			}
+			// Retrieve the option from the database.
+			$custom_order_status_temp = get_option( 'wps_tofw_new_custom_template', array() );
 		
-			// Loop through $item to find a matching key in $templates
+			// Loop through $item to find a matching key in $custom_order_status_temp.
 			foreach ( $item as $key => $value ) {
-				if ( array_key_exists( $key, $templates ) ) {
-					return $templates[ $key ]; // Return the matching template
+				foreach ( $custom_order_status_temp as $sub_array ) {
+					if ( isset( $sub_array[$key] ) ) {
+						return $sub_array[$key]; // Return the matching template.
+					}
 				}
 			}
 		
-			// Default return if no match is found
+			// Default return if no match is found.
 			return __( 'Not Set', 'track-orders-for-woocommerce' );
 		}
+		
 		
 
 
@@ -280,14 +278,14 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 						</th>
 						<td class="forminp forminp-text">
 						<select name="template" id="wps-template-select">
-							<option value="template-1">Template-1</option>
-							<option value="template-2">Template-2</option>
-							<option value="template-3">Template-3</option>
-							<option value="template-4">Template-4</option>
-							<option value="new-template-1">New-Template-1</option>
-							<option value="new-template-2">New-Template-2</option>
-							<option value="new-template-3">New-Template-3</option>
-							<option value="new-template-4">New-Template-4</option>
+							<option value="template1">Template-1</option>
+							<option value="template2">Template-2</option>
+							<option value="template3">Template-3</option>
+							<option value="template4">Template-4</option>
+							<option value="newtemplate1">New-Template-1</option>
+							<option value="newtemplate2">New-Template-2</option>
+							<option value="newtemplate3">New-Template-3</option>
+							<option value="template8">New-Template-4</option>
 						</select>
 						</td>
 					</tr>
