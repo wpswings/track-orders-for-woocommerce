@@ -688,3 +688,28 @@ input.role_box_open {
   margin-top: 10px;
   background-color: #2196f3;
 }
+
+#wps_tofw_create_custom_order_status_edit{
+  margin-top: 10px;
+  background-color: #2196f3;
+}
+
+.wps_edit_of_custom_status {
+  display: none;
+}
+
+.wps-error-button {
+  background-color: #ff4d4f; /* Primary red color */
+  color: #fff; /* White text for contrast */
+  border: 1px solid #d4351c; /* Slightly darker red border */
+  padding: 10px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.wps-error-button:hover {
+  background-color: #d4351c; /* Darker red on hover */
+  border-color: #a71d15; /* Even darker border */
+}

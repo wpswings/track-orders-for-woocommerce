@@ -211,13 +211,14 @@ class Track_Orders_For_Woocommerce {
 		// Saving tab settings.
 		$this->loader->add_action( 'wps_tofw_settings_saved_notice', $tofw_plugin_admin, 'tofw_admin_save_tab_settings' );
 
-		// Developer's Hook Listing.
+		// Developer's Hook Listing. wps_tofw_save_edit_custom_order_status
 		$this->loader->add_action( 'tofw_developer_admin_hooks_array', $tofw_plugin_admin, 'wps_developer_admin_hooks_listing' );
 		$this->loader->add_action( 'tofw_developer_public_hooks_array', $tofw_plugin_admin, 'wps_developer_public_hooks_listing' );
 
 		$this->loader->add_action( 'wp_ajax_wps_tofw_create_custom_order_status', $tofw_plugin_admin, 'wps_tofw_create_custom_order_status_callback' );
 		$this->loader->add_action( 'wp_ajax_wps_tofw_delete_custom_order_status', $tofw_plugin_admin, 'wps_tofw_delete_custom_order_status_callback' );
-
+		$this->loader->add_action( 'wp_ajax_wps_tofw_edit_custom_order_status', $tofw_plugin_admin, 'wps_tofw_edit_custom_order_status_callback' );
+		$this->loader->add_action( 'wp_ajax_wps_tofw_save_edit_custom_order_status', $tofw_plugin_admin, 'wps_tofw_save_edit_custom_order_status_callback' );
 		$this->loader->add_action( 'wp_ajax_wps_selected_template', $tofw_plugin_admin, 'wps_selected_template_callback' );
 
 		$this->loader->add_action( 'wp_ajax_wps_tofw_insert_address_for_tracking', $tofw_plugin_admin, 'wps_tofw_insert_address_for_tracking' );

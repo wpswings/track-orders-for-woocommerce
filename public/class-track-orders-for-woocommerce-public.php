@@ -206,7 +206,7 @@ class Track_Orders_For_Woocommerce_Public {
 				
 
 					// Retrieve the mapping from the options table.
-					$status_template_mapping = get_option('wps_tofw_new_custom_template');
+					$status_template_mapping = get_option('wps_tofw_new_custom_template', array());
 
 					// Check if the retrieved data is valid
 					if (is_array($status_template_mapping)) {
