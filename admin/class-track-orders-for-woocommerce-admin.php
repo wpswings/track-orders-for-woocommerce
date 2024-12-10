@@ -954,7 +954,7 @@ class Track_Orders_For_Woocommerce_Admin {
 		$wps_image_url = array();
 		$set_value_temp = array();
 		$value = get_option( 'wps_tofw_new_custom_order_status', false );
-		
+
 		$set_value_temp = get_option( 'wps_tofw_new_custom_template', false );
 		$custom_order_image_url = get_option( 'wps_tofw_new_custom_order_image', false );
 		if ( is_array( $value ) && ! empty( $value ) ) {
@@ -965,10 +965,9 @@ class Track_Orders_For_Woocommerce_Admin {
 			$value[] = array( $key_custom_order_status => $create_custom_order_status );
 			$custom_order_image_url[ $key_custom_order_status ] = $create_custom_order_image_url;
 
-
 			$create_custom_order_status1 = isset( $_POST['wps_tofw_new_role_name'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_new_role_name'] ) ) : '';
 			$tem = isset( $_POST['wps_template_select'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_template_select'] ) ) : '';
-			$set_value_temp[] = array($create_custom_order_status1 => $tem );
+			$set_value_temp[] = array( $create_custom_order_status1 => $tem );
 
 			update_option( 'wps_tofw_new_custom_order_status', $value );
 			update_option( 'wps_tofw_new_custom_order_image', $custom_order_image_url );
@@ -981,9 +980,9 @@ class Track_Orders_For_Woocommerce_Admin {
 			$key_custom_order_status = str_replace( ' ', '', $create_custom_order_status );
 			$key_custom_order_status = strtolower( $key_custom_order_status );
 
-			// Ensure it's an array
-			if (!is_array($value)) {
-				$value = [];
+			// Ensure it's an array.
+			if ( ! is_array( $value ) ) {
+				$value = array();
 			}
 
 			$value[] = array( $key_custom_order_status => $create_custom_order_status );
@@ -991,12 +990,11 @@ class Track_Orders_For_Woocommerce_Admin {
 
 			$create_custom_order_status1 = isset( $_POST['wps_tofw_new_role_name'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_new_role_name'] ) ) : '';
 			$tem = isset( $_POST['wps_template_select'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_template_select'] ) ) : '';
-				// Ensure it's an array
-				if (!is_array($set_value_temp)) {
-					$set_value_temp = [];
-				}
-			$set_value_temp[] = array($create_custom_order_status1 => $tem );
-
+				// Ensure it's an array.
+			if ( ! is_array( $set_value_temp ) ) {
+				$set_value_temp = array();
+			}
+			$set_value_temp[] = array( $create_custom_order_status1 => $tem );
 
 			update_option( 'wps_tofw_new_custom_order_status', $value );
 			update_option( 'wps_tofw_new_custom_order_image', $custom_order_image_url );
@@ -1008,7 +1006,7 @@ class Track_Orders_For_Woocommerce_Admin {
 	}
 
 	/**
-	 * This function delete the Custom order status on the backend 
+	 * This function delete the Custom order status on the backend
 	 *
 	 * @link http://www.wpswings.com/
 	 */
@@ -1019,47 +1017,32 @@ class Track_Orders_For_Woocommerce_Admin {
 		$wps_key_name_space = isset( $_POST['wps_key_name_space'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_key_name_space'] ) ) : '';
 		$wps_custom_key = isset( $_POST['wps_custom_key'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_custom_key'] ) ) : '';
 
+			$template_array = get_option( 'wps_tofw_new_custom_template', array() );
 
-		    
-			// var_dump(get_option('wps_tofw_new_custom_order_image'));  //for the custom order status image.
-			// var_dump(get_option('wps_tofw_new_custom_order_status'));    //for that order status.
+			$search_key_template = $wps_key_name_space;
 
-			// Retrieve the stored array from the WordPress options table
-			$template_array = get_option('wps_tofw_new_custom_template', array());
-			// var_dump($_POST['wps_custom_key']);
-			// var_dump($_POST['wps_key_name_space']);
-			// Define the key you're looking for
-			$search_key_template = $wps_key_name_space; // Example: 'hellosstype' is the key you're searching for
+		foreach ( $template_array as $item ) {
 
-			// Search for the specific key and show its value if it matches
-			foreach ($template_array as $item) {
-				// Check if the key exists in the current array
-				if (array_key_exists($search_key_template, $item)) {
-					// Get the value associated with the matched key
-					$value = $item[$search_key_template];
-					$wps_response['wps_template_name'] = $value;
-					break; // Exit loop after finding the match
-				}
+			if ( array_key_exists( $search_key_template, $item ) ) {
+				$value = $item[ $search_key_template ];
+				$wps_response['wps_template_name'] = $value;
+				break;
 			}
+		}
 
-		$template_array_image = get_option('wps_tofw_new_custom_order_image', array());
-		// var_dump($template_array_image);
-			// Check if the key exists directly and get its value
-		if (isset($template_array_image[$wps_custom_key])) {
-			$value = $template_array_image[$wps_custom_key];
+		$template_array_image = get_option( 'wps_tofw_new_custom_order_image', array() );
+
+		if ( isset( $template_array_image[ $wps_custom_key ] ) ) {
+			$value = $template_array_image[ $wps_custom_key ];
 			$wps_response['wps_custom_order_image'] = $value;
 		}
 
 		$wps_response['wps_order_status_name'] = $wps_key_name_space;
 
-		// var_dump($wps_response);
-		echo wp_json_encode($wps_response);
-
-		// esc_html_e( 'success', 'track-orders-for-woocommerce' );
+		echo wp_json_encode( $wps_response );
 		wp_die();
-		
-	}
 
+	}
 
 
 
@@ -1070,60 +1053,49 @@ class Track_Orders_For_Woocommerce_Admin {
 	 */
 	public function wps_tofw_save_edit_custom_order_status_callback() {
 
-		check_ajax_referer('ajax-nonce', 'nonce');
+		check_ajax_referer( 'ajax-nonce', 'nonce' );
 		$wps_response = array();
-		
-		$wps_tofw_edit_order_status = isset($_POST['wps_tofw_edit_order_status']) ? sanitize_text_field(wp_unslash($_POST['wps_tofw_edit_order_status'])) : '';
-		$wps_edit_order_image_url = isset($_POST['wps_edit_order_image_url']) ? sanitize_text_field(wp_unslash($_POST['wps_edit_order_image_url'])) : '';
-		$wps_edit_template_select = isset($_POST['wps_edit_template_select']) ? sanitize_text_field(wp_unslash($_POST['wps_edit_template_select'])) : '';
-		$wps_tofw_edit_order_status_space = isset($_POST['wps_tofw_edit_order_status_space']) ? sanitize_text_field(wp_unslash($_POST['wps_tofw_edit_order_status_space'])) : '';
-		
-		$wps_without_space = str_replace(' ', '', $wps_tofw_edit_order_status_space);
-		
-		$template_array_image = get_option('wps_tofw_new_custom_order_image', array());
-		$wps_template_name_array = get_option('wps_tofw_new_custom_template',array());
-		$wps_all_custom_order_array = get_option('wps_tofw_new_custom_order_status',array());
-		
-		// Check if the key exists in the array before updating image URL
-		if (array_key_exists($wps_without_space, $template_array_image)) {
-			$template_array_image[$wps_without_space] = $wps_edit_order_image_url; // Update the value.
+
+		$wps_tofw_edit_order_status = isset( $_POST['wps_tofw_edit_order_status'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_edit_order_status'] ) ) : '';
+		$wps_edit_order_image_url = isset( $_POST['wps_edit_order_image_url'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_edit_order_image_url'] ) ) : '';
+		$wps_edit_template_select = isset( $_POST['wps_edit_template_select'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_edit_template_select'] ) ) : '';
+		$wps_tofw_edit_order_status_space = isset( $_POST['wps_tofw_edit_order_status_space'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_edit_order_status_space'] ) ) : '';
+
+		$wps_without_space = str_replace( ' ', '', $wps_tofw_edit_order_status_space );
+
+		$template_array_image = get_option( 'wps_tofw_new_custom_order_image', array() );
+		$wps_template_name_array = get_option( 'wps_tofw_new_custom_template', array() );
+		$wps_all_custom_order_array = get_option( 'wps_tofw_new_custom_order_status', array() );
+
+		// Check if the key exists in the array before updating image URL.
+		if ( array_key_exists( $wps_without_space, $template_array_image ) ) {
+			$template_array_image[ $wps_without_space ] = $wps_edit_order_image_url; // Update the value.
 		}
-		
-		// var_dump($wps_tofw_edit_order_status_space);
-		// var_dump();
-	
-		// Update for $wps_template_name_array (which is an array of arrays)
-		foreach ($wps_template_name_array as $key => $value) {
-			if (isset($value[$wps_tofw_edit_order_status_space])) {
-				$wps_template_name_array[$key][$wps_tofw_edit_order_status_space] = $wps_edit_template_select; // Update the value.
+
+		foreach ( $wps_template_name_array as $key => $value ) {
+			if ( isset( $value[ $wps_tofw_edit_order_status_space ] ) ) {
+				$wps_template_name_array[ $key ][ $wps_tofw_edit_order_status_space ] = $wps_edit_template_select; // Update the value.
 			}
 		}
-		
-		// Check if the key exists in the array before updating order status
-		if (array_key_exists($wps_tofw_edit_order_status, $wps_all_custom_order_array)) {
-			$wps_all_custom_order_array[$wps_tofw_edit_order_status] = $wps_edit_template_select; // Update the value.
-		}
-		
-		// Update the options with the modified arrays
-		update_option('wps_tofw_new_custom_order_image', $template_array_image);
-		update_option('wps_tofw_new_custom_template', $wps_template_name_array);
-		update_option('wps_tofw_new_custom_order_status', $wps_all_custom_order_array);
-		
-		echo wp_json_encode($wps_response);
-		
-		wp_die();
-		
 
+		if ( array_key_exists( $wps_tofw_edit_order_status, $wps_all_custom_order_array ) ) {
+			$wps_all_custom_order_array[ $wps_tofw_edit_order_status ] = $wps_edit_template_select; // Update the value.
+		}
+
+		// Update the options with the modified arrays.
+		update_option( 'wps_tofw_new_custom_order_image', $template_array_image );
+		update_option( 'wps_tofw_new_custom_template', $wps_template_name_array );
+		update_option( 'wps_tofw_new_custom_order_status', $wps_all_custom_order_array );
+
+		echo wp_json_encode( $wps_response );
+
+		wp_die();
 
 	}
 
 
-
-
-
-
 	/**
-	 * This function delete the Custom order status on the backend  wps_tofw_edit_custom_order_status_callback
+	 * This function delete the Custom order status on the backend.
 	 *
 	 * @link http://www.wpswings.com/
 	 */
@@ -1146,22 +1118,17 @@ class Track_Orders_For_Woocommerce_Admin {
 				}
 				update_option( 'wps_tofw_new_custom_order_status', $custom_order_status_exist );
 
-
 				$custom_order_status_temp = get_option( 'wps_tofw_new_custom_template', array() );
-				// foreach ($custom_order_status_temp as $index => $sub_array) 
-				// 		unset($custom_order_status_temp[$index][$wps_custom_key]); // Remove the key from the sub-array.
-				// }
 
-				foreach ($custom_order_status_temp as $index => $subArray) {
-					if (isset($subArray[$wps_custom_key])) {
-						// Unset the element if the key matches
-						unset($custom_order_status_temp[$index]);
+				foreach ( $custom_order_status_temp as $index => $sub_array ) {
+					if ( isset( $sub_array[ $wps_custom_key ] ) ) {
+						// Unset the element if the key matches.
+						unset( $custom_order_status_temp[ $index ] );
 					}
 				}
 
-				error_log(print_r($custom_order_status_temp, true));
+				error_log( print_r( $custom_order_status_temp, true ) );
 				update_option( 'wps_tofw_new_custom_template', $custom_order_status_temp );
-
 
 				if ( is_array( $wps_tofw_old_selected_statuses ) && ! empty( $wps_tofw_old_selected_statuses ) ) {
 					foreach ( $wps_tofw_old_selected_statuses as $old_key => $old_value ) {

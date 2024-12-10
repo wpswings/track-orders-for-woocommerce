@@ -248,7 +248,7 @@ class Track_Orders_For_Woocommerce_Common {
 			$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
 			if ( is_page( $page_id ) ) {
 				if ( ' ' != $selected_template && null != $selected_template ) {
-					
+
 					$path = '';
 					$link_array = explode( '?', isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '' );
 					if ( empty( $link_array[ count( $link_array ) - 1 ] ) ) {
@@ -257,61 +257,59 @@ class Track_Orders_For_Woocommerce_Common {
 						$order_id = $link_array[ count( $link_array ) - 1 ];
 					}
 					$order = wc_get_order( $order_id );
-	
+
 					// Retrieve the order status.
 					$status_slug = $order->get_status();
 					$order_statuses = wc_get_order_statuses();
 					if ( isset( $order_statuses[ 'wc-' . $status_slug ] ) ) {
 						$status_name = $order_statuses[ 'wc-' . $status_slug ];
-					} 
-				
+					}
 
 					// Retrieve the mapping from the options table.
-					$status_template_mapping = get_option('wps_tofw_new_custom_template', array());
+					$status_template_mapping = get_option( 'wps_tofw_new_custom_template', array() );
 
-					// Check if the retrieved data is valid
-					if (is_array($status_template_mapping)) {
+					// Check if the retrieved data is valid.
+					if ( is_array( $status_template_mapping ) ) {
 						$current_order_status = $status_name; // Replace this with your dynamic order status.
 						$template1 = false; // Initialize the template variable.
 
 						// Loop through the mapping to find the matching template.
-						foreach ($status_template_mapping as $mapping) {
-							if (isset($mapping[$current_order_status])) {
-								$template1 = $mapping[$current_order_status]; // Assign the matched template.
+						foreach ( $status_template_mapping as $mapping ) {
+							if ( isset( $mapping[ $current_order_status ] ) ) {
+								$template1 = $mapping[ $current_order_status ]; // Assign the matched template.
 								break; // Exit the loop after finding the match.
 							}
 						}
-                 }
-
-				 $found = false;
-				foreach ($status_template_mapping as $sub_array) {
-					if (array_key_exists($status_name, $sub_array)) {
-						$found = true;
-						break; // Exit loop once the key is found.
 					}
-				}
 
-				 if($found){
-					// Determine the path based on the selected template.
-					if ( ( 'template4' === $template1 || 'new-template1' ===$template1 || 'new-template2' === $template1 || 'new-template3' === $template1 || 'template8' === $template1 ) && is_plugin_active( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php' ) ) {
-						$path = TRACK_ORDERS_FOR_WOOCOMMERCE_PRO_DIR_PATH;
+					$found = false;
+					foreach ( $status_template_mapping as $sub_array ) {
+						if ( array_key_exists( $status_name, $sub_array ) ) {
+							$found = true;
+							break; // Exit loop once the key is found.
+						}
+					}
+
+					if ( $found ) {
+						// Determine the path based on the selected template.
+						if ( ( 'template4' === $template1 || 'new-template1' === $template1 || 'new-template2' === $template1 || 'new-template3' === $template1 || 'template8' === $template1 ) && is_plugin_active( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php' ) ) {
+							$path = TRACK_ORDERS_FOR_WOOCOMMERCE_PRO_DIR_PATH;
+						} else {
+							$path = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH;
+						}
+						// Construct the template path.
+						$new_template = $path . 'template/wps-track-order-myaccount-page-' . $template1 . '.php';
+						$template = $new_template;
+
 					} else {
-						$path = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH;
+						if ( 'template4' === $selected_template || 'new-template1' === $selected_template || 'new-template2' === $selected_template || 'new-template3' === $selected_template || 'template8' === $selected_template ) {
+							$path = TRACK_ORDERS_FOR_WOOCOMMERCE_PRO_DIR_PATH;
+						} else {
+							$path = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH;
+						}
+						$new_template = $path . 'template/wps-track-order-myaccount-page-' . $selected_template . '.php';
+						$template = $new_template;
 					}
-					// Construct the template path.
-					$new_template = $path . 'template/wps-track-order-myaccount-page-' . $template1 . '.php';
-					$template = $new_template;
-
-				} else {
-					if ( 'template4' === $selected_template || 'new-template1' === $selected_template || 'new-template2' === $selected_template || 'new-template3' === $selected_template || 'template8' === $selected_template ) {
-						$path = TRACK_ORDERS_FOR_WOOCOMMERCE_PRO_DIR_PATH;
-					} else {
-						$path = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH;
-					}
-					$new_template = $path . 'template/wps-track-order-myaccount-page-' . $selected_template . '.php';
-					$template = $new_template;
-				}
-
 				} else {
 					$new_template = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'template/wps-track-order-myaccount-page-template1.php';
 					$template = $new_template;
@@ -1074,7 +1072,7 @@ class Track_Orders_For_Woocommerce_Common {
 				</body>
 				</html>';
 				} elseif ( 'template_4' == $wps_mail_template ) {
-					
+
 					$message = '<html>
 					<body>
 					<style>
@@ -1189,51 +1187,51 @@ class Track_Orders_For_Woocommerce_Common {
 						
 						<div class="content">
 							<h4>Order Confirmation: #' . $order_id . '</h4>';
-							
-				foreach ($order->get_items() as $item_id => $item) {
-					$product = $item->get_product();
-					$item_meta_html = wc_display_item_meta($item);
-					$product_image = wp_get_attachment_image_src($product->get_image_id(), 'thumbnail')[0];
-				
-					$message .= '<div class="product-card">
-									<img src="' . esc_url($product_image) . '" alt="' . esc_attr($item->get_name()) . '">
+
+					foreach ( $order->get_items() as $item_id => $item ) {
+						$product = $item->get_product();
+						$item_meta_html = wc_display_item_meta( $item );
+						$product_image = wp_get_attachment_image_src( $product->get_image_id(), 'thumbnail' )[0];
+
+						$message .= '<div class="product-card">
+									<img src="' . esc_url( $product_image ) . '" alt="' . esc_attr( $item->get_name() ) . '">
 									<div class="details">
-										<p><strong>' . esc_html($item->get_name()) . '</strong></p>
+										<p><strong>' . esc_html( $item->get_name() ) . '</strong></p>
 										<p>' . $item_meta_html . '</p>
 									</div>
-									<div class="price">  ' . wc_price($item->get_total()) . '</div>
+									<div class="price">  ' . wc_price( $item->get_total() ) . '</div>
 								</div>';
-				}
-				
-				$message .= '<div class="summary">
+					}
+
+					$message .= '<div class="summary">
 								<div class="row">
 									<span class="label">Subtotal:</span>
-									<span class="value"> ' . wc_price($order->get_subtotal()) . '</span>
+									<span class="value"> ' . wc_price( $order->get_subtotal() ) . '</span>
 								</div>
 								<div class="row">
 									<span class="label">Tax:</span>
-									<span class="value"> ' . wc_price($order->get_total_tax()) . '</span>
+									<span class="value"> ' . wc_price( $order->get_total_tax() ) . '</span>
 								</div>
 								<div class="row">
 									<span class="label">Total:</span>
-									<span class="value"> ' . wc_price($order->get_total()) . '</span>
+									<span class="value"> ' . wc_price( $order->get_total() ) . '</span>
 								</div>
 							</div>';
-				
-				if ('on' === get_option('wps_tofw_qr_redirect')) {
-					$message .= '<div class="qr-code">
-									<img src="' . esc_url($file_url) . '" alt="QR Code">
+
+					if ( 'on' === get_option( 'wps_tofw_qr_redirect' ) ) {
+						$message .= '<div class="qr-code">
+									<img src="' . esc_url( $file_url ) . '" alt="QR Code">
 								</div>';
-				}
-				
-				$message .= '</div>
+					}
+
+					$message .= '</div>
 						<div class="footer">
-							&copy; ' . gmdate('Y') . ' ' . esc_html($site_name) . '. All rights reserved.
+							&copy; ' . gmdate( 'Y' ) . ' ' . esc_html( $site_name ) . '. All rights reserved.
 						</div>
 					</div>
 					</body>
 				</html>';
-				
+
 				}
 			}
 
@@ -1637,11 +1635,11 @@ class Track_Orders_For_Woocommerce_Common {
 			$custom_order = get_option( 'wps_tofw_new_custom_order_status', array() );
 			$statuses = get_option( 'tofw_selected_custom_order_status', array() );
 			$wps_tofw_statuses = get_option( 'wps_tofw_new_settings_custom_statuses_for_order_tracking', array() );
-			
-			// Ensure it's an array
-			if (!is_array($custom_order)) {
-				$custom_order = [];
-			}
+
+			// Ensure it's an array.
+		if ( ! is_array( $custom_order ) ) {
+			$custom_order = array();
+		}
 			$custom_order[] = array( 'dispatched' => __( 'Order Dispatched', 'track-orders-for-woocommerce' ) );
 			$custom_order[] = array( 'shipped' => __( 'Order Shipped', 'track-orders-for-woocommerce' ) );
 			$custom_order[] = array( 'packed' => __( 'Order Packed', 'track-orders-for-woocommerce' ) );

@@ -117,8 +117,8 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 	public function column_name( $item ) {
 		foreach ( $item as $custom_order_key => $custom_order_status ) {
 			$title = '<strong>' . $custom_order_status . '</strong>';
-	
-			// Base actions (always included)
+
+			// Base actions (always included).
 			$actions = array(
 				'delete' => sprintf(
 					'<a href="javascript:void(0);" data-action="%s" data-key="%s" class="wps_delete_costom_order">' . __( 'Delete', 'track-orders-for-woocommerce' ) . '</a>',
@@ -126,8 +126,8 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 					$custom_order_key
 				),
 			);
-	
-			// Add 'edit' action only if the Pro plugin is active
+
+			// Add 'edit' action only if the Pro plugin is active.
 			if ( in_array( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php', get_option( 'active_plugins', array() ), true ) ) {
 				$actions['edit'] = sprintf(
 					'<a href="javascript:void(0);" data-action="%s" data-key="%s" data-wps-name="%s" class="wps_edit_costom_order">' . __( 'Edit', 'track-orders-for-woocommerce' ) . '</a>',
@@ -136,14 +136,14 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 					$custom_order_status
 				);
 			}
-	
+
 			return $title . $this->row_actions( $actions );
 		}
 	}
-	
+
 
 	/**
-	 * Method for order status image column    
+	 * Method for order status image column
 	 *
 	 * @param array $item an array of DB data.
 	 *
@@ -152,13 +152,13 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 	public function column_image( $item ) {
 		$wpsimageurl = get_option( 'wps_tofw_new_custom_order_image', false );
 		foreach ( $item as $key => $value ) {
-			if (is_array($wpsimageurl) && array_key_exists($key, $wpsimageurl)) {
-			$wps_image = $wpsimageurl[ $key ];
-			return sprintf(
-				'<img src="%s" height="100px" width="100px"/>',
-				$wps_image
-			);
-		}
+			if ( is_array( $wpsimageurl ) && array_key_exists( $key, $wpsimageurl ) ) {
+				$wps_image = $wpsimageurl[ $key ];
+				return sprintf(
+					'<img src="%s" height="100px" width="100px"/>',
+					$wps_image
+				);
+			}
 		}
 	}
 
@@ -169,31 +169,29 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 		 *
 		 * @return string
 		 */
-		public function column_template( $item ) {
-			// Retrieve the option from the database.
-			$custom_order_status_temp = get_option( 'wps_tofw_new_custom_template', array() );
-		
-			// Loop through $item to find a matching key in $custom_order_status_temp.
-			foreach ( $item as $key => $value ) {
-				// error_log(print_r($value), true);
-				foreach ( $custom_order_status_temp as $sub_array ) {
-					// error_log(print_r($sub_array), true);
-					if ( isset( $sub_array[$value] ) ) {
-						return $sub_array[$value]; // Return the matching template.
-					}
+	public function column_template( $item ) {
+		// Retrieve the option from the database.
+		$custom_order_status_temp = get_option( 'wps_tofw_new_custom_template', array() );
+
+		foreach ( $item as $key => $value ) {
+
+			foreach ( $custom_order_status_temp as $sub_array ) {
+				if ( isset( $sub_array[ $value ] ) ) {
+					return $sub_array[ $value ];
 				}
 			}
-		
-			// Default return if no match is found.
-			return __( 'Not Set', 'track-orders-for-woocommerce' );
 		}
-		
-		
+
+		// Default return if no match is found.
+		return __( 'Not Set', 'track-orders-for-woocommerce' );
+	}
+
+
 
 
 
 	/**
-	 *  Associative array of columns
+	 *  Associative array of columns.
 	 *
 	 * @return array
 	 */
@@ -202,18 +200,17 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 			'cb'      => '<input type="checkbox" />',
 			'name'    => __( 'Custom Order Status Name', 'track-orders-for-woocommerce' ),
 		);
-	
-		// Add 'template' column only if the Pro plugin is active
+
+		// Add 'template' column only if the Pro plugin is active.
 		if ( in_array( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php', get_option( 'active_plugins', array() ), true ) ) {
 			$columns['template'] = __( 'Template', 'track-orders-for-woocommerce' );
 		}
-	
-		// Add 'image' column after 'template'
+
 		$columns['image'] = __( 'Custom Order Status Image', 'track-orders-for-woocommerce' );
-	
+
 		return $columns;
 	}
-	
+
 
 	/**
 	 * Columns to make sortable.
@@ -226,7 +223,7 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 	}
 
 	/**
-	 * Returns an associative array containing the bulk action
+	 * Returns an associative array containing the bulk action.
 	 *
 	 * @return array
 	 */
@@ -299,9 +296,9 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 							<input type="text" name="wps_tofw_create_order_name" pattern = '[A-Za-z0-9]' id="wps_tofw_create_order_name" placeholder="<?php esc_attr_e( 'Type Custom Order Status Name Here', 'track-orders-for-woocommerce' ); ?>">	
 						</td>
 					</tr>
-					<?php 
-				if ( in_array( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php', get_option( 'active_plugins', array() ), true ) ) {
-					?>
+					<?php
+					if ( in_array( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php', get_option( 'active_plugins', array() ), true ) ) {
+						?>
 					<tr valign="top">
 						<th scope="row" class="titledesc">
 							<label for="wps_tofw_other_setting_upload_logo"><?php esc_html_e( 'Set Specific Template', 'track-orders-for-woocommerce' ); ?></label>
@@ -319,8 +316,8 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 						</select>
 						</td>
 					</tr>
-					<?php
-				}
+						<?php
+					}
 					?>
 					 <tr valign="top">
 						<th scope="row" class="titledesc">
@@ -363,9 +360,9 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 							<input type="text" readonly  = "" name="wps_tofw_create_order_name_edit" pattern = '[A-Za-z0-9]' id="wps_tofw_create_order_name" placeholder="<?php esc_attr_e( 'Type Custom Order Status Name Here', 'track-orders-for-woocommerce' ); ?>">	
 						</td>
 					</tr>
-					<?php 
-				if ( in_array( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php', get_option( 'active_plugins', array() ), true ) ) {
-					?>
+					<?php
+					if ( in_array( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php', get_option( 'active_plugins', array() ), true ) ) {
+						?>
 					<tr valign="top">
 						<th scope="row" class="titledesc">
 							<label for="wps_tofw_other_setting_upload_logo"><?php esc_html_e( 'Set Specific Template', 'track-orders-for-woocommerce' ); ?></label>
@@ -383,8 +380,8 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 						</select>
 						</td>
 					</tr>
-					<?php
-				}
+						<?php
+					}
 					?>
 					 <tr valign="top">
 						<th scope="row" class="titledesc">
