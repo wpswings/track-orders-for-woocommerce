@@ -173,11 +173,26 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 		// Retrieve the option from the database.
 		$custom_order_status_temp = get_option( 'wps_tofw_new_custom_template', array() );
 
-		foreach ( $item as $key => $value ) {
+		// Template mapping.
+		$template_mapping = array(
+			'template1'     => 'Classic Tracker',
+			'template2'     => 'Compact Status',
+			'template3'     => 'Elegant Flow',
+			'template4'     => 'Visual Voyage',
+			'newtemplate1'  => 'Timeline Tracker',
+			'newtemplate2'  => 'Visual Tracker',
+			'newtemplate3'  => 'Status Chain',
+			'template8'     => 'Flowline Tracker',
+		);
 
+		foreach ( $item as $key => $value ) {
 			foreach ( $custom_order_status_temp as $sub_array ) {
 				if ( isset( $sub_array[ $value ] ) ) {
-					return $sub_array[ $value ];
+					$template_key = $sub_array[ $value ];
+					// Check if the template key exists in the mapping.
+					if ( isset( $template_mapping[ $template_key ] ) ) {
+						return $template_mapping[ $template_key ];
+					}
 				}
 			}
 		}
@@ -185,6 +200,7 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 		// Default return if no match is found.
 		return __( 'Not Set', 'track-orders-for-woocommerce' );
 	}
+
 
 
 
@@ -305,14 +321,14 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 						</th>
 						<td class="forminp forminp-text">
 						<select name="template" id="wps-template-select">
-							<option value="template1">Template-1</option>
-							<option value="template2">Template-2</option>
-							<option value="template3">Template-3</option>
-							<option value="template4">Template-4</option>
-							<option value="newtemplate1">New-Template-1</option>
-							<option value="newtemplate2">New-Template-2</option>
-							<option value="newtemplate3">New-Template-3</option>
-							<option value="template8">New-Template-4</option>
+							<option value="template1">Classic Tracker</option>
+							<option value="template2">Compact Status</option>
+							<option value="template3">Elegant Flow</option>
+							<option value="template4">Visual Voyage</option>
+							<option value="newtemplate1">Timeline Tracker</option>
+							<option value="newtemplate2">Visual Tracker</option>
+							<option value="newtemplate3">Status Chain</option>
+							<option value="template8">Flowline Tracker</option>
 						</select>
 						</td>
 					</tr>
@@ -369,14 +385,14 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 						</th>
 						<td class="forminp forminp-text">
 						<select name="template_edit" id="wps-template-select">
-							<option value="template1">Template-1</option>
-							<option value="template2">Template-2</option>
-							<option value="template3">Template-3</option>
-							<option value="template4">Template-4</option>
-							<option value="newtemplate1">New-Template-1</option>
-							<option value="newtemplate2">New-Template-2</option>
-							<option value="newtemplate3">New-Template-3</option>
-							<option value="template8">New-Template-4</option>
+							<option value="template1">Classic Tracker</option>
+							<option value="template2">Compact Status</option>
+							<option value="template3">Elegant Flow</option>
+							<option value="template4">Visual Voyage</option>
+							<option value="newtemplate1">Timeline Tracker</option>
+							<option value="newtemplate2">Visual Tracker</option>
+							<option value="newtemplate3">Status Chain</option>
+							<option value="template8">Flowline Tracker</option>
 						</select>
 						</td>
 					</tr>

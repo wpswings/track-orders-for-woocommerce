@@ -48,7 +48,7 @@ if ( 'template1' == $activated_template ) {
 		</div>
 		<div class="wps_tofw_temlate_main_wrapper">
 			<div class="wps_tofw_temlate_name">
-				<h4><?php esc_html_e( 'Template-1', 'track-orders-for-woocommerce' ); ?></h4>
+				<h4><?php esc_html_e( 'Classic Tracker', 'track-orders-for-woocommerce' ); ?></h4>
 			</div>
 			<div class="wps_tofw_temlate_wrapper">
 				<input type="button" class="activate_button" id="wps_tofw_activate_third" value=<?php echo esc_attr( $template1 ); ?> data-id='template1'>
@@ -63,7 +63,7 @@ if ( 'template1' == $activated_template ) {
 		</div>
 		<div class="wps_tofw_temlate_main_wrapper">
 			<div class="wps_tofw_temlate_name">
-				<h4><?php esc_html_e( 'Template-2', 'track-orders-for-woocommerce' ); ?></h4>
+				<h4><?php esc_html_e( 'Compact Status', 'track-orders-for-woocommerce' ); ?></h4>
 			</div>
 			<div class="wps_tofw_temlate_wrapper">
 				<input type="button" class="activate_button" id="wps_tofw_activate_first" value=<?php echo esc_attr( $template2 ); ?> data-id='template2'>
@@ -77,7 +77,7 @@ if ( 'template1' == $activated_template ) {
 		</div>
 		<div class="wps_tofw_temlate_main_wrapper">
 			<div class="wps_tofw_temlate_name">
-				<h4><?php esc_html_e( 'Template-3', 'track-orders-for-woocommerce' ); ?></h4>
+				<h4><?php esc_html_e( 'Elegant Flow', 'track-orders-for-woocommerce' ); ?></h4>
 			</div>
 			<div class="wps_tofw_temlate_wrapper">
 				<input type="button" class="activate_button" id="wps_tofw_activate_second" value=<?php echo esc_attr( $template3 ); ?> data-id='template3'>
