@@ -1,18 +1,18 @@
-=== Track Orders for WooCommerce – Advance Shipment Tracking, Order Status, WooCommerce Shipping, Order Tracking Templates, Shipment Delivery Notifications ===
+=== Track Orders for WooCommerce – Advance Shipment Tracking, Custom Order Status, WooCommerce Shipping, Order Tracking Templates and Delivery Notifications. ===
 
 Contributors: wpswings
 Donate link: https://wpswings.com/
 Tags: tracking, woocommerce shipping, shipping, shipment tracking, order tracking
 Requires at least: 5.5.0
-Tested up to: 6.6.2
+Tested up to: 6.7.1
 WC requires at least: 5.5.0
-WC tested up to: 9.3.3
-Stable tag: 1.0.8
+WC tested up to: 9.4.3
+Stable tag: 1.0.9
 Requires PHP: 7.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Track Orders for WooCommerce – Advance Shipment Tracking, WooCommerce Shipping, Order Tracking Templates, Shipment Delivery Notifications
+Track Orders for WooCommerce – enhances your store with advanced shipment tracking, streamlined order status updates, delivery notifications, and personalized tracking templates.
 
 == Description ==
 
@@ -26,10 +26,14 @@ It lets you optimize the custom woocommerce shipping module to make waiting less
 
 [**Track Orders for Woocommerce Demo**](https://demo.wpswings.com/track-orders-for-woocommerce-pro/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=ot-demo) | [**Track Orders Documentation**](https://docs.wpswings.com/track-orders-for-woocommerce/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=ot-doc-free) | [**Contact Us**](https://wpswings.com/contact-us/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=contact-us) 
 
-
 <iframe width="560" height="315" src="https://www.youtube.com/embed/tQ5tJTjDJTE?si=X1njyU3KIUgMJ3Mn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-=== ⭐  KEY FEATURES OF TRACK ORDERS FOR WOOCOMMERCE SIPPING PLUGIN: ===
+=== Why Choose Our Track Orders PRO Plugin? ===
+
+Track Orders for WooCommerce enhances customer experience with interactive tracking templates, order tracking forms, and 3PL shipment integrations
+
+
+=== KEY FEATURES OF TRACK ORDERS FOR WOOCOMMERCE SHIPPING PLUGIN: ===
 
 **1) Track Order Using Pre-Built Templates**
 WooCommerce Order Tracker provides a diverse range of three distinct order-tracking templates, which enables you to incorporate captivating visual representations for different order statuses, such as on-hold, processing, delivery, and more. 
@@ -96,18 +100,18 @@ Track Orders for Woocommerce is compatible with various themes that are suitable
 
 == 🏆 WHAT PREMIUM VERSION OF WOOCOMMERCE ORDER TRACKER OFFERS == 
 
-* Track orders with 8 Pre-Built templates
-* Shortcode to create Order Tracking page
-* Shortcode to create Order Tracking form
-* Let customers track their orders in the pop-up box
-* Third-party Live Shipment Tracking (USPS & Canada Post) 
-* Live Map Package Tracking With Google Maps
-* Tracking With 17track.net
-* Custom Status for Bulk Action
-* Customization with Custom JS and CSS
-* Track Orders by scanning the QR Code
-* Order notifications to customers via text messages with Twilio's API.
-* New Email Notification Templates
+**1. Send Text Message Notifications:** Track Orders Pro plugin lets you send order-tracking updates to customers via text messages using Twilio’s API integration
+
+**2. Payment Reminders Orders:** Automatically send payment reminders with the Pro plugin to boost conversions. These emails include payment links for pending transactions.
+
+**3. Custom JS and CSS:** Use the global settings to define wrapper classes for your theme, and easily customize the design. With custom CSS and JavaScript, you can adjust the page's look and feel.
+
+**4. Third-Party Shipment Tracking:** Track Orders for WooCommerce Pro plugin integrates with trusted shipment tracking systems like FedEx, USPS, and Canada Post. 
+
+**5. Redirect to Tracking Page With QR Code:** Track Orders for WooCommerce plugin lets you include a QR code in order emails, redirecting customers to the tracking page.
+
+**6. Track Your Order Popup:** Set up a "Track Your Order" popup to make order tracking simple and quick for your customers.
+
 
 == Take Advantage of the Exclusive Features of the Track Orders For WooCommerce Pro Plugin == 
 
@@ -205,6 +209,10 @@ Check out [**Track Orders  for WooCommerce Knowledge Base**](https://support.wps
 
 == Changelog ==
 
+= 1.0.9 - Released on 2 Jan 2025 = 
+* Enhancement: Fixes of tracking pages with themes.
+* New: Latest WP 6.7.1 and WC 9.4.3 compatibility.  
+
 = 1.0.8 – Released on 23 October 2024 = 
 * Fixes: HTML enhancement of WhatsApp sharing. 
 * New: Compatibility with the latest WP 6.6.2 and WC 9.3.3 
@@ -237,8 +245,8 @@ Check out [**Track Orders  for WooCommerce Knowledge Base**](https://support.wps
 = 1.0.0 – Released on 30 Jan 2024 =
 *  First version
 
-== Upgrade Notice ==
+== Upgrade Notice == 
 
-= 1.0.8 – Released on 23 October 2024 = 
-* Fixes: HTML enhancement of WhatsApp sharing. 
-* New: Compatibility with the latest WP 6.6.2 and WC 9.3.3 
+= 1.0.9 - Released on 2 Jan 2025 = 
+* Enhancement: Fixes of tracking pages with themes.
+* New: Latest WP 6.7.1 and WC 9.4.3 compatibility.
