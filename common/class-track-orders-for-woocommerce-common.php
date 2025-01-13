@@ -1223,7 +1223,7 @@ class Track_Orders_For_Woocommerce_Common {
 									<img src="' . esc_url( $file_url ) . '" alt="QR Code">
 								</div>';
 					}
-
+					$site_name = get_bloginfo( 'name' );
 					$message .= '</div>
 						<div class="footer">
 							&copy; ' . gmdate( 'Y' ) . ' ' . esc_html( $site_name ) . '. All rights reserved.
