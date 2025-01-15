@@ -747,3 +747,16 @@ flex-wrap: wrap;
   color: #28a745;
   font-size: 14px;
 }
+
+.wrap-tofw-main #submit {
+  background-color: var(--mdc-theme-primary, #6200ee);
+  border: none;
+  border-radius: 100px;
+  padding: 12px 16px;
+  font-size: 14px;
+  line-height: 1.25;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+.wrap-tofw-main #submit:focus{
+  outline: none;
+}
