@@ -713,3 +713,37 @@ input.role_box_open {
   background-color: #d4351c; /* Darker red on hover */
   border-color: #a71d15; /* Even darker border */
 }
+.tofw-shortcode-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 10px 0;
+flex-wrap: wrap;
+}
+
+#tofw-shortcode {
+  /* padding: 10px; */
+  font-size: 14px;
+  border: none;
+  /* border-radius: 4px; */
+  /* width: 300px; */
+  background: transparent;
+  padding: 0;
+}
+
+#tofw-copy-shortcode {
+  font-size: 16px;
+  color: #0073aa;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#tofw-copy-shortcode:hover {
+  color: #005177;
+}
+
+#tofw-copy-feedback {
+  color: #28a745;
+  font-size: 14px;
+}

@@ -803,6 +803,45 @@ class Track_Orders_For_Woocommerce {
 							<?php
 							break;
 
+							case 'radio-switch-copy':
+							?>
+
+							<div class="wps-form-group">
+							<div class="wps-form-group__label">
+								<label for="" class="wps-form-label"><?php echo ( isset( $tofw_component['title'] ) ? esc_html( $tofw_component['title'] ) : '' ); // WPCS: XSS ok. ?></label>
+							</div>
+							<div class="wps-form-group__control">
+								<div>
+									<div class="mdc-switch">
+										<div class="mdc-switch__track"></div>
+										<div class="mdc-switch__thumb-underlay">
+											<div class="mdc-switch__thumb"></div>
+											<input name="<?php echo ( isset( $tofw_component['name'] ) ? esc_html( $tofw_component['name'] ) : esc_html( $tofw_component['id'] ) ); ?>" type="checkbox" id="<?php echo esc_html( $tofw_component['id'] ); ?>" value="on" class="mdc-switch__native-control <?php echo ( isset( $tofw_component['class'] ) ? esc_attr( $tofw_component['class'] ) : '' ); ?>" role="switch" aria-checked="
+																	<?php
+																	if ( 'on' == $tofw_component['value'] ) {
+																		echo 'true';
+																	} else {
+																		echo 'false';
+																	}
+																	?>
+							"
+											<?php checked( $tofw_component['value'], 'on' ); ?>
+											>
+										</div>
+									</div>
+								</div>
+								<div class="tofw-shortcode-container">
+								<span class="tofw-shortcode"><?php echo ( isset( $tofw_component['shortcode'] ) ? esc_attr( $tofw_component['shortcode'] ) : '' );?></span>
+								<span class="tofw-copy-shortcode dashicons dashicons-admin-page"></span>
+								<span class="tofw-copy-feedback" style="display: none;">Copied!</span>
+								<span><?php echo ( isset( $tofw_component['description'] ) ? esc_attr( $tofw_component['description'] ) : '' ); ?></span>
+							</div>
+							</div>
+						</div>
+
+							<?php
+							break;
+
 						case 'radio-switch':
 							?>
 
