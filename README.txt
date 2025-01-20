@@ -252,5 +252,4 @@ Check out [**Track Orders  for WooCommerce Knowledge Base**](https://support.wps
 == Upgrade Notice == 
 
 = 1.1.0 - Released on 20 Jan 2025 = 
-* Fixes: GIT Fixes.
 * New: Compatibility with the latest WP (6.7.1) and WC (9.5.2)
