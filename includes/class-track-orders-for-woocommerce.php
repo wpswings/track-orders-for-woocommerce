@@ -118,6 +118,7 @@ class Track_Orders_For_Woocommerce {
 		 * core plugin.
 		 */
 		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-track-orders-for-woocommerce-loader.php';
+		//include_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/track-order-for-woocommerce-go-pro.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
@@ -154,6 +155,14 @@ class Track_Orders_For_Woocommerce {
 		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'common/class-track-orders-for-woocommerce-common.php';
 
 		$this->loader = new Track_Orders_For_Woocommerce_Loader();
+
+		/**
+		 * The file responsible for elementor Widgets added within every page builder.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'page-builders/class-wps-order-tracker-widget-loader.php';
+		if ( class_exists( 'WPS_Order_Tracker_Widget_Loader' ) ) {
+			WPS_Order_Tracker_Widget_Loader::get_instance();
+		}
 
 	}
 
@@ -408,6 +417,35 @@ class Track_Orders_For_Woocommerce {
 		$tofw_default_tabs =
 		// desc - filter for trial.
 		apply_filters( 'track_orders_for_woocmmerce_admin_settings_tabs', $tofw_default_tabs );
+
+
+		$is_pro_activated = false;
+		$is_pro_activated = apply_filters('track_orders_for_woocmmerce_pro_plugin_activated', $is_pro_activated );
+	
+
+		if ( ! 	$is_pro_activated ) {
+
+			$tofw_default_tabs['track-orders-for-woocommerce-pro-enhance-tracking'] = array(
+				'title'       => esc_html__( 'Enhance Tracking', 'track-orders-for-woocommerce-pro' ),
+				'name'        => 'track-orders-for-woocommerce-pro-enhance-tracking',
+				'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-pro-enhance-tracking.php',
+			);
+
+			$tofw_default_tabs['track-orders-for-woocommerce-pro-common-setting'] = array(
+				'title'       => esc_html__( 'Global Setting', 'track-orders-for-woocommerce-pro' ),
+				'name'        => 'track-orders-for-woocommerce-pro-common-setting',
+				'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-pro-common-setting.php',
+			);
+
+			$tofw_default_tabs['track-orders-for-woocommerce-pro-order-status-auto']       = array(
+				'title'       => esc_html__( 'Order Status Auto', 'track-orders-for-woocommerce-pro' ),
+				'name'        => 'track-orders-for-woocommerce-pro-order-status-auto',
+				'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-pro-order-status-auto.php',
+			);
+
+		}
+
+
 		$tofw_default_tabs['track-orders-for-woocommerce-overview']      = array(
 			'title'       => esc_html__( 'Overview', 'track-orders-for-woocommerce' ),
 			'name'        => 'track-orders-for-woocommerce-overview',
@@ -598,6 +636,22 @@ class Track_Orders_For_Woocommerce {
 	public function wps_std_plug_generate_html( $tofw_components = array() ) {
 		if ( is_array( $tofw_components ) && ! empty( $tofw_components ) ) {
 			foreach ( $tofw_components as $tofw_component ) {
+
+
+				$pro_group_tag = '';
+				$is_pro_activated = false;
+				$is_pro_activated = apply_filters('track_orders_for_woocmmerce_pro_plugin_activated', $is_pro_activated );
+	
+				if ( ! $is_pro_activated && isset($tofw_component['class']) ) {
+
+
+					if ( preg_match( "/\wps_tofw_pro_feature\b/", $tofw_component['class'] ) ) :
+						$pro_group_tag = 'wps_tofw_pro_tag';
+					endif;
+				}
+
+
+
 				if ( ! empty( $tofw_component['type'] ) && ! empty( $tofw_component['id'] ) ) {
 					switch ( $tofw_component['type'] ) {
 
@@ -606,7 +660,7 @@ class Track_Orders_For_Woocommerce {
 						case 'email':
 						case 'text':
 							?>
-						<div class="wps-form-group wps-msp-<?php echo esc_attr( $tofw_component['type'] ); ?>">
+						<div class="wps-form-group <?php echo esc_attr( $pro_group_tag ); ?> wps-msp-<?php echo esc_attr( $tofw_component['type'] ); ?>">
 							<div class="wps-form-group__label">
 								<label for="<?php echo esc_attr( $tofw_component['id'] ); ?>" class="wps-form-label"><?php echo ( isset( $tofw_component['title'] ) ? esc_html( $tofw_component['title'] ) : '' ); // WPCS: XSS ok. ?></label>
 							</div>
@@ -642,7 +696,7 @@ class Track_Orders_For_Woocommerce {
 							break;
 						case 'password':
 							?>
-						<div class="wps-form-group">
+						<div class="wps-form-group ">
 							<div class="wps-form-group__label">
 								<label for="<?php echo esc_attr( $tofw_component['id'] ); ?>" class="wps-form-label"><?php echo ( isset( $tofw_component['title'] ) ? esc_html( $tofw_component['title'] ) : '' ); // WPCS: XSS ok. ?></label>
 							</div>
@@ -699,7 +753,7 @@ class Track_Orders_For_Woocommerce {
 						case 'select':
 						case 'multiselect':
 							?>
-						<div class="wps-form-group">
+						<div class="wps-form-group <?php echo esc_attr( $pro_group_tag ); ?>">
 							<div class="wps-form-group__label">
 								<label class="wps-form-label" for="<?php echo esc_attr( $tofw_component['id'] ); ?>"><?php echo ( isset( $tofw_component['title'] ) ? esc_html( $tofw_component['title'] ) : '' ); // WPCS: XSS ok. ?></label>
 							</div>
@@ -736,7 +790,7 @@ class Track_Orders_For_Woocommerce {
 
 						case 'checkbox':
 							?>
-						<div class="wps-form-group">
+						<div class="wps-form-group <?php echo esc_attr( $pro_group_tag ); ?>">
 							<div class="wps-form-group__label">
 								<label for="<?php echo esc_attr( $tofw_component['id'] ); ?>" class="wps-form-label"><?php echo ( isset( $tofw_component['title'] ) ? esc_html( $tofw_component['title'] ) : '' ); // WPCS: XSS ok. ?></label>
 							</div>
@@ -806,7 +860,7 @@ class Track_Orders_For_Woocommerce {
 							case 'radio-switch-copy':
 							?>
 
-							<div class="wps-form-group">
+							<div class="wps-form-group <?php echo esc_attr( $pro_group_tag ); ?>">
 							<div class="wps-form-group__label">
 								<label for="" class="wps-form-label"><?php echo ( isset( $tofw_component['title'] ) ? esc_html( $tofw_component['title'] ) : '' ); // WPCS: XSS ok. ?></label>
 							</div>
@@ -845,7 +899,7 @@ class Track_Orders_For_Woocommerce {
 						case 'radio-switch':
 							?>
 
-						<div class="wps-form-group">
+						<div class="wps-form-group <?php echo esc_attr( $pro_group_tag ); ?>">
 							<div class="wps-form-group__label">
 								<label for="" class="wps-form-label"><?php echo ( isset( $tofw_component['title'] ) ? esc_html( $tofw_component['title'] ) : '' ); // WPCS: XSS ok. ?></label>
 							</div>
@@ -894,7 +948,7 @@ class Track_Orders_For_Woocommerce {
 
 						case 'multi':
 							?>
-							<div class="wps-form-group wps-msp-<?php echo esc_attr( $tofw_component['type'] ); ?>">
+							<div class="wps-form-group <?php echo esc_attr( $pro_group_tag ); ?> wps-msp-<?php echo esc_attr( $tofw_component['type'] ); ?>">
 								<div class="wps-form-group__label">
 									<label for="<?php echo esc_attr( $tofw_component['id'] ); ?>" class="wps-form-label"><?php echo ( isset( $tofw_component['title'] ) ? esc_html( $tofw_component['title'] ) : '' ); // WPCS: XSS ok. ?></label>
 									</div>
@@ -932,7 +986,7 @@ class Track_Orders_For_Woocommerce {
 							break;
 							case 'temp-select':
 								?>
-									<div class="wps-form-group wps-wpg-<?php echo esc_attr( array_key_exists( 'type',$tofw_component ) ? $tofw_component['type'] : '' ); ?>">
+									<div class="wps-form-group <?php echo esc_attr( $pro_group_tag ); ?> wps-wpg-<?php echo esc_attr( array_key_exists( 'type',$tofw_component ) ? $tofw_component['type'] : '' ); ?>">
 										<div class="wps-form-group__label">
 											<label for="<?php echo esc_attr( array_key_exists( 'id', $tofw_component ) ?$tofw_component['id'] : '' ); ?>" class="wps-form-label"><?php echo esc_html( array_key_exists( 'title', $tofw_component ) ? $tofw_component['title'] : '' ); ?></label>
 										</div>
@@ -964,7 +1018,7 @@ class Track_Orders_For_Woocommerce {
 						case 'date':
 						case 'file':
 							?>
-							<div class="wps-form-group wps-msp-<?php echo esc_attr( $tofw_component['type'] ); ?>">
+							<div class="wps-form-group <?php echo esc_attr( $pro_group_tag ); ?> wps-msp-<?php echo esc_attr( $tofw_component['type'] ); ?>">
 								<div class="wps-form-group__label">
 									<label for="<?php echo esc_attr( $tofw_component['id'] ); ?>" class="wps-form-label"><?php echo ( isset( $tofw_component['title'] ) ? esc_html( $tofw_component['title'] ) : '' ); // WPCS: XSS ok. ?></label>
 								</div>
@@ -1006,8 +1060,12 @@ class Track_Orders_For_Woocommerce {
 							break;
 					}
 				}
+			
 			}
+			include_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/track-order-for-woocommerce-go-pro.php';
+
 		}
+	
 	}
 
 	/**

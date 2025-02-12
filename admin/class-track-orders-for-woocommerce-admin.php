@@ -427,6 +427,75 @@ class Track_Orders_For_Woocommerce_Admin {
 		 * @since 1.0.0
 		 */
 		apply_filters( 'tofw_general_settings_array_filter', $tofw_settings_general );
+
+		$is_pro_activated = false;
+		$is_pro_activated = apply_filters('track_orders_for_woocmmerce_pro_plugin_activated', $is_pro_activated );
+	
+
+		if ( ! 	$is_pro_activated ) {
+			$tofw_settings_general[] = array(
+				'title'       => __( 'Choose Template', 'track-orders-for-woocommerce-pro' ),
+				'type'        => 'temp-select',
+				'class'       => 'wps_tofw_pro_feature',
+				'id'          => 'tofw_invoice_template',
+				'description' => __( 'This template will be used as in email notification', 'track-orders-for-woocommerce-pro' ),
+				'selected'    =>'',
+				'value'       => array(
+					array(
+						'title' => __( 'Template1', 'track-orders-for-woocommerce-pro' ),
+						'type'  => 'radio',
+						'id'    => 'wpg_invoice_template_one',
+						'class' => 'wpg_invoice_template_one wpg_invoice_preview wps_tofw_pro_feature',
+						'name'  => 'tofw_invoice_template',
+						'value' => '',
+						'src'   => esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/ot_1.3.png',
+					),
+					array(
+						'title' => __( 'Template2', 'track-orders-for-woocommerce-pro' ),
+						'type'  => 'radio',
+						'id'    => 'wpg_invoice_template_two',
+						'class' => 'wpg_invoice_template_two wpg_invoice_preview wps_tofw_pro_feature',
+						'src'   => esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/ot_2.png',
+						'name'  => 'tofw_invoice_template',
+						'value' => '',
+					),
+					array(
+						'title' => __( 'Template3', 'track-orders-for-woocommerce-pro' ),
+						'type'  => 'radio',
+						'id'    => 'wpg_invoice_template_three',
+						'class' => 'wpg_invoice_template_three wpg_invoice_preview wps_tofw_pro_feature',
+						'src'   => esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/ot_1.png',
+						'name'  => 'tofw_invoice_template',
+						'value' => '',
+					),
+					array(
+						'title' => __( 'Template4', 'track-orders-for-woocommerce-pro' ),
+						'type'  => 'radio',
+						'id'    => 'wpg_invoice_template_four',
+						'class' => 'wpg_invoice_template_three wpg_invoice_preview wps_tofw_pro_feature',
+						'src'   => esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/ot_4.png',
+						'name'  => 'tofw_invoice_template',
+						'value' => '',
+					),
+				),
+			);
+
+			$tofw_settings_general[] =
+			array(
+				'title' => __( 'Enable QR Redirection Feature', 'track-orders-for-woocommerce-pro' ),
+				'type'  => 'radio-switch',
+				'description'  => __( 'Send the QR in Email Notification on Changing Order Status', 'track-orders-for-woocommerce-pro' ),
+				'id'    => 'wps_tofw_qr_redirect',
+				'value' => '',
+				'class' => 'wps_tofw_qr_redirect wps_tofw_pro_feature',
+				'options' => array(
+					'yes' => __( 'YES', 'track-orders-for-woocommerce-pro' ),
+					'no' => __( 'NO', 'track-orders-for-woocommerce-pro' ),
+				),
+			);
+		}
+
+
 		$tofw_settings_general[] = array(
 			'type'        => 'button',
 			'id'          => 'wps_tofw_general_settings_save',
@@ -560,6 +629,120 @@ class Track_Orders_For_Woocommerce_Admin {
 		 * @since 1.0.0
 		 */
 		apply_filters( 'tofw_track_order_settings_array_filter', $tofw_track_order_settings );
+
+
+		$is_pro_activated = false;
+		$is_pro_activated = apply_filters('track_orders_for_woocmmerce_pro_plugin_activated', $is_pro_activated );	
+
+		if ( ! $is_pro_activated ) {
+
+			$tofw_track_order_settings_pro = array(
+				array(
+					'title' => __( 'Enable Track Your Order Feature in pop-up box', 'track-orders-for-woocommerce-pro' ),
+					'type'  => 'radio-switch',
+					'id'    => 'wps_tofwp_enable_track_order_popup',
+					'value' => '',
+					'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
+					'options' => array(
+						'yes' => __( 'YES', 'track-orders-for-woocommerce-pro' ),
+						'no' => __( 'NO', 'track-orders-for-woocommerce-pro' ),
+					),
+				),
+				array(
+					'title' => __( 'Enable Shortcode to create Order Tracking page', 'track-orders-for-woocommerce-pro' ),
+					'type'  => 'radio-switch-copy',
+					'description'  => __( '-->it will show my-account-page for logged in user and it will show tracking form for guest user.', 'track-orders-for-woocommerce-pro' ),
+
+					'shortcode' => '[wps_create_tracking_page]',
+					'id'    => 'wps_tofwp_create_tracking_page',
+					'value' => '',
+					'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
+					'options' => array(
+						'yes' => __( 'YES', 'track-orders-for-woocommerce-pro' ),
+						'no' => __( 'NO', 'track-orders-for-woocommerce-pro' ),
+					),
+				),
+				array(
+					'title' => __( 'Enable Shortcode to show track order form', 'track-orders-for-woocommerce-pro' ),
+					'type'  => 'radio-switch-copy',
+					'description'  => __( '--> it will show tracking form for logged in user as well as guest user.', 'track-orders-for-woocommerce-pro' ),
+					'shortcode' => '[wps_track_order_form]',
+					'id'    => 'wps_tofwp_track_order_form',
+					'value' => '',
+					'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
+					'options' => array(
+						'yes' => __( 'YES', 'track-orders-for-woocommerce-pro' ),
+						'no' => __( 'NO', 'track-orders-for-woocommerce-pro' ),
+					),
+				),
+				array(
+					'title' => __( 'Enable to send pay link on pending status', 'track-orders-for-woocommerce-pro' ),
+					'type'  => 'radio-switch',
+					'description'  => __( 'Send Mail Notification contains Pay link on pending payment order status', 'track-orders-for-woocommerce-pro' ),
+					'id'    => 'wps_tofwp_send_pay_link',
+					'value' => '',
+					'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
+					'options' => array(
+						'yes' => __( 'YES', 'track-orders-for-woocommerce-pro' ),
+						'no' => __( 'NO', 'track-orders-for-woocommerce-pro' ),
+					),
+				),
+
+				array(
+					'title' => __( 'Enable to send message text on changing order status', 'track-orders-for-woocommerce-pro' ),
+					'type'  => 'radio-switch',
+					'description'  => __( 'Send Message Text  Notification on every order status change', 'track-orders-for-woocommerce-pro' ),
+					'id'    => 'wps_tofwp_enable_send_msg_text',
+					'value' => '',
+					'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
+					'options' => array(
+						'yes' => __( 'YES', 'track-orders-for-woocommerce-pro' ),
+						'no' => __( 'NO', 'track-orders-for-woocommerce-pro' ),
+					),
+				),
+
+				array(
+					'title' => __( 'Enter Twilio API Sid', 'track-orders-for-woocommerce-pro' ),
+					'type'  => 'text',
+					'description'  => __( 'Enter twilio API sid here', 'track-orders-for-woocommerce-pro' ),
+					'id'    => 'wps_tofwp_twillio_sid',
+					'value' => '',
+					'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
+				),
+				array(
+					'title' => __( 'Enter Twilio API Token', 'track-orders-for-woocommerce-pro' ),
+					'type'  => 'text',
+					'description'  => __( 'Enable twilio API token here.', 'track-orders-for-woocommerce-pro' ),
+					'id'    => 'wps_tofwp_twillio_api_token',
+					'value' => '',
+					'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
+				),
+				array(
+					'title' => __( 'Enter Twilio Sending Number', 'track-orders-for-woocommerce-pro' ),
+					'type'  => 'text',
+					'description'  => __( 'Enable twilio sending number here.', 'track-orders-for-woocommerce-pro' ),
+					'id'    => 'wps_tofwp_twillio_send_number',
+					'value' => '',
+					'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
+				),
+				array(
+					'title' => __( 'Enter Content to send in Sms with ticket', 'track-orders-for-woocommerce-pro' ),
+					'type'  => 'text',
+					'description'  => __( 'Use Placeholders  {customer} for Customer-Name, {order-id} for Order ID and {tracking-url} for Tracking URL.', 'track-orders-for-woocommerce-pro' ),
+					'id'    => 'wps_tofwp_twillio_content_here',
+					'value' => '',
+					'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
+				),
+
+			);
+
+			$tofw_track_order_settings = array_merge($tofw_track_order_settings,$tofw_track_order_settings_pro );
+
+		}
+
+
+
+
 
 		$tofw_track_order_settings[] = array(
 			'type'  => 'button',
@@ -811,6 +994,92 @@ class Track_Orders_For_Woocommerce_Admin {
 		 * @since 1.0.0
 		 */
 		apply_filters( 'tofw_shipping_services_settings_array_filter', $tofw_shipping_services_settings );
+
+
+
+		$is_pro_activated = false;
+		$is_pro_activated = apply_filters('track_orders_for_woocmmerce_pro_plugin_activated', $is_pro_activated );
+	
+
+		if ( ! 	$is_pro_activated ) {
+
+			$tofw_shipping_services_settings[] = array(
+				'title' => __( 'Enable USPS Shipment Tracking API', 'track-orders-for-woocommerce-pro' ),
+				'type'  => 'radio-switch',
+				'id'    => 'wps_tofwp_enable_usps_tracking',
+				'value' => '',
+				'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
+				'options' => array(
+					'yes' => __( 'YES', 'track-orders-for-woocommerce-pro' ),
+					'no' => __( 'NO', 'track-orders-for-woocommerce-pro' ),
+				),
+			);
+			$tofw_shipping_services_settings[] = array(
+				'title' => __( 'USPS Username', 'track-orders-for-woocommerce-pro' ),
+				'type'  => 'text',
+				'description'  => __( 'Enter Your USPS Username Here', 'track-orders-for-woocommerce-pro' ),
+				'id'    => 'wps_tofwp_usps_tracking_user_key',
+				'value' => '',
+				'class' => 'wps_tofw_pro_feature',
+
+			);
+			$tofw_shipping_services_settings[] = array(
+				'title' => __( 'USPS User Password', 'track-orders-for-woocommerce-pro' ),
+				'type'  => 'text',
+				'description'  => __( 'Enter Your USPS Password Here', 'track-orders-for-woocommerce-pro' ),
+				'id'    => 'wps_tofwp_usps_tracking_user_password',
+				'value' => '',
+				'class' => 'wps_tofw_pro_feature',
+
+			);
+			$tofw_shipping_services_settings[] = array(
+				'title' => __( 'Enable Canada Post Shipment Tracking API', 'track-orders-for-woocommerce-pro' ),
+				'type'  => 'radio-switch',
+				'id'    => 'wps_tofwp_enable_canadapost_tracking',
+				'value' => '',
+				'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
+				'options' => array(
+					'yes' => __( 'YES', 'track-orders-for-woocommerce-pro' ),
+					'no' => __( 'NO', 'track-orders-for-woocommerce-pro' ),
+				),
+			);
+			$tofw_shipping_services_settings[] = array(
+				'title' => __( 'Canada Post Username', 'track-orders-for-woocommerce-pro' ),
+				'type'  => 'text',
+				'description'  => __( 'Enter Your wps_tofwp_canadapost_tracking_user_key Username Here', 'track-orders-for-woocommerce-pro' ),
+				'id'    => 'wps_tofwp_canadapost_tracking_user_key',
+				'value' => '',
+				'class' => 'wps_tofw_pro_feature',
+
+			);
+			$tofw_shipping_services_settings[] = array(
+				'title' => __( 'Canada Post User Password', 'track-orders-for-woocommerce-pro' ),
+				'type'  => 'text',
+				'description'  => __( 'Enter Your Canada Post Password Here', 'track-orders-for-woocommerce-pro' ),
+				'id'    => 'wps_tofwp_canadapost_tracking_user_password',
+				'value' => '',
+				'class' => 'wps_tofw_pro_feature',
+
+			);
+			$tofw_shipping_services_settings[] = array(
+				'title' => __( 'Enable 17Track.net Tracking Feature', 'track-orders-for-woocommerce-pro' ),
+				'type'  => 'radio-switch',
+				'id'    => 'wps_tofwp_enable_17track_integration',
+				'value' => '',
+				'description'  => __( 'Note :- To use this feature please disable **Enable Third Party Tracking API** option.', 'track-orders-for-woocommerce-pro' ),
+				'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
+				'options' => array(
+					'yes' => __( 'YES', 'track-orders-for-woocommerce-pro' ),
+					'no' => __( 'NO', 'track-orders-for-woocommerce-pro' ),
+				),
+			);
+
+		}
+
+
+
+
+
 
 		$tofw_shipping_services_settings[] = array(
 			'type'  => 'button',

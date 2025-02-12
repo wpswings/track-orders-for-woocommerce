@@ -30,6 +30,26 @@
    */
 
   $(document).ready(function() {
+
+
+	jQuery(document).on( 'click', '.wps_tofw_pro_feature', function() {
+		debugger;
+	jQuery(this).prop("checked", false);
+	jQuery('.wps_tofw_lite_go_pro_popup_wrap').addClass('wps_tofw_lite_go_pro_popup_show');
+		
+	});
+
+	jQuery(document).on( 'click', '.wps_tofw_lite_go_pro_popup_close', function() {
+		jQuery('.wps_tofw_lite_go_pro_popup_wrap').removeClass('wps_tofw_lite_go_pro_popup_show');
+	});
+jQuery(document).on( 'click', '.wps_wsfw_popup_shadow', function() {
+		jQuery('.wps_tofw_lite_go_pro_popup_wrap').removeClass('wps_tofw_lite_go_pro_popup_show');
+	});
+
+
+
+
+
     const MDCText = mdc.textField.MDCTextField;
     const textField = [].map.call(
       document.querySelectorAll(".mdc-text-field"),

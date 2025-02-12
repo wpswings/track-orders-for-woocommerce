@@ -1165,38 +1165,38 @@ $wps_track_order_js = get_option( 'wps_tofw_custom_js_name' );
 		echo wp_kses_post( $reason );
 	}
 	?>
-															</div>
-															<?php
+	</div>
+	<?php
 
-															/**
-															 * Woocommerce_after_main_content hook.
-															 *
-															 * @hooked woocommerce_output_content_wrapper_end - 10 (outputs closing divs for the content)
-															 */
-															if ( 'on' != $wps_tofw_enable_track_order_popup ) {
+	/**
+	 * Woocommerce_after_main_content hook.
+	 *
+	 * @hooked woocommerce_output_content_wrapper_end - 10 (outputs closing divs for the content)
+	 */
+	if ( 'on' != $wps_tofw_enable_track_order_popup ) {
 
 
-																/**
-																 * Add content.
-																 *
-																 * @since 1.0.0
-																 */
-																do_action( 'woocommerce_after_main_content' );
-																get_footer( 'shop' );
-															} elseif ( 'on' == $wps_tofw_enable_track_order_popup && $current_user_id > 0 && 0 != $order_id && '' != $order_id && null != $order_id ) {
-																/**
-																 * Add content.
-																 *
-																 * @since 1.0.0
-																 */
-																do_action( 'wps_tofw_after_popup' );
-															} else {
+		/**
+		 * Add content.
+		 *
+		 * @since 1.0.0
+		 */
+		do_action( 'woocommerce_after_main_content' );
+		get_footer( 'shop' );
+	} elseif ( 'on' == $wps_tofw_enable_track_order_popup && $current_user_id > 0 && 0 != $order_id && '' != $order_id && null != $order_id ) {
+		/**
+		 * Add content.
+		 *
+		 * @since 1.0.0
+		 */
+		do_action( 'wps_tofw_after_popup' );
+	} else {
 
-																/**
-																 * Add content.
-																 *
-																 * @since 1.0.0
-																 */
-																do_action( 'woocommerce_after_main_content' );
-																get_footer( 'shop' );
-															}
+		/**
+		 * Add content.
+		 *
+		 * @since 1.0.0
+		 */
+		do_action( 'woocommerce_after_main_content' );
+		get_footer( 'shop' );
+	}

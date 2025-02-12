@@ -7,7 +7,7 @@ Requires at least: 5.5.0
 Tested up to: 6.7.1
 WC requires at least: 5.5.0
 WC tested up to: 9.5.2
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 Requires PHP: 7.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -209,7 +209,7 @@ Check out [**Track Orders  for WooCommerce Knowledge Base**](https://support.wps
 
 == Changelog ==
 
-= 1.1.0 - Released on 20 Jan 2025 = 
+= 1.1.1 - Released on 20 Jan 2025 = 
 * Fixes: GIT Fixes.
 * New: Compatibility with the latest WP (6.7.1) and WC (9.5.2) 
 
@@ -251,5 +251,5 @@ Check out [**Track Orders  for WooCommerce Knowledge Base**](https://support.wps
 
 == Upgrade Notice == 
 
-= 1.1.0 - Released on 20 Jan 2025 = 
+= 1.1.1 - Released on 20 Jan 2025 = 
 * New: Compatibility with the latest WP (6.7.1) and WC (9.5.2)
