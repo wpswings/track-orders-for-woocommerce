@@ -1,15 +1,15 @@
 <?php
 /**
- * Track Order elementor widgets collection loader file.
+ * Order elementor widgets collection loader file.
  *
- * @link       https://wpswings.com/?utm_source=wpswings-official&utm_medium=track-order-org-backend&utm_campaign=official
+ * @link       https://wpswings.com/?utm_source=wpswings-official&utm_medium=order-org-backend&utm_campaign=official
  * @since      1.1.1
  *
- * @package    Track_Orders_For_Woocommerce
- * @subpackage Track_Orders_For_Woocommerce/page-builders/elementor/assets
+ * @package    track-orders-for-woocommerce
+ * @subpackage track-orders-for-woocommerce/page-builders/elementor/assets
  */
 
-namespace ElementorOrderTrackerWidgets;
+namespace ElementorUpsellWidgets;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -60,8 +60,10 @@ class Elementor_Widget {
 	private function include_widgets_files() {
 
 		$widget_files = array(
-			'order-tracking-page',
-			'order-tracker-forms',
+			
+			'order-page-copy',
+			'order-page',
+			
 		);
 
 		foreach ( $widget_files as $key => $file_name ) {
@@ -83,8 +85,9 @@ class Elementor_Widget {
 		$this->include_widgets_files();
 
 		// Register the plugin widget classes.
-		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new Widgets\Order_Tracking_Page() );
-		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new Widgets\Order_Forms() );
+		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new Widgets\Order_Page() );
+		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new Widgets\Order_Page2() );
+		
 	}
 
 	/**

@@ -158,9 +158,9 @@ class Track_Orders_For_Woocommerce {
 		/**	
 		 * The file responsible for elementor Widgets added within every page builder.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'page-builders/class-wps-order-tracker-widget-loader.php';
-		if ( class_exists( 'WPS_Order_Tracker_Widget_Loader' ) ) {
-			WPS_Order_Tracker_Widget_Loader::get_instance();
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'page-builders/class-wps-order-widget-loader.php';
+		if ( class_exists( 'WPS_Order_Widget_Loader' ) ) {
+			WPS_Order_Widget_Loader::get_instance();
 		}
 	}
 

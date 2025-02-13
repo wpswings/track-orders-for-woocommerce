@@ -1,12 +1,12 @@
 <?php
 /**
- * Upsell widgets collection loader file.
+ * Order elementor widgets collection loader file.
  *
- * @link       https://wpswings.com/?utm_source=wpswings-official&utm_medium=upsell-org-backend&utm_campaign=official
- * @since      3.0.0
+ * @link       https://wpswings.com/?utm_source=wpswings-official&utm_medium=order-org-backend&utm_campaign=official
+ * @since      1.1.1
  *
- * @package    woo-one-click-upsell-funnel
- * @subpackage woo-one-click-upsell-funnel/page-builders
+ * @package    track-orders-for-woocommerce
+ * @subpackage track-orders-for-woocommerce/page-builders
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -14,16 +14,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-if ( class_exists( 'WPS_Order_Tracker_Widget_Loader' ) ) {
+if ( class_exists( 'WPS_Order_Widget_Loader' ) ) {
 	return;
 }
 
 /**
- * WPS_Order_Tracker_Widget_Loader.
+ * WPS_Upsell_Widget_Loader.
  */
-class WPS_Order_Tracker_Widget_Loader {
+class WPS_Order_Widget_Loader {
 
-	const WPS_Order_Tracker_Widget_Loader = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'page-builders/';
+	const WPS_Order_Widget_Loader = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'page-builders/';
 
 	/**
 	 * The instance.
@@ -37,7 +37,7 @@ class WPS_Order_Tracker_Widget_Loader {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      Woocommerce_Upsell_Widgets_Loader    $widgets    Maintains and registers all widgets for the plugin.
+	 * @var      Woocommerce_Order_Widgets_Loader    $widgets    Maintains and registers all widgets for the plugin.
 	 */
 	protected $widgets;
 
@@ -97,10 +97,8 @@ class WPS_Order_Tracker_Widget_Loader {
 			foreach ( $builders as $slug => $class_name ) {
 				$active = false;
 
-				if ( class_exists( $class_name ) ) {
-					$active = true;
-				}
-
+				
+				$active = true;
 				if ( ! $active ) {
 					// If still in active then unset from active builders.
 					unset( $builders[ $slug ] );
@@ -123,7 +121,7 @@ class WPS_Order_Tracker_Widget_Loader {
 		if ( ! empty( $this->active_builders ) && is_array( $this->active_builders ) ) {
 			foreach ( $this->active_builders as $b_slug => $b_name ) {
 				$widget_file = $this->retrieve_loader_file( $b_slug, $b_slug );
-				$widget_path = self::WPS_Order_Tracker_Widget_Loader . $widget_file;
+				$widget_path = self::WPS_Order_Widget_Loader . $widget_file;
 
 				if ( file_exists( $widget_path ) ) {
 					require_once $widget_path;

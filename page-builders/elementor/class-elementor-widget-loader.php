@@ -1,12 +1,12 @@
 <?php
 /**
- * Track Order elementor widgets collection loader file.
+ * Order elementor widgets collection loader file.
  *
- * @link       https://wpswings.com/?utm_source=wpswings-official&utm_medium=track-order-org-backend&utm_campaign=official
+ * @link       https://wpswings.com/?utm_source=wpswings-official&utm_medium=order-org-backend&utm_campaign=official
  * @since      1.1.1
  *
- * @package    Track_Orders_For_Woocommerce
- * @subpackage Track_Orders_For_Woocommerce/page-builders/elementor
+ * @package    track-orders-for-woocommerce
+ * @subpackage track-orders-for-woocommerce/page-builders/elementor
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

@@ -1,15 +1,15 @@
 <?php
 /**
- * Track Order elementor widgets collection loader file.
+ * Order elementor widgets collection loader file.
  *
- * @link       https://wpswings.com/?utm_source=wpswings-official&utm_medium=track-order-org-backend&utm_campaign=official
+ * @link       https://wpswings.com/?utm_source=wpswings-official&utm_medium=order-org-backend&utm_campaign=official
  * @since      1.1.1
  *
- * @package    Track_Orders_For_Woocommerce
- * @subpackage Track_Orders_For_Woocommerce/widgets
+ * @package    track-orders-for-woocommerce
+ * @subpackage track-orders-for-woocommerce/widgets
  */
 
-namespace ElementorOrderTrackerWidgets\Widgets;
+namespace ElementorUpsellWidgets\Widgets;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -25,7 +25,7 @@ use Elementor\Controls_Manager;
  *
  * @since 1.0.0
  */
-class Order_Forms extends Widget_Base {
+class Order_Page extends Widget_Base {
 
 	/**
 	 * Get widget name.
@@ -38,7 +38,7 @@ class Order_Forms extends Widget_Base {
 	 * @return string Widget name.
 	 */
 	public function get_name() {
-		return 'eicon-meta-forms';
+		return 'eicon-meta-page';
 	}
 
 	/**
@@ -52,7 +52,7 @@ class Order_Forms extends Widget_Base {
 	 * @return string Widget title.
 	 */
 	public function get_title() {
-		return esc_html__( 'Order Tracker Forms', 'track-orders-for-woocommerce' );
+		return esc_html__( 'Order Tracker Page', 'track-orders-for-woocommerce' );
 	}
 
 	/**
@@ -66,7 +66,7 @@ class Order_Forms extends Widget_Base {
 	 * @return string Widget icon.
 	 */
 	public function get_icon() {
-		return 'eicon-search';
+		return 'eicon-progress-tracker';
 	}
 
 	/**
@@ -116,13 +116,13 @@ class Order_Forms extends Widget_Base {
 		$this->add_control(
 			'shortcode',
 			array(
-				'label'       => esc_html__( 'Enter order tracker forms shortcode', 'track-orders-for-woocommerce' ),
+				'label'       => esc_html__( 'Enter order tracker page shortcode', 'track-orders-for-woocommerce' ),
 				'type'        => Controls_Manager::TEXTAREA,
 				'dynamic'     => array(
 					'active' => true,
 				),
-				'placeholder' => '[wps_track_order_form]',
-				'default'     => '[wps_track_order_form]',
+				'placeholder' => '[wps_create_tracking_page]',
+				'default'     => '[wps_create_tracking_page]',
 			)
 		);
 
