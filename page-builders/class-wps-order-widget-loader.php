@@ -19,7 +19,7 @@ if ( class_exists( 'WPS_Order_Widget_Loader' ) ) {
 }
 
 /**
- * WPS_Upsell_Widget_Loader.
+ * WPS_Order_Widget_Loader.
  */
 class WPS_Order_Widget_Loader {
 

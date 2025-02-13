@@ -9,7 +9,7 @@
  * @subpackage track-orders-for-woocommerce/widgets
  */
 
-namespace ElementorUpsellWidgets\Widgets;
+namespace ElementorOrderWidgets\Widgets;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.

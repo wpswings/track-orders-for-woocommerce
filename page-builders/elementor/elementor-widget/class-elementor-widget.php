@@ -9,7 +9,7 @@
  * @subpackage track-orders-for-woocommerce/page-builders/elementor/assets
  */
 
-namespace ElementorUpsellWidgets;
+namespace ElementorOrderWidgets;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -61,7 +61,7 @@ class Elementor_Widget {
 
 		$widget_files = array(
 			
-			'order-page-copy',
+			'order-form',
 			'order-page',
 			
 		);
