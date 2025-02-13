@@ -1,12 +1,12 @@
 <?php
 /**
- * Upsell elementor widgets collection loader file.
+ * Track Order elementor widgets collection loader file.
  *
- * @link       https://wpswings.com/?utm_source=wpswings-official&utm_medium=upsell-org-backend&utm_campaign=official
- * @since      3.1.2
+ * @link       https://wpswings.com/?utm_source=wpswings-official&utm_medium=track-order-org-backend&utm_campaign=official
+ * @since      1.1.1
  *
- * @package    woo-one-click-upsell-funnel
- * @subpackage woo-one-click-upsell-funnel/widgets
+ * @package    Track_Orders_For_Woocommerce
+ * @subpackage Track_Orders_For_Woocommerce/widgets
  */
 
 namespace ElementorOrderTrackerWidgets\Widgets;
@@ -38,7 +38,7 @@ class Order_Tracking_Page extends Widget_Base {
 	 * @return string Widget name.
 	 */
 	public function get_name() {
-		return 'upsell-star-review';
+		return 'order-tracking-page';
 	}
 
 	/**
@@ -52,7 +52,7 @@ class Order_Tracking_Page extends Widget_Base {
 	 * @return string Widget title.
 	 */
 	public function get_title() {
-		return esc_html__( 'Order Tracking Page', 'woo-one-click-upsell-funnel' );
+		return esc_html__( 'Order Tracking Page', 'track-orders-for-woocommerce' );
 	}
 
 	/**
@@ -109,20 +109,20 @@ class Order_Tracking_Page extends Widget_Base {
 		$this->start_controls_section(
 			'section_shortcode',
 			array(
-				'label' => esc_html__( 'Shortcode', 'woo-one-click-upsell-funnel' ),
+				'label' => esc_html__( 'Shortcode', 'track-orders-for-woocommerce' ),
 			)
 		);
 
 		$this->add_control(
 			'shortcode',
 			array(
-				'label'       => esc_html__( 'Enter upsell star review shortcode', 'woo-one-click-upsell-funnel' ),
+				'label'       => esc_html__( 'Enter order tracking page shortcode', 'track-orders-for-woocommerce' ),
 				'type'        => Controls_Manager::TEXTAREA,
 				'dynamic'     => array(
 					'active' => true,
 				),
-				'placeholder' => '[wps_upsell_star_review]',
-				'default'     => '[wps_upsell_star_review stars=4.5]',
+				'placeholder' => '[wps_create_tracking_page]',
+				'default'     => '[wps_create_tracking_page]',
 			)
 		);
 
@@ -142,7 +142,7 @@ class Order_Tracking_Page extends Widget_Base {
 
 		$shortcode = do_shortcode( shortcode_unautop( $shortcode ) );
 		?>
-		<div class="elementor-shortcode"><?php echo wp_kses( $shortcode, wps_upsell_lite_allowed_html() ); ?></div>
+		<div class="elementor-shortcode"><?php echo ( $shortcode ); ?></div>
 		<?php
 	}
 

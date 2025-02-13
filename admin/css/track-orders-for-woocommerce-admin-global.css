@@ -870,12 +870,16 @@ flex-wrap: wrap;
 
 
 .wps_tofw_pro_tag,
-#track-orders-for-woocommerce-pro-enhance-tracking {
+#track-orders-for-woocommerce-pro-enhance-tracking,
+#track-orders-for-woocommerce-pro-common-setting,
+#track-orders-for-woocommerce-pro-order-status-auto {
   position: relative;
 }
 
 .wps_tofw_pro_tag:before,
-#track-orders-for-woocommerce-pro-enhance-tracking:before {
+#track-orders-for-woocommerce-pro-enhance-tracking:before,
+#track-orders-for-woocommerce-pro-common-setting:before,
+#track-orders-for-woocommerce-pro-order-status-auto:before {
   clip-path: polygon(100% 0, 0 0, 0 100%);
   background-color: #008000;
   position: absolute;
@@ -887,7 +891,10 @@ flex-wrap: wrap;
   z-index: 99;
 }
 .wps_tofw_pro_tag:after,
-#track-orders-for-woocommerce-pro-enhance-tracking:after {
+#track-orders-for-woocommerce-pro-enhance-tracking:after,
+#track-orders-for-woocommerce-pro-common-setting:after,
+#track-orders-for-woocommerce-pro-order-status-auto:after
+{
   position: absolute;
   content: 'pro';
   left: 0px;

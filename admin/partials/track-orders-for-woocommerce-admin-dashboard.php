@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 $secure_nonce      = wp_create_nonce( 'wps-upsell-auth-nonce' );
 $id_nonce_verified = wp_verify_nonce( $secure_nonce, 'wps-upsell-auth-nonce' );
 if ( ! $id_nonce_verified ) {
-	wp_die( esc_html__( 'Nonce Not verified', 'upsell-order-bump-offer-for-woocommerce' ) );
+	wp_die( esc_html__( 'Nonce Not verified', 'track-orders-for-woocommerce') );
 }
 global $wps_tofw_obj, $error_notice;
 $tofw_active_tab = isset( $_GET['tofw_tab'] ) ? sanitize_key( $_GET['tofw_tab'] ) : 'track-orders-for-woocommerce-general';
@@ -42,7 +42,7 @@ $tofw_default_tabs = $wps_tofw_obj->wps_std_plug_default_tabs();
 		<span>|</span>
 		<a href="https://wpswings.com/contact-us/" target="_blank" class="wps-link"><?php esc_html_e( 'Support', 'track-orders-for-woocommerce' ); ?></a>
 	<?php } else { ?>
-		<h1 class="wps-header-title"><?php echo esc_attr( strtoupper( str_replace( '-', ' ', 'track-orders-for-woocommerce-pro' ) ) ); ?></h1>
+		<h1 class="wps-header-title"><?php echo esc_attr( strtoupper( str_replace( '-', ' ', 'track-orders-for-woocommerce' ) ) ); ?></h1>
 		<a href="https://docs.wpswings.com/track-orders-for-woocommerce-pro/?utm_source=wpswings-ot-doc&utm_medium=ot-pro-page&utm_campaign=documentation" target="_blank" class="wps-link"><?php esc_html_e( 'Documentation', 'track-orders-for-woocommerce' ); ?></a>
 		<span>|</span>
 		<a href="https://wpswings.com/contact-us/" target="_blank" class="wps-link"><?php esc_html_e( 'Support', 'track-orders-for-woocommerce' ); ?></a>

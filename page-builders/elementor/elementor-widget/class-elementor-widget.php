@@ -1,12 +1,12 @@
 <?php
 /**
- * Upsell elementor widgets collection loader file.
+ * Track Order elementor widgets collection loader file.
  *
- * @link       https://wpswings.com/?utm_source=wpswings-official&utm_medium=upsell-org-backend&utm_campaign=official
- * @since      3.0.0
+ * @link       https://wpswings.com/?utm_source=wpswings-official&utm_medium=track-order-org-backend&utm_campaign=official
+ * @since      1.1.1
  *
- * @package    woo-one-click-upsell-funnel
- * @subpackage woo-one-click-upsell-funnel/page-builders/elementor/assets
+ * @package    Track_Orders_For_Woocommerce
+ * @subpackage Track_Orders_For_Woocommerce/page-builders/elementor/assets
  */
 
 namespace ElementorOrderTrackerWidgets;

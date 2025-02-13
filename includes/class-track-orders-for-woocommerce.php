@@ -155,15 +155,13 @@ class Track_Orders_For_Woocommerce {
 		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'common/class-track-orders-for-woocommerce-common.php';
 
 		$this->loader = new Track_Orders_For_Woocommerce_Loader();
-
-		/**
+		/**	
 		 * The file responsible for elementor Widgets added within every page builder.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'page-builders/class-wps-order-tracker-widget-loader.php';
 		if ( class_exists( 'WPS_Order_Tracker_Widget_Loader' ) ) {
 			WPS_Order_Tracker_Widget_Loader::get_instance();
 		}
-
 	}
 
 	/**
@@ -426,19 +424,19 @@ class Track_Orders_For_Woocommerce {
 		if ( ! 	$is_pro_activated ) {
 
 			$tofw_default_tabs['track-orders-for-woocommerce-pro-enhance-tracking'] = array(
-				'title'       => esc_html__( 'Enhance Tracking', 'track-orders-for-woocommerce-pro' ),
+				'title'       => esc_html__( 'Enhance Tracking', 'track-orders-for-woocommerce' ),
 				'name'        => 'track-orders-for-woocommerce-pro-enhance-tracking',
 				'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-pro-enhance-tracking.php',
 			);
 
 			$tofw_default_tabs['track-orders-for-woocommerce-pro-common-setting'] = array(
-				'title'       => esc_html__( 'Global Setting', 'track-orders-for-woocommerce-pro' ),
+				'title'       => esc_html__( 'Global Setting', 'track-orders-for-woocommerce' ),
 				'name'        => 'track-orders-for-woocommerce-pro-common-setting',
 				'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-pro-common-setting.php',
 			);
 
 			$tofw_default_tabs['track-orders-for-woocommerce-pro-order-status-auto']       = array(
-				'title'       => esc_html__( 'Order Status Auto', 'track-orders-for-woocommerce-pro' ),
+				'title'       => esc_html__( 'Order Status Auto', 'track-orders-for-woocommerce' ),
 				'name'        => 'track-orders-for-woocommerce-pro-order-status-auto',
 				'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-pro-order-status-auto.php',
 			);

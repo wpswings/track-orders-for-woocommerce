@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<div class="wps_tofw_lite_go_pro_popup">
 			<!-- Main heading. -->
 			<div class="wps_tofw_lite_go_pro_popup_head">
-				<h2><?php esc_html_e( 'Unlock Seamless Payments With Wallet System for WooCommerce Pro!', 'wallet-system-for-woocommerce' ); ?></h2>
+				<h2><?php esc_html_e( 'Unlock Enhanced Order Tracking with Pro Version!', 'track-orders-for-woocommerce' ); ?></h2>
 				<!-- Close button. -->
 				<a href="javascript:void(0)" class="wps_tofw_lite_go_pro_popup_close">
 					<span>×</span>
@@ -41,22 +41,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<p class="wps_tofw_lite_go_pro_popup_text">
 				<?php
 				esc_html_e(
-					'Upgrade now to enjoy advanced features like full or partial payment methods, QR code payments, loyalty credits, cashback rewards, quick recharge buttons, & promotional offers. 
-					Stucked with Limited Gateway access? Unlock your power to explore more.',
-					'wallet-system-for-woocommerce'
+					'Upgrade to the Pro version of our WooCommerce order tracking plugin and unlock a suite of powerful features! ',
+					'track-orders-for-woocommerce'
+				)
+				?>
+							</p>
+							<p class="wps_tofw_lite_go_pro_popup_text">
+				<?php
+				esc_html_e(
+					'Enjoy the ability to create custom order statuses to perfectly match your fulfillment process, integrate directly with leading carriers like FedEx, USPS, and Canada Post for real-time shipment updates, and keep your customers informed every step of the way with automated email notifications.',
+					'track-orders-for-woocommerce'
 				)
 				?>
 							</p>
 					
 					<p class="wps_tofw_lite_go_pro_popup_text">
 					
-					<?php esc_html_e( 'Manage funds in bulk, view transaction history, send email notifications, & offer refunds directly to customer wallets. Elevate the digital payment experience.', 'wallet-system-for-woocommerce' ); ?>			
+					<?php esc_html_e( 'Give your customers the peace of mind they deserve and drastically reduce "Where`s my order?" inquiries.', 'track-orders-for-woocommerce' ); ?>			
 
 				</div>
 
 			<!-- Go pro button. -->
 			<div class="wps_tofw_lite_go_pro_popup_button">
-				<a class="button wps_ubo_lite_overview_go_pro_button" target="_blank" href="https://wpswings.com/product/wallet-system-for-woocommerce-pro/?utm_source=wpswings-wallet-pro&utm_medium=wallet-org-backend-page&utm_campaign=wallet-pro">	<?php esc_html_e( 'Upgrade To Premium today!', 'wallet-system-for-woocommerce' ); ?> </p>
+				<a class="button wps_ubo_lite_overview_go_pro_button" target="_blank" href="https://wpswings.com/product/track-orders-for-woocommerce-pro/?utm_source=ot-org-backend&utm_medium=referral&utm_campaign=ot-pro">	<?php esc_html_e( 'Upgrade To Premium today!', 'track-orders-for-woocommerce' ); ?> </p>
 			<span class="dashicons dashicons-arrow-right-alt"></span></a>
 			</div>
 		</div>

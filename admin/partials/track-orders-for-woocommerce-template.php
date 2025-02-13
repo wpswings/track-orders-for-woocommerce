@@ -120,11 +120,11 @@ if ( 'template1' == $activated_template ) {
 				</div>
 				<div class="wps_tofw_temlate_main_wrapper">
 					<div class="wps_tofw_temlate_name">
-						<h4><?php esc_html_e( 'Visual Voyage', 'track-orders-for-woocommerce-pro' ); ?></h4>
+						<h4><?php esc_html_e( 'Visual Voyage', 'track-orders-for-woocommerce' ); ?></h4>
 					</div>
 					<div class="wps_tofw_temlate_wrapper">
 						<input type="button" class="activate_button_ wps_tofw_pro_feature" id="wps_tofw_activate_fourth" value=<?php echo esc_attr( $template4 ); ?> data-id='template4'>
-						<input type="button" class="preview_button" id="wps_tofw_preview_fourth" value=<?php esc_attr_e( 'Preview', 'track-orders-for-woocommerce-pro' ); ?>>
+						<input type="button" class="preview_button" id="wps_tofw_preview_fourth" value=<?php esc_attr_e( 'Preview', 'track-orders-for-woocommerce' ); ?>>
 					</div>
 				</div>
 			</div>
@@ -134,11 +134,11 @@ if ( 'template1' == $activated_template ) {
 				</div>
 				<div class="wps_tofw_temlate_main_wrapper">
 					<div class="wps_tofw_temlate_name">
-						<h4><?php esc_html_e( 'Timeline Tracker', 'track-orders-for-woocommerce-pro' ); ?></h4>
+						<h4><?php esc_html_e( 'Timeline Tracker', 'track-orders-for-woocommerce' ); ?></h4>
 					</div>
 					<div class="wps_tofw_temlate_wrapper">
 						<input type="button" class="activate_button_ wps_tofw_pro_feature" id="wps_tofw_activate_new_template_1" value=<?php echo esc_html( $new_template1 ); ?> data-id='newtemplate1'>
-						<input type="button" class="preview_button" id="wps_tofw_preview_new_template_1" value=<?php esc_attr_e( 'Preview', 'track-orders-for-woocommerce-pro' ); ?>>
+						<input type="button" class="preview_button" id="wps_tofw_preview_new_template_1" value=<?php esc_attr_e( 'Preview', 'track-orders-for-woocommerce' ); ?>>
 					</div>
 				</div>
 			</div>
@@ -148,11 +148,11 @@ if ( 'template1' == $activated_template ) {
 				</div>
 				<div class="wps_tofw_temlate_main_wrapper">
 					<div class="wps_tofw_temlate_name">
-						<h4><?php esc_html_e( 'Visual Tracker', 'track-orders-for-woocommerce-pro' ); ?></h4>
+						<h4><?php esc_html_e( 'Visual Tracker', 'track-orders-for-woocommerce' ); ?></h4>
 					</div>
 					<div class="wps_tofw_temlate_wrapper">
 						<input type="button" class="activate_button_ wps_tofw_pro_feature" id="wps_tofw_activate_new_template_2" value=<?php echo esc_attr( $new_template2 ); ?> data-id='newtemplate2'>
-						<input type="button" class="preview_button" id="wps_tofw_preview_new_template_2" value=<?php esc_attr_e( 'Preview', 'track-orders-for-woocommerce-pro' ); ?>>
+						<input type="button" class="preview_button" id="wps_tofw_preview_new_template_2" value=<?php esc_attr_e( 'Preview', 'track-orders-for-woocommerce' ); ?>>
 					</div>
 				</div>
 			</div>
@@ -162,11 +162,11 @@ if ( 'template1' == $activated_template ) {
 				</div>
 				<div class="wps_tofw_temlate_main_wrapper">
 					<div class="wps_tofw_temlate_name">
-						<h4><?php esc_html_e( 'Status Chain', 'track-orders-for-woocommerce-pro' ); ?></h4>
+						<h4><?php esc_html_e( 'Status Chain', 'track-orders-for-woocommerce' ); ?></h4>
 					</div>
 					<div class="wps_tofw_temlate_wrapper">
 						<input type="button" class="activate_button_ wps_tofw_pro_feature" id="wps_tofw_activate_new_template_3" value= <?php echo esc_html( $new_template3 ); ?> data-id='newtemplate3'>
-						<input type="button" class="preview_button" id="wps_tofw_preview_new_template_3" value=<?php esc_attr_e( 'Preview', 'track-orders-for-woocommerce-pro' ); ?>>
+						<input type="button" class="preview_button" id="wps_tofw_preview_new_template_3" value=<?php esc_attr_e( 'Preview', 'track-orders-for-woocommerce' ); ?>>
 					</div>
 				</div>
 			</div>
@@ -176,11 +176,11 @@ if ( 'template1' == $activated_template ) {
 				</div>
 				<div class="wps_tofw_temlate_main_wrapper">
 					<div class="wps_tofw_temlate_name">
-						<h4><?php esc_html_e( 'Flowline Tracker', 'track-orders-for-woocommerce-pro' ); ?></h4>
+						<h4><?php esc_html_e( 'Flowline Tracker', 'track-orders-for-woocommerce' ); ?></h4>
 					</div>
 					<div class="wps_tofw_temlate_wrapper">
 						<input type="button" class="activate_button_ wps_tofw_pro_feature" id="wps_tofw_activate_new_template_8" value= "<?php echo esc_html( $new_template8 ); ?>" data-id="template8">
-						<input type="button" class="preview_button" id="wps_tofw_preview_new_template_8" value=<?php esc_attr_e( 'Preview', 'track-orders-for-woocommerce-pro' ); ?>>
+						<input type="button" class="preview_button" id="wps_tofw_preview_new_template_8" value=<?php esc_attr_e( 'Preview', 'track-orders-for-woocommerce' ); ?>>
 					</div>
 				</div>
 			</div>

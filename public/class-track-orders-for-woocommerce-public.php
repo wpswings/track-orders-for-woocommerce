@@ -203,7 +203,9 @@ class Track_Orders_For_Woocommerce_Public {
 						$order_id = $link_array[ count( $link_array ) - 1 ];
 					}
 					$order = wc_get_order( $order_id );
-
+					if ( ! $order){
+						return  $template;
+					}
 					// Retrieve the order status.
 					$status_slug = $order->get_status();
 					$order_statuses = wc_get_order_statuses();

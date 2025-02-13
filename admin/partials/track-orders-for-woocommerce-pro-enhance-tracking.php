@@ -62,7 +62,7 @@ if ( empty( get_option( 'wps_tofwp_courier_companies', false ) ) ) {
 			<div class="wps_tofwp_enable_plugin">
 				<div class="wps-form-group wps_tofw_pro_tag">
 							<div class="wps-form-group__label">
-								<label for="wps_tofwp_tracking_enable" class="wps-form-label"><?php esc_html_e( 'Enable Enhance Tracking', 'track-orders-for-woocommerce-pro' ); ?></label>
+								<label for="wps_tofwp_tracking_enable" class="wps-form-label"><?php esc_html_e( 'Enable Enhance Tracking', 'track-orders-for-woocommerce' ); ?></label>
 							</div>
 							<div class="wps-form-group__control">
 								<div>
@@ -89,7 +89,7 @@ if ( empty( get_option( 'wps_tofwp_courier_companies', false ) ) ) {
 		<!-- Panel For Adding The Shipment Tracking Couries-->
 		<div class="wps_tofwp_tracking_section wps_tofw_pro_tag">
 			<div class="wps_tofwp_shipping_courier">
-				<b><?php esc_html_e( 'Select Shipping Companies You Want', 'track-orders-for-woocommerce-pro' ); ?></b>
+				<b><?php esc_html_e( 'Select Shipping Companies You Want', 'track-orders-for-woocommerce' ); ?></b>
 				<div class="wps_tofwp_courier_content">
 					<?php
 					   $wps_tofwp_courier_companies = get_option( 'wps_tofwp_courier_companies', false );
@@ -135,7 +135,7 @@ if ( empty( get_option( 'wps_tofwp_courier_companies', false ) ) ) {
 <div class="wps_enhanced_tofwp_table_wrapper wps_tofw_pro_tag">
 <table class="form-table">
   <tr>
-	   <th><?php esc_html_e( 'Add Shipment Tracking Provide Name', 'track-orders-for-woocommerce-pro' ); ?></th>
+	   <th><?php esc_html_e( 'Add Shipment Tracking Provide Name', 'track-orders-for-woocommerce' ); ?></th>
 		<td>
 			
 			
@@ -143,24 +143,24 @@ if ( empty( get_option( 'wps_tofwp_courier_companies', false ) ) ) {
 
 				<div class="wps_enhanced_tofwp_add-wrap">
 					<?php
-					$tip_description = __( 'Enter Providers name you are going to use like PostNl Shipping, Express Shipping etc.', 'track-orders-for-woocommerce-pro' );
+					$tip_description = __( 'Enter Providers name you are going to use like PostNl Shipping, Express Shipping etc.', 'track-orders-for-woocommerce' );
 					echo wp_kses_post( wc_help_tip( $tip_description ) );
 					?>
-					<label><?php esc_html_e( 'Provider Name', 'track-orders-for-woocommerce-pro' ); ?></label>
+					<label><?php esc_html_e( 'Provider Name', 'track-orders-for-woocommerce' ); ?></label>
 
 					<input type="text" name="wps_enhanced_tofwp_add_prodvider" class="wps_toy_enhanced_provider" value="">
 				</div>
 
 				<div class="wps_enhanced_tofwp_add-wrap">
 					<?php
-					$tip_descriptions = __( 'Enter Providers Tracking Page Url from where your customer can track thier packages.', 'track-orders-for-woocommerce-pro' );
+					$tip_descriptions = __( 'Enter Providers Tracking Page Url from where your customer can track thier packages.', 'track-orders-for-woocommerce' );
 					echo wp_kses_post( wc_help_tip( $tip_descriptions ) );
 					?>
-					<label><?php esc_html_e( 'Provider tracking Page Url', 'track-orders-for-woocommerce-pro' ); ?></label>
+					<label><?php esc_html_e( 'Provider tracking Page Url', 'track-orders-for-woocommerce' ); ?></label>
 
 					<div class="wps_enhanced_tofwp_add-inner-wrap">
 						<input type="text" name="wps_enhanced_tofwp_add_prodvider" class='wps_toy_enhanced_provider_url' value="">
-						<input type="button" id='wps_tofwp_enhanced_woocommerce_shipment_tracking_add_providers' value="<?php esc_attr_e( 'Add', 'track-orders-for-woocommerce-pro' ); ?>" class="button">
+						<input type="button" id='wps_tofwp_enhanced_woocommerce_shipment_tracking_add_providers' value="<?php esc_attr_e( 'Add', 'track-orders-for-woocommerce' ); ?>" class="button">
 					</div>
 				</div>
 			</div>
@@ -184,7 +184,7 @@ if ( empty( get_option( 'wps_tofwp_courier_companies', false ) ) ) {
 		<div class="wps-form-group__label"></div>
 		<div class="wps-form-group__control">
 			<span class="mdc-button mdc-button--raised wps_tofw_pro_feature" name= "wps_tofp_enhance_tracking_save" id="wps_tofp_enhance_tracking_save"> <span class="mdc-button__ripple"></span>
-				<span class="mdc-button__label wps_tofw_pro_feature"><?php esc_html_e( 'Save Changes', 'track-orders-for-woocommerce-pro' ); ?></span>
+				<span class="mdc-button__label wps_tofw_pro_feature"><?php esc_html_e( 'Save Changes', 'track-orders-for-woocommerce' ); ?></span>
 				</sapn>
 		</div>
 	</div>

@@ -20,7 +20,7 @@ $wps_tofw_custom_js_name = '';
 
         <div class="wps-form-group wps-msp-text wps_tofw_pro_tag">
 				 <div class="wps-form-group__label">
-							<label for="wps" class="wps-form-label"><?php echo esc_html_e( 'Main Wrapper Class of Theme', 'track-orders-for-woocommerce-pro' ); ?></label>
+							<label for="wps" class="wps-form-label"><?php echo esc_html_e( 'Main Wrapper Class of Theme', 'track-orders-for-woocommerce' ); ?></label>
 						</div>
 							<div class="wps-form-group__control">
 								<label class="mdc-text-field mdc-text-field--outlined">
@@ -35,7 +35,7 @@ $wps_tofw_custom_js_name = '';
 
 								<div class="mdc-text-field-helper-line">
 									<div class="mdc-text-field-helper-text--persistent wps-helper-text" id="" aria-hidden="true">
-									<?php echo esc_html_e( 'Write the main wrapper class of your theme if some design issue arises.', 'track-orders-for-woocommerce-pro' ); ?>
+									<?php echo esc_html_e( 'Write the main wrapper class of your theme if some design issue arises.', 'track-orders-for-woocommerce' ); ?>
 									</div>
 								</div>
 				    </div>
@@ -46,7 +46,7 @@ $wps_tofw_custom_js_name = '';
 
 		 <div class="wps-form-group wps-msp-text wps_tofw_pro_tag">
 				 <div class="wps-form-group__label">
-							<label for="wps" class="wps-form-label"><?php echo esc_html_e( 'Child Wrapper Class of Theme', 'track-orders-for-woocommerce-pro' ); ?></label>
+							<label for="wps" class="wps-form-label"><?php echo esc_html_e( 'Child Wrapper Class of Theme', 'track-orders-for-woocommerce' ); ?></label>
 						</div>
 							<div class="wps-form-group__control">
 								<label class="mdc-text-field mdc-text-field--outlined">
@@ -61,7 +61,7 @@ $wps_tofw_custom_js_name = '';
 
 								<div class="mdc-text-field-helper-line">
 									<div class="mdc-text-field-helper-text--persistent wps-helper-text" id="" aria-hidden="true">
-									<?php echo esc_html_e( 'Write the child wrapper class of your theme if some design issue arises.', 'track-orders-for-woocommerce-pro' ); ?>
+									<?php echo esc_html_e( 'Write the child wrapper class of your theme if some design issue arises.', 'track-orders-for-woocommerce' ); ?>
 									</div>
 								</div>
 				    </div>
@@ -70,7 +70,7 @@ $wps_tofw_custom_js_name = '';
 
 		 <div class="wps-form-group wps_tofw_pro_tag">
 							<div class="wps-form-group__label">
-								<label class="wps-form-label" ><?php echo esc_html_e( 'Tracking Order Page Global CSS', 'track-orders-for-woocommerce-pro' ); ?></label>
+								<label class="wps-form-label" ><?php echo esc_html_e( 'Tracking Order Page Global CSS', 'track-orders-for-woocommerce' ); ?></label>
 							</div>
 							<div class="wps-form-group__control">
 								<label class="mdc-text-field mdc-text-field--outlined mdc-text-field--textarea"  for="text-field-hero-input">
@@ -84,7 +84,7 @@ $wps_tofw_custom_js_name = '';
 								</label>
 								<div class="mdc-text-field-helper-line">
 									<div class="mdc-text-field-helper-text--persistent wps-helper-text" id="" aria-hidden="true">
-									<?php echo esc_html_e( 'Write the custom css for Tracking Order page.', 'track-orders-for-woocommerce-pro' ); ?>
+									<?php echo esc_html_e( 'Write the custom css for Tracking Order page.', 'track-orders-for-woocommerce' ); ?>
 									</div>
 								</div>
 							</div>
@@ -95,7 +95,7 @@ $wps_tofw_custom_js_name = '';
 
 		 <div class="wps-form-group wps_tofw_pro_tag">
 							<div class="wps-form-group__label">
-								<label class="wps-form-label" ><?php echo esc_html_e( 'Tracking Order Page Global JS', 'track-orders-for-woocommerce-pro' ); ?></label>
+								<label class="wps-form-label" ><?php echo esc_html_e( 'Tracking Order Page Global JS', 'track-orders-for-woocommerce' ); ?></label>
 							</div>
 							<div class="wps-form-group__control">
 								<label class="mdc-text-field mdc-text-field--outlined mdc-text-field--textarea"  for="text-field-hero-input">
@@ -109,7 +109,7 @@ $wps_tofw_custom_js_name = '';
 								</label>
 								<div class="mdc-text-field-helper-line">
 									<div class="mdc-text-field-helper-text--persistent wps-helper-text" id="" aria-hidden="true">
-									<?php echo esc_html_e( 'Write the custom js for Tracking Order page.', 'track-orders-for-woocommerce-pro' ); ?>
+									<?php echo esc_html_e( 'Write the custom js for Tracking Order page.', 'track-orders-for-woocommerce' ); ?>
 									</div>
 								</div>
 							</div>
@@ -124,7 +124,7 @@ wp_nonce_field( 'admin_save_data', 'wps_tabs_nonce' );
 		<div class="wps-form-group__label"></div>
 		<div class="wps-form-group__control">
 			<span class="mdc-button mdc-button--raised wps_tofw_pro_feature" name= "wps_tofp_enhance_tracking_save" id="wps_tofp_enhance_tracking_save"> <span class="mdc-button__ripple"></span>
-				<span class="mdc-button__label "><?php esc_html_e( 'Save Changes', 'track-orders-for-woocommerce-pro' ); ?></span>
+				<span class="mdc-button__label "><?php esc_html_e( 'Save Changes', 'track-orders-for-woocommerce' ); ?></span>
 			</span>
 		</div>
 	</div>

@@ -1,12 +1,12 @@
 <?php
 /**
- * Upsell elementor widgets collection loader file.
+ * Track Order elementor widgets collection loader file.
  *
- * @link       https://wpswings.com/?utm_source=wpswings-official&utm_medium=upsell-org-backend&utm_campaign=official
- * @since      3.0.0
+ * @link       https://wpswings.com/?utm_source=wpswings-official&utm_medium=track-order-org-backend&utm_campaign=official
+ * @since      1.1.1
  *
- * @package    woo-one-click-upsell-funnel
- * @subpackage woo-one-click-upsell-funnel/page-builders/elementor
+ * @package    Track_Orders_For_Woocommerce
+ * @subpackage Track_Orders_For_Woocommerce/page-builders/elementor
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -90,7 +90,7 @@ final class Elementor_Widget_Loader {
 	 */
 	public function admin_notice_minimum_elementor_version() {
 		?>
-		<div class="notice notice-warning is-dismissible"><p><strong><?php esc_html_e( 'Elementor Widgets ', 'woo-one-click-upsell-funnel' ); ?></strong><?php esc_html_e( 'requires ', 'woo-one-click-upsell-funnel' ); ?><strong> <?php esc_html_e( 'Elementor ', 'woo-one-click-upsell-funnel' ); ?></strong><?php esc_html_e( ' version ', 'woo-one-click-upsell-funnel' ); ?><?php echo esc_html( self::MINIMUM_ELEMENTOR_VERSION ); ?><?php esc_html__( ' or greater.', 'woo-one-click-upsell-funnel' ); ?></p></div>
+		<div class="notice notice-warning is-dismissible"><p><strong><?php esc_html_e( 'Elementor Widgets ', 'track-orders-for-woocommerce' ); ?></strong><?php esc_html_e( 'requires ', 'track-orders-for-woocommerce' ); ?><strong> <?php esc_html_e( 'Elementor ', 'track-orders-for-woocommerce' ); ?></strong><?php esc_html_e( ' version ', 'track-orders-for-woocommerce' ); ?><?php echo esc_html( self::MINIMUM_ELEMENTOR_VERSION ); ?><?php esc_html__( ' or greater.', 'track-orders-for-woocommerce' ); ?></p></div>
 		<?php
 	}
 
@@ -104,7 +104,7 @@ final class Elementor_Widget_Loader {
 	 */
 	public function admin_notice_minimum_php_version() {
 		?>
-		<div class="notice notice-warning is-dismissible"><p><strong><?php esc_html_e( 'Elementor Widgets ', 'woo-one-click-upsell-funnel' ); ?></strong><?php esc_html_e( 'requires ', 'woo-one-click-upsell-funnel' ); ?><strong> <?php esc_html_e( 'PHP ', 'woo-one-click-upsell-funnel' ); ?></strong><?php esc_html_e( ' version ', 'woo-one-click-upsell-funnel' ); ?><?php echo esc_html( self::MINIMUM_PHP_VERSION ); ?><?php esc_html__( ' or greater.', 'woo-one-click-upsell-funnel' ); ?></p></div>
+		<div class="notice notice-warning is-dismissible"><p><strong><?php esc_html_e( 'Elementor Widgets ', 'track-orders-for-woocommerce' ); ?></strong><?php esc_html_e( 'requires ', 'track-orders-for-woocommerce' ); ?><strong> <?php esc_html_e( 'PHP ', 'track-orders-for-woocommerce' ); ?></strong><?php esc_html_e( ' version ', 'track-orders-for-woocommerce' ); ?><?php echo esc_html( self::MINIMUM_PHP_VERSION ); ?><?php esc_html__( ' or greater.', 'track-orders-for-woocommerce' ); ?></p></div>
 		<?php
 	}
 }

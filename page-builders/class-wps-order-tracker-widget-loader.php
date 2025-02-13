@@ -63,7 +63,6 @@ class WPS_Order_Tracker_Widget_Loader {
 	 * @since    3.1.2
 	 */
 	public function __construct() {
-	
 		$this->load_builders();
 		$this->load_widgets();
 	}
@@ -99,9 +98,9 @@ class WPS_Order_Tracker_Widget_Loader {
 				$active = false;
 
 				if ( class_exists( $class_name ) ) {
-					
+					$active = true;
 				}
-				$active = true;
+
 				if ( ! $active ) {
 					// If still in active then unset from active builders.
 					unset( $builders[ $slug ] );
