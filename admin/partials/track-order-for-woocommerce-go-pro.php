@@ -41,23 +41,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<p class="wps_tofw_lite_go_pro_popup_text">
 				<?php
 				esc_html_e(
-					'Upgrade to the Pro version of our WooCommerce order tracking plugin and unlock a suite of powerful features! ',
+					'Upgrade to Pro and enhance your WooCommerce order tracking!',
 					'track-orders-for-woocommerce'
 				)
 				?>
 							</p>
-							<p class="wps_tofw_lite_go_pro_popup_text">
-				<?php
-				esc_html_e(
-					'Enjoy the ability to create custom order statuses to perfectly match your fulfillment process, integrate directly with leading carriers like FedEx, USPS, and Canada Post for real-time shipment updates, and keep your customers informed every step of the way with automated email notifications.',
-					'track-orders-for-woocommerce'
-				)
-				?>
-							</p>
+							
 					
 					<p class="wps_tofw_lite_go_pro_popup_text">
 					
-					<?php esc_html_e( 'Give your customers the peace of mind they deserve and drastically reduce "Where`s my order?" inquiries.', 'track-orders-for-woocommerce' ); ?>			
+					<?php esc_html_e( 'Get custom order statuses, real-time carrier integration (FedEx, USPS, Canada Post), and automated email updates. Keep customers informed and reduce "Where`s my order?" inquiries effortlessly.', 'track-orders-for-woocommerce' ); ?>			
 
 				</div>
 

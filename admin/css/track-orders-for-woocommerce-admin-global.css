@@ -1009,9 +1009,9 @@ th.wps_tofw_pro_tag {
 
 
 .wps_tofw_pro_tag,
-#track-orders-for-woocommerce-pro-enhance-tracking,
-#track-orders-for-woocommerce-pro-common-setting,
-#track-orders-for-woocommerce-pro-order-status-auto {
+#track-orders-for-woocommerce-pro-enhance-tracking-org,
+#track-orders-for-woocommerce-pro-common-setting-org,
+#track-orders-for-woocommerce-pro-order-status-auto-org {
   position: relative;
 }
 
@@ -1030,9 +1030,9 @@ th.wps_tofw_pro_tag {
   bottom: unset;
 }
 
-#track-orders-for-woocommerce-pro-enhance-tracking:before,
-#track-orders-for-woocommerce-pro-common-setting:before,
-#track-orders-for-woocommerce-pro-order-status-auto:before {
+#track-orders-for-woocommerce-pro-enhance-tracking-org:before,
+#track-orders-for-woocommerce-pro-common-setting-org:before,
+#track-orders-for-woocommerce-pro-order-status-auto-org:before {
   background-color: #008000;
   position: absolute;
   content: 'Pro';

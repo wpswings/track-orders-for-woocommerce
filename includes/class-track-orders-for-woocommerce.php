@@ -77,7 +77,7 @@ class Track_Orders_For_Woocommerce {
 		if ( defined( 'TRACK_ORDERS_FOR_WOOCOMMERCE_VERSION' ) ) {
 			$this->version = TRACK_ORDERS_FOR_WOOCOMMERCE_VERSION;
 		} else {
-			$this->version = '1.0.1';
+			$this->version = '1.1.1';
 		}
 
 		$this->plugin_name = 'track-orders-for-woocommerce';
@@ -417,21 +417,21 @@ class Track_Orders_For_Woocommerce {
 
 		if ( ! 	$is_pro_activated ) {
 
-			$tofw_default_tabs['track-orders-for-woocommerce-pro-enhance-tracking'] = array(
+			$tofw_default_tabs['track-orders-for-woocommerce-pro-enhance-tracking-org'] = array(
 				'title'       => esc_html__( 'Enhance Tracking', 'track-orders-for-woocommerce' ),
-				'name'        => 'track-orders-for-woocommerce-pro-enhance-tracking',
+				'name'        => 'track-orders-for-woocommerce-pro-enhance-tracking-org',
 				'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-pro-enhance-tracking.php',
 			);
 
-			$tofw_default_tabs['track-orders-for-woocommerce-pro-common-setting'] = array(
+			$tofw_default_tabs['track-orders-for-woocommerce-pro-common-setting-org'] = array(
 				'title'       => esc_html__( 'Global Setting', 'track-orders-for-woocommerce' ),
-				'name'        => 'track-orders-for-woocommerce-pro-common-setting',
+				'name'        => 'track-orders-for-woocommerce-pro-common-setting-org',
 				'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-pro-common-setting.php',
 			);
 
-			$tofw_default_tabs['track-orders-for-woocommerce-pro-order-status-auto']       = array(
+			$tofw_default_tabs['track-orders-for-woocommerce-pro-order-status-auto-org']       = array(
 				'title'       => esc_html__( 'Order Status Auto', 'track-orders-for-woocommerce' ),
-				'name'        => 'track-orders-for-woocommerce-pro-order-status-auto',
+				'name'        => 'track-orders-for-woocommerce-pro-order-status-auto-org',
 				'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-pro-order-status-auto.php',
 			);
 
