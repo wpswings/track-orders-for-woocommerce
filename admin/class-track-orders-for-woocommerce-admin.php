@@ -548,11 +548,65 @@ class Track_Orders_For_Woocommerce_Admin {
 				'id'    => 'tofw_enable_track_order',
 				'value' => get_option( 'tofw_enable_track_order' ),
 				'class' => 'tofw-radio-switch-class',
+				'description'  => 'Enable functionality for tracking order.',
 				'options' => array(
 					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
 					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
 				),
 			),
+			array(
+				'title' => __( 'Enable Track Orders Button Feature Below Order details in My Account Section. ', 'track-orders-for-woocommerce' ),
+				'type'  => 'radio-switch',
+				'id'    => 'tofw_enable_track_order_below',
+				'description'  => 'Enable functionality for tracking order below order deatils at my account page.',
+				'value' => get_option( 'tofw_enable_track_order_below' ),
+				'class' => 'tofw-radio-switch-class',
+				'options' => array(
+					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
+					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
+				),
+			),
+			array(
+				'title' => __( 'Enter Text For Track Order Below Order details in My Account Section.', 'track-orders-for-woocommerce' ),
+				'type'  => 'text',
+				'description'  => __( 'Enter Text For Track Order Below Order details in My Account Section.', 'track-orders-for-woocommerce' ),
+				'id'    => 'tofw_enable_track_order_below_text',
+				'placeholder' => 'Text For Track Order',
+				'value' => get_option( 'tofw_enable_track_order_below_text', __( 'Track Order', 'track-orders-for-woocommerce' ) ),
+				'class' => 'tofw-radio-switch-class',
+			),
+			array(
+				'title' => __( 'Enter Note For Track Order Below Order details in My Account Section.', 'track-orders-for-woocommerce' ),
+				'type'  => 'textarea',
+				'description'  => __( 'Enter Note For Track Order Below Order details in My Account Section.', 'track-orders-for-woocommerce' ),
+				'id'    => 'tofw_enable_track_order_below_textarea',
+				'placeholder' => 'Text For Track Order',
+				'value' => get_option( 'tofw_enable_track_order_below_textarea', __( 'Click The Below To Track Your Order', 'track-orders-for-woocommerce' ) ),
+				'class' => 'tofw-radio-switch-class',
+			),
+
+			array(
+				'title' => __( 'Enable Track Orders Button Feature as Action on Order details in My Account Section. ', 'track-orders-for-woocommerce' ),
+				'type'  => 'radio-switch',
+				'id'    => 'tofw_enable_track_order_below_action',
+				'description'  => 'Enable functionality for tracking order as Action on order deatils at my account page.',
+				'value' => get_option( 'tofw_enable_track_order_below_action' ),
+				'class' => 'tofw-radio-switch-class',
+				'options' => array(
+					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
+					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
+				),
+			),
+			array(
+				'title' => __( 'Enter Text For Track Order as Action on Order details in My Account Section.', 'track-orders-for-woocommerce' ),
+				'type'  => 'text',
+				'description'  => __( 'Enter Text For Track Order as Action on Order details in My Account Section.', 'track-orders-for-woocommerce' ),
+				'id'    => 'tofw_enable_track_order_below_action_text',
+				'placeholder' => 'Text For Order Action',
+				'value' => get_option( 'tofw_enable_track_order_below_action_text', __( 'Track Order', 'track-orders-for-woocommerce' ) ),
+				'class' => 'tofw-radio-switch-class',
+			),
+
 
 			array(
 				'title' => __( 'Enable Use Of Custom Order Status', 'track-orders-for-woocommerce' ),
@@ -638,10 +692,12 @@ class Track_Orders_For_Woocommerce_Admin {
 
 			$tofw_track_order_settings_pro = array(
 				array(
-					'title' => __( 'Enable Track Your Order Feature in pop-up box', 'track-orders-for-woocommerce' ),
+					'title' => __( 'Enable Track Your Order Feature in pop-up box ( Order Action )', 'track-orders-for-woocommerce' ),
 					'type'  => 'radio-switch',
 					'id'    => 'wps_tofwp_enable_track_order_popup',
 					'value' => '',
+					'description'  => __( 'Pop-up will open on Order Action Track Order button', 'track-orders-for-woocommerce' ),
+
 					'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
 					'options' => array(
 						'yes' => __( 'YES', 'track-orders-for-woocommerce' ),

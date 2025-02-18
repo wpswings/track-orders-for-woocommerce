@@ -110,10 +110,20 @@ class Track_Orders_For_Woocommerce_Public {
 		$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
 		$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
 		$track_order_url = get_permalink( $page_id );
+
+		$tofw_enable_track_order_below = get_option( 'tofw_enable_track_order_below' );
+		$tofw_enable_track_order_below_text = get_option( 'tofw_enable_track_order_below_text', __( 'Track Order', 'track-orders-for-woocommerce' ) );
+		$tofw_enable_track_order_below_textarea =get_option( 'tofw_enable_track_order_below_textarea', __( 'Click The Below To Track Your Order', 'track-orders-for-woocommerce' ) );
+		
+		if ( 'on' == $tofw_enable_track_order_below ) {
+
+		
+
 		?>
-		<p><label class="wps_enhanced_order_note"><?php esc_html_e( 'Note:', 'track-orders-for-woocommerce' ); ?></label><span class="wps_order_note_text"><?php esc_html_e( 'Click The Below To Track Your Order', 'track-orders-for-woocommerce' ); ?></span></p>
-			<a href="<?php echo esc_attr( $track_order_url ) . '?' . esc_attr( $order_id ); ?>" class="button button-primary"><?php esc_html_e( 'TRACK ORDER', 'track-orders-for-woocommerce' ); ?></a>
+		<p><label class="wps_enhanced_order_note"><?php esc_html_e( 'Note: ', 'track-orders-for-woocommerce' ); ?></label><span class="wps_order_note_text"><?php echo $tofw_enable_track_order_below_textarea; ?></span></p>
+			<a href="<?php echo esc_attr( $track_order_url ) . '?' . esc_attr( $order_id ); ?>" class="button button-primary"><?php echo $tofw_enable_track_order_below_text; ?></a>
 		<?php
+		}
 
 	}
 
@@ -129,19 +139,24 @@ class Track_Orders_For_Woocommerce_Public {
 		if ( 'on' != $wps_tofw_enable_track_order_feature ) {
 			return $actions;
 		}
+		$tofw_enable_track_order_below_action = get_option( 'tofw_enable_track_order_below_action' );
+		$tofw_enable_track_order_below_action_text = get_option( 'tofw_enable_track_order_below_action_text', __( 'Track Order', 'track-orders-for-woocommerce' ) );
 
+		if ( 'on' != $tofw_enable_track_order_below_action ) {
+			return $actions;
+		}
 		$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
 		$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
 		if ( '3.0.0' > WC()->version ) {
 			$order_id = $order->id;
 			$track_order_url = get_permalink( $page_id );
 			$actions['wps_track_order']['url']  = $track_order_url . '?' . $order_id;
-			$actions['wps_track_order']['name']     = __( 'Track Order', 'track-orders-for-woocommerce' );
+			$actions['wps_track_order']['name']     = $tofw_enable_track_order_below_action_text;
 		} else {
 			$order_id = $order->get_id();
 			$track_order_url = get_permalink( $page_id );
 			$actions['wps_track_order']['url']  = $track_order_url . '?' . $order_id;
-			$actions['wps_track_order']['name']     = __( 'Track Order', 'track-orders-for-woocommerce' );
+			$actions['wps_track_order']['name']     = $tofw_enable_track_order_below_action_text;
 		}
 
 		return $actions;

@@ -137,6 +137,38 @@ get_header( 'shop' );
  */
 do_action( 'woocommerce_before_main_content' );
 
+
+if ( 'on' !== $wps_tofw_enable_track_order_popup ) {
+	get_header( 'shop' );
+
+	/**
+	 * Add content.
+	 *
+	 * @since 1.0.0
+	 */
+	do_action( 'woocommerce_before_main_content' );
+} elseif ( 'on' == $wps_tofw_enable_track_order_popup && $current_user_id > 0 && 0 != $order_id && '' != $order_id && null != $order_id ) {?>
+		
+		<?php
+
+
+		/**
+		 * Add content.
+		 *
+		 * @since 1.0.0
+		 */
+		do_action( 'mwb_tyo_before_popup' );
+} else {
+	get_header( 'shop' );
+
+	/**
+	 * Add content.
+	 *
+	 * @since 1.0.0
+	 */
+	do_action( 'woocommerce_before_main_content' );
+}
+
 /**
 	 * Woocommerce_before_main_content hook.
 	 *
