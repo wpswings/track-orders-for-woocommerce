@@ -120,8 +120,8 @@ class Track_Orders_For_Woocommerce_Public {
 		
 
 		?>
-		<p><label class="wps_enhanced_order_note"><?php esc_html_e( 'Note: ', 'track-orders-for-woocommerce' ); ?></label><span class="wps_order_note_text"><?php echo $tofw_enable_track_order_below_textarea; ?></span></p>
-			<a href="<?php echo esc_attr( $track_order_url ) . '?' . esc_attr( $order_id ); ?>" class="button button-primary"><?php echo $tofw_enable_track_order_below_text; ?></a>
+		<p><label class="wps_enhanced_order_note"><?php esc_html_e( 'Note: ', 'track-orders-for-woocommerce' ); ?></label><span class="wps_order_note_text"><?php echo esc_html ( $tofw_enable_track_order_below_textarea ); ?></span></p>
+			<a href="<?php echo esc_attr( $track_order_url ) . '?' . esc_attr( $order_id ); ?>" class="button button-primary"><?php echo esc_html( $tofw_enable_track_order_below_text ); ?></a>
 		<?php
 		}
 

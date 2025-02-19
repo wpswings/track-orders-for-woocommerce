@@ -1438,16 +1438,16 @@ class Track_Orders_For_Woocommerce_Common {
 	public function wps_tofw_get_csv_order_details( $_orders ) {
 		$order_details = array();
 		$order_details[] = array(
-			__( 'Order Id', 'woocommerce-order-tracker' ),
-			__( 'Order Status', 'woocommerce-order-tracker' ),
-			__( 'Order Total', 'woocommerce-order-tracker' ),
-			__( 'Order Items', 'woocommerce-order-tracker' ),
-			__( 'Payment Method', 'woocommerce-order-tracker' ),
-			__( 'Billing Name', 'woocommerce-order-tracker' ),
-			__( 'Billing Email', 'woocommerce-order-tracker' ),
-			__( 'Billing Address', 'woocommerce-order-tracker' ),
-			__( 'Billing Contact', 'woocommerce-order-tracker' ),
-			__( 'Order date', 'woocommerce-order-tracker' ),
+			__( 'Order Id', 'track-orders-for-woocommerce'  ),
+			__( 'Order Status', 'track-orders-for-woocommerce'  ),
+			__( 'Order Total', 'track-orders-for-woocommerce'  ),
+			__( 'Order Items', 'track-orders-for-woocommerce'  ),
+			__( 'Payment Method', 'track-orders-for-woocommerce'  ),
+			__( 'Billing Name', 'track-orders-for-woocommerce'  ),
+			__( 'Billing Email', 'track-orders-for-woocommerce'  ),
+			__( 'Billing Address', 'track-orders-for-woocommerce'  ),
+			__( 'Billing Contact', 'track-orders-for-woocommerce'  ),
+			__( 'Order date', 'track-orders-for-woocommerce'  ),
 
 		);
 
@@ -1584,7 +1584,11 @@ class Track_Orders_For_Woocommerce_Common {
 				'show_in_admin_all_list'    => true,
 				'show_in_admin_status_list' => true,
 				/* translators: %s: count */
-				'label_count'               => _n_noop( 'Order Dispatched <span class="count">(%s)</span>', 'Order Dispatched <span class="count">(%s)</span>' ),
+				'label_count' => _n_noop(
+										'Order Dispatched <span class="count">(%s)</span>',
+										'Order Dispatched <span class="count">(%s)</span>',
+										'track-orders-for-woocommerce'
+									),
 			)
 		);
 

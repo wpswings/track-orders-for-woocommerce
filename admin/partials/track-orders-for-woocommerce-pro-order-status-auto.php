@@ -4,37 +4,6 @@ if ( function_exists( 'wc_get_order_statuses' ) ) {
 	wps_render_order_status_settings_page();
 }
 
-if (
-	isset( $_POST['wps_order_status_conditions'] ) &&
-	current_user_can( 'manage_options' ) &&
-	check_admin_referer( 'wps_order_status_settings-options' )
-) {
-	$conditions = array_map(
-		function ( $condition ) {
-			return array(
-				'from' => sanitize_text_field( $condition['from'] ),
-				'to' => sanitize_text_field( $condition['to'] ),
-			);
-		},
-		$_POST['wps_order_status_conditions']
-	);
-
-	update_option( 'wps_order_status_conditions', $conditions );
-
-	// Redirect back to the settings page with a success message.
-	wp_redirect(
-		add_query_arg(
-			array(
-				'page' => 'track_orders_for_woocommerce_menu',
-				'tofw_tab' => 'track-orders-for-woocommerce-pro-order-status-auto',
-				'saved_now'     => 'true', // Add a flag to indicate a successful save.
-			),
-			admin_url( 'admin.php' )
-		)
-	);
-	exit;
-}
-
 function wps_render_order_status_settings_page() {
 	$conditions = get_option( 'wps_order_status_conditions', array() );
 
@@ -65,7 +34,7 @@ function wps_render_order_status_settings_page() {
 						<?php foreach ( $conditions as $index => $condition ) : ?>
 							<tr>
 								<td>
-									<select name="wps_order_status_conditions[<?php echo $index; ?>][from]" class="from-status">
+									<select name="wps_order_status_conditions[<?php echo esc_attr( $index ); ?>][from]" class="from-status">
 										<?php foreach ( wc_get_order_statuses() as $key => $label ) : ?>
 											<option value="<?php echo esc_attr( $key ); ?>" <?php selected( $condition['from'], $key ); ?>>
 												<?php echo esc_html( $label ); ?>
@@ -74,7 +43,7 @@ function wps_render_order_status_settings_page() {
 									</select>
 								</td>
 								<td>
-									<select name="wps_order_status_conditions[<?php echo $index; ?>][to]" class="to-status">
+									<select name="wps_order_status_conditions[<?php echo esc_attr( $index ); ?>][to]" class="to-status">
 										<?php foreach ( wc_get_order_statuses() as $key => $label ) : ?>
 											<option value="<?php echo esc_attr( $key ); ?>" <?php selected( $condition['to'], $key ); ?>>
 												<?php echo esc_html( $label ); ?>

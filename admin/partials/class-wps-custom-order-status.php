@@ -309,7 +309,7 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 						<label for="wps__new_role_name"><?php esc_html_e( 'Custom Order Status Name', 'track-orders-for-woocommerce' ); ?><label>
 						</th>
 						<td>
-							<input type="text" name="wps_tofw_create_order_name" pattern = '[A-Za-z0-9]' id="wps_tofw_create_order_name" placeholder="<?php esc_attr_e( 'Type Custom Order Status Name Here', 'track-orders-for-woocommerce' ); ?>">	
+							<input type="text" name="wps_tofw_create_order_name" pattern = '^[A-Za-z0-9 ]+$' id="wps_tofw_create_order_name" placeholder="<?php esc_attr_e( 'Type Custom Order Status Name Here', 'track-orders-for-woocommerce' ); ?>">	
 						</td>
 					</tr>
 					<?php
@@ -373,7 +373,7 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 						<label for="wps__new_role_name"><?php esc_html_e( 'Custom Order Status Name', 'track-orders-for-woocommerce' ); ?><label>
 						</th>
 						<td>
-							<input type="text" readonly  = "" name="wps_tofw_create_order_name_edit" pattern = '[A-Za-z0-9]' id="wps_tofw_create_order_name" placeholder="<?php esc_attr_e( 'Type Custom Order Status Name Here', 'track-orders-for-woocommerce' ); ?>">	
+							<input type="text" readonly  = "" name="wps_tofw_create_order_name_edit" pattern = '^[A-Za-z0-9 ]+$' id="wps_tofw_create_order_name" placeholder="<?php esc_attr_e( 'Type Custom Order Status Name Here', 'track-orders-for-woocommerce' ); ?>">	
 						</td>
 					</tr>
 					<?php

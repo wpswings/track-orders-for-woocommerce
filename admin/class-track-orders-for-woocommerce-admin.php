@@ -1425,6 +1425,7 @@ class Track_Orders_For_Woocommerce_Admin {
 	 * @link http://www.wpswings.com/
 	 */
 	public function wps_tofw_delete_custom_order_status_callback() {
+
 		check_ajax_referer( 'ajax-nonce', 'nonce' );
 		$wps_tofw_old_selected_statuses = get_option( 'wps_tofw_new_settings_custom_statuses_for_order_tracking', false );
 		$wps_custom_action = isset( $_POST['wps_custom_action'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_custom_action'] ) ) : '';
@@ -1451,8 +1452,10 @@ class Track_Orders_For_Woocommerce_Admin {
 						unset( $custom_order_status_temp[ $index ] );
 					}
 				}
-
-				error_log( print_r( $custom_order_status_temp, true ) );
+				if ( class_exists( 'WC_Logger' ) ) {
+					$logger = wc_get_logger();
+					$logger->info( json_encode( $custom_order_status_temp, JSON_PRETTY_PRINT ), array( 'source' => 'wps-order-tracker-plugin' ) );
+				}
 				update_option( 'wps_tofw_new_custom_template', $custom_order_status_temp );
 
 				if ( is_array( $wps_tofw_old_selected_statuses ) && ! empty( $wps_tofw_old_selected_statuses ) ) {
@@ -1700,7 +1703,7 @@ class Track_Orders_For_Woocommerce_Admin {
 				?>
 				<div class="wps_tyo_ship_tracking_wrapper">
 					<label for="wps_tyo_user_tracking_number"><?php esc_html_e( '17Track Number', 'track-orders-for-woocommerce' ); ?></label>
-					<input type="text" name="wps_tofw_tracking_number" id="wps_tofw_tracking_number" value="<?php echo esc_attr( $wps_tofw_track_id ); ?>" placeholder="<?php esc_attr_e( 'Enter 17 Tracking Number', 'woocommerce-order-tracker' ); ?>"></input>
+					<input type="text" name="wps_tofw_tracking_number" id="wps_tofw_tracking_number" value="<?php echo esc_attr( $wps_tofw_track_id ); ?>" placeholder="<?php esc_attr_e( 'Enter 17 Tracking Number', 'track-orders-for-woocommerce'  ); ?>"></input>
 				</div>
 				<?php
 			}
@@ -2035,7 +2038,11 @@ class Track_Orders_For_Woocommerce_Admin {
 						}
 					}
 				} else {
-					error_log( 'Error: $order_obj is not an object or does not have get_data method.' );
+					if ( class_exists( 'WC_Logger' ) ) {
+						$logger = wc_get_logger();
+						$logger->error( 'Error: $order_obj is not an object or does not have get_data method.', array( 'source' => 'wps-order-tracker-plugin' ) );
+					}
+					
 				}
 			}
 		}

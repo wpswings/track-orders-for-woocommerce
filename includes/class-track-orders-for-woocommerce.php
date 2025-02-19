@@ -470,7 +470,7 @@ class Track_Orders_For_Woocommerce {
 
 		} else {
 			/* translators: %s: file path */
-			$etmfw_notice = sprintf( esc_html__( 'Unable to locate file at location "%s". Some features may not work properly in this plugin. Please contact us!', 'event-tickets-manager-for-woocommerce' ), $path );
+			$etmfw_notice = sprintf( esc_html__( 'Unable to locate file at location "%s". Some features may not work properly in this plugin. Please contact us!', 'track-orders-for-woocommerce'  ), $path );
 			$this->wps_std_plug_admin_notice( $etmfw_notice, 'error' );
 		}
 	}
