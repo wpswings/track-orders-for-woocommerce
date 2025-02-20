@@ -1767,6 +1767,9 @@ class Track_Orders_For_Woocommerce_Admin {
 
 				$headers = array();
 				$order = wc_get_order( $post_id );
+				if ( ! $order ) {
+					return;
+				}
 				$headers[] = 'Content-Type: text/html; charset=UTF-8';
 				$wps_tracking_url = get_post_meta( $order_id, 'wps_tofw_enhanced_order_company', true );
 				$wps_tracking_number = get_post_meta( $order_id, 'wps_tofw_enhanced_tracking_no', true );
