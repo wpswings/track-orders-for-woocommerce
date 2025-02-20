@@ -62,7 +62,7 @@ class Track_Orders_For_Woocommerce_Admin {
 	public function tofw_admin_enqueue_styles( $hook ) {
 		$screen = get_current_screen();
 
-		if ( isset( $screen->id ) && ( 'wpswings_page_home' === $screen->id || 'wpswings_page_track_orders_for_woocommerce_menu' === $screen->id || 'wp-swings_page_track_orders_for_woocommerce_menu' === $screen->id ) ) {
+		if ( isset( $screen->id ) && ( 'wp-swings_page_home' === $screen->id || 'pluginhhhs' === $screen->id || 'wpswings_page_track_orders_for_woocommerce_menu' === $screen->id || 'wp-swings_page_track_orders_for_woocommerce_menu' === $screen->id ) ) {
 
 			wp_enqueue_style( 'track-orders-for-woocommerce-select2-css', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/select-2/track-orders-for-woocommerce-select2.css', array(), time(), 'all' );
 
@@ -70,14 +70,13 @@ class Track_Orders_For_Woocommerce_Admin {
 			wp_enqueue_style( 'track-orders-for-woocommerce-meterial-css2', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/material-design/material-components-v5.0-web.min.css', array(), time(), 'all' );
 			wp_enqueue_style( 'track-orders-for-woocommerce-meterial-lite', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/material-design/material-lite.min.css', array(), time(), 'all' );
 
-			wp_enqueue_style( 'track-orders-for-woocommerce-meterial-icons-css', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/material-design/icon.css', array(), time(), 'all' );
-
-			wp_enqueue_style( $this->plugin_name . '-admin-global', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/css/track-orders-for-woocommerce-admin-global.css', array( 'track-orders-for-woocommerce-meterial-icons-css' ), time(), 'all' );
-
 			wp_enqueue_style( $this->plugin_name, TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/css/track-orders-for-woocommerce-admin.scss', array(), $this->version, 'all' );
 			wp_enqueue_style( 'wps-admin-min-css', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/css/wps-admin.min.css', array(), $this->version, 'all' );
 			wp_enqueue_style( 'wps-datatable-css', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/datatables/media/css/jquery.dataTables.min.css', array(), $this->version, 'all' );
 		}
+		wp_enqueue_style( 'track-orders-for-woocommerce-meterial-icons-css', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/material-design/icon.css', array(), time(), 'all' );
+
+		wp_enqueue_style( $this->plugin_name . '-admin-global', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/css/track-orders-for-woocommerce-admin-global.css', array( 'track-orders-for-woocommerce-meterial-icons-css' ), time(), 'all' );
 
 	}
 
@@ -429,17 +428,16 @@ class Track_Orders_For_Woocommerce_Admin {
 		apply_filters( 'tofw_general_settings_array_filter', $tofw_settings_general );
 
 		$is_pro_activated = false;
-		$is_pro_activated = apply_filters('track_orders_for_woocmmerce_pro_plugin_activated', $is_pro_activated );
-	
+		$is_pro_activated = apply_filters( 'track_orders_for_woocmmerce_pro_plugin_activated', $is_pro_activated );
 
-		if ( ! 	$is_pro_activated ) {
+		if ( ! $is_pro_activated ) {
 			$tofw_settings_general[] = array(
 				'title'       => __( 'Choose Template', 'track-orders-for-woocommerce' ),
 				'type'        => 'temp-select',
 				'class'       => 'wps_tofw_pro_feature',
 				'id'          => 'tofw_invoice_template',
 				'description' => __( 'This template will be used as in email notification', 'track-orders-for-woocommerce' ),
-				'selected'    =>'',
+				'selected'    => '',
 				'value'       => array(
 					array(
 						'title' => __( 'Template1', 'track-orders-for-woocommerce' ),
@@ -494,7 +492,6 @@ class Track_Orders_For_Woocommerce_Admin {
 				),
 			);
 		}
-
 
 		$tofw_settings_general[] = array(
 			'type'        => 'button',
@@ -607,7 +604,6 @@ class Track_Orders_For_Woocommerce_Admin {
 				'class' => 'tofw-radio-switch-class',
 			),
 
-
 			array(
 				'title' => __( 'Enable Use Of Custom Order Status', 'track-orders-for-woocommerce' ),
 				'type'  => 'radio-switch',
@@ -684,9 +680,8 @@ class Track_Orders_For_Woocommerce_Admin {
 		 */
 		apply_filters( 'tofw_track_order_settings_array_filter', $tofw_track_order_settings );
 
-
 		$is_pro_activated = false;
-		$is_pro_activated = apply_filters('track_orders_for_woocmmerce_pro_plugin_activated', $is_pro_activated );	
+		$is_pro_activated = apply_filters( 'track_orders_for_woocmmerce_pro_plugin_activated', $is_pro_activated );
 
 		if ( ! $is_pro_activated ) {
 
@@ -792,13 +787,9 @@ class Track_Orders_For_Woocommerce_Admin {
 
 			);
 
-			$tofw_track_order_settings = array_merge($tofw_track_order_settings,$tofw_track_order_settings_pro );
+			$tofw_track_order_settings = array_merge( $tofw_track_order_settings, $tofw_track_order_settings_pro );
 
 		}
-
-
-
-
 
 		$tofw_track_order_settings[] = array(
 			'type'  => 'button',
@@ -1051,13 +1042,10 @@ class Track_Orders_For_Woocommerce_Admin {
 		 */
 		apply_filters( 'tofw_shipping_services_settings_array_filter', $tofw_shipping_services_settings );
 
-
-
 		$is_pro_activated = false;
-		$is_pro_activated = apply_filters('track_orders_for_woocmmerce_pro_plugin_activated', $is_pro_activated );
-	
+		$is_pro_activated = apply_filters( 'track_orders_for_woocmmerce_pro_plugin_activated', $is_pro_activated );
 
-		if ( ! 	$is_pro_activated ) {
+		if ( ! $is_pro_activated ) {
 
 			$tofw_shipping_services_settings[] = array(
 				'title' => __( 'Enable USPS Shipment Tracking API', 'track-orders-for-woocommerce' ),
@@ -1131,11 +1119,6 @@ class Track_Orders_For_Woocommerce_Admin {
 			);
 
 		}
-
-
-
-
-
 
 		$tofw_shipping_services_settings[] = array(
 			'type'  => 'button',
@@ -1703,7 +1686,7 @@ class Track_Orders_For_Woocommerce_Admin {
 				?>
 				<div class="wps_tyo_ship_tracking_wrapper">
 					<label for="wps_tyo_user_tracking_number"><?php esc_html_e( '17Track Number', 'track-orders-for-woocommerce' ); ?></label>
-					<input type="text" name="wps_tofw_tracking_number" id="wps_tofw_tracking_number" value="<?php echo esc_attr( $wps_tofw_track_id ); ?>" placeholder="<?php esc_attr_e( 'Enter 17 Tracking Number', 'track-orders-for-woocommerce'  ); ?>"></input>
+					<input type="text" name="wps_tofw_tracking_number" id="wps_tofw_tracking_number" value="<?php echo esc_attr( $wps_tofw_track_id ); ?>" placeholder="<?php esc_attr_e( 'Enter 17 Tracking Number', 'track-orders-for-woocommerce' ); ?>"></input>
 				</div>
 				<?php
 			}
@@ -1974,6 +1957,10 @@ class Track_Orders_For_Woocommerce_Admin {
 			if ( isset( $order ) && ! empty( $order ) && isset( $order_obj ) && is_object( $order ) ) {
 
 				if ( is_object( $order_obj ) && method_exists( $order_obj, 'get_data' ) ) {
+
+					if ( empty( $order_obj ) ) {
+						return;
+					}
 					$orderdata = $order_obj->get_data();
 
 					$order_modified_date = $orderdata['date_modified'];
@@ -2042,7 +2029,6 @@ class Track_Orders_For_Woocommerce_Admin {
 						$logger = wc_get_logger();
 						$logger->error( 'Error: $order_obj is not an object or does not have get_data method.', array( 'source' => 'wps-order-tracker-plugin' ) );
 					}
-					
 				}
 			}
 		}

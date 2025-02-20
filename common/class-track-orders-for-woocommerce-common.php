@@ -258,7 +258,7 @@ class Track_Orders_For_Woocommerce_Common {
 					}
 					$order = wc_get_order( $order_id );
 
-					if ( ! $order){
+					if ( ! $order ) {
 						return $template;
 					}
 					// Retrieve the order status.
@@ -1438,16 +1438,16 @@ class Track_Orders_For_Woocommerce_Common {
 	public function wps_tofw_get_csv_order_details( $_orders ) {
 		$order_details = array();
 		$order_details[] = array(
-			__( 'Order Id', 'track-orders-for-woocommerce'  ),
-			__( 'Order Status', 'track-orders-for-woocommerce'  ),
-			__( 'Order Total', 'track-orders-for-woocommerce'  ),
-			__( 'Order Items', 'track-orders-for-woocommerce'  ),
-			__( 'Payment Method', 'track-orders-for-woocommerce'  ),
-			__( 'Billing Name', 'track-orders-for-woocommerce'  ),
-			__( 'Billing Email', 'track-orders-for-woocommerce'  ),
-			__( 'Billing Address', 'track-orders-for-woocommerce'  ),
-			__( 'Billing Contact', 'track-orders-for-woocommerce'  ),
-			__( 'Order date', 'track-orders-for-woocommerce'  ),
+			__( 'Order Id', 'track-orders-for-woocommerce' ),
+			__( 'Order Status', 'track-orders-for-woocommerce' ),
+			__( 'Order Total', 'track-orders-for-woocommerce' ),
+			__( 'Order Items', 'track-orders-for-woocommerce' ),
+			__( 'Payment Method', 'track-orders-for-woocommerce' ),
+			__( 'Billing Name', 'track-orders-for-woocommerce' ),
+			__( 'Billing Email', 'track-orders-for-woocommerce' ),
+			__( 'Billing Address', 'track-orders-for-woocommerce' ),
+			__( 'Billing Contact', 'track-orders-for-woocommerce' ),
+			__( 'Order date', 'track-orders-for-woocommerce' ),
 
 		);
 
@@ -1585,10 +1585,10 @@ class Track_Orders_For_Woocommerce_Common {
 				'show_in_admin_status_list' => true,
 				/* translators: %s: count */
 				'label_count' => _n_noop(
-										'Order Dispatched <span class="count">(%s)</span>',
-										'Order Dispatched <span class="count">(%s)</span>',
-										'track-orders-for-woocommerce'
-									),
+					'Order Dispatched <span class="count">(%s)</span>',
+					'Order Dispatched <span class="count">(%s)</span>',
+					'track-orders-for-woocommerce'
+				),
 			)
 		);
 

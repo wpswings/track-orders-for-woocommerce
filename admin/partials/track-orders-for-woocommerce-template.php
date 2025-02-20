@@ -106,13 +106,14 @@ if ( 'template1' == $activated_template ) {
 			</div>
 		</div>
 	</div>
-	<?php do_action( 'wps_tofw_template_tab', $template4, $new_template1, $new_template2, $new_template3 , $new_template8 ); 
+	<?php
+	do_action( 'wps_tofw_template_tab', $template4, $new_template1, $new_template2, $new_template3, $new_template8 );
 	$is_pro_activated = false;
-	$is_pro_activated = apply_filters('track_orders_for_woocmmerce_pro_plugin_activated', $is_pro_activated );
+	$is_pro_activated = apply_filters( 'track_orders_for_woocmmerce_pro_plugin_activated', $is_pro_activated );
 
-	if ( ! $is_pro_activated) {
-	
-	?>
+	if ( ! $is_pro_activated ) {
+
+		?>
 
 		<div id="wps_tofw_fourth_template">
 				<div class="wps_tofw_template_img_wrap wps_tofw_pro_tag">
@@ -186,9 +187,9 @@ if ( 'template1' == $activated_template ) {
 			</div>
 		<?php
 
-		}
-	
-		?>
+	}
+
+	?>
 
 
 
@@ -206,11 +207,12 @@ if ( 'template1' == $activated_template ) {
 	<div id="wps_template_3" class="wps_hide_template">
 		<img src="<?php echo esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/ot01.jpg'; ?>">
 	</div>
-	<?php do_action( 'wps_tofw_preview_template' ); 
-	
-	if ( ! $is_pro_activated) {
-	
-	?>
+	<?php
+	do_action( 'wps_tofw_preview_template' );
+
+	if ( ! $is_pro_activated ) {
+
+		?>
 
 
 
@@ -230,7 +232,7 @@ if ( 'template1' == $activated_template ) {
 		<img src="<?php echo esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/Screenshot_13.png'; ?>">
 	</div>
 
-	<?php 
+		<?php
 	}
 	?>
 	

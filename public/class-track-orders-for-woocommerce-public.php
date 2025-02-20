@@ -113,16 +113,14 @@ class Track_Orders_For_Woocommerce_Public {
 
 		$tofw_enable_track_order_below = get_option( 'tofw_enable_track_order_below' );
 		$tofw_enable_track_order_below_text = get_option( 'tofw_enable_track_order_below_text', __( 'Track Order', 'track-orders-for-woocommerce' ) );
-		$tofw_enable_track_order_below_textarea =get_option( 'tofw_enable_track_order_below_textarea', __( 'Click The Below To Track Your Order', 'track-orders-for-woocommerce' ) );
-		
+		$tofw_enable_track_order_below_textarea = get_option( 'tofw_enable_track_order_below_textarea', __( 'Click The Below To Track Your Order', 'track-orders-for-woocommerce' ) );
+
 		if ( 'on' == $tofw_enable_track_order_below ) {
 
-		
-
-		?>
-		<p><label class="wps_enhanced_order_note"><?php esc_html_e( 'Note: ', 'track-orders-for-woocommerce' ); ?></label><span class="wps_order_note_text"><?php echo esc_html ( $tofw_enable_track_order_below_textarea ); ?></span></p>
+			?>
+		<p><label class="wps_enhanced_order_note"><?php esc_html_e( 'Note: ', 'track-orders-for-woocommerce' ); ?></label><span class="wps_order_note_text"><?php echo esc_html( $tofw_enable_track_order_below_textarea ); ?></span></p>
 			<a href="<?php echo esc_attr( $track_order_url ) . '?' . esc_attr( $order_id ); ?>" class="button button-primary"><?php echo esc_html( $tofw_enable_track_order_below_text ); ?></a>
-		<?php
+			<?php
 		}
 
 	}
@@ -218,8 +216,8 @@ class Track_Orders_For_Woocommerce_Public {
 						$order_id = $link_array[ count( $link_array ) - 1 ];
 					}
 					$order = wc_get_order( $order_id );
-					if ( ! $order){
-						return  $template;
+					if ( ! $order ) {
+						return $template;
 					}
 					// Retrieve the order status.
 					$status_slug = $order->get_status();

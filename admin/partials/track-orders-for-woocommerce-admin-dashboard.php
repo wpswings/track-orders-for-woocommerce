@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 $secure_nonce      = wp_create_nonce( 'wps-upsell-auth-nonce' );
 $id_nonce_verified = wp_verify_nonce( $secure_nonce, 'wps-upsell-auth-nonce' );
 if ( ! $id_nonce_verified ) {
-	wp_die( esc_html__( 'Nonce Not verified', 'track-orders-for-woocommerce') );
+	wp_die( esc_html__( 'Nonce Not verified', 'track-orders-for-woocommerce' ) );
 }
 global $wps_tofw_obj, $error_notice;
 $tofw_active_tab = isset( $_GET['tofw_tab'] ) ? sanitize_key( $_GET['tofw_tab'] ) : 'track-orders-for-woocommerce-general';

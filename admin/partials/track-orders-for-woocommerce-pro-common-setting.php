@@ -9,7 +9,7 @@
 
 
 $wps_tofw_main_wrapper_class_theme = '';
-$wps_tofw_child_wrapper_class ='';
+$wps_tofw_child_wrapper_class = '';
 $wps_tofw_custom_css_name = '';
 $wps_tofw_custom_js_name = '';
 
@@ -18,7 +18,7 @@ $wps_tofw_custom_js_name = '';
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 <div class="wps_tofwp_wrapper">
 
-        <div class="wps-form-group wps-msp-text wps_tofw_pro_tag">
+		<div class="wps-form-group wps-msp-text wps_tofw_pro_tag">
 				 <div class="wps-form-group__label">
 							<label for="wps" class="wps-form-label"><?php echo esc_html_e( 'Main Wrapper Class of Theme', 'track-orders-for-woocommerce' ); ?></label>
 						</div>
@@ -30,7 +30,7 @@ $wps_tofw_custom_js_name = '';
 										</span>
 										<span class="mdc-notched-outline__trailing"></span>
 									</span>
-						          <input class="mdc-text-field__input wps_tofw_pro_feature" name = "wps_tofw_main_wrapper_class_theme" id="" type="text" value = "<?php echo esc_attr($wps_tofw_main_wrapper_class_theme); ?>"  placeholder="For e.g. .wps_main_classs .wps_main_class_2">
+								  <input class="mdc-text-field__input wps_tofw_pro_feature" name = "wps_tofw_main_wrapper_class_theme" id="" type="text" value = "<?php echo esc_attr( $wps_tofw_main_wrapper_class_theme ); ?>"  placeholder="For e.g. .wps_main_classs .wps_main_class_2">
 								</label>
 
 								<div class="mdc-text-field-helper-line">
@@ -38,7 +38,7 @@ $wps_tofw_custom_js_name = '';
 									<?php echo esc_html_e( 'Write the main wrapper class of your theme if some design issue arises.', 'track-orders-for-woocommerce' ); ?>
 									</div>
 								</div>
-				    </div>
+					</div>
 		 </div>
 
 
@@ -56,7 +56,7 @@ $wps_tofw_custom_js_name = '';
 										</span>
 										<span class="mdc-notched-outline__trailing"></span>
 									</span>
-						          <input class="mdc-text-field__input wps_tofw_pro_feature" name = "wps_tofw_child_wrapper_class" id="" type="text" value = "<?php echo esc_attr($wps_tofw_child_wrapper_class); ?>" placeholder="For e.g, .wps_main_classs .wps_main_class_2" >
+								  <input class="mdc-text-field__input wps_tofw_pro_feature" name = "wps_tofw_child_wrapper_class" id="" type="text" value = "<?php echo esc_attr( $wps_tofw_child_wrapper_class ); ?>" placeholder="For e.g, .wps_main_classs .wps_main_class_2" >
 								</label>
 
 								<div class="mdc-text-field-helper-line">
@@ -64,7 +64,7 @@ $wps_tofw_custom_js_name = '';
 									<?php echo esc_html_e( 'Write the child wrapper class of your theme if some design issue arises.', 'track-orders-for-woocommerce' ); ?>
 									</div>
 								</div>
-				    </div>
+					</div>
 		 </div>
 
 
@@ -79,7 +79,7 @@ $wps_tofw_custom_js_name = '';
 										<span class="mdc-notched-outline__trailing"></span>
 									</span>
 									<span class="mdc-text-field__resizer">
-										<textarea class="mdc-text-field__input wps_custom_tofw_css wps_tofw_pro_feature" rows="2" cols="25" aria-label="Label" name="wps_tofw_custom_css_name" placeholder="For e.g, .wps_main_classs{color:red}"><?php echo esc_attr($wps_tofw_custom_css_name); ?></textarea>
+										<textarea class="mdc-text-field__input wps_custom_tofw_css wps_tofw_pro_feature" rows="2" cols="25" aria-label="Label" name="wps_tofw_custom_css_name" placeholder="For e.g, .wps_main_classs{color:red}"><?php echo esc_attr( $wps_tofw_custom_css_name ); ?></textarea>
 									</span>
 								</label>
 								<div class="mdc-text-field-helper-line">
@@ -104,7 +104,7 @@ $wps_tofw_custom_js_name = '';
 										<span class="mdc-notched-outline__trailing"></span>
 									</span>
 									<span class="mdc-text-field__resizer">
-										<textarea class="mdc-text-field__input wps_custom_tofw_js wps_tofw_pro_feature" rows="2" cols="25" aria-label="Label" name="wps_tofw_custom_js_name" placeholder="For e.g, console.log('run')"><?php echo esc_attr($wps_tofw_custom_js_name); ?></textarea>
+										<textarea class="mdc-text-field__input wps_custom_tofw_js wps_tofw_pro_feature" rows="2" cols="25" aria-label="Label" name="wps_tofw_custom_js_name" placeholder="For e.g, console.log('run')"><?php echo esc_attr( $wps_tofw_custom_js_name ); ?></textarea>
 									</span>
 								</label>
 								<div class="mdc-text-field-helper-line">
@@ -116,7 +116,7 @@ $wps_tofw_custom_js_name = '';
 						</div>
 </div>
 
-<?php 
+<?php
 wp_nonce_field( 'admin_save_data', 'wps_tabs_nonce' );
 ?>
 <!-- Save Button -->

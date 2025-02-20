@@ -7,13 +7,13 @@ if ( function_exists( 'wc_get_order_statuses' ) ) {
 function wps_render_order_status_settings_page() {
 	$conditions = get_option( 'wps_order_status_conditions', array() );
 
-	$conditions = [
-		[
+	$conditions = array(
+		array(
 			'from' => 'wc-processing',
-			'to'   => 'wc-completed'
-		]
-	];
-	
+			'to'   => 'wc-completed',
+		),
+	);
+
 	?>
 	<div class="wrap-tofw-main">
 		<form method="post" action="">
@@ -24,9 +24,9 @@ function wps_render_order_status_settings_page() {
 			<table id="wps-conditions-table" class="form-table">
 				<thead>
 					<tr>
-						<th class="wps_tofw_pro_tag"><?php esc_html_e('From Status','track-orders-for-woocommerce'); ?></th>
-						<th class="wps_tofw_pro_tag"><?php esc_html_e('To Status','track-orders-for-woocommerce'); ?></th>
-						<th class="wps_tofw_pro_tag"><?php esc_html_e('Action','track-orders-for-woocommerce'); ?></th>
+						<th class="wps_tofw_pro_tag"><?php esc_html_e( 'From Status', 'track-orders-for-woocommerce' ); ?></th>
+						<th class="wps_tofw_pro_tag"><?php esc_html_e( 'To Status', 'track-orders-for-woocommerce' ); ?></th>
+						<th class="wps_tofw_pro_tag"><?php esc_html_e( 'Action', 'track-orders-for-woocommerce' ); ?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -52,14 +52,14 @@ function wps_render_order_status_settings_page() {
 									</select>
 								</td>
 								<td>
-									<button type="button" class="button wps-remove-condition"><?php esc_html_e('Remove','track-orders-for-woocommerce'); ?></button>
+									<button type="button" class="button wps-remove-condition"><?php esc_html_e( 'Remove', 'track-orders-for-woocommerce' ); ?></button>
 								</td>
 							</tr>
 						<?php endforeach; ?>
 					<?php endif; ?>
 				</tbody>
 			</table>
-			<button type="button" id="wps-add-condition" class="button wps_tofw_pro_feature wps_tofw_pro_tag"><?php esc_html_e('+ Add Condition','track-orders-for-woocommerce'); ?></button>
+			<button type="button" id="wps-add-condition" class="button wps_tofw_pro_feature wps_tofw_pro_tag"><?php esc_html_e( '+ Add Condition', 'track-orders-for-woocommerce' ); ?></button>
 			<p class="submit"><input type="button" name="submit" id="submit" class="button wps_tofw_pro_feature button-primary" value="Save Changes"></p>
 		</form>
 	</div>
