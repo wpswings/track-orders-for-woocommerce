@@ -1,9 +1,25 @@
 <?php
-// Include WooCommerce functions if necessary.
+/**
+ * Provide a admin area view for the plugin
+ *
+ * This file is used to markup the html field for general tab.
+ *
+ * @link       https://wpswings.com/
+ * @since      1.0.0
+ *
+ * @package    Track_Orders_For_Woocommerce
+ * @subpackage Track_Orders_For_Woocommerce/admin/partials
+ */
+
 if ( function_exists( 'wc_get_order_statuses' ) ) {
 	wps_render_order_status_settings_page();
 }
 
+/**
+ * Render order status.
+ *
+ * @return void
+ */
 function wps_render_order_status_settings_page() {
 	$conditions = get_option( 'wps_order_status_conditions', array() );
 

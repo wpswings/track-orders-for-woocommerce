@@ -1,12 +1,15 @@
 <?php
 /**
- * This is file for enhance tracking.
+ * Provide a admin area view for the plugin
  *
- * @package Woocommerce_Order_Tracker.
+ * This file is used to markup the html field for general tab.
+ *
+ * @link       https://wpswings.com/
+ * @since      1.0.0
+ *
+ * @package    Track_Orders_For_Woocommerce
+ * @subpackage Track_Orders_For_Woocommerce/admin/partials
  */
-
-
-
 
 $wps_tofw_main_wrapper_class_theme = '';
 $wps_tofw_child_wrapper_class = '';
