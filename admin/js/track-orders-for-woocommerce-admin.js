@@ -33,7 +33,7 @@
 
 
 	jQuery(document).on( 'click', '.wps_tofw_pro_feature', function() {
-		debugger;
+
 	jQuery(this).prop("checked", false);
 	jQuery('.wps_tofw_lite_go_pro_popup_wrap').addClass('wps_tofw_lite_go_pro_popup_show');
 		
