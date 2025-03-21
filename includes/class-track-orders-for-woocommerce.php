@@ -228,6 +228,9 @@ class Track_Orders_For_Woocommerce {
 		$this->loader->add_action( 'woocommerce_process_shop_order_meta', $tofw_plugin_admin, 'wps_tofw_save_shipping_services_meta', 10, 2 );
 		$this->loader->add_action( 'woocommerce_process_shop_order_meta', $tofw_plugin_admin, 'wps_tofw_save_custom_shipping_cities_meta', 10, 2 );
 
+		$this->loader->add_action( 'manage_woocommerce_page_wc-orders_columns', $tofw_plugin_admin, 'wps_new_column_track_order_column', 10, 2 );
+		$this->loader->add_action( 'manage_woocommerce_page_wc-orders_custom_column', $tofw_plugin_admin, 'tofw_track_order_col_column', 10, 2 );
+
 	}
 
 	/**

@@ -1206,3 +1206,7 @@ th.wps_tofw_pro_tag {
 }
 
 /* Minor design fixes end */
+mark.order-status.wps-tofw_status-icon {
+  background: transparent;
+  border: none;
+}
