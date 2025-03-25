@@ -1205,7 +1205,7 @@ $wps_track_order_js = get_option( 'wps_tofw_custom_js_name' );
 	 *
 	 * @hooked woocommerce_output_content_wrapper_end - 10 (outputs closing divs for the content)
 	 */
-	if ( 'on' != $wps_tofw_enable_track_order_popup ) {
+	if ( 'on' == $wps_tofw_enable_track_order_popup ) {
 
 
 		/**

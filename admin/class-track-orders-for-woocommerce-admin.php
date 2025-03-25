@@ -2045,43 +2045,42 @@ class Track_Orders_For_Woocommerce_Admin {
 	 *  @param object $order is the order object.
 	 * @return void
 	 */
-	function tofw_track_order_col_column( $column_name, $order ){ // WC_Order object is available as $order variable here
+	public function tofw_track_order_col_column( $column_name, $order ) {
+		// WC_Order object is available as $order variable here.
 		$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
 			$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
 			$track_order_url = get_permalink( $page_id );
-	
+
 				// Parse the URL.
 				$url_parts = wp_parse_url( $track_order_url );
 				$path = $url_parts['path'];
 				$path = trim( $path, '/' );
 				$path_parts = explode( '/', $path );
 				$last_part = end( $path_parts );
-	
-	
-		if( 'tofw_track_order_col' === $column_name ) {;
-			if ($order) {
-				// echo esc_html($order->get_order_number());
+
+		if ( 'tofw_track_order_col' === $column_name ) {
+			;
+			if ( $order ) {
 				$site_url = get_site_url() . '/' . $last_part . '/?' . esc_html( $order->get_order_number() ) . '';
-				// echo $site_url;
-				echo '<a href="'.$site_url.'" target="_blank">
-				<img src="'.TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/image/track_icon.png'.'" alt="Icon" style="width: 40px; height: 40px;">
-			  </a>';
-	
+				echo '<a href="' . esc_url( $site_url ) . '" target="_blank">
+        <img src="' . esc_url( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/image/track_icon.png' ) . '" alt="Icon" style="width: 40px; height: 40px;">
+      </a>';
+
 			}
 		}
-	
+
 	}
 
 	/**
 	 * Function to register new column.
 	 *
-	 *  @param array    $columns  column array.
+	 *  @param array $columns column array.
 	 * @return array
 	 */
-	function wps_new_column_track_order_column( $columns ){
-		// just add a new column here
-		$columns[ 'tofw_track_order_col' ] = 'Tracking Order';
-		// return the modified array
+	public function wps_new_column_track_order_column( $columns ) {
+		// just add a new column here.
+		$columns['tofw_track_order_col'] = 'Tracking Order';
+		// return the modified array.
 		return $columns;
 	}
 
