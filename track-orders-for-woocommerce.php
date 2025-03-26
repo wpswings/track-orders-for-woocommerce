@@ -240,14 +240,20 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 	 */
 	function wps_tofw_set_session() {
 		ob_start(); // Start output buffering.
-		if ( ! session_id() ) {
-			session_start(); // Start the session.
-		}
 		$value_check = isset( $_POST['track_order_nonce_name'] ) ? sanitize_text_field( wp_unslash( $_POST['track_order_nonce_name'] ) ) : '';
 		wp_verify_nonce( $value_check, 'track_order_nonce' );
+
 		if ( isset( $_POST['wps_tofw_order_id_submit'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_order_id_submit'] ) ) : '' ) {
 			$order_id = isset( $_POST['order_id'] ) ? sanitize_text_field( wp_unslash( $_POST['order_id'] ) ) : '';
-
+			$order = wc_get_order($order_id);  
+			if ( ! session_id() ) {
+					session_start(); // Start the session.
+				}
+			if(! $order) {    
+				$_SESSION['wps_tofw_notification'] = __( 'OrderId is Invalid', 'track-orders-for-woocommerce'  );     
+				ob_end_flush();    
+				return;  
+			}
 			$tofw_order = new WC_Order( $order_id );
 			if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
 				$billing_email = $tofw_order->get_billing_email();
@@ -257,7 +263,9 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 			$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
 			$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
 			$track_order_url = get_permalink( $page_id );
+
 			$order = wc_get_order( $order_id );
+
 			if ( ! empty( $order ) ) {
 
 				if ( 'on' != get_option( 'wps_tofw_enable_track_order_using_order_id', 'no' ) ) {
@@ -272,6 +280,8 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 						exit();
 					} else {
 						$_SESSION['wps_tofw_notification'] = __( 'OrderId or Email is Invalidss', 'track-orders-for-woocommerce'  );
+							session_write_close();
+						return;
 					}
 				} else {
 					$order = wc_get_order( $order_id );
@@ -280,7 +290,9 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 					exit();
 				}
 			} else {
-				$_SESSION['wps_tofw_notification'] = __( 'OrderId is Invalid', 'track-orders-for-woocommerce'  );
+				$_SESSION['wps_tofwp_notification'] = __( 'OrderId is Invalid', 'track-orders-for-woocommerce-pro' );
+				session_write_close();
+				return;
 			}
 		}
 		ob_end_flush();
