@@ -1,4 +1,4 @@
-=== Track Orders for WooCommerce – Automate Multi Carrier WooCommerce Shipping with delivery notifications, order tracking templates, 3PL shipping rates. ===
+=== Track Orders for WooCommerce ===
 
 Contributors: wpswings
 Donate link: https://wpswings.com/
@@ -6,8 +6,8 @@ Tags: tracking, woocommerce shipping, shipping, shipment tracking, order trackin
 Requires at least: 5.5.0
 Tested up to: 6.7.2
 WC requires at least: 5.5.0
-WC tested up to: 9.6.2
-Stable tag: 1.1.1
+WC tested up to: 9.7.1
+Stable tag: 1.1.2
 Requires PHP: 7.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -210,6 +210,13 @@ Check out [**Track Orders  for WooCommerce Knowledge Base**](https://support.wps
 
 == Changelog ==
 
+= 1.1.2 - Released on 27 March 2025 = 
+* Enhancement: Updating the new order status icon images.
+* Enhancement: New Column section for the order tracking link.
+* New: Compatibility with the latest WP 6.7.2 and WC 9.7.1
+* Fixes: Deprecated function fixed for tracking order. 
+
+
 = 1.1.1 - Released on 21 Feb 2025 = 
 * New: Go pro in org plugin
 * Fix: Design issues fixes
@@ -261,10 +268,8 @@ Check out [**Track Orders  for WooCommerce Knowledge Base**](https://support.wps
 
 == Upgrade Notice == 
 
-= 1.1.1 - Released on 21 Feb 2025 = 
-* New: Go pro in org plugin
-* Fix: Design issues fixes
-* Enhancement: Removal of tracking link on tracking page
-* Fix: Warning on custom order status save is removed
-* New: Setting to manage Order tracking button that are now dynamic and can be enable and disable
-* New: Compatibility with the latest WP (6.7.2) and WC (9.6.2)
+= 1.1.2 - Released on 27 March 2025 = 
+* Enhancement: Updating the new order status icon images.
+* Enhancement: New Column section for the order tracking link.
+* New: Compatibility with the latest WP 6.7.2 and WC 9.7.1
+* Fixes: Deprecated function fixed for tracking order.
