@@ -761,12 +761,12 @@ class Track_Orders_For_Woocommerce {
 												>
 												<?php echo esc_html( $tofw_val ); ?>
 											</option>
-											<?php
+											<?php 
 								}
 							}
 							?>
 									</select>
-									<label class="mdl-textfield__label" for="<?php echo esc_attr( $tofw_component['id'] ); ?>"><?php echo ( isset( $tofw_component['description'] ) ? esc_attr( $tofw_component['description'] ) : '' ); ?></label>
+									<label class="mdl-textfield__label wps-helper-text" for="<?php echo esc_attr( $tofw_component['id'] ); ?>"><?php echo ( isset( $tofw_component['description'] ) ? esc_attr( $tofw_component['description'] ) : '' ); ?></label>
 								</div>
 							</div>
 						</div>
@@ -934,42 +934,54 @@ class Track_Orders_For_Woocommerce {
 
 						case 'multi':
 							?>
-							<div class="wps-form-group <?php echo esc_attr( $pro_group_tag ); ?> wps-msp-<?php echo esc_attr( $tofw_component['type'] ); ?>">
-								<div class="wps-form-group__label">
-									<label for="<?php echo esc_attr( $tofw_component['id'] ); ?>" class="wps-form-label"><?php echo ( isset( $tofw_component['title'] ) ? esc_html( $tofw_component['title'] ) : '' ); // WPCS: XSS ok. ?></label>
-									</div>
-									<div class="wps-form-group__control">
-							<?php
-							foreach ( $tofw_component['value'] as $component ) {
-								?>
-											<label class="mdc-text-field mdc-text-field--outlined">
-												<span class="mdc-notched-outline">
-													<span class="mdc-notched-outline__leading"></span>
-													<span class="mdc-notched-outline__notch">
-								<?php if ( 'number' != $component['type'] ) { ?>
-															<span class="mdc-floating-label" id="my-label-id" style=""><?php echo ( isset( $tofw_component['placeholder'] ) ? esc_attr( $tofw_component['placeholder'] ) : '' ); ?></span>
-							<?php } ?>
-													</span>
-													<span class="mdc-notched-outline__trailing"></span>
-												</span>
-												<input 
-												class="mdc-text-field__input <?php echo ( isset( $tofw_component['class'] ) ? esc_attr( $tofw_component['class'] ) : '' ); ?>" 
-												name="<?php echo ( isset( $tofw_component['name'] ) ? esc_html( $tofw_component['name'] ) : esc_html( $tofw_component['id'] ) ); ?>"
-												id="<?php echo esc_attr( $component['id'] ); ?>"
-												type="<?php echo esc_attr( $component['type'] ); ?>"
-												value="<?php echo ( isset( $tofw_component['value'] ) ? esc_attr( $tofw_component['value'] ) : '' ); ?>"
-												placeholder="<?php echo ( isset( $tofw_component['placeholder'] ) ? esc_attr( $tofw_component['placeholder'] ) : '' ); ?>"
-								<?php echo esc_attr( ( 'number' === $component['type'] ) ? 'max=10 min=0' : '' ); ?>
-												>
-											</label>
-							<?php } ?>
-									<div class="mdc-text-field-helper-line">
-										<div class="mdc-text-field-helper-text--persistent wps-helper-text" id="" aria-hidden="true"><?php echo ( isset( $tofw_component['description'] ) ? esc_attr( $tofw_component['description'] ) : '' ); ?></div>
-									</div>
-								</div>
-							</div>
-								<?php
-							break;
+								<div class="wps-form-group <?php echo esc_attr( $pro_group_tag ); ?>">
+    <div class="wps-form-group__label wps_enable_dhl_api_key">
+        <label for="wps_tofw_other_setting_upload_logo" class="wps-form-label">
+            <?php esc_html_e( 'Upload Tracking Logo', 'track-orders-for-woocommerce' ); ?>
+        </label>
+    </div>
+
+    <div class="wps-form-group__control wps-pl-4">
+        <?php
+        $attribute_description = __( 'Upload the image which is used as logo for your custom order statuses.', 'track-orders-for-woocommerce' );
+        echo wp_kses_post( wc_help_tip( $attribute_description ) );
+        ?>
+
+        <div class="wps-upload-logo-wrapper" style="margin-top: 10px;">
+            <input 
+                type="text" 
+                readonly 
+                class="wps_tofw_other_setting_upload_logo_value" 
+                id="wps_tofw_other_setting_upload_logo_edit" 
+                name="wps_tofw_other_setting_upload_DHL_ICON" 
+                value="<?php echo esc_attr( $tofw_component['value'] ); ?>" 
+            />
+
+            <input 
+                class="wps_tofw_other_setting_upload_logo button"  
+                type="button" 
+                value="<?php esc_attr_e( 'Upload Logo', 'track-orders-for-woocommerce' ); ?>" 
+            />
+        </div>
+
+        <div id="wps_tofw_other_setting_remove_logo_edit" class="wps-remove-logo-preview" style="margin-top: 10px;">
+            <span class="wps_tofw_other_setting_remove_logo">
+                <img 
+                    src="<?php echo esc_url( $tofw_component['value'] ); ?>" 
+                    width="50" 
+                    height="50" 
+                    id="wps_tofw_other_setting_upload_image_edit"
+					class="wps_hide_icon_for_dhl"
+                    alt="<?php esc_attr_e( 'Uploaded Logo Preview', 'track-orders-for-woocommerce' ); ?>" 
+                />
+            </span>
+        </div>
+		<span><?php echo ( isset( $tofw_component['description'] ) ? esc_attr( $tofw_component['description'] ) : '' ); ?></span>
+    </div>
+</div>
+
+
+							<?php break;
 						case 'temp-select':
 							?>
 									<div class="wps-form-group <?php echo esc_attr( $pro_group_tag ); ?> wps-wpg-<?php echo esc_attr( array_key_exists( 'type', $tofw_component ) ? $tofw_component['type'] : '' ); ?>">

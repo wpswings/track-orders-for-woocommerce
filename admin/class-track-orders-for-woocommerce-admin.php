@@ -491,6 +491,20 @@ class Track_Orders_For_Woocommerce_Admin {
 					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
 				),
 			);
+
+			$tofw_settings_general[] =
+			array(
+				'title' => __( 'Enable DHL Tracking', 'track-orders-for-woocommerce' ),
+				'type'  => 'radio-switch',
+				'description'  => __( 'Allow users to track DHL shipments directly using the tracking number without redirecting to carriers page', 'track-orders-for-woocommerce' ),
+				'id'    => 'wps_enable_dhl_tracking',
+				'value' => '',
+				'class' => 'wps_tofw_qr_redirect wps_tofw_pro_feature',
+				'options' => array(
+					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
+					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
+				),
+			);
 		}
 
 		$tofw_settings_general[] = array(
@@ -1161,6 +1175,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			// desc - filter for trial.
 			apply_filters( 'tofw_general_settings_array', array() );
 			$wps_settings_save_progress = true;
+			update_option('wps_enable_dhl_track_icon' ,$_POST['wps_tofw_other_setting_upload_DHL_ICON'] );
 		}
 		if ( isset( $_POST['wps_tofw_track-order_setting_save'] ) ) {
 			$wps_msp_gen_flag     = false;

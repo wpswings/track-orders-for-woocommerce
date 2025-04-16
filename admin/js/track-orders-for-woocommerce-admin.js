@@ -284,6 +284,7 @@ jQuery(document).ready(function ($) {
 				$('[name="wps_tofw_other_setting_upload_logo_edit"]').val(result.wps_custom_order_image);
 				$('[name="wps_edit_image_logo"]').attr('src', result.wps_custom_order_image);
 				$('#wps_tofw_other_setting_upload_image_edit').hide();
+				$('.wps_hide_icon_for_dhl').hide();
 				jQuery("#wps_tofw_other_setting_remove_logo").show();
 				$('html, body').animate({ scrollTop: 0 }, 'slow');
 				if(response=='success')

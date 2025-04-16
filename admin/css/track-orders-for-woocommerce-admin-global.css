@@ -1210,3 +1210,7 @@ mark.order-status.wps-tofw_status-icon {
   background: transparent;
   border: none;
 }
+
+.wps-helper-text {
+  font-style: oblique;
+}
