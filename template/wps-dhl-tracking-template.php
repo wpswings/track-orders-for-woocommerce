@@ -190,7 +190,6 @@ function wps_dhl_tracking_shortcode( $atts ) {
 				<?php endforeach; ?>
 			</ul>
 		</div>
-		<button id="wps_ajax_button">Click Me</button>
 	</div>
 
 	<script>

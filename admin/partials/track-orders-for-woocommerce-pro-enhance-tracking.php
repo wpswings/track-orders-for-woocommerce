@@ -52,8 +52,14 @@ if ( empty( get_option( 'wps_tofwp_courier_companies', false ) ) ) {
 	$wps_tofwp_courier_companies = get_option( 'wps_tofwp_courier_companies', false );
    $wps_tofwp_general_settings_data = get_option( 'wps_tofwp_general_settings_saved', false );
    $wps_tofwp_courier_default_company = get_option( 'wps_tofwp_courier_default_company', false );
+?>
+<?php
+   $wps_tofwp_general_settings_data = get_option( 'wps_tofwp_general_settings_saved', false );
+   $wps_tofwp_courier_default_company = get_option( 'wps_tofwp_courier_default_company', false );
 
 
+$saved_settings = get_option('wps_tofwp_general_settings_saved');
+$saved_providers = isset($saved_settings['providers_data']) ? $saved_settings['providers_data'] : array();
 ?>
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 <div class="wps_tofwp_wrapper">
@@ -85,52 +91,93 @@ if ( empty( get_option( 'wps_tofwp_courier_companies', false ) ) ) {
 						</div>
 			</div>
 		</div>
+		<style>
+	.wps-select-wrapper {
+		margin-bottom: 25px;
+	}
+
+	.wps-select-wrapper label {
+		display: block;
+		font-weight: 600;
+		margin-bottom: 8px;
+		font-size: 1rem;
+		color: #333;
+	}
+
+	select[name="wps_tofwp_courier_url_keys[]"] {
+		width: 100%;
+		height: 220px;
+		padding: 10px;
+		border: 1px solid #ccc;
+		border-radius: 6px;
+		font-size: 0.95rem;
+		background-color: #fafafa;
+		transition: border-color 0.3s ease;
+	}
+
+	select[name="wps_tofwp_courier_url_keys[]"]:focus {
+		border-color: #0073aa;
+		outline: none;
+		background-color: #fff;
+	}
+
+	.wps-provider-grid {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 16px;
+	}
+
+	.wps-provider-card {
+		flex: 1 1 160px;
+		max-width: 180px;
+		min-height: 170px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		background: #fff;
+		border: 1px solid #e0e0e0;
+		border-radius: 12px;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+		padding: 15px;
+		text-align: center;
+		transition: transform 0.2s ease, box-shadow 0.2s ease;
+	}
+
+	.wps-provider-card:hover {
+		transform: translateY(-4px);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	}
+
+	.wps-provider-card img {
+		width: 55px;
+		height: 55px;
+		object-fit: contain;
+		margin-bottom: 12px;
+	}
+
+	.wps-provider-card span {
+		font-weight: 600;
+		font-size: 0.95rem;
+		color: #222;
+	}
+</style>
 
 		<!-- Panel For Adding The Shipment Tracking Couries-->
 		<div class="wps_tofwp_tracking_section wps_tofw_pro_tag">
-			<div class="wps_tofwp_shipping_courier">
-				<b><?php esc_html_e( 'Select Shipping Companies You Want', 'track-orders-for-woocommerce' ); ?></b>
-				<div class="wps_tofwp_courier_content">
-					<?php
-					   $wps_tofwp_courier_companies = get_option( 'wps_tofwp_courier_companies', false );
-
-
-					if ( is_array( $wps_tofwp_courier_companies ) && ! empty( $wps_tofwp_courier_companies ) ) {
-						foreach ( $wps_tofwp_courier_companies as $wps_courier_key => $wps_courier_value ) {
-							if ( '' != $wps_courier_key && '' != $wps_courier_value ) {
-
-								?>
-								<div class="wps-tofwp-courier-data" id="wps_enhanced_tofwp_class<?php echo esc_attr( $wps_courier_key ); ?>">
-									<input type="checkbox" id="wps_enhanced_checkbox<?php echo esc_attr( $wps_courier_key ); ?>" name="wps_tofwp_courier_url[<?php echo esc_attr( $wps_courier_key ); ?>]" value="<?php echo esc_attr( $wps_courier_value ); ?>" 
-									<?php
-									if ( isset( $wps_tofwp_general_settings_data['providers_data'] ) && is_array( $wps_tofwp_general_settings_data['providers_data'] ) && ! empty( $wps_tofwp_general_settings_data['providers_data'] ) ) {
-										if ( array_key_exists( $wps_courier_key, $wps_tofwp_general_settings_data['providers_data'] ) ) {
-											echo "checked='checked'";
-										}
-									}
-									?>
-									><label for="wps_enhanced_checkbox<?php echo esc_attr( $wps_courier_key ); ?>"><?php echo esc_html( $wps_courier_key ); ?></label>
-									<?php
-									if ( ! empty( $wps_tofwp_courier_default_company ) ) {
-										if ( ! array_key_exists( $wps_courier_key, $wps_tofwp_courier_default_company ) ) {
-											?>
-										<a href="#" id="wps_enhanced_cross<?php echo esc_attr( $wps_courier_key ); ?>" class="wps_enhanced_tofwp_remove" data-id='<?php echo esc_attr( $wps_courier_key ); ?>'>X</a>
-											<?php
-										}
-									}
-									?>
-								</div>
-								<?php
-							}
-						}
-					}
-					?>
-				</div>
-			</div>
+		<!-- Select Dropdown -->
+		<div class="wps-select-wrapper">
+			<label for="wps_tofwp_courier_url_keys">Choose Courier Providers</label>
+			<select name="wps_tofwp_courier_url_keys[]" id="wps_tofwp_courier_url_keys" multiple>
+				<?php foreach ( $wps_tofwp_courier_companies as $key => $url ) : ?>
+					<option value="<?php echo esc_attr( $key ); ?>" <?php selected( array_key_exists( $key, $saved_providers ), true ); ?>>
+						<?php echo esc_html( $key ); ?>
+					</option>
+				<?php endforeach; ?>
+			</select>
 		</div>
-		<div class="wps_tofwp_tracking_section">
-			
 		</div>
+
 
 <div class="wps_enhanced_tofwp_table_wrapper wps_tofw_pro_tag">
 <table class="form-table">
@@ -192,3 +239,11 @@ if ( empty( get_option( 'wps_tofwp_courier_companies', false ) ) ) {
 <?php
 
 include_once plugin_dir_path( dirname( __FILE__ ) ) . '/partials/track-order-for-woocommerce-go-pro.php';
+?>
+<script>
+	jQuery(document).ready(function($) {
+	$('select[name="wps_tofwp_courier_url_keys[]"]').select2({
+		placeholder: 'Select courier providers'
+	});
+});
+</script>
