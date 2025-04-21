@@ -177,7 +177,7 @@ function wps_dhl_tracking_shortcode( $atts ) {
 		</div>
 		<div class="wps-dhl-step-list-wrapper">
 			<ul class="wps-dhl-event-list" id="wpsEventList">
-				<?php foreach ( array_reverse( $events ) as $event ) : ?>
+				<?php foreach ( ( $events ) as $event ) : ?>
 					<li class="wps-dhl-event-item">
 						<strong><?php echo esc_html( $event['description'] ); ?></strong>
 						<small>
