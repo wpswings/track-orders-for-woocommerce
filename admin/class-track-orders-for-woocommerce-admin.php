@@ -1177,9 +1177,9 @@ class Track_Orders_For_Woocommerce_Admin {
 			$wps_settings_save_progress = true;
 			update_option(
 				'wps_enable_dhl_track_icon',
-				isset($_POST['wps_tofw_other_setting_upload_DHL_ICON']) ? $_POST['wps_tofw_other_setting_upload_DHL_ICON'] : ''
+				isset( $_POST['wps_tofw_other_setting_upload_DHL_ICON'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_other_setting_upload_DHL_ICON'] ) ) : ''
 			);
-			
+
 		}
 		if ( isset( $_POST['wps_tofw_track-order_setting_save'] ) ) {
 			$wps_msp_gen_flag     = false;

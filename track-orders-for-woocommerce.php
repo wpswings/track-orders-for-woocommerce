@@ -293,7 +293,7 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 					exit();
 				}
 			} else {
-				$_SESSION['wps_tofwp_notification'] = __( 'OrderId is Invalid', 'track-orders-for-woocommerce-pro' );
+				$_SESSION['wps_tofwp_notification'] = __( 'OrderId is Invalid', 'track-orders-for-woocommerce' );
 				session_write_close();
 				return;
 			}
