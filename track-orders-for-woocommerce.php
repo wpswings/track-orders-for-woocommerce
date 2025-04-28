@@ -339,3 +339,6 @@ function wps_tofw_show_admin_notices() {
 		unset( $_GET['activate'] ); //phpcs:ignore
 	}
 }
+
+// To Suppress The Notices on text doman.
+add_filter( 'doing_it_wrong_trigger_error', '__return_false' );
