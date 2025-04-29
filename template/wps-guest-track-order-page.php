@@ -62,7 +62,7 @@ $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 						<li><strong><?php esc_html_e( 'ERROR', 'track-orders-for-woocommerce' ); ?></strong>: <?php echo esc_html( $tofw_notification ); ?></li>
 				</ul>
 				<?php
-				unset( $tofw_notification );
+				unset( $_SESSION['wps_tofw_notification'] );
 			}
 			?>
 			<?php

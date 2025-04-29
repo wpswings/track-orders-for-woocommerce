@@ -354,7 +354,13 @@ jQuery(document).ready(function(){
 });
 
 
-jQuery(window).load(function(){
+if (window.history.replaceState) {
+	window.history.replaceState(null, null, window.location.href);
+}
+
+jQuery(window).load(function () {
+	
+
 
 	jQuery(document).on('click','.wps_tofw_17track',function(e){
 		e.preventDefault();

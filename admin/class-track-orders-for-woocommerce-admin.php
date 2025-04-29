@@ -62,7 +62,7 @@ class Track_Orders_For_Woocommerce_Admin {
 	public function tofw_admin_enqueue_styles( $hook ) {
 		$screen = get_current_screen();
 
-		if ( isset( $screen->id ) && ( 'wpswings_page_home' === $screen->id || 'wpswings_page_track_orders_for_woocommerce_menu' === $screen->id || 'wp-swings_page_track_orders_for_woocommerce_menu' === $screen->id ) ) {
+		if ( isset( $screen->id ) && ( 'wp-swings_page_home' === $screen->id || 'pluginhhhs' === $screen->id || 'wpswings_page_track_orders_for_woocommerce_menu' === $screen->id || 'wp-swings_page_track_orders_for_woocommerce_menu' === $screen->id ) ) {
 
 			wp_enqueue_style( 'track-orders-for-woocommerce-select2-css', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/select-2/track-orders-for-woocommerce-select2.css', array(), time(), 'all' );
 
@@ -70,14 +70,13 @@ class Track_Orders_For_Woocommerce_Admin {
 			wp_enqueue_style( 'track-orders-for-woocommerce-meterial-css2', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/material-design/material-components-v5.0-web.min.css', array(), time(), 'all' );
 			wp_enqueue_style( 'track-orders-for-woocommerce-meterial-lite', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/material-design/material-lite.min.css', array(), time(), 'all' );
 
-			wp_enqueue_style( 'track-orders-for-woocommerce-meterial-icons-css', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/material-design/icon.css', array(), time(), 'all' );
-
-			wp_enqueue_style( $this->plugin_name . '-admin-global', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/css/track-orders-for-woocommerce-admin-global.css', array( 'track-orders-for-woocommerce-meterial-icons-css' ), time(), 'all' );
-
 			wp_enqueue_style( $this->plugin_name, TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/css/track-orders-for-woocommerce-admin.scss', array(), $this->version, 'all' );
 			wp_enqueue_style( 'wps-admin-min-css', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/css/wps-admin.min.css', array(), $this->version, 'all' );
 			wp_enqueue_style( 'wps-datatable-css', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/datatables/media/css/jquery.dataTables.min.css', array(), $this->version, 'all' );
 		}
+		wp_enqueue_style( 'track-orders-for-woocommerce-meterial-icons-css', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/material-design/icon.css', array(), time(), 'all' );
+
+		wp_enqueue_style( $this->plugin_name . '-admin-global', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/css/track-orders-for-woocommerce-admin-global.css', array( 'track-orders-for-woocommerce-meterial-icons-css' ), time(), 'all' );
 
 	}
 
@@ -427,6 +426,87 @@ class Track_Orders_For_Woocommerce_Admin {
 		 * @since 1.0.0
 		 */
 		apply_filters( 'tofw_general_settings_array_filter', $tofw_settings_general );
+
+		$is_pro_activated = false;
+		$is_pro_activated = apply_filters( 'track_orders_for_woocmmerce_pro_plugin_activated', $is_pro_activated );
+
+		if ( ! $is_pro_activated ) {
+			$tofw_settings_general[] = array(
+				'title'       => __( 'Choose Template', 'track-orders-for-woocommerce' ),
+				'type'        => 'temp-select',
+				'class'       => 'wps_tofw_pro_feature',
+				'id'          => 'tofw_invoice_template',
+				'description' => __( 'This template will be used as in email notification', 'track-orders-for-woocommerce' ),
+				'selected'    => '',
+				'value'       => array(
+					array(
+						'title' => __( 'Template1', 'track-orders-for-woocommerce' ),
+						'type'  => 'radio',
+						'id'    => 'wpg_invoice_template_one',
+						'class' => 'wpg_invoice_template_one wpg_invoice_preview wps_tofw_pro_feature',
+						'name'  => 'tofw_invoice_template',
+						'value' => '',
+						'src'   => esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/ot_1.3.png',
+					),
+					array(
+						'title' => __( 'Template2', 'track-orders-for-woocommerce' ),
+						'type'  => 'radio',
+						'id'    => 'wpg_invoice_template_two',
+						'class' => 'wpg_invoice_template_two wpg_invoice_preview wps_tofw_pro_feature',
+						'src'   => esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/ot_2.png',
+						'name'  => 'tofw_invoice_template',
+						'value' => '',
+					),
+					array(
+						'title' => __( 'Template3', 'track-orders-for-woocommerce' ),
+						'type'  => 'radio',
+						'id'    => 'wpg_invoice_template_three',
+						'class' => 'wpg_invoice_template_three wpg_invoice_preview wps_tofw_pro_feature',
+						'src'   => esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/ot_1.png',
+						'name'  => 'tofw_invoice_template',
+						'value' => '',
+					),
+					array(
+						'title' => __( 'Template4', 'track-orders-for-woocommerce' ),
+						'type'  => 'radio',
+						'id'    => 'wpg_invoice_template_four',
+						'class' => 'wpg_invoice_template_three wpg_invoice_preview wps_tofw_pro_feature',
+						'src'   => esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/ot_4.png',
+						'name'  => 'tofw_invoice_template',
+						'value' => '',
+					),
+				),
+			);
+
+			$tofw_settings_general[] =
+			array(
+				'title' => __( 'Enable QR Redirection Feature', 'track-orders-for-woocommerce' ),
+				'type'  => 'radio-switch',
+				'description'  => __( 'Send the QR in Email Notification on Changing Order Status', 'track-orders-for-woocommerce' ),
+				'id'    => 'wps_tofw_qr_redirect',
+				'value' => '',
+				'class' => 'wps_tofw_qr_redirect wps_tofw_pro_feature',
+				'options' => array(
+					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
+					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
+				),
+			);
+
+			$tofw_settings_general[] =
+			array(
+				'title' => __( 'Enable DHL Tracking', 'track-orders-for-woocommerce' ),
+				'type'  => 'radio-switch',
+				'description'  => __( 'Allow users to track DHL shipments directly using the tracking number without redirecting to carriers page', 'track-orders-for-woocommerce' ),
+				'id'    => 'wps_enable_dhl_tracking',
+				'value' => '',
+				'class' => 'wps_tofw_qr_redirect wps_tofw_pro_feature',
+				'options' => array(
+					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
+					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
+				),
+			);
+		}
+
 		$tofw_settings_general[] = array(
 			'type'        => 'button',
 			'id'          => 'wps_tofw_general_settings_save',
@@ -479,10 +559,63 @@ class Track_Orders_For_Woocommerce_Admin {
 				'id'    => 'tofw_enable_track_order',
 				'value' => get_option( 'tofw_enable_track_order' ),
 				'class' => 'tofw-radio-switch-class',
+				'description'  => 'Enable functionality for tracking order.',
 				'options' => array(
 					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
 					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
 				),
+			),
+			array(
+				'title' => __( 'Enable Track Orders Button Feature Below Order details in My Account Section. ', 'track-orders-for-woocommerce' ),
+				'type'  => 'radio-switch',
+				'id'    => 'tofw_enable_track_order_below',
+				'description'  => 'Enable functionality for tracking order below order deatils at my account page.',
+				'value' => get_option( 'tofw_enable_track_order_below' ),
+				'class' => 'tofw-radio-switch-class',
+				'options' => array(
+					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
+					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
+				),
+			),
+			array(
+				'title' => __( 'Enter Text For Track Order Below Order details in My Account Section.', 'track-orders-for-woocommerce' ),
+				'type'  => 'text',
+				'description'  => __( 'Enter Text For Track Order Below Order details in My Account Section.', 'track-orders-for-woocommerce' ),
+				'id'    => 'tofw_enable_track_order_below_text',
+				'placeholder' => 'Text For Track Order',
+				'value' => get_option( 'tofw_enable_track_order_below_text', __( 'Track Order', 'track-orders-for-woocommerce' ) ),
+				'class' => 'tofw-radio-switch-class',
+			),
+			array(
+				'title' => __( 'Enter Note For Track Order Below Order details in My Account Section.', 'track-orders-for-woocommerce' ),
+				'type'  => 'textarea',
+				'description'  => __( 'Enter Note For Track Order Below Order details in My Account Section.', 'track-orders-for-woocommerce' ),
+				'id'    => 'tofw_enable_track_order_below_textarea',
+				'placeholder' => 'Text For Track Order',
+				'value' => get_option( 'tofw_enable_track_order_below_textarea', __( 'Click The Below To Track Your Order', 'track-orders-for-woocommerce' ) ),
+				'class' => 'tofw-radio-switch-class',
+			),
+
+			array(
+				'title' => __( 'Enable Track Orders Button Feature as Action on Order details in My Account Section. ', 'track-orders-for-woocommerce' ),
+				'type'  => 'radio-switch',
+				'id'    => 'tofw_enable_track_order_below_action',
+				'description'  => 'Enable functionality for tracking order as Action on order deatils at my account page.',
+				'value' => get_option( 'tofw_enable_track_order_below_action' ),
+				'class' => 'tofw-radio-switch-class',
+				'options' => array(
+					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
+					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
+				),
+			),
+			array(
+				'title' => __( 'Enter Text For Track Order as Action on Order details in My Account Section.', 'track-orders-for-woocommerce' ),
+				'type'  => 'text',
+				'description'  => __( 'Enter Text For Track Order as Action on Order details in My Account Section.', 'track-orders-for-woocommerce' ),
+				'id'    => 'tofw_enable_track_order_below_action_text',
+				'placeholder' => 'Text For Order Action',
+				'value' => get_option( 'tofw_enable_track_order_below_action_text', __( 'Track Order', 'track-orders-for-woocommerce' ) ),
+				'class' => 'tofw-radio-switch-class',
 			),
 
 			array(
@@ -560,6 +693,117 @@ class Track_Orders_For_Woocommerce_Admin {
 		 * @since 1.0.0
 		 */
 		apply_filters( 'tofw_track_order_settings_array_filter', $tofw_track_order_settings );
+
+		$is_pro_activated = false;
+		$is_pro_activated = apply_filters( 'track_orders_for_woocmmerce_pro_plugin_activated', $is_pro_activated );
+
+		if ( ! $is_pro_activated ) {
+
+			$tofw_track_order_settings_pro = array(
+				array(
+					'title' => __( 'Enable Track Your Order Feature in pop-up box ( Order Action )', 'track-orders-for-woocommerce' ),
+					'type'  => 'radio-switch',
+					'id'    => 'wps_tofwp_enable_track_order_popup',
+					'value' => '',
+					'description'  => __( 'Pop-up will open on Order Action Track Order button', 'track-orders-for-woocommerce' ),
+
+					'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
+					'options' => array(
+						'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
+						'no' => __( 'NO', 'track-orders-for-woocommerce' ),
+					),
+				),
+				array(
+					'title' => __( 'Enable Shortcode to create Order Tracking page', 'track-orders-for-woocommerce' ),
+					'type'  => 'radio-switch-copy',
+					'description'  => __( '-->it will show my-account-page for logged in user and it will show tracking form for guest user.', 'track-orders-for-woocommerce' ),
+
+					'shortcode' => '[wps_create_tracking_page]',
+					'id'    => 'wps_tofwp_create_tracking_page',
+					'value' => '',
+					'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
+					'options' => array(
+						'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
+						'no' => __( 'NO', 'track-orders-for-woocommerce' ),
+					),
+				),
+				array(
+					'title' => __( 'Enable Shortcode to show track order form', 'track-orders-for-woocommerce' ),
+					'type'  => 'radio-switch-copy',
+					'description'  => __( '--> it will show tracking form for logged in user as well as guest user.', 'track-orders-for-woocommerce' ),
+					'shortcode' => '[wps_track_order_form]',
+					'id'    => 'wps_tofwp_track_order_form',
+					'value' => '',
+					'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
+					'options' => array(
+						'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
+						'no' => __( 'NO', 'track-orders-for-woocommerce' ),
+					),
+				),
+				array(
+					'title' => __( 'Enable to send pay link on pending status', 'track-orders-for-woocommerce' ),
+					'type'  => 'radio-switch',
+					'description'  => __( 'Send Mail Notification contains Pay link on pending payment order status', 'track-orders-for-woocommerce' ),
+					'id'    => 'wps_tofwp_send_pay_link',
+					'value' => '',
+					'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
+					'options' => array(
+						'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
+						'no' => __( 'NO', 'track-orders-for-woocommerce' ),
+					),
+				),
+
+				array(
+					'title' => __( 'Enable to send message text on changing order status', 'track-orders-for-woocommerce' ),
+					'type'  => 'radio-switch',
+					'description'  => __( 'Send Message Text  Notification on every order status change', 'track-orders-for-woocommerce' ),
+					'id'    => 'wps_tofwp_enable_send_msg_text',
+					'value' => '',
+					'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
+					'options' => array(
+						'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
+						'no' => __( 'NO', 'track-orders-for-woocommerce' ),
+					),
+				),
+
+				array(
+					'title' => __( 'Enter Twilio API Sid', 'track-orders-for-woocommerce' ),
+					'type'  => 'text',
+					'description'  => __( 'Enter twilio API sid here', 'track-orders-for-woocommerce' ),
+					'id'    => 'wps_tofwp_twillio_sid',
+					'value' => '',
+					'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
+				),
+				array(
+					'title' => __( 'Enter Twilio API Token', 'track-orders-for-woocommerce' ),
+					'type'  => 'text',
+					'description'  => __( 'Enable twilio API token here.', 'track-orders-for-woocommerce' ),
+					'id'    => 'wps_tofwp_twillio_api_token',
+					'value' => '',
+					'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
+				),
+				array(
+					'title' => __( 'Enter Twilio Sending Number', 'track-orders-for-woocommerce' ),
+					'type'  => 'text',
+					'description'  => __( 'Enable twilio sending number here.', 'track-orders-for-woocommerce' ),
+					'id'    => 'wps_tofwp_twillio_send_number',
+					'value' => '',
+					'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
+				),
+				array(
+					'title' => __( 'Enter Content to send in Sms with ticket', 'track-orders-for-woocommerce' ),
+					'type'  => 'text',
+					'description'  => __( 'Use Placeholders  {customer} for Customer-Name, {order-id} for Order ID and {tracking-url} for Tracking URL.', 'track-orders-for-woocommerce' ),
+					'id'    => 'wps_tofwp_twillio_content_here',
+					'value' => '',
+					'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
+				),
+
+			);
+
+			$tofw_track_order_settings = array_merge( $tofw_track_order_settings, $tofw_track_order_settings_pro );
+
+		}
 
 		$tofw_track_order_settings[] = array(
 			'type'  => 'button',
@@ -812,6 +1056,84 @@ class Track_Orders_For_Woocommerce_Admin {
 		 */
 		apply_filters( 'tofw_shipping_services_settings_array_filter', $tofw_shipping_services_settings );
 
+		$is_pro_activated = false;
+		$is_pro_activated = apply_filters( 'track_orders_for_woocmmerce_pro_plugin_activated', $is_pro_activated );
+
+		if ( ! $is_pro_activated ) {
+
+			$tofw_shipping_services_settings[] = array(
+				'title' => __( 'Enable USPS Shipment Tracking API', 'track-orders-for-woocommerce' ),
+				'type'  => 'radio-switch',
+				'id'    => 'wps_tofwp_enable_usps_tracking',
+				'value' => '',
+				'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
+				'options' => array(
+					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
+					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
+				),
+			);
+			$tofw_shipping_services_settings[] = array(
+				'title' => __( 'USPS Username', 'track-orders-for-woocommerce' ),
+				'type'  => 'text',
+				'description'  => __( 'Enter Your USPS Username Here', 'track-orders-for-woocommerce' ),
+				'id'    => 'wps_tofwp_usps_tracking_user_key',
+				'value' => '',
+				'class' => 'wps_tofw_pro_feature',
+
+			);
+			$tofw_shipping_services_settings[] = array(
+				'title' => __( 'USPS User Password', 'track-orders-for-woocommerce' ),
+				'type'  => 'text',
+				'description'  => __( 'Enter Your USPS Password Here', 'track-orders-for-woocommerce' ),
+				'id'    => 'wps_tofwp_usps_tracking_user_password',
+				'value' => '',
+				'class' => 'wps_tofw_pro_feature',
+
+			);
+			$tofw_shipping_services_settings[] = array(
+				'title' => __( 'Enable Canada Post Shipment Tracking API', 'track-orders-for-woocommerce' ),
+				'type'  => 'radio-switch',
+				'id'    => 'wps_tofwp_enable_canadapost_tracking',
+				'value' => '',
+				'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
+				'options' => array(
+					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
+					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
+				),
+			);
+			$tofw_shipping_services_settings[] = array(
+				'title' => __( 'Canada Post Username', 'track-orders-for-woocommerce' ),
+				'type'  => 'text',
+				'description'  => __( 'Enter Your wps_tofwp_canadapost_tracking_user_key Username Here', 'track-orders-for-woocommerce' ),
+				'id'    => 'wps_tofwp_canadapost_tracking_user_key',
+				'value' => '',
+				'class' => 'wps_tofw_pro_feature',
+
+			);
+			$tofw_shipping_services_settings[] = array(
+				'title' => __( 'Canada Post User Password', 'track-orders-for-woocommerce' ),
+				'type'  => 'text',
+				'description'  => __( 'Enter Your Canada Post Password Here', 'track-orders-for-woocommerce' ),
+				'id'    => 'wps_tofwp_canadapost_tracking_user_password',
+				'value' => '',
+				'class' => 'wps_tofw_pro_feature',
+
+			);
+			$tofw_shipping_services_settings[] = array(
+				'title' => __( 'Enable 17Track.net Tracking Feature', 'track-orders-for-woocommerce' ),
+				'type'  => 'radio-switch',
+				'id'    => 'wps_tofwp_enable_17track_integration',
+				'value' => '',
+				'description'  => __( 'Note :- To use this feature please disable **Enable Third Party Tracking API** option.', 'track-orders-for-woocommerce' ),
+				'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
+				'options' => array(
+					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
+					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
+				),
+			);
+
+		}
+
 		$tofw_shipping_services_settings[] = array(
 			'type'  => 'button',
 			'id'    => 'wps_tofw_shipping_services_settings_save',
@@ -853,6 +1175,11 @@ class Track_Orders_For_Woocommerce_Admin {
 			// desc - filter for trial.
 			apply_filters( 'tofw_general_settings_array', array() );
 			$wps_settings_save_progress = true;
+			update_option(
+				'wps_enable_dhl_track_icon',
+				isset( $_POST['wps_tofw_other_setting_upload_DHL_ICON'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_other_setting_upload_DHL_ICON'] ) ) : ''
+			);
+
 		}
 		if ( isset( $_POST['wps_tofw_track-order_setting_save'] ) ) {
 			$wps_msp_gen_flag     = false;
@@ -947,10 +1274,15 @@ class Track_Orders_For_Woocommerce_Admin {
 	public function wps_tofw_create_custom_order_status_callback() {
 		check_ajax_referer( 'ajax-nonce', 'nonce' );
 		$create_custom_order_status = array();
+		$create_custom_order_status1 = array();
+		$tem = array();
 		$value = array();
 		$custom_order_image_url = array();
 		$wps_image_url = array();
+		$set_value_temp = array();
 		$value = get_option( 'wps_tofw_new_custom_order_status', false );
+
+		$set_value_temp = get_option( 'wps_tofw_new_custom_template', false );
 		$custom_order_image_url = get_option( 'wps_tofw_new_custom_order_image', false );
 		if ( is_array( $value ) && ! empty( $value ) ) {
 			$create_custom_order_status = isset( $_POST['wps_tofw_new_role_name'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_new_role_name'] ) ) : '';
@@ -960,8 +1292,13 @@ class Track_Orders_For_Woocommerce_Admin {
 			$value[] = array( $key_custom_order_status => $create_custom_order_status );
 			$custom_order_image_url[ $key_custom_order_status ] = $create_custom_order_image_url;
 
+			$create_custom_order_status1 = isset( $_POST['wps_tofw_new_role_name'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_new_role_name'] ) ) : '';
+			$tem = isset( $_POST['wps_template_select'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_template_select'] ) ) : '';
+			$set_value_temp[] = array( $create_custom_order_status1 => $tem );
+
 			update_option( 'wps_tofw_new_custom_order_status', $value );
 			update_option( 'wps_tofw_new_custom_order_image', $custom_order_image_url );
+			update_option( 'wps_tofw_new_custom_template', $set_value_temp );
 
 		} else {
 
@@ -969,11 +1306,26 @@ class Track_Orders_For_Woocommerce_Admin {
 			$create_custom_order_image_url = isset( $_POST['wps_custom_order_image_url'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_custom_order_image_url'] ) ) : '';
 			$key_custom_order_status = str_replace( ' ', '', $create_custom_order_status );
 			$key_custom_order_status = strtolower( $key_custom_order_status );
+
+			// Ensure it's an array.
+			if ( ! is_array( $value ) ) {
+				$value = array();
+			}
+
 			$value[] = array( $key_custom_order_status => $create_custom_order_status );
 			$custom_order_image_url[ $key_custom_order_status ] = $create_custom_order_image_url;
 
+			$create_custom_order_status1 = isset( $_POST['wps_tofw_new_role_name'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_new_role_name'] ) ) : '';
+			$tem = isset( $_POST['wps_template_select'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_template_select'] ) ) : '';
+				// Ensure it's an array.
+			if ( ! is_array( $set_value_temp ) ) {
+				$set_value_temp = array();
+			}
+			$set_value_temp[] = array( $create_custom_order_status1 => $tem );
+
 			update_option( 'wps_tofw_new_custom_order_status', $value );
 			update_option( 'wps_tofw_new_custom_order_image', $custom_order_image_url );
+			update_option( 'wps_tofw_new_custom_template', $set_value_temp );
 		}
 
 		esc_html_e( 'success', 'track-orders-for-woocommerce' );
@@ -985,13 +1337,104 @@ class Track_Orders_For_Woocommerce_Admin {
 	 *
 	 * @link http://www.wpswings.com/
 	 */
+	public function wps_tofw_edit_custom_order_status_callback() {
+		check_ajax_referer( 'ajax-nonce', 'nonce' );
+		$wps_response = array();
+		$wps_tofw_old_selected_statuses = get_option( 'wps_tofw_new_settings_custom_statuses_for_order_tracking', false );
+		$wps_key_name_space = isset( $_POST['wps_key_name_space'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_key_name_space'] ) ) : '';
+		$wps_custom_key = isset( $_POST['wps_custom_key'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_custom_key'] ) ) : '';
+
+			$template_array = get_option( 'wps_tofw_new_custom_template', array() );
+
+			$search_key_template = $wps_key_name_space;
+
+		foreach ( $template_array as $item ) {
+
+			if ( array_key_exists( $search_key_template, $item ) ) {
+				$value = $item[ $search_key_template ];
+				$wps_response['wps_template_name'] = $value;
+				break;
+			}
+		}
+
+		$template_array_image = get_option( 'wps_tofw_new_custom_order_image', array() );
+
+		if ( isset( $template_array_image[ $wps_custom_key ] ) ) {
+			$value = $template_array_image[ $wps_custom_key ];
+			$wps_response['wps_custom_order_image'] = $value;
+		}
+
+		$wps_response['wps_order_status_name'] = $wps_key_name_space;
+
+		echo wp_json_encode( $wps_response );
+		wp_die();
+
+	}
+
+
+
+	/**
+	 * This function delete the Custom order status on the backend  wps_tofw_edit_custom_order_status_callback
+	 *
+	 * @link http://www.wpswings.com/
+	 */
+	public function wps_tofw_save_edit_custom_order_status_callback() {
+
+		check_ajax_referer( 'ajax-nonce', 'nonce' );
+		$wps_response = array();
+
+		$wps_tofw_edit_order_status = isset( $_POST['wps_tofw_edit_order_status'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_edit_order_status'] ) ) : '';
+		$wps_edit_order_image_url = isset( $_POST['wps_edit_order_image_url'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_edit_order_image_url'] ) ) : '';
+		$wps_edit_template_select = isset( $_POST['wps_edit_template_select'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_edit_template_select'] ) ) : '';
+		$wps_tofw_edit_order_status_space = isset( $_POST['wps_tofw_edit_order_status_space'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_edit_order_status_space'] ) ) : '';
+
+		$wps_without_space = str_replace( ' ', '', $wps_tofw_edit_order_status_space );
+
+		$template_array_image = get_option( 'wps_tofw_new_custom_order_image', array() );
+		$wps_template_name_array = get_option( 'wps_tofw_new_custom_template', array() );
+		$wps_all_custom_order_array = get_option( 'wps_tofw_new_custom_order_status', array() );
+
+		// Check if the key exists in the array before updating image URL.
+		if ( array_key_exists( $wps_without_space, $template_array_image ) ) {
+			$template_array_image[ $wps_without_space ] = $wps_edit_order_image_url; // Update the value.
+		}
+
+		foreach ( $wps_template_name_array as $key => $value ) {
+			if ( isset( $value[ $wps_tofw_edit_order_status_space ] ) ) {
+				$wps_template_name_array[ $key ][ $wps_tofw_edit_order_status_space ] = $wps_edit_template_select; // Update the value.
+			}
+		}
+
+		if ( array_key_exists( $wps_tofw_edit_order_status, $wps_all_custom_order_array ) ) {
+			$wps_all_custom_order_array[ $wps_tofw_edit_order_status ] = $wps_edit_template_select; // Update the value.
+		}
+
+		// Update the options with the modified arrays.
+		update_option( 'wps_tofw_new_custom_order_image', $template_array_image );
+		update_option( 'wps_tofw_new_custom_template', $wps_template_name_array );
+		update_option( 'wps_tofw_new_custom_order_status', $wps_all_custom_order_array );
+
+		echo wp_json_encode( $wps_response );
+
+		wp_die();
+
+	}
+
+
+	/**
+	 * This function delete the Custom order status on the backend.
+	 *
+	 * @link http://www.wpswings.com/
+	 */
 	public function wps_tofw_delete_custom_order_status_callback() {
+
 		check_ajax_referer( 'ajax-nonce', 'nonce' );
 		$wps_tofw_old_selected_statuses = get_option( 'wps_tofw_new_settings_custom_statuses_for_order_tracking', false );
 		$wps_custom_action = isset( $_POST['wps_custom_action'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_custom_action'] ) ) : '';
 		$wps_custom_key = isset( $_POST['wps_custom_key'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_custom_key'] ) ) : '';
 		if ( isset( $wps_custom_key ) && ! empty( $wps_custom_key ) ) {
 			$custom_order_status_exist = get_option( 'wps_tofw_new_custom_order_status', array() );
+
 			if ( is_array( $custom_order_status_exist ) && ! empty( $custom_order_status_exist ) ) {
 				foreach ( $custom_order_status_exist as $key => $value ) {
 					foreach ( $value as $wps_order_key => $wps_order_status ) {
@@ -1002,6 +1445,20 @@ class Track_Orders_For_Woocommerce_Admin {
 					}
 				}
 				update_option( 'wps_tofw_new_custom_order_status', $custom_order_status_exist );
+
+				$custom_order_status_temp = get_option( 'wps_tofw_new_custom_template', array() );
+
+				foreach ( $custom_order_status_temp as $index => $sub_array ) {
+					if ( isset( $sub_array[ $wps_custom_key ] ) ) {
+						// Unset the element if the key matches.
+						unset( $custom_order_status_temp[ $index ] );
+					}
+				}
+				if ( class_exists( 'WC_Logger' ) ) {
+					$logger = wc_get_logger();
+					$logger->info( json_encode( $custom_order_status_temp, JSON_PRETTY_PRINT ), array( 'source' => 'wps-order-tracker-plugin' ) );
+				}
+				update_option( 'wps_tofw_new_custom_template', $custom_order_status_temp );
 
 				if ( is_array( $wps_tofw_old_selected_statuses ) && ! empty( $wps_tofw_old_selected_statuses ) ) {
 					foreach ( $wps_tofw_old_selected_statuses as $old_key => $old_value ) {
@@ -1248,7 +1705,7 @@ class Track_Orders_For_Woocommerce_Admin {
 				?>
 				<div class="wps_tyo_ship_tracking_wrapper">
 					<label for="wps_tyo_user_tracking_number"><?php esc_html_e( '17Track Number', 'track-orders-for-woocommerce' ); ?></label>
-					<input type="text" name="wps_tofw_tracking_number" id="wps_tofw_tracking_number" value="<?php echo esc_attr( $wps_tofw_track_id ); ?>" placeholder="<?php esc_attr_e( 'Enter 17 Tracking Number', 'woocommerce-order-tracker' ); ?>"></input>
+					<input type="text" name="wps_tofw_tracking_number" id="wps_tofw_tracking_number" value="<?php echo esc_attr( $wps_tofw_track_id ); ?>" placeholder="<?php esc_attr_e( 'Enter 17 Tracking Number', 'track-orders-for-woocommerce' ); ?>"></input>
 				</div>
 				<?php
 			}
@@ -1329,6 +1786,9 @@ class Track_Orders_For_Woocommerce_Admin {
 
 				$headers = array();
 				$order = wc_get_order( $post_id );
+				if ( ! $order ) {
+					return;
+				}
 				$headers[] = 'Content-Type: text/html; charset=UTF-8';
 				$wps_tracking_url = get_post_meta( $order_id, 'wps_tofw_enhanced_order_company', true );
 				$wps_tracking_number = get_post_meta( $order_id, 'wps_tofw_enhanced_tracking_no', true );
@@ -1519,6 +1979,10 @@ class Track_Orders_For_Woocommerce_Admin {
 			if ( isset( $order ) && ! empty( $order ) && isset( $order_obj ) && is_object( $order ) ) {
 
 				if ( is_object( $order_obj ) && method_exists( $order_obj, 'get_data' ) ) {
+
+					if ( empty( $order_obj ) ) {
+						return;
+					}
 					$orderdata = $order_obj->get_data();
 
 					$order_modified_date = $orderdata['date_modified'];
@@ -1583,11 +2047,60 @@ class Track_Orders_For_Woocommerce_Admin {
 						}
 					}
 				} else {
-					error_log( 'Error: $order_obj is not an object or does not have get_data method.' );
+					if ( class_exists( 'WC_Logger' ) ) {
+						$logger = wc_get_logger();
+						$logger->error( 'Error: $order_obj is not an object or does not have get_data method.', array( 'source' => 'wps-order-tracker-plugin' ) );
+					}
 				}
 			}
 		}
 
+	}
+
+	/**
+	 * Function to add new column.
+	 *
+	 *  @param int    $column_name column name.
+	 *  @param object $order is the order object.
+	 * @return void
+	 */
+	public function tofw_track_order_col_column( $column_name, $order ) {
+		// WC_Order object is available as $order variable here.
+		$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
+			$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
+			$track_order_url = get_permalink( $page_id );
+
+				// Parse the URL.
+				$url_parts = wp_parse_url( $track_order_url );
+				$path = $url_parts['path'];
+				$path = trim( $path, '/' );
+				$path_parts = explode( '/', $path );
+				$last_part = end( $path_parts );
+
+		if ( 'tofw_track_order_col' === $column_name ) {
+			;
+			if ( $order ) {
+				$site_url = get_site_url() . '/' . $last_part . '/?' . esc_html( $order->get_order_number() ) . '';
+				echo '<a href="' . esc_url( $site_url ) . '" target="_blank">
+        <img src="' . esc_url( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/image/track_icon.png' ) . '" alt="Icon" style="width: 40px; height: 40px;">
+      </a>';
+
+			}
+		}
+
+	}
+
+	/**
+	 * Function to register new column.
+	 *
+	 *  @param array $columns column array.
+	 * @return array
+	 */
+	public function wps_new_column_track_order_column( $columns ) {
+		// just add a new column here.
+		$columns['tofw_track_order_col'] = 'Tracking Order';
+		// return the modified array.
+		return $columns;
 	}
 
 }

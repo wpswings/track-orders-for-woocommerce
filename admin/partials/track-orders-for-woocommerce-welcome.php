@@ -24,7 +24,7 @@ $tofw_tab_key = '';
 	do_action( 'wps_tofw_settings_saved_notice' );
 	?>
 	<div class="wps-header-container wps-bg-white wps-r-8">
-		<h1 class="wps-header-title"><?php echo esc_attr( __( 'WPSwings' ) ); ?></h1>
+		<h1 class="wps-header-title"><?php echo esc_attr( ( 'WPSwings' ) ); ?></h1>
 	</div>
 </header>
 <main class="wps-main wps-bg-white wps-r-8">
@@ -94,7 +94,7 @@ $tofw_tab_key = '';
 						<div class="container">
 							<h4><b><?php echo esc_html( $value['Name'] ); ?></b></h4> 
 							<p><?php echo esc_html( $value['Version'] ); ?></p> 
-							<p><?php echo esc_html( $value['Description'] ); ?></p>
+							<p><?php echo wp_kses_post( $value['Description'] ); ?></p>
 						</div>
 					</article>
 				<?php endif; ?>

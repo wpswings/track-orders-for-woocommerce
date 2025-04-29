@@ -139,10 +139,15 @@ $allowed = true;
 if ( $allowed ) {
 
 	if ( isset( $order_id ) && ! empty( $order_id ) ) {
-		$tofw_order = wc_get_order( $order_id );
+		$tofw_order = wc_get_order($order_id);
 
-		$order_data = $tofw_order->get_data();
-
+		if ($tofw_order) {
+			$order_data = $tofw_order->get_data();
+			// do your stuff.
+		} else {
+			error_log("Invalid order ID: " . print_r($order_id, true));
+		}
+		
 
 		$wps_tofw_all_saved_cities = get_option( 'wps_tofw_save_selected_city', false );
 

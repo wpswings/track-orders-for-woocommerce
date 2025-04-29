@@ -32,6 +32,7 @@ class Track_Orders_For_Woocommerce_Deactivator {
 		wp_clear_scheduled_hook( 'wps_tofw_daily_notification' );
 		delete_option( 'wps_tofw_warning_notification_message' );
 		delete_option( 'wps_tofw_warning_notification' );
+		update_option( 'wps_enable_dhl_tracking', '' );
 
 		$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
 

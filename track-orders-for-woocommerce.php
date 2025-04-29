@@ -15,7 +15,7 @@
  * Plugin Name:       Track Orders for WooCommerce
  * Plugin URI:        https://wpswings.com/product/track-orders-for-woocommerce/
  * Description:       <code><strong>Track Orders for WooCommerce</strong></code> Keep your customers informed in real-time with simple order tracking, transforming their waiting time into an engaging and interactive journey. <a target="_blank" href="https://wpswings.com/woocommerce-plugins/?utm_source=wpswings-orderbump-shop&utm_medium=orderbump-pro-backend&utm_campaign=shop-page" >Elevate your eCommerce store by exploring more on <strong>WP Swings</strong></a>.
- * Version:           1.0.8
+ * Version:           1.1.3
  * Author:            WPSwings
  * Author URI:        https://wpswings.com/
  * Text Domain:       track-orders-for-woocommerce
@@ -23,11 +23,11 @@
  *
  * Requires Plugins:  woocommerce
  * Requires at least:    5.5.0
- * Tested up to:         6.6.2
+ * Tested up to:         6.8
  * WC requires at least: 5.5.0
- * WC tested up to:      9.3.3
+ * WC tested up to:      9.8.2
  * Requires PHP:         7.4
- * Stable tag:           1.0.8
+ * Stable tag:           1.1.3
  *
  * License:           GNU General Public License v3.0
  * License URI:       http://www.gnu.org/licenses/gpl-3.0.html
@@ -60,7 +60,7 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 	 * @since 1.0.0
 	 */
 	function define_track_orders_for_woocommerce_constants() {
-		track_orders_for_woocommerce_constants( 'TRACK_ORDERS_FOR_WOOCOMMERCE_VERSION', '1.0.8' );
+		track_orders_for_woocommerce_constants( 'TRACK_ORDERS_FOR_WOOCOMMERCE_VERSION', '1.1.3' );
 		track_orders_for_woocommerce_constants( 'TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH', plugin_dir_path( __FILE__ ) );
 		track_orders_for_woocommerce_constants( 'TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL', plugin_dir_url( __FILE__ ) );
 		track_orders_for_woocommerce_constants( 'TRACK_ORDERS_FOR_WOOCOMMERCE_SERVER_URL', 'https://wpswings.com' );
@@ -175,6 +175,9 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 	 */
 	require plugin_dir_path( __FILE__ ) . 'includes/class-track-orders-for-woocommerce.php';
 	require plugin_dir_path( __FILE__ ) . 'integration/class-track-orders-for-woocommerce-with-fedex.php';
+	if('on' ===  get_option( 'wps_enable_dhl_tracking' )){
+	require plugin_dir_path( __FILE__ ) . 'template/wps-dhl-tracking-template.php';
+	}
 
 
 
@@ -240,14 +243,20 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 	 */
 	function wps_tofw_set_session() {
 		ob_start(); // Start output buffering.
-		if ( ! session_id() ) {
-			session_start(); // Start the session.
-		}
 		$value_check = isset( $_POST['track_order_nonce_name'] ) ? sanitize_text_field( wp_unslash( $_POST['track_order_nonce_name'] ) ) : '';
 		wp_verify_nonce( $value_check, 'track_order_nonce' );
+
 		if ( isset( $_POST['wps_tofw_order_id_submit'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_order_id_submit'] ) ) : '' ) {
 			$order_id = isset( $_POST['order_id'] ) ? sanitize_text_field( wp_unslash( $_POST['order_id'] ) ) : '';
-
+			$order = wc_get_order($order_id);  
+			if ( ! session_id() ) {
+					session_start(); // Start the session.
+				}
+			if(! $order) {    
+				$_SESSION['wps_tofw_notification'] = __( 'OrderId is Invalid', 'track-orders-for-woocommerce'  );     
+				ob_end_flush();    
+				return;  
+			}
 			$tofw_order = new WC_Order( $order_id );
 			if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
 				$billing_email = $tofw_order->get_billing_email();
@@ -257,7 +266,9 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 			$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
 			$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
 			$track_order_url = get_permalink( $page_id );
+
 			$order = wc_get_order( $order_id );
+
 			if ( ! empty( $order ) ) {
 
 				if ( 'on' != get_option( 'wps_tofw_enable_track_order_using_order_id', 'no' ) ) {
@@ -271,7 +282,9 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 						wp_redirect( $url );
 						exit();
 					} else {
-						$_SESSION['wps_tofw_notification'] = __( 'OrderId or Email is Invalidss', 'woocommerce-order-tracker' );
+						$_SESSION['wps_tofw_notification'] = __( 'OrderId or Email is Invalidss', 'track-orders-for-woocommerce'  );
+							session_write_close();
+						return;
 					}
 				} else {
 					$order = wc_get_order( $order_id );
@@ -280,7 +293,9 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 					exit();
 				}
 			} else {
-				$_SESSION['wps_tofw_notification'] = __( 'OrderId is Invalid', 'woocommerce-order-tracker' );
+				$_SESSION['wps_tofwp_notification'] = __( 'OrderId is Invalid', 'track-orders-for-woocommerce' );
+				session_write_close();
+				return;
 			}
 		}
 		ob_end_flush();
@@ -318,9 +333,12 @@ function wps_tofw_show_admin_notices() {
 	$mwb_mbfw_parent_plugin = __( 'WooCommerce', 'track-orders-for-woocommerce' );
 	echo '<div class="notice notice-error is-dismissible"><p>'
 		/* translators: %s: dependency checks */
-		. sprintf( esc_html__( '%1$s requires %2$s to function correctly. Please activate %2$s before activating %1$s. For now, the plugin has been deactivated.', 'mwb-bookings-for-woocommerce' ), '<strong>' . esc_html( $mwb_mbfw_child_plugin ) . '</strong>', '<strong>' . esc_html( $mwb_mbfw_parent_plugin ) . '</strong>' )
+		. sprintf( esc_html__( '%1$s requires %2$s to function correctly. Please activate %2$s before activating %1$s. For now, the plugin has been deactivated.','track-orders-for-woocommerce'  ), '<strong>' . esc_html( $mwb_mbfw_child_plugin ) . '</strong>', '<strong>' . esc_html( $mwb_mbfw_parent_plugin ) . '</strong>' )
 		. '</p></div>';
 	if ( isset( $_GET['activate'] ) ) { // phpcs:ignore
 		unset( $_GET['activate'] ); //phpcs:ignore
 	}
 }
+
+// To Suppress The Notices on text doman.
+add_filter( 'doing_it_wrong_trigger_error', '__return_false' );
