@@ -1058,10 +1058,31 @@ jQuery(document).ready(function ($) {
 			jQuery('.wps_tofw_empty_adrress_validation').html('<span>'+tofw_admin_param.address_validation+'</span>');
 		}
 	});
-
-
-
-
-
   
 });
+
+jQuery(document).ready(function($) {
+	const $checkbox = $('#wps_tofw_enable_track_order_using_api');
+	const $target = $checkbox
+	  .parent().parent().parent().parent().parent()
+		.nextAll('.wps_fedex_field');
+	console.log($target);
+  
+	// Initial check on page load
+	if (!$checkbox.is(':checked')) {
+	  $target.hide(1000);
+	} else {
+	  $target.show(1000);
+	}
+  
+	// On change toggle
+	$checkbox.on('change', function () {
+	  if ($(this).is(':checked')) {
+		$target.show(1000);
+	  } else {
+		$target.hide(1000);
+	  }
+	});
+});
+
+

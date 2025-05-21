@@ -230,6 +230,7 @@ class Track_Orders_For_Woocommerce {
 
 		$this->loader->add_action( 'manage_woocommerce_page_wc-orders_columns', $tofw_plugin_admin, 'wps_new_column_track_order_column', 10, 2 );
 		$this->loader->add_action( 'manage_woocommerce_page_wc-orders_custom_column', $tofw_plugin_admin, 'tofw_track_order_col_column', 10, 2 );
+		// $this->loader->add_action( 'init', $tofw_plugin_admin, 'tofw_register_google_embed_blocks' );
 
 	}
 
@@ -646,7 +647,7 @@ class Track_Orders_For_Woocommerce {
 						case 'email':
 						case 'text':
 							?>
-						<div class="wps-form-group <?php echo esc_attr( $pro_group_tag ); ?> wps-msp-<?php echo esc_attr( $tofw_component['type'] ); ?>">
+						<div class="wps-form-group <?php echo esc_attr( $pro_group_tag ); ?> wps-msp-<?php echo esc_attr( $tofw_component['type'] ); ?> <?php echo isset( $tofw_component['classname'] ) ? esc_attr( $tofw_component['classname'] ) : ''; ?>">
 							<div class="wps-form-group__label">
 								<label for="<?php echo esc_attr( $tofw_component['id'] ); ?>" class="wps-form-label"><?php echo ( isset( $tofw_component['title'] ) ? esc_html( $tofw_component['title'] ) : '' ); // WPCS: XSS ok. ?></label>
 							</div>
