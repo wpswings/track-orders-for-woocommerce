@@ -69,7 +69,7 @@ class Track_Orders_For_Woocommerce_Public {
 	 */
 	public function tofw_public_enqueue_scripts() {
 		$selected_template = get_option( 'wps_tofw_activated_template' );
-		wp_register_script( $this->plugin_name, TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'public/js/track-orders-for-woocommerce-public.js', array( 'jquery' ), $this->version, false );
+		wp_register_script( $this->plugin_name, TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'public/js/track-orders-for-woocommerce-public.js', array( 'jquery' ), time(), false );
 		wp_localize_script(
 			$this->plugin_name,
 			'tofw_public_param',
@@ -120,8 +120,8 @@ class Track_Orders_For_Woocommerce_Public {
 			?>
 		<p><label class="wps_enhanced_order_note"><?php esc_html_e( 'Note: ', 'track-orders-for-woocommerce' ); ?></label><span class="wps_order_note_text"><?php echo esc_html( $tofw_enable_track_order_below_textarea ); ?></span></p>
 
-		<?php  if ( 'on' == $wps_tofwp_enable_track_order_popup ) { ?>
-			<a href="<?php echo esc_attr( $track_order_url ) . '?' . esc_attr( $order_id ). '&TB_iframe=true&popup_type=track_order'; ?>" class="woocommerce-button button thickbox order-actions-button "><?php echo esc_html( $tofw_enable_track_order_below_text ); ?></a>
+			<?php if ( 'on' == $wps_tofwp_enable_track_order_popup ) { ?>
+			<a href="<?php echo esc_attr( $track_order_url ) . '?' . esc_attr( $order_id ) . '&TB_iframe=true&popup_type=track_order'; ?>" class="woocommerce-button button thickbox order-actions-button "><?php echo esc_html( $tofw_enable_track_order_below_text ); ?></a>
 		<?php } else { ?>
 			<a href="<?php echo esc_attr( $track_order_url ) . '?' . esc_attr( $order_id ); ?>" class="button button-primary"><?php echo esc_html( $tofw_enable_track_order_below_text ); ?></a>
 <?php } ?>
@@ -260,13 +260,13 @@ class Track_Orders_For_Woocommerce_Public {
 
 					if ( $found ) {
 						// Determine the path based on the selected template.
-						if ( ( 'template8' === $template1 || 'template4' === $template1 || 'newtemplate1' === $template1 || 'newtemplate2' === $template1 || 'newtemplate3' === $template1 ) && is_plugin_active( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php' ) ) {
+						if ( ( 'template8' === $selected_template || 'template4' === $selected_template || 'newtemplate1' === $selected_template || 'newtemplate2' === $selected_template || 'newtemplate3' === $selected_template ) && is_plugin_active( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php' ) ) {
 							$path = TRACK_ORDERS_FOR_WOOCOMMERCE_PRO_DIR_PATH;
 						} else {
 							$path = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH;
 						}
 						// Construct the template path.
-						$new_template = $path . 'template/wps-track-order-myaccount-page-' . $template1 . '.php';
+						$new_template = $path . 'template/wps-track-order-myaccount-page-' . $selected_template . '.php';
 						$template = $new_template;
 
 					} else {

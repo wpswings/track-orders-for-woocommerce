@@ -175,8 +175,8 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 	 */
 	require plugin_dir_path( __FILE__ ) . 'includes/class-track-orders-for-woocommerce.php';
 	require plugin_dir_path( __FILE__ ) . 'integration/class-track-orders-for-woocommerce-with-fedex.php';
-	if('on' ===  get_option( 'wps_enable_dhl_tracking' )){
-	require plugin_dir_path( __FILE__ ) . 'template/wps-dhl-tracking-template.php';
+	if ( 'on' === get_option( 'wps_enable_dhl_tracking' ) ) {
+		require plugin_dir_path( __FILE__ ) . 'template/wps-dhl-tracking-template.php';
 	}
 
 
@@ -248,14 +248,14 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 
 		if ( isset( $_POST['wps_tofw_order_id_submit'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_order_id_submit'] ) ) : '' ) {
 			$order_id = isset( $_POST['order_id'] ) ? sanitize_text_field( wp_unslash( $_POST['order_id'] ) ) : '';
-			$order = wc_get_order($order_id);  
+			$order = wc_get_order( $order_id );
 			if ( ! session_id() ) {
 					session_start(); // Start the session.
-				}
-			if(! $order) {    
-				$_SESSION['wps_tofw_notification'] = __( 'OrderId is Invalid', 'track-orders-for-woocommerce'  );     
-				ob_end_flush();    
-				return;  
+			}
+			if ( ! $order ) {
+				$_SESSION['wps_tofw_notification'] = __( 'OrderId is Invalid', 'track-orders-for-woocommerce' );
+				ob_end_flush();
+				return;
 			}
 			$tofw_order = new WC_Order( $order_id );
 			if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
@@ -282,7 +282,7 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 						wp_redirect( $url );
 						exit();
 					} else {
-						$_SESSION['wps_tofw_notification'] = __( 'OrderId or Email is Invalidss', 'track-orders-for-woocommerce'  );
+						$_SESSION['wps_tofw_notification'] = __( 'OrderId or Email is Invalidss', 'track-orders-for-woocommerce' );
 							session_write_close();
 						return;
 					}
@@ -333,7 +333,7 @@ function wps_tofw_show_admin_notices() {
 	$mwb_mbfw_parent_plugin = __( 'WooCommerce', 'track-orders-for-woocommerce' );
 	echo '<div class="notice notice-error is-dismissible"><p>'
 		/* translators: %s: dependency checks */
-		. sprintf( esc_html__( '%1$s requires %2$s to function correctly. Please activate %2$s before activating %1$s. For now, the plugin has been deactivated.','track-orders-for-woocommerce'  ), '<strong>' . esc_html( $mwb_mbfw_child_plugin ) . '</strong>', '<strong>' . esc_html( $mwb_mbfw_parent_plugin ) . '</strong>' )
+		. sprintf( esc_html__( '%1$s requires %2$s to function correctly. Please activate %2$s before activating %1$s. For now, the plugin has been deactivated.', 'track-orders-for-woocommerce' ), '<strong>' . esc_html( $mwb_mbfw_child_plugin ) . '</strong>', '<strong>' . esc_html( $mwb_mbfw_parent_plugin ) . '</strong>' )
 		. '</p></div>';
 	if ( isset( $_GET['activate'] ) ) { // phpcs:ignore
 		unset( $_GET['activate'] ); //phpcs:ignore
@@ -342,93 +342,102 @@ function wps_tofw_show_admin_notices() {
 
 // To Suppress The Notices on text doman.
 add_filter( 'doing_it_wrong_trigger_error', '__return_false' );
-if('on' == get_option('wps_tofw_enable_invoice_tracking_info')){
-add_filter( 'wps_fetch_tracking_data', 'wps_get_order_data_from_id', 10, 2 );
+if ( 'on' == get_option( 'wps_tofw_enable_invoice_tracking_info' ) ) {
+	add_filter( 'wps_fetch_tracking_data', 'wps_get_order_data_from_id', 10, 2 );
 }
 
+/**
+ * Function to fetch order data from order ID.
+ *
+ * @param string $default Default value.
+ * @param int    $order_id Order ID.
+ * @return string HTML content with order tracking information.
+ */
 function wps_get_order_data_from_id( $default, $order_id ) {
-    $wps_pgfw_order_id = intval($order_id);
-    $wps_pgfw_order = wc_get_order($wps_pgfw_order_id);
+	$wps_pgfw_order_id = intval( $order_id );
+	$wps_pgfw_order = wc_get_order( $wps_pgfw_order_id );
 
-    if (!$wps_pgfw_order) {
-        return '<div style="color:red;">Invalid Order ID.</div>';
-    }
+	if ( ! $wps_pgfw_order ) {
+		return '<div style="color:red;">Invalid Order ID.</div>';
+	}
 
-    // Order meta data
-    $wps_pgfw_estimated_date  = $wps_pgfw_order->get_meta('wps_tofw_estimated_delivery_date');
-    $wps_pgfw_estimated_time  = $wps_pgfw_order->get_meta('wps_tofw_estimated_delivery_time');
-    $wps_pgfw_carrier_base    = $wps_pgfw_order->get_meta('wps_tofwp_enhanced_order_company');
-    $wps_pgfw_tracking_number = $wps_pgfw_order->get_meta('wps_tofwp_enhanced_tracking_no');
-    $wps_pgfw_tracking_link   = $wps_pgfw_carrier_base && $wps_pgfw_tracking_number ? esc_url($wps_pgfw_carrier_base . urlencode($wps_pgfw_tracking_number)) : '';
+	// Order meta data.
+	$wps_pgfw_estimated_date  = $wps_pgfw_order->get_meta( 'wps_tofw_estimated_delivery_date' );
+	$wps_pgfw_estimated_time  = $wps_pgfw_order->get_meta( 'wps_tofw_estimated_delivery_time' );
+	$wps_pgfw_carrier_base    = $wps_pgfw_order->get_meta( 'wps_tofwp_enhanced_order_company' );
+	$wps_pgfw_tracking_number = $wps_pgfw_order->get_meta( 'wps_tofwp_enhanced_tracking_no' );
+	$wps_pgfw_tracking_link   = $wps_pgfw_carrier_base && $wps_pgfw_tracking_number ? esc_url( $wps_pgfw_carrier_base . urlencode( $wps_pgfw_tracking_number ) ) : '';
 
-    $wps_pgfw_saved_settings  = get_option('wps_tofwp_general_settings_saved');
-    $wps_pgfw_saved_providers = isset($wps_pgfw_saved_settings['providers_data']) ? $wps_pgfw_saved_settings['providers_data'] : array();
+	$wps_pgfw_saved_settings  = get_option( 'wps_tofwp_general_settings_saved' );
+	$wps_pgfw_saved_providers = isset( $wps_pgfw_saved_settings['providers_data'] ) ? $wps_pgfw_saved_settings['providers_data'] : array();
 
-    $wps_pgfw_status = wc_get_order_status_name($wps_pgfw_order->get_status());
+	$wps_pgfw_status = wc_get_order_status_name( $wps_pgfw_order->get_status() );
 
-    $wps_pgfw_icon_url = '';
-    $wps_pgfw_matched_carrier_name = '';
+	$wps_pgfw_icon_url = '';
+	$wps_pgfw_matched_carrier_name = '';
 
-    if (is_plugin_active('track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php')) {
-        $wps_pgfw_plugin_url = TRACK_ORDERS_FOR_WOOCOMMERCE_PRO_DIR_URL;
-        $wps_pgfw_icon_path  = $wps_pgfw_plugin_url . 'admin/partials/assets/icons/';
-        foreach ($wps_pgfw_saved_providers as $name => $url) {
-            if (strpos($wps_pgfw_carrier_base, $url) !== false) {
-                $wps_pgfw_matched_carrier_name = $name;
-                $icon_file = strtolower(str_replace(' ', '', $name)) . '.png';
-                $icon_path = TRACK_ORDERS_FOR_WOOCOMMERCE_PRO_DIR_PATH . 'admin/partials/assets/icons/' . $icon_file;
-                $wps_pgfw_icon_url = file_exists($icon_path) ? $wps_pgfw_icon_path . $icon_file : $wps_pgfw_icon_path . 'default.png';
-                break;
-            }
-        }
-    }
-    ob_start();
-    ?>
+	if ( is_plugin_active( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php' ) ) {
+		$wps_pgfw_plugin_url = TRACK_ORDERS_FOR_WOOCOMMERCE_PRO_DIR_URL;
+		$wps_pgfw_icon_path  = $wps_pgfw_plugin_url . 'admin/partials/assets/icons/';
+		foreach ( $wps_pgfw_saved_providers as $name => $url ) {
+			if ( strpos( $wps_pgfw_carrier_base, $url ) !== false ) {
+				$wps_pgfw_matched_carrier_name = $name;
+				$icon_file = strtolower( str_replace( ' ', '', $name ) ) . '.png';
+				$icon_path = TRACK_ORDERS_FOR_WOOCOMMERCE_PRO_DIR_PATH . 'admin/partials/assets/icons/' . $icon_file;
+				$wps_pgfw_icon_url = file_exists( $icon_path ) ? $wps_pgfw_icon_path . $icon_file : $wps_pgfw_icon_path . 'default.png';
+				break;
+			}
+		}
+	}
+	ob_start();
+	?>
    <div style="font-family: sans-serif; font-size: 12px; line-height: 1.5; position: absolute; bottom: 20px; left: 20px; width: 95%; max-width: 320px; background: #f8f8f8; border: 1px solid #ccc; border-radius: 6px; padding: 10px; box-sizing: border-box;">
-    <div style="font-weight: bold; font-size: 13px; color: #333; margin-bottom: 6px;">Track Order Status : </div>
+	<div style="font-weight: bold; font-size: 13px; color: #333; margin-bottom: 6px;">Track Order Status : </div>
 
-    <div style="margin-bottom: 4px;"><strong>Order ID:</strong> <?php echo esc_html($wps_pgfw_order_id); ?></div>
-    <div style="margin-bottom: 4px;"><strong>Status:</strong> <span style="color: green;"><?php echo esc_html($wps_pgfw_status); ?></span></div>
+	<div style="margin-bottom: 4px;"><strong>Order ID:</strong> <?php echo esc_html( $wps_pgfw_order_id ); ?></div>
+	<div style="margin-bottom: 4px;"><strong>Status:</strong> <span style="color: green;"><?php echo esc_html( $wps_pgfw_status ); ?></span></div>
 
-    <?php if ($wps_pgfw_estimated_date || $wps_pgfw_estimated_time): ?>
-        <div style="margin-bottom: 4px;">
-            <strong>ETA:</strong>
-            <?php if ($wps_pgfw_estimated_date): ?>Date: <?php echo esc_html($wps_pgfw_estimated_date); ?> <?php endif; ?>
-            <?php if ($wps_pgfw_estimated_time): ?>Time: <?php echo esc_html($wps_pgfw_estimated_time); ?><?php endif; ?>
-        </div>
-    <?php endif; ?>
+	<?php if ( $wps_pgfw_estimated_date || $wps_pgfw_estimated_time ) : ?>
+		<div style="margin-bottom: 4px;">
+			<strong>ETA:</strong>
+			<?php
+			if ( $wps_pgfw_estimated_date ) :
+				?>
+				Date: <?php echo esc_html( $wps_pgfw_estimated_date ); ?> <?php endif; ?>
+			<?php
+			if ( $wps_pgfw_estimated_time ) :
+				?>
+				Time: <?php echo esc_html( $wps_pgfw_estimated_time ); ?><?php endif; ?>
+		</div>
+	<?php endif; ?>
 
-    <?php if ($wps_pgfw_tracking_link): ?>
-        <div style="margin-bottom: 4px;">
-            <strong>Carrier:</strong>
-            <?php if ($wps_pgfw_icon_url): ?>
-                <img src="<?php echo esc_url($wps_pgfw_icon_url); ?>" alt="<?php echo esc_attr($wps_pgfw_matched_carrier_name); ?>" style="height: 18px; vertical-align: middle; margin-right: 4px;">
-            <?php endif; ?>
-            <?php echo esc_html($wps_pgfw_matched_carrier_name); ?>
-        </div>
-    <?php endif; ?>
+	<?php if ( $wps_pgfw_tracking_link ) : ?>
+		<div style="margin-bottom: 4px;">
+			<strong>Carrier:</strong>
+			<?php if ( $wps_pgfw_icon_url ) : ?>
+				<img src="<?php echo esc_url( $wps_pgfw_icon_url ); ?>" alt="<?php echo esc_attr( $wps_pgfw_matched_carrier_name ); ?>" style="height: 18px; vertical-align: middle; margin-right: 4px;">
+			<?php endif; ?>
+			<?php echo esc_html( $wps_pgfw_matched_carrier_name ); ?>
+		</div>
+	<?php endif; ?>
 
-    <div style="margin-top: 10px; display: table; width: 100%;">
-        <?php if ($wps_pgfw_tracking_link): ?>
-            <div style="display: table-cell; width: 50%; padding-right: 5px;">
-                <a href="<?php echo esc_url($wps_pgfw_tracking_link); ?>" style="display: block; font-size: 11px; background: #0071a1; color: #fff; padding: 6px; text-align: center; text-decoration: none; border-radius: 4px;">Track Carrier</a>
-            </div>
-        <?php endif; ?>
-        <div style="display: table-cell; width: 50%; padding-left: 5px;">
-            <a href="<?php echo esc_url(home_url('/track-your-order/?' . $wps_pgfw_order_id)); ?>" style="display: block; font-size: 11px; background: #28a745; color: #fff; padding: 6px; text-align: center; text-decoration: none; border-radius: 4px;">Track Order</a>
-        </div>
-    </div>
+	<div style="margin-top: 10px; display: table; width: 100%;">
+		<?php if ( $wps_pgfw_tracking_link ) : ?>
+			<div style="display: table-cell; width: 50%; padding-right: 5px;">
+				<a href="<?php echo esc_url( $wps_pgfw_tracking_link ); ?>" style="display: block; font-size: 11px; background: #0071a1; color: #fff; padding: 6px; text-align: center; text-decoration: none; border-radius: 4px;">Track Carrier</a>
+			</div>
+		<?php endif; ?>
+		<div style="display: table-cell; width: 50%; padding-left: 5px;">
+			<a href="<?php echo esc_url( home_url( '/track-your-order/?' . $wps_pgfw_order_id ) ); ?>" style="display: block; font-size: 11px; background: #28a745; color: #fff; padding: 6px; text-align: center; text-decoration: none; border-radius: 4px;">Track Order</a>
+		</div>
+	</div>
 </div>
-    <?php
-    return ob_get_clean();
+	<?php
+	return ob_get_clean();
 }
 
+	add_shortcode( 'wps_tracking_info', 'wps_tofw_tracking_info_shortcode' );
 
-
-// if('on' === get_option( 'wps_embed_source_wps_track_order' , '')){
-	add_shortcode('wps_tracking_info', 'wps_tofw_tracking_info_shortcode');
-	// }
-	
 	/**
 	 * Shortcode: [wps_tracking_info].
 	 * Description: Displays tracking information for a WooCommerce order.
@@ -440,94 +449,98 @@ function wps_get_order_data_from_id( $default, $order_id ) {
 	 * Example usage:
 	 * [wps_tracking_info order_id="12345" align="left"].
 	 */
-	function wps_tofw_tracking_info_shortcode($atts) {
-		$atts = shortcode_atts(array(
+function wps_tofw_tracking_info_shortcode( $atts ) {
+	$atts = shortcode_atts(
+		array(
 			'order_id' => '',
 			'align'    => 'center',
-		), $atts, 'wps_tracking_info');
-	
-		if (empty($atts['order_id'])) {
-			return '<div style="color:red;">Order ID is missing.</div>';
-		}
-	
-		$wps_pgfw_order_id = intval($atts['order_id']);
-		$wps_pgfw_order = wc_get_order($wps_pgfw_order_id);
-	
-		if (!$wps_pgfw_order) {
-			return '<div style="color:red;">Invalid Order ID.</div>';
-		}
-	
-		// Order meta data
-		$wps_pgfw_estimated_date  = $wps_pgfw_order->get_meta('wps_tofw_estimated_delivery_date');
-		$wps_pgfw_estimated_time  = $wps_pgfw_order->get_meta('wps_tofw_estimated_delivery_time');
-		$wps_pgfw_carrier_base    = $wps_pgfw_order->get_meta('wps_tofwp_enhanced_order_company');
-		$wps_pgfw_tracking_number = $wps_pgfw_order->get_meta('wps_tofwp_enhanced_tracking_no');
-		$wps_pgfw_tracking_link   = $wps_pgfw_carrier_base && $wps_pgfw_tracking_number ? esc_url($wps_pgfw_carrier_base . urlencode($wps_pgfw_tracking_number)) : '';
-	
-		$wps_pgfw_saved_settings  = get_option('wps_tofwp_general_settings_saved');
-		$wps_pgfw_saved_providers = isset($wps_pgfw_saved_settings['providers_data']) ? $wps_pgfw_saved_settings['providers_data'] : array();
-	
-		// Order status
-		$wps_pgfw_status = wc_get_order_status_name($wps_pgfw_order->get_status());
-	
-		// Text alignment logic
-		$wps_pgfw_allowed_alignments = ['left', 'center', 'right'];
-		$wps_pgfw_align = in_array(strtolower($atts['align']), $wps_pgfw_allowed_alignments) ? strtolower($atts['align']) : 'center';
-	
-		$wps_pgfw_container_style = 'max-width: 500px; padding: 20px; border-radius: 12px; background: #f8f9fa; box-shadow: 0 4px 12px rgba(0,0,0,0.1); font-family: Arial, sans-serif;';
-		if ($wps_pgfw_align === 'center') {
-			$wps_pgfw_container_style .= ' margin: 20px auto;';
-		} elseif ($wps_pgfw_align === 'left') {
-			$wps_pgfw_container_style .= ' margin: 20px 0 20px auto; float: left;';
-		} else {
-			$wps_pgfw_container_style .= ' margin: 20px auto 20px 0; float: right;';
-		}
-	
-		ob_start();
-		if( is_plugin_active( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php' )) {
+		),
+		$atts,
+		'wps_tracking_info'
+	);
+
+	if ( empty( $atts['order_id'] ) ) {
+		return '<div style="color:red;">Order ID is missing.</div>';
+	}
+
+	$wps_pgfw_order_id = intval( $atts['order_id'] );
+	$wps_pgfw_order = wc_get_order( $wps_pgfw_order_id );
+
+	if ( ! $wps_pgfw_order ) {
+		return '<div style="color:red;">Invalid Order ID.</div>';
+	}
+
+	// Order meta data.
+	$wps_pgfw_estimated_date  = $wps_pgfw_order->get_meta( 'wps_tofw_estimated_delivery_date' );
+	$wps_pgfw_estimated_time  = $wps_pgfw_order->get_meta( 'wps_tofw_estimated_delivery_time' );
+	$wps_pgfw_carrier_base    = $wps_pgfw_order->get_meta( 'wps_tofwp_enhanced_order_company' );
+	$wps_pgfw_tracking_number = $wps_pgfw_order->get_meta( 'wps_tofwp_enhanced_tracking_no' );
+	$wps_pgfw_tracking_link   = $wps_pgfw_carrier_base && $wps_pgfw_tracking_number ? esc_url( $wps_pgfw_carrier_base . urlencode( $wps_pgfw_tracking_number ) ) : '';
+
+	$wps_pgfw_saved_settings  = get_option( 'wps_tofwp_general_settings_saved' );
+	$wps_pgfw_saved_providers = isset( $wps_pgfw_saved_settings['providers_data'] ) ? $wps_pgfw_saved_settings['providers_data'] : array();
+
+	// Order status.
+	$wps_pgfw_status = wc_get_order_status_name( $wps_pgfw_order->get_status() );
+
+	// Text alignment logic.
+	$wps_pgfw_allowed_alignments = array( 'left', 'center', 'right' );
+	$wps_pgfw_align = in_array( strtolower( $atts['align'] ), $wps_pgfw_allowed_alignments ) ? strtolower( $atts['align'] ) : 'center';
+
+	$wps_pgfw_container_style = 'max-width: 500px; padding: 20px; border-radius: 12px; background: #f8f9fa; box-shadow: 0 4px 12px rgba(0,0,0,0.1); font-family: Arial, sans-serif;';
+	if ( 'center' === $wps_pgfw_align ) {
+		$wps_pgfw_container_style .= ' margin: 20px auto;';
+	} elseif ( 'left' === $wps_pgfw_align ) {
+		$wps_pgfw_container_style .= ' margin: 20px 0 20px auto; float: left;';
+	} else {
+		$wps_pgfw_container_style .= ' margin: 20px auto 20px 0; float: right;';
+	}
+
+	ob_start();
+	if ( is_plugin_active( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php' ) ) {
 		$wps_pgfw_plugin_url = TRACK_ORDERS_FOR_WOOCOMMERCE_PRO_DIR_URL;
 		$wps_pgfw_icon_path  = $wps_pgfw_plugin_url . 'admin/partials/assets/icons/';
 		$wps_pgfw_matched_carrier_name = '';
 		$wps_pgfw_icon_url = '';
-		
-		// Detect matched carrier and icon
-		foreach ($wps_pgfw_saved_providers as $wps_pgfw_name => $wps_pgfw_url) {
-			if (strpos($wps_pgfw_carrier_base, $wps_pgfw_url) !== false) {
+
+		// Detect matched carrier and icon.
+		foreach ( $wps_pgfw_saved_providers as $wps_pgfw_name => $wps_pgfw_url ) {
+			if ( strpos( $wps_pgfw_carrier_base, $wps_pgfw_url ) !== false ) {
 				$wps_pgfw_matched_carrier_name = $wps_pgfw_name;
-				$wps_pgfw_icon_file = strtolower(str_replace(' ', '', $wps_pgfw_matched_carrier_name)) . '.png';
+				$wps_pgfw_icon_file = strtolower( str_replace( ' ', '', $wps_pgfw_matched_carrier_name ) ) . '.png';
 				$wps_pgfw_icon_full_path = TRACK_ORDERS_FOR_WOOCOMMERCE_PRO_DIR_PATH . 'admin/partials/assets/icons/' . $wps_pgfw_icon_file;
-				$wps_pgfw_icon_url = file_exists($wps_pgfw_icon_full_path) ? $wps_pgfw_icon_path . $wps_pgfw_icon_file : $wps_pgfw_icon_path . 'default.png';
+				$wps_pgfw_icon_url = file_exists( $wps_pgfw_icon_full_path ) ? $wps_pgfw_icon_path . $wps_pgfw_icon_file : $wps_pgfw_icon_path . 'default.png';
 				break;
 			}
 		}
 	}
-		?>
-		<div style="<?php echo esc_attr($wps_pgfw_container_style); ?>">
+	?>
+		<div style="<?php echo esc_attr( $wps_pgfw_container_style ); ?>">
 			<h2 style="margin-top: 0; color: #333;">Order Tracking Information</h2>
-			<p><strong>Order ID:</strong> <?php echo esc_html($wps_pgfw_order_id); ?></p>
-			<p><strong>Order Status:</strong> <span style="color: green;"><?php echo esc_html($wps_pgfw_status); ?></span></p>
-		   <?php if( is_plugin_active( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php' )) { ?>
-			<?php if ($wps_pgfw_estimated_date || $wps_pgfw_estimated_time): ?>
+			<p><strong>Order ID:</strong> <?php echo esc_html( $wps_pgfw_order_id ); ?></p>
+			<p><strong>Order Status:</strong> <span style="color: green;"><?php echo esc_html( $wps_pgfw_status ); ?></span></p>
+	   <?php if ( is_plugin_active( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php' ) ) { ?>
+			<?php if ( $wps_pgfw_estimated_date || $wps_pgfw_estimated_time ) : ?>
 				<p><strong>Estimated Delivery:</strong><br>
-					<?php if ($wps_pgfw_estimated_date): ?>
-						📅 <?php echo esc_html($wps_pgfw_estimated_date); ?><br>
+					<?php if ( $wps_pgfw_estimated_date ) : ?>
+						📅 <?php echo esc_html( $wps_pgfw_estimated_date ); ?><br>
 					<?php endif; ?>
-					<?php if ($wps_pgfw_estimated_time): ?>
-						⏰ <?php echo esc_html($wps_pgfw_estimated_time); ?>
+					<?php if ( $wps_pgfw_estimated_time ) : ?>
+						⏰ <?php echo esc_html( $wps_pgfw_estimated_time ); ?>
 					<?php endif; ?>
 				</p>
 			<?php endif; ?>
 			
 		
-			<?php if ($wps_pgfw_tracking_link): ?>
+			<?php if ( $wps_pgfw_tracking_link ) : ?>
 				<div style="margin-top: 15px;">
 					<strong>Carrier Tracking:</strong>
 					<div style="display: flex; align-items: center; gap: 10px; margin-top: 8px;">
-						<?php if ($wps_pgfw_icon_url): ?>
-							<img src="<?php echo esc_url($wps_pgfw_icon_url); ?>" alt="<?php echo esc_attr($wps_pgfw_matched_carrier_name); ?>" style="height: 35px;">
+						<?php if ( $wps_pgfw_icon_url ) : ?>
+							<img src="<?php echo esc_url( $wps_pgfw_icon_url ); ?>" alt="<?php echo esc_attr( $wps_pgfw_matched_carrier_name ); ?>" style="height: 35px;">
 						<?php endif; ?>
-						<?php if ($wps_pgfw_matched_carrier_name): ?>
-							<span style="font-weight: bold;"><?php echo esc_html($wps_pgfw_matched_carrier_name); ?></span>
+						<?php if ( $wps_pgfw_matched_carrier_name ) : ?>
+							<span style="font-weight: bold;"><?php echo esc_html( $wps_pgfw_matched_carrier_name ); ?></span>
 						<?php endif; ?>
 					</div>
 				</div>
@@ -535,17 +548,20 @@ function wps_get_order_data_from_id( $default, $order_id ) {
 			<?php } ?>
 		
 			<div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px;">
-			<?php if( is_plugin_active( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php' )) { ?>
-				<?php if ($wps_pgfw_tracking_link){ ?>
-					<a href="<?php echo $wps_pgfw_tracking_link; ?>" class="button wc-forward" target="_blank" style="text-align: center; background-color: #0071a1; color: #fff; padding: 10px 15px; border-radius: 6px; text-decoration: none;">
+		<?php if ( is_plugin_active( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php' ) ) { ?>
+				<?php if ( $wps_pgfw_tracking_link ) { ?>
+					<a href="<?php echo esc_url( $wps_pgfw_tracking_link ); ?>" class="button wc-forward" target="_blank" style="text-align: center; background-color: #0071a1; color: #fff; padding: 10px 15px; border-radius: 6px; text-decoration: none;">
 						Track with Carrier
 					</a>
-				<?php } }?>
-				<a href="<?php echo esc_url(home_url('/track-your-order/?' . $wps_pgfw_order_id)); ?>" class="button wc-forward" style="flex: 1; text-align: center; background-color: #28a745; color: #fff; padding: 10px 15px; border-radius: 6px; text-decoration: none;">
+					<?php
+				}
+		}
+		?>
+				<a href="<?php echo esc_url( home_url( '/track-your-order/?' . $wps_pgfw_order_id ) ); ?>" class="button wc-forward" style="flex: 1; text-align: center; background-color: #28a745; color: #fff; padding: 10px 15px; border-radius: 6px; text-decoration: none;">
 					Track Your Order
 				</a>
 			</div>
 		</div>
 		<?php
 		return ob_get_clean();
-	}
+}

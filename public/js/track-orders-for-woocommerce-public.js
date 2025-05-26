@@ -360,7 +360,7 @@ if (window.history.replaceState) {
 
 jQuery(window).load(function () {
 	
-
+	document.body.classList.add("wps-tofw-tracking-modal");
 
 	jQuery(document).on('click','.wps_tofw_17track',function(e){
 		e.preventDefault();
