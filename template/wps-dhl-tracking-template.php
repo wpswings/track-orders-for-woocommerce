@@ -5,7 +5,6 @@
  * @version  1.0.0
  * @package  Woocommece_Order_Tracker/template
  */
-
 add_action(
 	'woocommerce_admin_order_data_after_order_details',
 	function ( $order ) {
@@ -142,10 +141,10 @@ function wps_dhl_tracking_shortcode( $atts ) {
 	ob_start();
 
 	$truck_icon = get_option( 'wps_enable_dhl_track_icon' , '');
-	$truck_icon_url = esc_url( $truck_icon ? $truck_icon : TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'truck.svg' );
+	$truck_icon_url = esc_url( $truck_icon ? $truck_icon : TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'assets/truck.svg' );
 
 	$box_icon = get_option( 'wps_dhl_truck_icon' );
-	$box_icon_url = esc_url( $box_icon ? $box_icon : TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'box.svg' );
+	$box_icon_url = esc_url( $box_icon ? $box_icon : TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'assets/box.svg' );
 
 	$wps_dhl_tracking_color   = esc_attr( get_option( 'wps_enable_dhl_tracking_color', '#e0f7fa' ) );
 	$wps_dhl_tracking_text_color = esc_attr( get_option( 'wps_enable_dhl_tracking_text_color', '#0277bd' ) );
