@@ -301,7 +301,13 @@ class Track_Orders_For_Woocommerce_Public {
 			return $template;
 		}
 		$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
-		$page_id = $wps_tofw_pages['pages']['wps_guest_track_order_page'];
+		if (
+			isset( $wps_tofw_pages['pages'] ) &&
+			is_array( $wps_tofw_pages['pages'] ) &&
+			isset( $wps_tofw_pages['pages']['wps_guest_track_order_page'] )
+		) {
+			$page_id = $wps_tofw_pages['pages']['wps_guest_track_order_page'];
+		}
 		if ( is_page( $page_id ) ) {
 			$new_template = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'template/wps-guest-track-order-page.php';
 			$template = $new_template;
@@ -320,7 +326,10 @@ class Track_Orders_For_Woocommerce_Public {
 	 */
 	public function wps_ordertracking_page( $template ) {
 		$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
-		$page_id = $wps_tofw_pages['pages']['wps_fedex_track_order'];
+		$page_id = isset( $wps_tofw_pages['pages']['wps_fedex_track_order'] )
+		? $wps_tofw_pages['pages']['wps_fedex_track_order']
+		: null;
+
 		if ( is_page( $page_id ) ) {
 			$new_template = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'template/wps-order-tracking-page.php';
 			$template = $new_template;
