@@ -506,13 +506,7 @@ class Track_Orders_For_Woocommerce_Common {
 			}
 		}
 
-		$plugin_path = 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php';
-		$wps_pro_is_active = false;
-		// Check if the plugin is active.
-		if ( is_plugin_active( $plugin_path ) ) {
-			$wps_pro_is_active = true;
-		}
-
+		$wps_pro_is_active = true;
 		if ( 'on' == $wps_tofw_email_notifier && 'wc-completed' != $new_status ) {
 			if ( '3.0.0' > WC()->version ) {
 				$order_id = $order->id;
