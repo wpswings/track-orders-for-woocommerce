@@ -477,7 +477,7 @@ class Track_Orders_For_Woocommerce_Admin {
 				'type'  => 'radio',
 				'id'    => 'wpg_invoice_template_five',
 				'class' => 'wpg_invoice_template_five wpg_invoice_preview custom_prince',
-				'src'   => esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/polo.png',
+				'src'   => esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/k.webp',
 				'name'  => 'tofw_invoice_template',
 				'link'=> 'https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox',
 				'value' => 'template_5',
@@ -488,7 +488,7 @@ class Track_Orders_For_Woocommerce_Admin {
 				'type'  => 'radio',
 				'id'    => 'wpg_invoice_template_five',
 				'class' => 'wpg_invoice_template_five wpg_invoice_preview',
-				'src'   => esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/polo.png',
+				'src'   => esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/k.webp',
 				'name'  => '',
 				'value' => '',
 			);
