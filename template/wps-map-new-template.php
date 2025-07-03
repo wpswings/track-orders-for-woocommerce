@@ -464,7 +464,10 @@ if ( $allowed ) {
 				$geocode = wp_remote_retrieve_body( $response );
 			}
 
-			$output = json_decode( $geocode );
+			if ( ! empty( $geocode ) ) {
+				$output = json_decode( $geocode );
+			}
+
 
 			if ( isset( $output->results[0] ) && ! empty( $output->results[0] ) ) {
 				$lat = $output->results[0]->geometry->location->lat;

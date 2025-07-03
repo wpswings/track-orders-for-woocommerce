@@ -5,6 +5,7 @@
  * @version  1.0.0
  * @package  Woocommece_Order_Tracker/template
  */
+
 add_action(
 	'woocommerce_admin_order_data_after_order_details',
 	function ( $order ) {

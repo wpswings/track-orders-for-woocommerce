@@ -429,80 +429,77 @@ class Track_Orders_For_Woocommerce_Admin {
 		$is_pro_activated = false;
 		$is_pro_activated = apply_filters( 'track_orders_for_woocmmerce_pro_plugin_activated', $is_pro_activated );
 
-
-
 			$template_options = array(
-			array(
-				'title' => __( 'Template1', 'track-orders-for-woocommerce-pro' ),
-				'type'  => 'radio',
-				'id'    => 'wpg_invoice_template_one',
-				'class' => 'wpg_invoice_template_one wpg_invoice_preview',
-				'name'  => 'tofw_invoice_template',
-				'value' => 'template_1',
-				'src'   => esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/ot_1.3.png',
-			),
-			array(
-				'title' => __( 'Template2', 'track-orders-for-woocommerce-pro' ),
-				'type'  => 'radio',
-				'id'    => 'wpg_invoice_template_two',
-				'class' => 'wpg_invoice_template_two wpg_invoice_preview',
-				'src'   => esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/ot_2.png',
-				'name'  => 'tofw_invoice_template',
-				'value' => 'template_2',
-			),
-			array(
-				'title' => __( 'Template3', 'track-orders-for-woocommerce-pro' ),
-				'type'  => 'radio',
-				'id'    => 'wpg_invoice_template_three',
-				'class' => 'wpg_invoice_template_three wpg_invoice_preview',
-				'src'   => esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/ot_1.png',
-				'name'  => 'tofw_invoice_template',
-				'value' => 'template_3',
-			),
-			array(
-				'title' => __( 'Template4', 'track-orders-for-woocommerce-pro' ),
-				'type'  => 'radio',
-				'id'    => 'wpg_invoice_template_four',
-				'class' => 'wpg_invoice_template_four wpg_invoice_preview',
-				'src'   => esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/track_4.png',
-				'name'  => 'tofw_invoice_template',
-				'value' => 'template_4',
-			),
-		);
-
-		// ✅ Conditionally add Template5
-		if ( is_plugin_active( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php' ) ) {
-			$template_options[] = array(
-				'title' => __( 'Template5', 'track-orders-for-woocommerce-pro' ),
-				'type'  => 'radio',
-				'id'    => 'wpg_invoice_template_five',
-				'class' => 'wpg_invoice_template_five wpg_invoice_preview custom_prince',
-				'src'   => esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/ot_5.png',
-				'name'  => 'tofw_invoice_template',
-				'link'=> 'https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox',
-				'value' => 'template_5',
+				array(
+					'title' => __( 'Template1', 'track-orders-for-woocommerce-pro' ),
+					'type'  => 'radio',
+					'id'    => 'wpg_invoice_template_one',
+					'class' => 'wpg_invoice_template_one wpg_invoice_preview',
+					'name'  => 'tofw_invoice_template',
+					'value' => 'template_1',
+					'src'   => esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/ot_1.3.png',
+				),
+				array(
+					'title' => __( 'Template2', 'track-orders-for-woocommerce-pro' ),
+					'type'  => 'radio',
+					'id'    => 'wpg_invoice_template_two',
+					'class' => 'wpg_invoice_template_two wpg_invoice_preview',
+					'src'   => esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/ot_2.png',
+					'name'  => 'tofw_invoice_template',
+					'value' => 'template_2',
+				),
+				array(
+					'title' => __( 'Template3', 'track-orders-for-woocommerce-pro' ),
+					'type'  => 'radio',
+					'id'    => 'wpg_invoice_template_three',
+					'class' => 'wpg_invoice_template_three wpg_invoice_preview',
+					'src'   => esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/ot_1.png',
+					'name'  => 'tofw_invoice_template',
+					'value' => 'template_3',
+				),
+				array(
+					'title' => __( 'Template4', 'track-orders-for-woocommerce-pro' ),
+					'type'  => 'radio',
+					'id'    => 'wpg_invoice_template_four',
+					'class' => 'wpg_invoice_template_four wpg_invoice_preview',
+					'src'   => esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/track_4.png',
+					'name'  => 'tofw_invoice_template',
+					'value' => 'template_4',
+				),
 			);
-		} else {
-			$template_options[] = array(
-				'title' => __( 'Template5', 'track-orders-for-woocommerce-pro' ),
-				'type'  => 'radio',
-				'id'    => 'wpg_invoice_template_five',
-				'class' => 'wpg_invoice_template_five wpg_invoice_preview wps_tofw_pro_feature',
-				'src'   => esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/ot_5.png',
-				'name'  => '',
-				'value' => '',
+
+			// ✅ Conditionally add Template5
+			if ( is_plugin_active( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php' ) ) {
+				$template_options[] = array(
+					'title' => __( 'Template5', 'track-orders-for-woocommerce-pro' ),
+					'type'  => 'radio',
+					'id'    => 'wpg_invoice_template_five',
+					'class' => 'wpg_invoice_template_five wpg_invoice_preview custom_prince',
+					'src'   => esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/ot_5_pro.png',
+					'name'  => 'tofw_invoice_template',
+					'link' => 'https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox',
+					'value' => 'template_5',
+				);
+			} else {
+				$template_options[] = array(
+					'title' => __( 'Template5', 'track-orders-for-woocommerce-pro' ),
+					'type'  => 'radio',
+					'id'    => 'wpg_invoice_template_five',
+					'class' => 'wpg_invoice_template_five wpg_invoice_preview wps_tofw_pro_feature',
+					'src'   => esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/ot_5.png',
+					'name'  => '',
+					'value' => '',
+				);
+			}
+
+			$tofw_settings_general[] = array(
+				'title'       => __( 'Choose Template', 'track-orders-for-woocommerce-pro' ),
+				'type'        => 'temp-select',
+				'id'          => 'tofw_invoice_template',
+				'description' => __( 'This template will be used as in email notification', 'track-orders-for-woocommerce-pro' ),
+				'selected'    => get_option( 'tofw_invoice_template' ),
+				'value'       => $template_options,
 			);
-		}
-
-		$tofw_settings_general[] = array(
-			'title'       => __( 'Choose Template', 'track-orders-for-woocommerce-pro' ),
-			'type'        => 'temp-select',
-			'id'          => 'tofw_invoice_template',
-			'description' => __( 'This template will be used as in email notification', 'track-orders-for-woocommerce-pro' ),
-			'selected'    => get_option( 'tofw_invoice_template' ),
-			'value'       => $template_options,
-		);
-
 
 			$tofw_settings_general =
 			/**
@@ -511,8 +508,8 @@ class Track_Orders_For_Woocommerce_Admin {
 			 * @since 1.0.0
 			 */
 			apply_filters( 'tofw_general_settings_array_filter', $tofw_settings_general );
-if ( ! $is_pro_activated ) {
-			$tofw_settings_general[] =
+			if ( ! $is_pro_activated ) {
+						$tofw_settings_general[] =
 				array(
 					'title' => __( 'Enable QR Redirection Feature', 'track-orders-for-woocommerce' ),
 					'type'  => 'radio-switch',
@@ -526,29 +523,29 @@ if ( ! $is_pro_activated ) {
 					),
 				);
 
-			$tofw_settings_general[] =
-				array(
-					'title' => __( 'Enable DHL Tracking', 'track-orders-for-woocommerce' ),
-					'type'  => 'radio-switch',
-					'description'  => __( 'Allow users to track DHL shipments directly using the tracking number without redirecting to carriers page', 'track-orders-for-woocommerce' ),
-					'id'    => 'wps_enable_dhl_tracking',
-					'value' => '',
-					'class' => 'wps_tofw_qr_redirect wps_tofw_pro_feature',
-					'options' => array(
-						'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
-						'no' => __( 'NO', 'track-orders-for-woocommerce' ),
-					),
-				);
-		}
+						$tofw_settings_general[] =
+							array(
+								'title' => __( 'Enable DHL Tracking', 'track-orders-for-woocommerce' ),
+								'type'  => 'radio-switch',
+								'description'  => __( 'Allow users to track DHL shipments directly using the tracking number without redirecting to carriers page', 'track-orders-for-woocommerce' ),
+								'id'    => 'wps_enable_dhl_tracking',
+								'value' => '',
+								'class' => 'wps_tofw_qr_redirect wps_tofw_pro_feature',
+								'options' => array(
+									'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
+									'no' => __( 'NO', 'track-orders-for-woocommerce' ),
+								),
+							);
+			}
 
-		$tofw_settings_general[] = array(
-			'type'        => 'button',
-			'id'          => 'wps_tofw_general_settings_save',
-			'button_text' => __( 'Save Settings', 'track-orders-for-woocommerce' ),
-			'class'       => 'wps_tofw_general_settings_save',
-			'name'        => 'wps_tofw_general_settings_save',
-		);
-		return $tofw_settings_general;
+			$tofw_settings_general[] = array(
+				'type'        => 'button',
+				'id'          => 'wps_tofw_general_settings_save',
+				'button_text' => __( 'Save Settings', 'track-orders-for-woocommerce' ),
+				'class'       => 'wps_tofw_general_settings_save',
+				'name'        => 'wps_tofw_general_settings_save',
+			);
+			return $tofw_settings_general;
 	}
 
 	/**
@@ -1290,7 +1287,7 @@ if ( ! $is_pro_activated ) {
 	/**
 	 * Sanitation for an array
 	 *
-	 * @param $array $wps_input_array is the array data.
+	 * @param array $wps_input_array is the array data.
 	 *
 	 * @return array
 	 */

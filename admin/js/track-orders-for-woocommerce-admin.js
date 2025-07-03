@@ -1086,3 +1086,37 @@ jQuery(document).ready(function($) {
 });
 
 
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.wpg_invoice_preview_wrap img').forEach(img => {
+    img.style.cursor = 'pointer';
+
+    img.addEventListener('click', function (e) {
+      const src = this.getAttribute('src');
+
+      let popup = document.querySelector('.wps-preview-popup');
+
+      // Create popup if it doesn't exist
+      if (!popup) {
+        popup = document.createElement('div');
+        popup.className = 'wps-preview-popup';
+        popup.innerHTML = `
+          <span class="close-preview">&times;</span>
+          <img src="" alt="Invoice Preview">
+        `;
+        document.body.appendChild(popup);
+
+        popup.querySelector('.close-preview').addEventListener('click', () => {
+          popup.style.display = 'none';
+        });
+
+        popup.addEventListener('click', (e) => {
+          if (e.target === popup) popup.style.display = 'none';
+        });
+      }
+
+      // Set image source and show popup
+      popup.querySelector('img').src = src;
+      popup.style.display = 'flex';
+    });
+  });
+});
