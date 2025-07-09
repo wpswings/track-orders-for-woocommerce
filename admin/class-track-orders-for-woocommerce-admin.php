@@ -590,7 +590,7 @@ class Track_Orders_For_Woocommerce_Admin {
 				'id'    => 'tofw_enable_track_order',
 				'value' => get_option( 'tofw_enable_track_order' ),
 				'class' => 'tofw-radio-switch-class',
-				'description'  => 'Enable functionality for tracking order.',
+				'description'  => __( 'Enable functionality for tracking order.', 'track-orders-for-woocommerce'),
 				'options' => array(
 					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
 					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
@@ -600,7 +600,7 @@ class Track_Orders_For_Woocommerce_Admin {
 				'title' => __( 'Enable Track Orders Button Below Order Details ', 'track-orders-for-woocommerce' ),
 				'type'  => 'radio-switch',
 				'id'    => 'tofw_enable_track_order_below',
-				'description'  => 'Enable functionality for tracking order below order deatils at my account page.',
+				'description'  =>  __( 'Enable functionality for tracking order below order deatils at my account page.', 'track-orders-for-woocommerce'),,
 				'value' => get_option( 'tofw_enable_track_order_below' ),
 				'class' => 'tofw-radio-switch-class',
 				'options' => array(
