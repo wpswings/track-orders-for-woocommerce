@@ -1002,7 +1002,7 @@ $wps_track_order_js = get_option( 'wps_tofw_custom_js_name' );
 																				</thead>
 																				<tbody>
 																					<?php
-																					if ( WC()->version < '3.0.0' ) {
+																					if ( version_compare( WC()->version, '3.0.0', '<' ) ) {
 																						foreach ( $tofw_order->get_items() as $item_id => $item ) {
 																							if ( $item['qty'] > 0 ) {
 																								/**
@@ -1197,6 +1197,7 @@ $wps_track_order_js = get_option( 'wps_tofw_custom_js_name' );
 		echo wp_kses_post( $reason );
 	}
 	?>
+	</div>
 	</div>
 	<?php
 
