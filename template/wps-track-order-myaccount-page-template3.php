@@ -831,7 +831,7 @@ if (! empty($wps_tofw_enhanced_customer_note)) {
 									</div>
 									</div>
 						</td>
-						<?php if ('' != $expected_delivery_date || '' != $expected_delivery_time || '' != $order_delivered_date || $wps_status_change_time['wc-completed']) { ?>
+						<?php if ('' != $expected_delivery_date || '' != $expected_delivery_time || '' != $order_delivered_date || isset($wps_status_change_time['wc-completed']) && !empty($wps_status_change_time['wc-completed'])) { ?>
 							<td>
 								<?php
 								if ('on' != $wps_tofw_enable_track_order_popup) {
