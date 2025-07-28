@@ -602,7 +602,12 @@ $wps_track_order_js = get_option('wps_tofw_custom_js_name');
 				<h3><?php esc_html_e('Approval', 'track-orders-for-woocommerce'); ?></h3>
 				<ul class="wps-tofw-order-info">
 					<li><?php esc_html_e('placed', 'track-orders-for-woocommerce'); ?></li>
-					<li><?php echo esc_html($tofw_order->get_date_created()->date('F d, Y H:i ')); ?></li>
+					<li>
+					<?php 
+					$date_obj = $tofw_order->get_date_created();
+					echo esc_html( $date_obj instanceof WC_DateTime ? $date_obj->date('F d, Y H:i') : '—' ); 
+					?>
+					</li>
 					<li><?php esc_html_e('Your Order is Successfully Placed', 'track-orders-for-woocommerce'); ?></li>
 				</ul>
 				<?php
@@ -658,7 +663,9 @@ $wps_track_order_js = get_option('wps_tofw_custom_js_name');
 									if (isset($onchange_approval_date) && '' != $onchange_approval_date) {
 										echo esc_html($onchange_approval_date);
 									} else {
-										echo esc_html($tofw_order->get_date_created()->date('d F, Y H:i'));;
+										$wps_date_obj = $tofw_order->get_date_created();
+										$wps_date = ( $wps_date_obj instanceof WC_DateTime ) ? $wps_date_obj->date('d F, Y H:i') : '—';
+										echo esc_html( $wps_date );
 									}
 									?>
 								</li>
@@ -1173,8 +1180,9 @@ $wps_track_order_js = get_option('wps_tofw_custom_js_name');
 							if (version_compare(WC()->version, '3.0.0', '<')) {
 								echo esc_html(date_i18n('d F, Y H:i', strtotime($tofw_order->post->post_date)));
 							} else {
-								$wps_date = $tofw_order->get_date_created()->date('d F, Y H:i');
-								echo esc_html($wps_date);
+									$wps_date_obj = $tofw_order->get_date_created();
+									$wps_date = ( $wps_date_obj instanceof WC_DateTime ) ? $wps_date_obj->date('d F, Y H:i') : '—';
+									echo esc_html( $wps_date );
 							}
 							?>
 						</span></p>
