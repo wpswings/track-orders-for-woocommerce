@@ -272,11 +272,6 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 			$wps_track_order_status = get_post_meta( $order_id, 'wps_track_order_status', true );
 			$order_onchange_time = get_post_meta( $order_id, 'wps_track_order_onchange_time', true );
 		}
-
-
-		echo '<pre>';
-		print_r($order_onchange_time );
-		echo '</pre>';
 		
 
 		$order_status_key = str_replace( '-', '_', $order_status );
