@@ -445,7 +445,7 @@ class Track_Orders_For_Woocommerce_Admin
 
 		$template_options = array(
 			array(
-				'title' => __('Template1', 'track-orders-for-woocommerce-pro'),
+				'title' => __('Template1', 'track-orders-for-woocommerce'),
 				'type'  => 'radio',
 				'id'    => 'wpg_invoice_template_one',
 				'class' => 'wpg_invoice_template_one wpg_invoice_preview',
@@ -454,7 +454,7 @@ class Track_Orders_For_Woocommerce_Admin
 				'src'   => esc_attr(TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL) . 'admin/image/ot_1.3.png',
 			),
 			array(
-				'title' => __('Template2', 'track-orders-for-woocommerce-pro'),
+				'title' => __('Template2', 'track-orders-for-woocommerce'),
 				'type'  => 'radio',
 				'id'    => 'wpg_invoice_template_two',
 				'class' => 'wpg_invoice_template_two wpg_invoice_preview',
@@ -463,7 +463,7 @@ class Track_Orders_For_Woocommerce_Admin
 				'value' => 'template_2',
 			),
 			array(
-				'title' => __('Template3', 'track-orders-for-woocommerce-pro'),
+				'title' => __('Template3', 'track-orders-for-woocommerce'),
 				'type'  => 'radio',
 				'id'    => 'wpg_invoice_template_three',
 				'class' => 'wpg_invoice_template_three wpg_invoice_preview',
@@ -472,7 +472,7 @@ class Track_Orders_For_Woocommerce_Admin
 				'value' => 'template_3',
 			),
 			array(
-				'title' => __('Template4', 'track-orders-for-woocommerce-pro'),
+				'title' => __('Template4', 'track-orders-for-woocommerce'),
 				'type'  => 'radio',
 				'id'    => 'wpg_invoice_template_four',
 				'class' => 'wpg_invoice_template_four wpg_invoice_preview',
@@ -485,7 +485,7 @@ class Track_Orders_For_Woocommerce_Admin
 		// ✅ Conditionally add Template5
 		if (is_plugin_active('track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php')) {
 			$template_options[] = array(
-				'title' => __('Template5', 'track-orders-for-woocommerce-pro'),
+				'title' => __('Template5', 'track-orders-for-woocommerce'),
 				'type'  => 'radio',
 				'id'    => 'wpg_invoice_template_five',
 				'class' => 'wpg_invoice_template_five wpg_invoice_preview custom_prince',
@@ -496,7 +496,7 @@ class Track_Orders_For_Woocommerce_Admin
 			);
 		} else {
 			$template_options[] = array(
-				'title' => __('Template5', 'track-orders-for-woocommerce-pro'),
+				'title' => __('Template5', 'track-orders-for-woocommerce'),
 				'type'  => 'radio',
 				'id'    => 'wpg_invoice_template_five',
 				'class' => 'wpg_invoice_template_five wpg_invoice_preview wps_tofw_pro_feature',
@@ -507,10 +507,10 @@ class Track_Orders_For_Woocommerce_Admin
 		}
 
 		$tofw_settings_general[] = array(
-			'title'       => __('Choose Template', 'track-orders-for-woocommerce-pro'),
+			'title'       => __('Choose Template', 'track-orders-for-woocommerce'),
 			'type'        => 'temp-select',
 			'id'          => 'tofw_invoice_template',
-			'description' => __('This template will be used as in email notification', 'track-orders-for-woocommerce-pro'),
+			'description' => __('This template will be used as in email notification', 'track-orders-for-woocommerce'),
 			'selected'    => get_option('tofw_invoice_template'),
 			'value'       => $template_options,
 		);

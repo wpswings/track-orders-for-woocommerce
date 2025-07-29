@@ -77,7 +77,7 @@ class Track_Orders_For_Woocommerce {
 		if ( defined( 'TRACK_ORDERS_FOR_WOOCOMMERCE_VERSION' ) ) {
 			$this->version = TRACK_ORDERS_FOR_WOOCOMMERCE_VERSION;
 		} else {
-			$this->version = '1.1.5';
+			$this->version = '1.1.6';
 		}
 
 		$this->plugin_name = 'track-orders-for-woocommerce';
@@ -460,8 +460,6 @@ class Track_Orders_For_Woocommerce {
 	 * @param array  $file_name parameters to pass to the file for access.
 	 */
 	public function wps_tofw_plug_load_template( $path, $file_name ) {
-
-		// $tofw_file_path = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . $path;
 		$tofw_file_path = apply_filters( 'wps_tofw_pro_tab_template_html', $path, $file_name );
 
 		if ( file_exists( $path ) ) {
