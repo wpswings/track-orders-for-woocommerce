@@ -1,4 +1,4 @@
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://travis-ci.org/twbs/bootstrap) ![Active installs](https://img.shields.io/badge/Active-500%2B-brightgreen) ![License](https://img.shields.io/badge/License-GPLv3%20or%20later-yellowgreen) ![WP tested](https://img.shields.io/badge/WP%20tested-6.8.1-brightgreen) ![WC tested](https://img.shields.io/badge/WC%20tested-9.8.5-brightgreen) ![Requires PHP](https://img.shields.io/badge/Requires%20PHP-7.2.0-blue)
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://travis-ci.org/twbs/bootstrap) ![Active installs](https://img.shields.io/badge/Active-500%2B-brightgreen) ![License](https://img.shields.io/badge/License-GPLv3%20or%20later-yellowgreen) ![WP tested](https://img.shields.io/badge/WP%20tested-6.8.2-brightgreen) ![WC tested](https://img.shields.io/badge/WC%20tested-10.0.4-brightgreen) ![Requires PHP](https://img.shields.io/badge/Requires%20PHP-7.2.0-blue)
 
 # Track Orders for WooCommerce – Advance Shipment Tracking, Order Status, WooCommerce Shipping, Order Tracking Templates, Shipment Delivery Notifications
 
@@ -56,7 +56,7 @@ By utilizing the page shortcode, you can add an Order Tracking page anywhere on 
 ### WITH THE TRACK ORDERS FOR WOOCOMMERCE PLUGIN YOU CAN:
   
 
-- Track order with three immersive templates
+- Track order with three immersive tracking templates
 - Order tracker button for customers
 - Show the icon for order status in the order table.
 - Track orders using the unique order id only.
@@ -96,6 +96,7 @@ Track Orders for Woocommerce is compatible with various themes that are suitable
 - [WC Vendors – A Modern WordPress Theme](https://www.wcvendors.com/themes/)
 - [DIVI Theme – The Ultimate WordPress Theme](https://www.elegantthemes.com/gallery/divi/)
 - [Event Ticket Manager For WooCommerce & Event Ticket Manager For WooCommerce Pro](https://wordpress.org/plugins/event-tickets-manager-for-woocommerce/) - Events and Bookings Calendar, Registration, Event Check-in Using Emails, Edit Your Ticket Content by WP Swings
+- Compatibility with [**RMA Return, Refund and Exchange**](https://wordpress.org/plugins/woo-refund-and-exchange-lite/) plugin to get return and refund-related order status tracking.
 
 
 ### Take Advantage of the Exclusive Features of the Track Orders For WooCommerce Pro Plugin
