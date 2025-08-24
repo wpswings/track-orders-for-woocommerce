@@ -389,6 +389,3 @@ jQuery(window).load(function () {
 	});
 });
 
-
-
-

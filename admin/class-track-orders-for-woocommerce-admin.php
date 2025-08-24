@@ -787,6 +787,19 @@ class Track_Orders_For_Woocommerce_Admin
 						'no' => __('NO', 'track-orders-for-woocommerce'),
 					),
 				),
+					array(
+					'title' => __( 'Enable Multi-Carrier Tracking', 'track-orders-for-woocommerce-pro' ),
+					'type'  => 'radio-switch-copy',
+					'description'  => __('--> it will show multiple carrier tracking form on page.', 'track-orders-for-woocommerce-pro'),
+					'shortcode' => '[WPS_MUTIPLE_CARRIER_TRACKING_FORM]',
+					'id'    => 'wps_tofwp_enable_multi_carrier_tracking',
+					'value' => get_option( 'wps_tofwp_enable_multi_carrier_tracking' ),
+					'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
+					'options' => array(
+						'yes' => __( 'YES', 'track-orders-for-woocommerce-pro' ),
+						'no' => __( 'NO', 'track-orders-for-woocommerce-pro' ),
+					),
+				),
 
 				array(
 					'title' => __('Enable to send message text on changing order status', 'track-orders-for-woocommerce'),
