@@ -1120,3 +1120,50 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 });
+
+jQuery(document).ready(function($) {
+  const $checkbox = $('#wps_tofwp_enable_send_msg_text');
+  const wps_multi_carrier_chkbox = $('#wps_tofwp_enable_multi_carrier_tracking');
+
+  const wps_multi_carrier_target = wps_multi_carrier_chkbox
+    .parent().parent().parent().parent().parent()
+    .next('.wps-msp-text');
+
+
+  const $target = $checkbox
+    .parent().parent().parent().parent().parent()
+    .nextAll('.wps-msp-text');
+
+  // Initial check on page load
+  if (!$checkbox.is(':checked')) {
+    $target.hide(1000);
+  } else {
+    $target.show(1000);
+  }
+
+  // Initial check on page load
+  if (!wps_multi_carrier_chkbox.is(':checked')) {
+    wps_multi_carrier_target.hide(1000);
+  } else {
+    wps_multi_carrier_target.show(1000);
+  }
+
+  // On change toggle
+  wps_multi_carrier_chkbox.on('change', function () {
+    if ($(this).is(':checked')) {
+      wps_multi_carrier_target.show(1000);
+    } else {
+      wps_multi_carrier_target.hide(1000);
+    }
+  });
+
+
+  // On change toggle
+  $checkbox.on('change', function () {
+    if ($(this).is(':checked')) {
+      $target.show(1000);
+    } else {
+      $target.hide(1000);
+    }
+  });
+});

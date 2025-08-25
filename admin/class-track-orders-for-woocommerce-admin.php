@@ -787,18 +787,26 @@ class Track_Orders_For_Woocommerce_Admin
 						'no' => __('NO', 'track-orders-for-woocommerce'),
 					),
 				),
-					array(
+						array(
 					'title' => __( 'Enable Multi-Carrier Tracking', 'track-orders-for-woocommerce-pro' ),
 					'type'  => 'radio-switch-copy',
 					'description'  => __('--> it will show multiple carrier tracking form on page.', 'track-orders-for-woocommerce-pro'),
 					'shortcode' => '[WPS_MUTIPLE_CARRIER_TRACKING_FORM]',
 					'id'    => 'wps_tofwp_enable_multi_carrier_tracking',
 					'value' => get_option( 'wps_tofwp_enable_multi_carrier_tracking' ),
-					'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
+					'class' => 'tofw-radio-switch-class',
 					'options' => array(
 						'yes' => __( 'YES', 'track-orders-for-woocommerce-pro' ),
 						'no' => __( 'NO', 'track-orders-for-woocommerce-pro' ),
 					),
+				),
+				array(
+				'title' => __( 'Enter API Key', 'track-orders-for-woocommerce-pro' ),
+				'type'  => 'text',
+				'description' => __( 'Enter your API Key to enable courier services. To get your API Key, <a href="https://www.trackingmore.com/docs/trackingmore/d5ac362fc3cda-api-quick-start-guide" target="_blank">visit the TrackingMore API dashboard</a>.', 'track-orders-for-woocommerce-pro' ),
+				'id'    => 'wps_tofwp_multi_carrier_api_key',
+				'value' => get_option( 'wps_tofwp_multi_carrier_api_key' ),
+				'class' => 'tofw-radio-switch-class',
 				),
 
 				array(

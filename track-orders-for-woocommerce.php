@@ -565,3 +565,251 @@ function wps_tofw_tracking_info_shortcode( $atts ) {
 		<?php
 		return ob_get_clean();
 }
+
+add_action('wp_ajax_wps_mult_carrier_data_tracking', 'wps_mult_carrier_data_tracking_callback');
+add_action('wp_ajax_nopriv_wps_mult_carrier_data_tracking', 'wps_mult_carrier_data_tracking_callback');
+
+/**
+ * Callback function for tracking multiple carriers.
+ */
+function wps_mult_carrier_data_tracking_callback()
+{
+	if ('on' == get_option('wps_tofwp_enable_multi_carrier_tracking')) {
+
+		// Get and sanitize params
+		$tracking_number = isset($_POST['tracking_number']) ? sanitize_text_field(wp_unslash($_POST['tracking_number'])) : '';
+		$courier_code    = isset($_POST['courier_code'])    ? sanitize_key(wp_unslash($_POST['courier_code']))       : '';
+
+		if ('' === $tracking_number || '' === $courier_code) {
+			wp_send_json_error(['message' => 'Missing tracking_number or courier_code'], 400);
+		}
+
+		//// Prepare the API URL
+		$api_url = 'https://api.trackingmore.com/v4/trackings/get?tracking_numbers=' . $tracking_number . '&courier_code=' . $courier_code;
+
+		// API Request Headers (API Key).
+		$headers = [
+			'Content-Type' => 'application/json',
+			'Tracking-Api-Key' => get_option( 'wps_tofwp_multi_carrier_api_key' ),
+			'Accept' => 'application/json',
+		];
+
+		$response = wp_remote_get($api_url, [
+			'headers' => $headers
+		]);
+
+
+		// Check if the response is a WP Error
+		if (is_wp_error($response)) {
+			$error_message = $response->get_error_message();
+			echo 'Error: ' . $error_message;
+			return;
+		}
+
+		// Decode the API response
+		$data = json_decode(wp_remote_retrieve_body($response), true);
+		// print_r($data['meta']['code']);
+		if ($data['meta']['code'] == '4102') {
+			wps_create_new_shippement_order($tracking_number, $courier_code);
+		} elseif($data['meta']['code'] == '200') {
+			$result = [];
+			foreach ($data['data'] as $key => $value) {
+
+				if (isset($value['origin_info']['trackinfo'])) {
+
+					$result[$key] = $value['origin_info']['trackinfo'];
+					$result['delivery_status'] = $value['delivery_status'];
+				}
+			}
+			wp_send_json_success($result);
+		} else {
+			wp_send_json_error(['message' => 'Tracking information not found'], 400);
+		}
+	}
+}
+
+/**
+ * Create a new shipment order.
+ *
+ * @param string $tracking_number The tracking number.
+ * @param string $courier_code    The courier code.
+ */
+function wps_create_new_shippement_order($tracking_number, $courier_code)
+{
+
+	if ('on' == get_option('wps_tofwp_enable_multi_carrier_tracking')) {
+
+		$wps_mutli_carrier_api_key =  get_option('wps_tofwp_multi_carrier_api_key');
+		// Tracking data
+		$tracking_data = [
+			'tracking_number' => $tracking_number,
+			'courier_code'    => $courier_code,
+		];
+
+		// API endpoint
+		$api_url = 'https://api.trackingmore.com/v4/trackings/create';
+
+		// Make POST request
+		$response = wp_remote_post($api_url, [
+			'headers' => [
+				'Content-Type' => 'application/json',
+				'Tracking-Api-Key' => $wps_mutli_carrier_api_key
+			],
+			'body'    => wp_json_encode($tracking_data),
+			'timeout' => 30,
+		]);
+
+		// Handle errors
+		if (is_wp_error($response)) {
+			wp_send_json_error([
+				'message' => $response->get_error_message()
+			]);
+		}
+
+		// Decode API response
+		$body = wp_remote_retrieve_body($response);
+		$data = json_decode($body, true);
+
+		$result = [];
+		foreach ($body['data'] as $key => $value) {
+
+			if (isset($value['origin_info']['trackinfo'])) {
+
+				$result[$key] = $value['origin_info']['trackinfo'];
+				$result['delivery_status'] = $value['delivery_status'];
+			}
+		}
+		wp_send_json_success($result);
+	}
+}
+
+/**
+ * Delete the carrier logo database table.
+ */
+function wps_delete_carrier_logo_database() {
+	global $wpdb;
+	$table_name = $wpdb->prefix . 'wps_tofw_carrier_logos';
+	$sql = "DROP TABLE IF EXISTS $table_name";
+	$wpdb->query($sql);
+	update_option('wps_tofwp_enable_multi_carrier_tracking', 'off');
+}
+
+register_deactivation_hook(__FILE__, 'wps_delete_carrier_logo_database');
+
+/**
+ * Fetch and store carrier logos.
+ */
+add_action('admin_init', 'wps_fetch_and_store_carrier_logos');
+function wps_fetch_and_store_carrier_logos()
+{
+	if ('on' == get_option('wps_tofwp_enable_multi_carrier_tracking')) {
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'wps_tofw_carrier_logos';
+		wps_create_carrier_logo_database();
+		// Check if the data is already stored in a transient and is still fresh
+		$transient_key = 'wps_carrier_logos_data';
+		$cached_data = get_transient($transient_key);
+
+		if ($cached_data === false) {
+			// The data is not in the transient, so fetch it from the API
+			// The data is not in the transient, so fetch it from the API
+			$api_url = 'https://api.trackingmore.com/v4/couriers/all';
+			$api_key = get_option( 'wps_tofwp_multi_carrier_api_key' ); // REPLACE WITH YOUR ACTUAL API KEY
+
+			$args = [
+				'headers' => [
+					'Content-Type' => 'application/json',
+					'Tracking-Api-Key' => $api_key,
+					'Accept' => 'application/json',
+				],
+			];
+
+			$response = wp_remote_get($api_url, $args);
+
+			// error_log(print_r($response, true));
+
+			// Check for API request errors
+			if (is_wp_error($response)) {
+				error_log('Error fetching carrier logos from API: ' . $response->get_error_message());
+				return;
+			}
+
+			$body = wp_remote_retrieve_body($response);
+			$data = json_decode($body, true);
+
+			// Check if the JSON decoding was successful and the data key exists
+			if (json_last_error() !== JSON_ERROR_NONE || !isset($data['data'])) {
+				error_log('Error decoding API response or missing "data" key.');
+				return;
+			}
+
+			$couriers = $data['data'];
+
+			// Store the data in a transient for 12 hours to reduce API calls
+			set_transient($transient_key, $couriers, 12 * HOUR_IN_SECONDS);
+			$couriers_to_insert = $couriers;
+		} else {
+			// Use the cached data
+			$couriers_to_insert = $cached_data;
+		}
+
+		// Prepare the data for insertion
+		$insert_data = [];
+		foreach ($couriers_to_insert as $courier) {
+			if (isset($courier['courier_name']) && isset($courier['courier_logo']) && isset($courier['courier_code'])) {
+				$carrier_name = sanitize_text_field($courier['courier_name']);
+				$logo_url = esc_url_raw('https:' . $courier['courier_logo']);
+				$carrier_code = sanitize_text_field($courier['courier_code']); // Corrected key name
+				$insert_data[] = [
+					'carrier_name' => $carrier_name,
+					'logo_url' => $logo_url,
+					'carrier_code' => $carrier_code
+				];
+			}
+		}
+
+		// Clear the existing table data to avoid duplicates
+		global $wpdb;
+		$wpdb->query("TRUNCATE TABLE $table_name");
+
+		// Insert the new data
+		$rows_inserted = 0;
+		foreach ($insert_data as $row) {
+			$result = $wpdb->insert(
+				$table_name,
+				$row,
+				['%s', '%s', '%s'] // Format of the values (string, string, string)
+			);
+			if ($result !== false) {
+				$rows_inserted++;
+			}
+		}
+
+		// Log the result of the database operation for debugging
+		if ($rows_inserted > 0) {
+			error_log("Successfully inserted $rows_inserted carrier logos into the database.");
+		} else {
+			error_log("No carrier logos were inserted into the database.");
+		}
+	}
+}
+
+/**
+ * Create the carrier logo database table.
+ */
+function wps_create_carrier_logo_database() {
+	global $wpdb;
+	$table_name = $wpdb->prefix . 'wps_tofw_carrier_logos';
+	$charset_collate = $wpdb->get_charset_collate();
+
+	$sql = "CREATE TABLE $table_name (
+        id mediumint(9) NOT NULL AUTO_INCREMENT,
+        carrier_name varchar(255) NOT NULL,
+        logo_url varchar(255) NOT NULL,
+        carrier_code varchar(255) NOT NULL,
+        PRIMARY KEY  (id)
+    ) $charset_collate;";
+
+	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+	dbDelta($sql);
+}

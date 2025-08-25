@@ -291,6 +291,9 @@ class Track_Orders_For_Woocommerce {
 			$this->loader->add_action( 'template_include', $tofw_plugin_public, 'wps_tofw_include_track_order_page', 10, 1 );
 			$this->loader->add_action( 'template_include', $tofw_plugin_public, 'wps_tofw_include_guest_track_order_page', 10, 1 );
 			$this->loader->add_action( 'template_include', $tofw_plugin_public, 'wps_ordertracking_page', 10, 1 );
+			if ('on' == get_option('wps_tofwp_enable_multi_carrier_tracking')) {
+				$this->loader->add_action('init', $tofw_plugin_public, 'wps_track_order_shortcodes_multiple_carrier');
+			}
 		}
 	}
 

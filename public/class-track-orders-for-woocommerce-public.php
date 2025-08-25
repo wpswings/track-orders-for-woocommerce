@@ -78,6 +78,11 @@ class Track_Orders_For_Woocommerce_Public
 			array(
 				'ajaxurl' => admin_url('admin-ajax.php'),
 				'wps_activated_template' => $selected_template,
+				'mutlple_carrer_image' => array(
+			    'wps_packed' => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'public/image/packed.svg',
+			    'wps_in_way' => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'public/image/in-way.svg',
+			    'wps_delivered' => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'public/image/delivered.svg',
+		),
 			)
 		);
 		wp_enqueue_script($this->plugin_name);
@@ -398,4 +403,86 @@ class Track_Orders_For_Woocommerce_Public
 <?php
 		}
 	}
+
+
+	/**
+	 * Register shortcodes for tracking order.
+	 */
+	public function wps_track_order_shortcodes_multiple_carrier(){
+		add_shortcode( 'WPS_MUTIPLE_CARRIER_TRACKING_FORM', array( $this, 'wps_fetch_multiple_tracking_carrier_data' ) );
+	}
+
+
+	/**
+	 * Fetch multiple tracking carrier data.
+	 *
+	 * @param array $atts Shortcode attributes.
+	 * @return string HTML output.
+	 */
+	public function wps_fetch_multiple_tracking_carrier_data( $atts ) {
+	$atts = shortcode_atts(
+		array(
+			'position' => '',
+		),
+		array_change_key_case( (array) $atts, CASE_LOWER ),
+		'WPS_MUTIPLE_CARRIER_TRACKING_FORM'
+	);
+
+	// Map position to class
+	$pos = trim( strtolower( $atts['position'] ) );
+	switch ( $pos ) {
+		case 'center':
+			$align_class = 'wps-tofw-carrier-center';
+			break;
+		case 'right':
+			$align_class = 'wps-tofw-carrier-right';
+			break;
+		default:
+			$align_class = 'wps-tofw-carrier-left';
+	}
+
+	global $wpdb;
+	$table_name = $wpdb->prefix . 'wps_tofw_carrier_logos';
+	$results    = $wpdb->get_results(
+		"SELECT carrier_name, carrier_code, logo_url FROM {$table_name} ORDER BY carrier_name ASC",
+		ARRAY_A
+	);
+	ob_start();
+	?>
+	<div class="wps-tofw_track <?php echo esc_attr( $align_class ); ?>">
+		<div class="wps-tofw_t-head">
+			<input type="text" placeholder="<?php echo esc_attr__( 'Enter tracking id', 'your-td' ); ?>" id="wps-tofw_th-search" class="wps-tofw_th-in" />
+
+			<select name="tracking-method" id="wps-tofw_th-method">
+				<option value=""><?php echo esc_html__( '-----Select Carrier------', 'your-td' ); ?></option>
+				<?php
+				if ( ! empty( $results ) ) {
+					foreach ( $results as $carrier ) {
+						$name = isset( $carrier['carrier_name'] ) ? esc_html( $carrier['carrier_name'] ) : '';
+						$code = isset( $carrier['carrier_code'] ) ? esc_attr( $carrier['carrier_code'] ) : '';
+						$logo = isset( $carrier['logo_url'] ) ? esc_url( $carrier['logo_url'] ) : '';
+
+						printf(
+							'<option value="%1$s" data-logo="%2$s">%3$s</option>',
+							$code,
+							$logo,
+							$name
+						);
+					}
+				} else {
+					echo '<option value="">' . esc_html__( 'No carriers found', 'your-td' ) . '</option>';
+				}
+				?>
+			</select>
+
+			<button type="button" id="wps-tofw_th-search-btn"><?php echo esc_html__( 'Track', 'your-td' ); ?></button>
+		</div>
+
+		<div class="wps-tofw_loader" aria-hidden="true"></div>
+		<div class="wps-tofw_t-main" id="wps-tofw_t-main"></div>
+	</div>
+	<?php
+	return ob_get_clean();
+}
+
 }
