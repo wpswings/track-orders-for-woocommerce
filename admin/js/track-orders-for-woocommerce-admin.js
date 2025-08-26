@@ -1127,7 +1127,9 @@ jQuery(document).ready(function($) {
 
   const wps_multi_carrier_target = wps_multi_carrier_chkbox
     .parent().parent().parent().parent().parent()
-    .next('.wps-msp-text');
+	  .next('.wps-msp-text');
+	
+	
 
 
   const $target = $checkbox
@@ -1166,4 +1168,22 @@ jQuery(document).ready(function($) {
       $target.hide(1000);
     }
   });
+	
+	
+      // Add click event for copying shortcode
+      jQuery('.tofw-copy-shortcode').on('click', function (e) {
+        e.preventDefault();
+
+        // Find the sibling span with the shortcode
+        const $shortcodeSpan = jQuery(this).siblings('.tofw-shortcode');
+        const shortcodeText = $shortcodeSpan.text();
+
+        try {
+            navigator.clipboard.writeText(shortcodeText).then(() => {
+                jQuery(this).siblings('.tofw-copy-feedback').fadeIn(300).delay(2000).fadeOut(300); // Show feedback
+            });
+        } catch (err) {
+            console.error('Failed to copy: ', err);
+        }
+    });
 });

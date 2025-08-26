@@ -384,60 +384,43 @@ jQuery(document).ready(function ($) {
 					$('#wps-tofw_th-search-btn').prop('disabled', true).text('Searching…');
 				},
 				success: function (response) {
-					console.log('SUCCESS:', response);
 					if (!response || !response.success) {
 						console.error('Server returned an error payload:', response?.data || response);
 					} else {
 						$('.wps-tofw_loader').hide();
 						jQuery("#wps-tofw_t-main").show();
-						// do something with response.data
-						console.log(response.data);
-
 						let checkpoints = response.data[0];
 
 						if (checkpoints && checkpoints.length) {
 
-							// Step 4: Example: build HTML output
 							let html = '<ul>';
 							checkpoints.forEach(function (item) {
-								// Remove leading $ if present
 								wps_tofw_ts = item.checkpoint_date.replace(/^\$/, "");
 
-								// Split into date and time parts
 								let [wps_tofw_datePart, wps_tofw_timePart] = wps_tofw_ts.split("T");
 
-								// Remove timezone from timePart (after "-")
 								wps_tofw_timePart = wps_tofw_timePart.split("-")[0];
 
-								// Format date (YYYY-MM-DD → DD-MM-YYYY)
 								let [wps_tofw_year, wps_tofw_month, wps_tofw_day] = wps_tofw_datePart.split("-");
 								let wps_tofw_formattedDate = `${wps_tofw_day}-${wps_tofw_month}-${wps_tofw_year}`;
-
-								// Time stays HH:mm:ss
 								let wps_tofw_formattedTime = wps_tofw_timePart;
 				
 								html += `<li class="active">
-				<img src="${tofw_public_param.mutlple_carrer_image.wps_in_way}" alt="in way" />
-				<div class="wps-tofw_tm-con">
-				<div class="h3">${item.tracking_detail}</div>
-				<div class="p">Date : ${wps_tofw_formattedDate}</div>
-				<div class="p">Time : ${wps_tofw_formattedTime}</div>
-				<div class="p">${item.location}</div>
-					</div>
-				</li>`;
+								<img src="${tofw_public_param.mutlple_carrer_image.wps_in_way}" alt="in way" />
+								<div class="wps-tofw_tm-con">
+								<div class="h3">${item.tracking_detail}</div>
+								<div class="p">Date : ${wps_tofw_formattedDate}</div>
+								<div class="p">Time : ${wps_tofw_formattedTime}</div>
+								<div class="p">${item.location}</div>
+									</div>
+								</li>`;
 							});
 							html += '</ul>';
 							html += `<div class="wps-tofw_t-status delivered" id="wps-tofw_t-status">Current Status : ${(response.data.delivery_status).toUpperCase()}</div>`;
-							//delivery_status
-							// console.log(response.data.delivery_status);
-
 							jQuery("#wps-tofw_t-main").html(html);
 						} else {
 							jQuery("#wps-tofw_t-main").html('<p class = "wps_tofw_error">No tracking information found.</p>');
 						}
-						// jQuery("#wps-tofw_t-status").html(html);
-
-						// console.log(tofwp_public_param_public.mutlple_carrer_image.wps_in_way);
 					}
 				},
 				error: function (xhr, status, error) {

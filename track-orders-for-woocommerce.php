@@ -671,6 +671,7 @@ function wps_create_new_shippement_order($tracking_number, $courier_code)
 		$data = json_decode($body, true);
 
 		$result = [];
+		if ( isset( $body['data'] ) && is_array( $body['data'] ) ) {
 		foreach ($body['data'] as $key => $value) {
 
 			if (isset($value['origin_info']['trackinfo'])) {
@@ -679,6 +680,7 @@ function wps_create_new_shippement_order($tracking_number, $courier_code)
 				$result['delivery_status'] = $value['delivery_status'];
 			}
 		}
+	}
 		wp_send_json_success($result);
 	}
 }
