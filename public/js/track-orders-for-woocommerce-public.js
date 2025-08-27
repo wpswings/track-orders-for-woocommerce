@@ -363,7 +363,6 @@ jQuery(document).ready(function ($) {
 		jQuery("#wps-tofw_t-main").hide();
 		const wps_tracking_number = $('#wps-tofw_th-search').val();
 		const wps_tracking_method = $('#wps-tofw_th-method').val();
-
 		if (wps_tracking_number && wps_tracking_method) {
 				
 			$('.wps-tofw_loader').show();
@@ -375,17 +374,18 @@ jQuery(document).ready(function ($) {
 
 				data: {
 					action: 'wps_mult_carrier_data_tracking',
-					// _ajax_nonce: tofwp_public_param.nonce,
 					tracking_number: wps_tracking_number,
-					courier_code: wps_tracking_method
+					courier_code: wps_tracking_method,
+					nonce: tofw_public_param.carrier_auth_nonce
 				},
 				beforeSend: function () {
-					// optional: disable button / show loader
 					$('#wps-tofw_th-search-btn').prop('disabled', true).text('Searching…');
 				},
 				success: function (response) {
 					if (!response || !response.success) {
-						console.error('Server returned an error payload:', response?.data || response);
+						$('.wps-tofw_loader').hide();
+						jQuery("#wps-tofw_t-main").html('<p class = "wps_tofw_error">No tracking information found.</p>');
+						$('#wps-tofw_th-search-btn').prop('disabled', false).text('Search');
 					} else {
 						$('.wps-tofw_loader').hide();
 						jQuery("#wps-tofw_t-main").show();

@@ -76,23 +76,22 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 	 * @return void
 	 */
 	function wps_otfw_create_images_folder_inside_uploads() {
-			// Get the uploads directory path.
-			$wp_upload_dir = wp_upload_dir();
+		// Get the uploads directory path.
+		$wp_upload_dir = wp_upload_dir();
 
-			// Define the new folder name.
-			$new_folder_name = 'tracking_images';
+		// Define the new folder name.
+		$new_folder_name = 'tracking_images';
 
-			// Create the full path for the new folder.
-			$new_folder_path = $wp_upload_dir['basedir'] . '/' . $new_folder_name;
+		// Create the full path for the new folder.
+		$new_folder_path = $wp_upload_dir['basedir'] . '/' . $new_folder_name;
 
-			// Check if the folder doesn't exist already.
+		// Check if the folder doesn't exist already.
 		if ( ! file_exists( $new_folder_path ) ) {
 			// Create the new folder.
 			if ( wp_mkdir_p( $new_folder_path ) ) {
 				return;
 			}
 		}
-
 	}
 
 	/**
@@ -250,7 +249,7 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 			$order_id = isset( $_POST['order_id'] ) ? sanitize_text_field( wp_unslash( $_POST['order_id'] ) ) : '';
 			$order = wc_get_order( $order_id );
 			if ( ! session_id() ) {
-					session_start(); // Start the session.
+				session_start(); // Start the session.
 			}
 			if ( ! $order ) {
 				$_SESSION['wps_tofw_notification'] = __( 'OrderId is Invalid', 'track-orders-for-woocommerce' );
@@ -283,7 +282,7 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 						exit();
 					} else {
 						$_SESSION['wps_tofw_notification'] = __( 'OrderId or Email is Invalidss', 'track-orders-for-woocommerce' );
-							session_write_close();
+						session_write_close();
 						return;
 					}
 				} else {
@@ -335,8 +334,8 @@ function wps_tofw_show_admin_notices() {
 		/* translators: %s: dependency checks */
 		. sprintf( esc_html__( '%1$s requires %2$s to function correctly. Please activate %2$s before activating %1$s. For now, the plugin has been deactivated.', 'track-orders-for-woocommerce' ), '<strong>' . esc_html( $mwb_mbfw_child_plugin ) . '</strong>', '<strong>' . esc_html( $mwb_mbfw_parent_plugin ) . '</strong>' )
 		. '</p></div>';
-	if ( isset( $_GET['activate'] ) ) { // phpcs:ignore
-		unset( $_GET['activate'] ); //phpcs:ignore
+	if (isset($_GET['activate'])) { // phpcs:ignore
+		unset($_GET['activate']); //phpcs:ignore
 	}
 }
 
@@ -391,64 +390,64 @@ function wps_get_order_data_from_id( $default, $order_id ) {
 	}
 	ob_start();
 	?>
-   <div style="font-family: sans-serif; font-size: 12px; line-height: 1.5; position: absolute; bottom: 20px; left: 20px; width: 95%; max-width: 320px; background: #f8f8f8; border: 1px solid #ccc; border-radius: 6px; padding: 10px; box-sizing: border-box;">
-	<div style="font-weight: bold; font-size: 13px; color: #333; margin-bottom: 6px;">Track Order Status : </div>
+	<div style="font-family: sans-serif; font-size: 12px; line-height: 1.5; position: absolute; bottom: 20px; left: 20px; width: 95%; max-width: 320px; background: #f8f8f8; border: 1px solid #ccc; border-radius: 6px; padding: 10px; box-sizing: border-box;">
+		<div style="font-weight: bold; font-size: 13px; color: #333; margin-bottom: 6px;">Track Order Status : </div>
 
-	<div style="margin-bottom: 4px;"><strong>Order ID:</strong> <?php echo esc_html( $wps_pgfw_order_id ); ?></div>
-	<div style="margin-bottom: 4px;"><strong>Status:</strong> <span style="color: green;"><?php echo esc_html( $wps_pgfw_status ); ?></span></div>
+		<div style="margin-bottom: 4px;"><strong>Order ID:</strong> <?php echo esc_html( $wps_pgfw_order_id ); ?></div>
+		<div style="margin-bottom: 4px;"><strong>Status:</strong> <span style="color: green;"><?php echo esc_html( $wps_pgfw_status ); ?></span></div>
 
-	<?php if ( $wps_pgfw_estimated_date || $wps_pgfw_estimated_time ) : ?>
-		<div style="margin-bottom: 4px;">
-			<strong>ETA:</strong>
-			<?php
-			if ( $wps_pgfw_estimated_date ) :
-				?>
-				Date: <?php echo esc_html( $wps_pgfw_estimated_date ); ?> <?php endif; ?>
-			<?php
-			if ( $wps_pgfw_estimated_time ) :
-				?>
-				Time: <?php echo esc_html( $wps_pgfw_estimated_time ); ?><?php endif; ?>
-		</div>
-	<?php endif; ?>
-
-	<?php if ( $wps_pgfw_tracking_link ) : ?>
-		<div style="margin-bottom: 4px;">
-			<strong>Carrier:</strong>
-			<?php if ( $wps_pgfw_icon_url ) : ?>
-				<img src="<?php echo esc_url( $wps_pgfw_icon_url ); ?>" alt="<?php echo esc_attr( $wps_pgfw_matched_carrier_name ); ?>" style="height: 18px; vertical-align: middle; margin-right: 4px;">
-			<?php endif; ?>
-			<?php echo esc_html( $wps_pgfw_matched_carrier_name ); ?>
-		</div>
-	<?php endif; ?>
-
-	<div style="margin-top: 10px; display: table; width: 100%;">
-		<?php if ( $wps_pgfw_tracking_link ) : ?>
-			<div style="display: table-cell; width: 50%; padding-right: 5px;">
-				<a href="<?php echo esc_url( $wps_pgfw_tracking_link ); ?>" style="display: block; font-size: 11px; background: #0071a1; color: #fff; padding: 6px; text-align: center; text-decoration: none; border-radius: 4px;">Track Carrier</a>
+		<?php if ( $wps_pgfw_estimated_date || $wps_pgfw_estimated_time ) : ?>
+			<div style="margin-bottom: 4px;">
+				<strong>ETA:</strong>
+				<?php
+				if ( $wps_pgfw_estimated_date ) :
+					?>
+					Date: <?php echo esc_html( $wps_pgfw_estimated_date ); ?> <?php endif; ?>
+				<?php
+				if ( $wps_pgfw_estimated_time ) :
+					?>
+					Time: <?php echo esc_html( $wps_pgfw_estimated_time ); ?><?php endif; ?>
 			</div>
 		<?php endif; ?>
-		<div style="display: table-cell; width: 50%; padding-left: 5px;">
-			<a href="<?php echo esc_url( home_url( '/track-your-order/?' . $wps_pgfw_order_id ) ); ?>" style="display: block; font-size: 11px; background: #28a745; color: #fff; padding: 6px; text-align: center; text-decoration: none; border-radius: 4px;">Track Order</a>
+
+		<?php if ( $wps_pgfw_tracking_link ) : ?>
+			<div style="margin-bottom: 4px;">
+				<strong>Carrier:</strong>
+				<?php if ( $wps_pgfw_icon_url ) : ?>
+					<img src="<?php echo esc_url( $wps_pgfw_icon_url ); ?>" alt="<?php echo esc_attr( $wps_pgfw_matched_carrier_name ); ?>" style="height: 18px; vertical-align: middle; margin-right: 4px;">
+				<?php endif; ?>
+				<?php echo esc_html( $wps_pgfw_matched_carrier_name ); ?>
+			</div>
+		<?php endif; ?>
+
+		<div style="margin-top: 10px; display: table; width: 100%;">
+			<?php if ( $wps_pgfw_tracking_link ) : ?>
+				<div style="display: table-cell; width: 50%; padding-right: 5px;">
+					<a href="<?php echo esc_url( $wps_pgfw_tracking_link ); ?>" style="display: block; font-size: 11px; background: #0071a1; color: #fff; padding: 6px; text-align: center; text-decoration: none; border-radius: 4px;">Track Carrier</a>
+				</div>
+			<?php endif; ?>
+			<div style="display: table-cell; width: 50%; padding-left: 5px;">
+				<a href="<?php echo esc_url( home_url( '/track-your-order/?' . $wps_pgfw_order_id ) ); ?>" style="display: block; font-size: 11px; background: #28a745; color: #fff; padding: 6px; text-align: center; text-decoration: none; border-radius: 4px;">Track Order</a>
+			</div>
 		</div>
 	</div>
-</div>
 	<?php
 	return ob_get_clean();
 }
 
-	add_shortcode( 'wps_tracking_info', 'wps_tofw_tracking_info_shortcode' );
+add_shortcode( 'wps_tracking_info', 'wps_tofw_tracking_info_shortcode' );
 
-	/**
-	 * Shortcode: [wps_tracking_info].
-	 * Description: Displays tracking information for a WooCommerce order.
-	 *
-	 * @param array $atts Attributes for the shortcode.
-	 * - order_id: (int) The ID of the WooCommerce order (required).
-	 * - align: (string) Text alignment ('left', 'center', 'right', default: 'center').
-	 *
-	 * Example usage:
-	 * [wps_tracking_info order_id="12345" align="left"].
-	 */
+/**
+ * Shortcode: [wps_tracking_info].
+ * Description: Displays tracking information for a WooCommerce order.
+ *
+ * @param array $atts Attributes for the shortcode.
+ * - order_id: (int) The ID of the WooCommerce order (required).
+ * - align: (string) Text alignment ('left', 'center', 'right', default: 'center').
+ *
+ * Example usage:
+ * [wps_tracking_info order_id="12345" align="left"].
+ */
 function wps_tofw_tracking_info_shortcode( $atts ) {
 	$atts = shortcode_atts(
 		array(
@@ -515,11 +514,11 @@ function wps_tofw_tracking_info_shortcode( $atts ) {
 		}
 	}
 	?>
-		<div style="<?php echo esc_attr( $wps_pgfw_container_style ); ?>">
-			<h2 style="margin-top: 0; color: #333;">Order Tracking Information</h2>
-			<p><strong>Order ID:</strong> <?php echo esc_html( $wps_pgfw_order_id ); ?></p>
-			<p><strong>Order Status:</strong> <span style="color: green;"><?php echo esc_html( $wps_pgfw_status ); ?></span></p>
-	   <?php if ( is_plugin_active( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php' ) ) { ?>
+	<div style="<?php echo esc_attr( $wps_pgfw_container_style ); ?>">
+		<h2 style="margin-top: 0; color: #333;">Order Tracking Information</h2>
+		<p><strong>Order ID:</strong> <?php echo esc_html( $wps_pgfw_order_id ); ?></p>
+		<p><strong>Order Status:</strong> <span style="color: green;"><?php echo esc_html( $wps_pgfw_status ); ?></span></p>
+		<?php if ( is_plugin_active( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php' ) ) { ?>
 			<?php if ( $wps_pgfw_estimated_date || $wps_pgfw_estimated_time ) : ?>
 				<p><strong>Estimated Delivery:</strong><br>
 					<?php if ( $wps_pgfw_estimated_date ) : ?>
@@ -530,8 +529,8 @@ function wps_tofw_tracking_info_shortcode( $atts ) {
 					<?php endif; ?>
 				</p>
 			<?php endif; ?>
-			
-		
+
+
 			<?php if ( $wps_pgfw_tracking_link ) : ?>
 				<div style="margin-top: 15px;">
 					<strong>Carrier Tracking:</strong>
@@ -545,85 +544,84 @@ function wps_tofw_tracking_info_shortcode( $atts ) {
 					</div>
 				</div>
 			<?php endif; ?>
-			<?php } ?>
-		
-			<div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px;">
-		<?php if ( is_plugin_active( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php' ) ) { ?>
+		<?php } ?>
+
+		<div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px;">
+			<?php if ( is_plugin_active( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php' ) ) { ?>
 				<?php if ( $wps_pgfw_tracking_link ) { ?>
 					<a href="<?php echo esc_url( $wps_pgfw_tracking_link ); ?>" class="button wc-forward" target="_blank" style="text-align: center; background-color: #0071a1; color: #fff; padding: 10px 15px; border-radius: 6px; text-decoration: none;">
 						Track with Carrier
 					</a>
 					<?php
 				}
-		}
-		?>
-				<a href="<?php echo esc_url( home_url( '/track-your-order/?' . $wps_pgfw_order_id ) ); ?>" class="button wc-forward" style="flex: 1; text-align: center; background-color: #28a745; color: #fff; padding: 10px 15px; border-radius: 6px; text-decoration: none;">
-					Track Your Order
-				</a>
-			</div>
+			}
+			?>
+			<a href="<?php echo esc_url( home_url( '/track-your-order/?' . $wps_pgfw_order_id ) ); ?>" class="button wc-forward" style="flex: 1; text-align: center; background-color: #28a745; color: #fff; padding: 10px 15px; border-radius: 6px; text-decoration: none;">
+				Track Your Order
+			</a>
 		</div>
-		<?php
-		return ob_get_clean();
+	</div>
+	<?php
+	return ob_get_clean();
 }
 
-add_action('wp_ajax_wps_mult_carrier_data_tracking', 'wps_mult_carrier_data_tracking_callback');
-add_action('wp_ajax_nopriv_wps_mult_carrier_data_tracking', 'wps_mult_carrier_data_tracking_callback');
+add_action( 'wp_ajax_wps_mult_carrier_data_tracking', 'wps_mult_carrier_data_tracking_callback' );
+add_action( 'wp_ajax_nopriv_wps_mult_carrier_data_tracking', 'wps_mult_carrier_data_tracking_callback' );
 
 /**
  * Callback function for tracking multiple carriers.
  */
-function wps_mult_carrier_data_tracking_callback()
-{
-	if ('on' == get_option('wps_tofwp_enable_multi_carrier_tracking')) {
+function wps_mult_carrier_data_tracking_callback() {
+	check_ajax_referer( 'wps_muilt_carrier', 'nonce' );
+	if ( 'on' == get_option( 'wps_tofwp_enable_multi_carrier_tracking' ) ) {
 
-		// Get and sanitize params
-		$tracking_number = isset($_POST['tracking_number']) ? sanitize_text_field(wp_unslash($_POST['tracking_number'])) : '';
-		$courier_code    = isset($_POST['courier_code'])    ? sanitize_key(wp_unslash($_POST['courier_code']))       : '';
+		// Get and sanitize params.
+		$tracking_number = isset( $_POST['tracking_number'] ) ? sanitize_text_field( wp_unslash( $_POST['tracking_number'] ) ) : '';
+		$courier_code    = isset( $_POST['courier_code'] ) ? sanitize_key( wp_unslash( $_POST['courier_code'] ) ) : '';
 
-		if ('' === $tracking_number || '' === $courier_code) {
-			wp_send_json_error(['message' => 'Missing tracking_number or courier_code'], 400);
+		if ( '' === $tracking_number || '' === $courier_code ) {
+			wp_send_json_error( array( 'message' => 'Missing tracking_number or courier_code' ), 400 );
 		}
 
-		//// Prepare the API URL
+		// Prepare the API URL.
 		$api_url = 'https://api.trackingmore.com/v4/trackings/get?tracking_numbers=' . $tracking_number . '&courier_code=' . $courier_code;
 
 		// API Request Headers (API Key).
-		$headers = [
+		$headers = array(
 			'Content-Type' => 'application/json',
 			'Tracking-Api-Key' => get_option( 'wps_tofwp_multi_carrier_api_key' ),
 			'Accept' => 'application/json',
-		];
+		);
 
-		$response = wp_remote_get($api_url, [
-			'headers' => $headers
-		]);
+		$response = wp_remote_get(
+			$api_url,
+			array(
+				'headers' => $headers,
+			)
+		);
 
-
-		// Check if the response is a WP Error
-		if (is_wp_error($response)) {
-			$error_message = $response->get_error_message();
-			echo 'Error: ' . $error_message;
+		if ( is_wp_error( $response ) ) {
 			return;
 		}
 
-		// Decode the API response
-		$data = json_decode(wp_remote_retrieve_body($response), true);
-		// print_r($data['meta']['code']);
-		if ($data['meta']['code'] == '4102') {
-			wps_create_new_shippement_order($tracking_number, $courier_code);
-		} elseif($data['meta']['code'] == '200') {
-			$result = [];
-			foreach ($data['data'] as $key => $value) {
+		// Decode the API response.
+		$data = json_decode( wp_remote_retrieve_body( $response ), true );
 
-				if (isset($value['origin_info']['trackinfo'])) {
+		if ( '4102' == $data['meta']['code'] ) {
+			wps_create_new_shippement_order( $tracking_number, $courier_code );
+		} elseif ( '200' == $data['meta']['code'] ) {
+			$result = array();
+			foreach ( $data['data'] as $key => $value ) {
 
-					$result[$key] = $value['origin_info']['trackinfo'];
+				if ( isset( $value['origin_info']['trackinfo'] ) ) {
+
+					$result[ $key ] = $value['origin_info']['trackinfo'];
 					$result['delivery_status'] = $value['delivery_status'];
 				}
 			}
-			wp_send_json_success($result);
+			wp_send_json_success( $result );
 		} else {
-			wp_send_json_error(['message' => 'Tracking information not found'], 400);
+			wp_send_json_error( array( 'message' => 'Tracking information not found' ), 400 );
 		}
 	}
 }
@@ -634,54 +632,56 @@ function wps_mult_carrier_data_tracking_callback()
  * @param string $tracking_number The tracking number.
  * @param string $courier_code    The courier code.
  */
-function wps_create_new_shippement_order($tracking_number, $courier_code)
-{
+function wps_create_new_shippement_order( $tracking_number, $courier_code ) {
 
-	if ('on' == get_option('wps_tofwp_enable_multi_carrier_tracking')) {
+	if ( 'on' == get_option( 'wps_tofwp_enable_multi_carrier_tracking' ) ) {
 
-		$wps_mutli_carrier_api_key =  get_option('wps_tofwp_multi_carrier_api_key');
-		// Tracking data
-		$tracking_data = [
+		$wps_mutli_carrier_api_key = get_option( 'wps_tofwp_multi_carrier_api_key' );
+		// Tracking data.
+		$tracking_data = array(
 			'tracking_number' => $tracking_number,
 			'courier_code'    => $courier_code,
-		];
+		);
 
-		// API endpoint
+		// API endpoint.
 		$api_url = 'https://api.trackingmore.com/v4/trackings/create';
 
-		// Make POST request
-		$response = wp_remote_post($api_url, [
-			'headers' => [
-				'Content-Type' => 'application/json',
-				'Tracking-Api-Key' => $wps_mutli_carrier_api_key
-			],
-			'body'    => wp_json_encode($tracking_data),
-			'timeout' => 30,
-		]);
+		// Make POST request.
+		$response = wp_remote_post(
+			$api_url,
+			array(
+				'headers' => array(
+					'Content-Type' => 'application/json',
+					'Tracking-Api-Key' => $wps_mutli_carrier_api_key,
+				),
+				'body'    => wp_json_encode( $tracking_data ),
+				'timeout' => 30,
+			)
+		);
 
-		// Handle errors
-		if (is_wp_error($response)) {
-			wp_send_json_error([
-				'message' => $response->get_error_message()
-			]);
+		// Handle errors.
+		if ( is_wp_error( $response ) ) {
+			wp_send_json_error(
+				array(
+					'message' => $response->get_error_message(),
+				)
+			);
 		}
 
-		// Decode API response
-		$body = wp_remote_retrieve_body($response);
-		$data = json_decode($body, true);
+		$body = wp_remote_retrieve_body( $response );
 
-		$result = [];
+		$result = array();
 		if ( isset( $body['data'] ) && is_array( $body['data'] ) ) {
-		foreach ($body['data'] as $key => $value) {
+			foreach ( $body['data'] as $key => $value ) {
 
-			if (isset($value['origin_info']['trackinfo'])) {
+				if ( isset( $value['origin_info']['trackinfo'] ) ) {
 
-				$result[$key] = $value['origin_info']['trackinfo'];
-				$result['delivery_status'] = $value['delivery_status'];
+					$result[ $key ] = $value['origin_info']['trackinfo'];
+					$result['delivery_status'] = $value['delivery_status'];
+				}
 			}
 		}
-	}
-		wp_send_json_success($result);
+		wp_send_json_success( $result );
 	}
 }
 
@@ -691,107 +691,97 @@ function wps_create_new_shippement_order($tracking_number, $courier_code)
 function wps_delete_carrier_logo_database() {
 	global $wpdb;
 	$table_name = $wpdb->prefix . 'wps_tofw_carrier_logos';
-	$sql = "DROP TABLE IF EXISTS $table_name";
-	$wpdb->query($sql);
-	update_option('wps_tofwp_enable_multi_carrier_tracking', 'off');
+	$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %s', $table_name ) );
+	update_option( 'wps_tofwp_enable_multi_carrier_tracking', 'off' );
 }
 
-register_deactivation_hook(__FILE__, 'wps_delete_carrier_logo_database');
+register_deactivation_hook( __FILE__, 'wps_delete_carrier_logo_database' );
 
 /**
  * Fetch and store carrier logos.
  */
-add_action('admin_init', 'wps_fetch_and_store_carrier_logos');
-function wps_fetch_and_store_carrier_logos()
-{
-	if ('on' == get_option('wps_tofwp_enable_multi_carrier_tracking')) {
+add_action( 'admin_init', 'wps_fetch_and_store_carrier_logos' );
+
+/**
+ * Fetch and store carrier logos.
+ */
+function wps_fetch_and_store_carrier_logos() {
+	if ( 'on' == get_option( 'wps_tofwp_enable_multi_carrier_tracking' ) ) {
+
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'wps_tofw_carrier_logos';
+
 		wps_create_carrier_logo_database();
-		// Check if the data is already stored in a transient and is still fresh
 		$transient_key = 'wps_carrier_logos_data';
-		$cached_data = get_transient($transient_key);
+		$cached_data = get_transient( $transient_key );
 
-		if ($cached_data === false) {
-			// The data is not in the transient, so fetch it from the API
-			// The data is not in the transient, so fetch it from the API
+		if ( false == $cached_data ) {
 			$api_url = 'https://api.trackingmore.com/v4/couriers/all';
-			$api_key = get_option( 'wps_tofwp_multi_carrier_api_key' ); // REPLACE WITH YOUR ACTUAL API KEY
+			$api_key = get_option( 'wps_tofwp_multi_carrier_api_key' );
 
-			$args = [
-				'headers' => [
+			$args = array(
+				'headers' => array(
 					'Content-Type' => 'application/json',
 					'Tracking-Api-Key' => $api_key,
 					'Accept' => 'application/json',
-				],
-			];
+				),
+			);
 
-			$response = wp_remote_get($api_url, $args);
+			$response = wp_remote_get( $api_url, $args );
 
-			// error_log(print_r($response, true));
-
-			// Check for API request errors
-			if (is_wp_error($response)) {
-				error_log('Error fetching carrier logos from API: ' . $response->get_error_message());
+			if ( is_wp_error( $response ) ) {
+				error_log( 'Error fetching carrier logos from API: ' . $response->get_error_message() );
 				return;
 			}
 
-			$body = wp_remote_retrieve_body($response);
-			$data = json_decode($body, true);
+			$body = wp_remote_retrieve_body( $response );
+			$data = json_decode( $body, true );
 
-			// Check if the JSON decoding was successful and the data key exists
-			if (json_last_error() !== JSON_ERROR_NONE || !isset($data['data'])) {
-				error_log('Error decoding API response or missing "data" key.');
+			if ( json_last_error() !== JSON_ERROR_NONE || ! isset( $data['data'] ) ) {
+				error_log( 'Error decoding API response or missing "data" key.' );
 				return;
 			}
 
 			$couriers = $data['data'];
-
-			// Store the data in a transient for 12 hours to reduce API calls
-			set_transient($transient_key, $couriers, 12 * HOUR_IN_SECONDS);
+			set_transient( $transient_key, $couriers, 12 * HOUR_IN_SECONDS );
 			$couriers_to_insert = $couriers;
 		} else {
-			// Use the cached data
 			$couriers_to_insert = $cached_data;
 		}
 
-		// Prepare the data for insertion
-		$insert_data = [];
-		foreach ($couriers_to_insert as $courier) {
-			if (isset($courier['courier_name']) && isset($courier['courier_logo']) && isset($courier['courier_code'])) {
-				$carrier_name = sanitize_text_field($courier['courier_name']);
-				$logo_url = esc_url_raw('https:' . $courier['courier_logo']);
-				$carrier_code = sanitize_text_field($courier['courier_code']); // Corrected key name
-				$insert_data[] = [
+		$insert_data = array();
+		foreach ( $couriers_to_insert as $courier ) {
+			if ( isset( $courier['courier_name'] ) && isset( $courier['courier_logo'] ) && isset( $courier['courier_code'] ) ) {
+				$carrier_name = sanitize_text_field( $courier['courier_name'] );
+				$logo_url = esc_url_raw( 'https:' . $courier['courier_logo'] );
+				$carrier_code = sanitize_text_field( $courier['courier_code'] );
+				$insert_data[] = array(
 					'carrier_name' => $carrier_name,
 					'logo_url' => $logo_url,
-					'carrier_code' => $carrier_code
-				];
+					'carrier_code' => $carrier_code,
+				);
 			}
 		}
 
-		// Clear the existing table data to avoid duplicates
+		// Clear the existing table data to avoid duplicates.
 		global $wpdb;
-		$wpdb->query("TRUNCATE TABLE $table_name");
-
-		// Insert the new data
+		$wpdb->query( "TRUNCATE TABLE {$wpdb->prefix}wps_tofw_carrier_logos" );
 		$rows_inserted = 0;
-		foreach ($insert_data as $row) {
+		foreach ( $insert_data as $row ) {
 			$result = $wpdb->insert(
 				$table_name,
 				$row,
-				['%s', '%s', '%s'] // Format of the values (string, string, string)
+				array( '%s', '%s', '%s' )
 			);
-			if ($result !== false) {
+			if ( false !== $result ) {
 				$rows_inserted++;
 			}
 		}
 
-		// Log the result of the database operation for debugging
-		if ($rows_inserted > 0) {
-			error_log("Successfully inserted $rows_inserted carrier logos into the database.");
+		if ( $rows_inserted > 0 ) {
+			error_log( "Successfully inserted $rows_inserted carrier logos into the database." );
 		} else {
-			error_log("No carrier logos were inserted into the database.");
+			error_log( 'No carrier logos were inserted into the database.' );
 		}
 	}
 }
@@ -812,6 +802,6 @@ function wps_create_carrier_logo_database() {
         PRIMARY KEY  (id)
     ) $charset_collate;";
 
-	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-	dbDelta($sql);
+	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+	dbDelta( $sql );
 }
