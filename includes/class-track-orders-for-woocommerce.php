@@ -207,6 +207,7 @@ class Track_Orders_For_Woocommerce {
 		$this->loader->add_filter( 'tofw_custom_order_status_array', $tofw_plugin_admin, 'tofw_custom_order_status_setting_page', 10 );
 		$this->loader->add_action( 'tofw_track_order_gmap_settings_array', $tofw_plugin_admin, 'tofw_track_order_gmap_settings_callback' );
 		$this->loader->add_action( 'tofw_shipping_services_settings_array', $tofw_plugin_admin, 'tofw_shipping_services_settings_callback' );
+		$this->loader->add_filter( 'tofw_track_order_partial_shipement_array', $tofw_plugin_admin, 'tofw_track_order_partial_shipement_array_callbck', 10 );
 
 		// Saving tab settings.
 		$this->loader->add_action( 'wps_tofw_settings_saved_notice', $tofw_plugin_admin, 'tofw_admin_save_tab_settings' );
@@ -261,7 +262,7 @@ class Track_Orders_For_Woocommerce {
 
 			$this->loader->add_action( 'wp_ajax_wps_wot_export_my_orders', $tofw_plugin_common, 'wps_tofw_export_my_orders_callback' );
 			$this->loader->add_action( 'wp_ajax_nopriv_wps_tofw_export_my_orders_guest_user', $tofw_plugin_common, 'wps_tofw_export_my_orders_guest_user_callback' );
-			$this->loader->add_action( 'init', $tofw_plugin_common, 'wps_tofw_register_custom_order_status' );
+			$this->loader->add_action( 'admin_init', $tofw_plugin_common, 'wps_tofw_register_custom_order_status' );
 			$this->loader->add_action( 'wc_order_statuses', $tofw_plugin_common, 'wps_tofw_add_custom_order_status', 10, 1 );
 		}
 	}
@@ -401,6 +402,11 @@ class Track_Orders_For_Woocommerce {
 			'title'       => esc_html__( 'Template', 'track-orders-for-woocommerce' ),
 			'name'        => 'track-orders-for-woocommerce-template',
 			'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-template.php',
+		);
+		$tofw_default_tabs['track-orders-for-woocommerce-partial-shipement']      = array(
+			'title'       => esc_html__( 'Partial Shipments', 'track-orders-for-woocommerce' ),
+			'name'        => 'track-orders-for-woocommerce-track-your-your-order-with-google-map',
+			'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-partial-shipement.php',
 		);
 		$tofw_default_tabs['track-orders-for-woocommerce-track-your-your-order-with-google-map']      = array(
 			'title'       => esc_html__( 'Track Order with Google Maps', 'track-orders-for-woocommerce' ),

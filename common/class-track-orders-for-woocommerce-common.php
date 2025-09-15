@@ -1550,6 +1550,23 @@ class Track_Orders_For_Woocommerce_Common
 
 		$wps_tofw_enable_track_order_feature = get_option('tofw_enable_track_order', 'no');
 		$wps_tofw_enable_custom_order_feature = get_option('tofw_enable_use_custom_status', 'no');
+		$wps_tofw_part_order_status = get_option('tofw_part_order_status');
+		$wps_tofw_enable_partial_shipment = get_option('tofw_enable_partial_shipment');
+		if ('on' === $wps_tofw_enable_partial_shipment && $wps_tofw_part_order_status === 'on') {
+			register_post_status(
+				'wc-partially-shipped',
+				array(
+					'label'                     => __('Partially Shipped', 'track-orders-for-woocommerce'),
+					'public'                    => true,
+				'exclude_from_search'       => false,
+				'show_in_admin_all_list'    => true,
+				'show_in_admin_status_list' => true,
+				/* translators: %s: count */
+				'label_count'               => false,
+			)
+		);
+	}
+
 		if ('on' !== $wps_tofw_enable_track_order_feature || 'on' !== $wps_tofw_enable_custom_order_feature) {
 			return;
 		}
@@ -1629,9 +1646,17 @@ class Track_Orders_For_Woocommerce_Common
 	{
 		$wps_tofw_enable_track_order_feature = get_option('tofw_enable_track_order', 'no');
 		$wps_tofw_enable_custom_order_feature = get_option('tofw_enable_use_custom_status', 'no');
+		$wps_tofw_part_order_status = get_option('tofw_part_order_status');
+		$wps_tofw_enable_partial_shipment = get_option('tofw_enable_partial_shipment');
+
+		if ('on' === $wps_tofw_enable_partial_shipment && $wps_tofw_part_order_status === 'on') {
+			$order_statuses['wc-partially-shipped'] = _x( 'Partially Shipped', 'Order status', 'track-orders-for-woocommerce' );
+		}
+
 		if ('on' != $wps_tofw_enable_track_order_feature || 'on' != $wps_tofw_enable_custom_order_feature) {
 			return $order_statuses;
 		}
+
 		$custom_order = get_option('wps_tofw_new_custom_order_status', array());
 		$statuses = get_option('tofw_selected_custom_order_status', array());
 		$wps_tofw_statuses = get_option('wps_tofw_new_settings_custom_statuses_for_order_tracking', array());
@@ -1657,3 +1682,5 @@ class Track_Orders_For_Woocommerce_Common
 		return $order_statuses;
 	}
 }
+
+

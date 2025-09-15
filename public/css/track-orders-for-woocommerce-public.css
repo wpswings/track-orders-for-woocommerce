@@ -3798,3 +3798,37 @@ a.wps_swatch_whatsapp_link_template_1 {
     	.wps-tofw_loader {
 				display: none;
 			}
+
+/* Partial Shipment Button */
+.wps-tofw-track-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background:#333dcf;
+  color: #fff !important;
+  border-radius: 6px;
+  font: 600 14px/1.4 sans-serif;
+  text-decoration: none;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.wps-tofw-track-btn::after {
+  content: "↗";
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.wps-tofw-track-btn:hover {
+  background: #333dcf;
+  padding-right: 32px; /* space for arrow */
+}
+
+.wps-tofw-track-btn:hover::after {
+  opacity: 1;
+  right: 10px;
+}
+

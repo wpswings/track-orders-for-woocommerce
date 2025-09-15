@@ -566,6 +566,64 @@ class Track_Orders_For_Woocommerce_Admin
 	 * Track Orders For Woocommerce admin menu page.
 	 *
 	 * @since 1.0.0
+	 * @param array $tofw_partial_shipement_settings fields.
+	 */
+	public function tofw_track_order_partial_shipement_array_callbck($tofw_partial_shipement_settings){
+
+		$tofw_partial_shipement_settings = array(
+			array(
+				'title' => __('Enable Partial Shipment Feature', 'track-orders-for-woocommerce'),
+				'type'  => 'radio-switch',
+				'id'    => 'tofw_enable_partial_shipment',
+				'value' => get_option('tofw_enable_partial_shipment'),
+				'class' => 'tofw-radio-switch-class',
+				'description'  => __('Enable functionality for partial shipment.', 'track-orders-for-woocommerce'),
+				'options' => array(
+					'yes' => __('YES', 'track-orders-for-woocommerce'),
+					'no' => __('NO', 'track-orders-for-woocommerce'),
+				),
+			),
+			array(
+				'title' => __('Auto Complete Partial Order ', 'track-orders-for-woocommerce'),
+				'type'  => 'radio-switch',
+				'id'    => 'tofw_aut_comp_part_order',
+				'description'  =>  __('Auto complete the partial order once the parent order completed.', 'track-orders-for-woocommerce'),
+				'value' => get_option('tofw_aut_comp_part_order'),
+				'class' => 'tofw-radio-switch-class',
+				'options' => array(
+					'yes' => __('YES', 'track-orders-for-woocommerce'),
+					'no' => __('NO', 'track-orders-for-woocommerce'),
+				),
+			),
+			array(
+				'title' => __('Create the “Partially Shipped” order status ', 'track-orders-for-woocommerce'),
+				'type'  => 'radio-switch',
+				'id'    => 'tofw_part_order_status',
+				'description'  =>  __('Register a new order status titled ‘Partially Shipped’.', 'track-orders-for-woocommerce'),
+				'value' => get_option('tofw_part_order_status'),
+				'class' => 'tofw-radio-switch-class',
+				'options' => array(
+					'yes' => __('YES', 'track-orders-for-woocommerce'),
+					'no' => __('NO', 'track-orders-for-woocommerce'),
+				),
+			),
+		);
+
+		//save button.
+		$tofw_partial_shipement_settings[] = array(
+			'type'  => 'button',
+			'id'    => 'wps_tofw_save_partial_shipment',
+			'button_text' => __('Save Settings', 'track-orders-for-woocommerce'),
+			'class' => 'tofw-button-class',
+		);
+
+		return $tofw_partial_shipement_settings;
+	}
+
+	/**
+	 * Track Orders For Woocommerce admin menu page.
+	 *
+	 * @since 1.0.0
 	 * @param array $tofw_track_order_settings fields.
 	 */
 	public function tofw_track_order_settings_page($tofw_track_order_settings)
@@ -1250,6 +1308,13 @@ class Track_Orders_For_Woocommerce_Admin
 			$tofw_genaral_settings =
 				// desc - filter for trial.
 				apply_filters('tofw_track_order_array', array());
+			$wps_settings_save_progress = true;
+		}
+		if(isset($_POST['wps_tofw_save_partial_shipment'])){
+			$wps_msp_gen_flag     = false;
+			$tofw_genaral_settings =
+				// desc - filter for trial.
+				apply_filters('tofw_track_order_partial_shipement_array', array());
 			$wps_settings_save_progress = true;
 		}
 		if (isset($_POST['wps_tofw_custom_order_status_setting_save'])) {
