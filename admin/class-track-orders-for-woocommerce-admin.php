@@ -2267,4 +2267,400 @@ class Track_Orders_For_Woocommerce_Admin
 			)
 		);
 	}
+
+
+
+public function add_line_item_status_header() {
+	$wps_enable_partila_shipement = get_option('tofw_enable_partial_shipment');
+	if ('on' !== $wps_enable_partila_shipement) {
+		return;
+	}
+    echo '<th class="line-item-status">Status</th>';
+}
+
+public function wps_tofw_add_line_item_status_dropdown( $product, $item, $item_id ) {
+
+	 // Only apply to product line items, not shipping/fees/coupons
+    if ( $item->get_type() !== 'line_item' ) {
+        return;
+    }
+
+	$wps_enable_partila_shipement = get_option('tofw_enable_partial_shipment');
+    // Always get the order object safely
+    $order = wc_get_order( $item->get_order_id() );
+    if ( ! $order && 'on' !== $wps_enable_partila_shipement) {
+        return; // bail early if no order found
+    }
+
+    // Get current item status (stored in meta or default to parent order status)
+    $current_status = wc_get_order_item_meta( $item_id, '_line_item_status', true );
+    if ( empty( $current_status ) ) {
+        $current_status = $order->get_status();
+    }
+
+    // Check if child order
+    $wps_tofw_is_child_order = $order->get_meta( '_wps_is_child_order' );
+
+    // Only show dropdown if not a child order
+    if ( 'yes' !== $wps_tofw_is_child_order ) {
+        $order_statuses = wc_get_order_statuses();
+        
+        echo '<td class="line-item-status" width="20%">';
+        echo '<select name="line_item_status[' . esc_attr( $item_id ) . ']" class="line-item-status-select" style="width: 100%;">';
+        
+        foreach ( $order_statuses as $status_key => $status_name ) {
+            $status_key = str_replace( 'wc-', '', $status_key );
+            $selected   = selected( $current_status, $status_key, false );
+            echo '<option value="' . esc_attr( $status_key ) . '" ' . $selected . '>' . esc_html( $status_name ) . '</option>';
+        }
+        
+        echo '</select>';
+        echo '</td>';
+    }
+}
+
+public function save_line_item_status($order_id, $items) {
+	$wps_enable_partila_shipement = get_option('tofw_enable_partial_shipment');
+    if (isset($_POST['line_item_status']) && is_array($_POST['line_item_status']) && 'on' === $wps_enable_partila_shipement) {
+        foreach ($_POST['line_item_status'] as $item_id => $status) {
+            wc_update_order_item_meta($item_id, '_line_item_status', sanitize_text_field($status));
+
+			// $child_order_ids = get_post_meta($order_id, '_wps_child_order_ids', true );
+			$parent_order = wc_get_order( $order_id );
+			$child_order_ids = $parent_order->get_meta( '_wps_child_order_ids' );
+            
+
+			foreach($child_order_ids as $key => $value){
+				if($this->wps_get_product_id_from_item($item_id) == $key){
+					$order = wc_get_order($value);
+					$order->update_status($status);
+				$child_order = wc_get_order( $value );
+				$child_order->add_order_note( 'Status updated from parent order');
+				}
+			}
+
+            // Optional: Create a note when status changes
+            $order = wc_get_order($order_id);
+            $item = $order->get_item($item_id);
+            if ($item) {
+                $product_name = $item->get_name();
+                $status_name = wc_get_order_status_name($status);
+                $order->add_order_note(
+                    sprintf('Line item "%s" status changed to: %s', $product_name, $status_name)
+                );
+            }
+        }
+    }
+}
+
+public function wps_get_product_id_from_item($item_id, $return_type = 'product_id') {
+	$wps_enable_partila_shipement = get_option('tofw_enable_partial_shipment');
+    if (!$item_id && 'on' !== $wps_enable_partila_shipement) {
+        return false;
+    }
+    
+    try {
+        $item = new WC_Order_Item_Product($item_id);
+        $product_id = $item->get_product_id();
+        $variation_id = $item->get_variation_id();
+        
+        // Return based on requested type
+        switch ($return_type) {
+            case 'product_id':
+                return $product_id ? intval($product_id) : false;
+                
+            case 'variation_id':
+                return $variation_id ? intval($variation_id) : false;
+                
+            case 'both':
+                // Return variation ID if exists, otherwise product ID
+                return $variation_id ? intval($variation_id) : intval($product_id);
+                
+            case 'array':
+                return array(
+                    'product_id' => $product_id ? intval($product_id) : 0,
+                    'variation_id' => $variation_id ? intval($variation_id) : 0,
+                    'is_variation' => !empty($variation_id)
+                );
+                
+            default:
+                return $product_id ? intval($product_id) : false;
+        }
+        
+    } catch (Exception $e) {
+        error_log('Error getting product ID from item: ' . $e->getMessage());
+        return false;
+    }
+}
+public function line_item_status_admin_css() {
+	$wps_enable_partila_shipement = get_option('tofw_enable_partial_shipment');
+    $screen = get_current_screen();
+    if ($screen && $screen->id === 'shop_order' && 'on' == $wps_enable_partila_shipement) {
+        ?>
+        <style>
+        .line-item-status {
+            text-align: center !important;
+        }
+        .line-item-status-select {
+            font-size: 12px;
+            padding: 2px 4px;
+        }
+        .woocommerce_order_items .line-item-status {
+            border-left: 1px solid #dfdfdf;
+        }
+        </style>
+        <?php
+    }
+}
+
+public function wps_tofw_add_bulk_status_update( $order_id ) {
+	$wps_enable_partila_shipement = get_option('tofw_enable_partial_shipment');
+	$order = wc_get_order( $order_id );
+    if ( ! $order instanceof WC_Order && 'on' != $wps_enable_partila_shipement) {
+        return;
+    }
+
+    $wps_tofw_is_child_order = $order->get_meta( '_wps_is_child_order' );
+
+
+    if ( 'yes' !== $wps_tofw_is_child_order ) {
+        $order_statuses = wc_get_order_statuses();
+        ?>
+        <tr class="bulk-status-update">
+            <td colspan="2">
+                <strong><?php esc_html_e( 'Bulk Status Update:', 'text-domain' ); ?></strong>
+            </td>
+            <td colspan="4">
+                <select id="bulk_line_item_status" style="width: 200px;">
+                    <option value=""><?php esc_html_e( 'Select status…', 'text-domain' ); ?></option>
+                    <?php foreach ( $order_statuses as $status_key => $status_name ) : 
+                        $status_key = str_replace( 'wc-', '', $status_key );
+                    ?>
+                        <option value="<?php echo esc_attr( $status_key ); ?>">
+                            <?php echo esc_html( $status_name ); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <button type="button" id="apply_bulk_status" class="button">
+                    <?php esc_html_e( 'Apply to All', 'text-domain' ); ?>
+                </button>
+            </td>
+        </tr>
+
+        <script>
+        jQuery(document).ready(function($) {
+            $('#apply_bulk_status').on('click', function() {
+                var selectedStatus = $('#bulk_line_item_status').val();
+                if (selectedStatus) {
+                    $('.line-item-status-select').val(selectedStatus).trigger('change');
+                }
+            });
+
+            // Visual feedback when a status changes
+            $(document).on('change', '.line-item-status-select', function() {
+                $(this).closest('tr').addClass('status-changed');
+            });
+        });
+        </script>
+
+        <style>
+        .status-changed {
+            background-color: #fff2cd !important;
+        }
+        .bulk-status-update td {
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-top: 2px solid #ddd;
+        }
+        </style>
+        <?php
+    }
+}
+
+public function wps_tofw_order_list_table_columns($columns){
+	$wps_enable_partila_shipement = get_option('tofw_enable_partial_shipment');
+	if ('on' !== $wps_enable_partila_shipement) {
+		return $columns;
+	}
+	// place after order_status
+	$new = [];
+	foreach ( $columns as $key => $label ) {
+		$new[ $key ] = $label;
+		if ( 'order_status' === $key ) {
+			$new['wps_split_shipments'] = __( 'Partial Shipments', 'wps-track-order' );
+		}
+	}
+	return $new;
+
+}
+
+public function wps_tofw_shop_order_list_table_custom_column_callback($column, $order){
+	$wps_enable_partila_shipement = get_option('tofw_enable_partial_shipment');
+	if ( 'on' !== $wps_enable_partila_shipement ) {
+		return;
+	}
+	if ( 'wps_split_shipments' !== $column || ! $order instanceof WC_Order ) {
+		return;
+	}
+	echo $this->wps_render_split_shipments_cell( $order->get_id(), $order );
+}
+
+/**
+ * Shared renderer for the cell content.
+ * Shows child order count and a compact status summary.
+ */
+public function wps_render_split_shipments_cell( $parent_order_id, $parent_order = null ) {
+	$wps_enable_partila_shipement = get_option('tofw_enable_partial_shipment');
+	if ('on' !== $wps_enable_partila_shipement) {
+		return;
+	}
+	$parent_order = $parent_order ?: wc_get_order( $parent_order_id );
+	if ( ! $parent_order ) {
+		echo '&mdash;';
+		return;
+	}
+
+	$children = $this->wps_get_child_orders_ids( $parent_order );
+	if ( empty( $children ) ) {
+		echo '<span style="opacity:.7;">&mdash;</span>';
+		return;
+	}
+
+
+	// Count by status
+	$map = [];
+	foreach ( $children as $cid ) {
+		$c = wc_get_order( $cid );
+		if ( ! $c ) { continue; }
+		$st = $c->get_status(); // raw (e.g., 'processing', 'partially-shipped')
+		if ( ! isset( $map[ $st ] ) ) $map[ $st ] = 0;
+		$map[ $st ]++;
+	}
+
+// Quick links to all child orders
+if ( ! empty( $children ) ) {
+    echo '<div style="margin-top:4px;">';
+    foreach ( $children as $cid ) {
+        printf(
+            '<div><a href="%s" target="_blank" style="text-decoration:none;">%s #%d</a></div>',
+            esc_url( get_edit_post_link( $cid ) ),
+            esc_html__( 'Open child order ↗', 'wps-track-order' ),
+            (int) $cid
+        );
+    }
+    echo '</div>';
+}
+
+}
+
+
+/**
+ * Get child orders for a parent order.
+ * Strategy A: true parent/child via post_parent
+ * Strategy B: meta list on parent (_child_order_ids)
+ */
+public function wps_get_child_orders_ids( WC_Order $parent_order ) : array {
+	$wps_enable_partila_shipement = get_option('tofw_enable_partial_shipment');
+	if ('on' !== $wps_enable_partila_shipement) {
+		return '';
+	}
+	$parent_id = $parent_order->get_id();
+	$ids = [];
+
+	// A) True sub-orders
+	$sub = wc_get_orders( [
+		'limit'  => -1,
+		'parent' => $parent_id,
+		'return' => 'ids',
+		'type'   => [ 'shop_order' ], // include other custom types if needed
+	] );
+	if ( ! empty( $sub ) ) {
+		$ids = array_merge( $ids, $sub );
+	}
+
+	// B) Meta list on parent (HPOS-safe via $order->get_meta())
+	$meta_key   = apply_filters( 'wps_to_child_orders_meta_key', '_child_order_ids' );
+	$child_list = (array) $parent_order->get_meta( $meta_key, true );
+	if ( ! empty( $child_list ) ) {
+		$ids = array_merge( $ids, array_map( 'absint', $child_list ) );
+	}
+
+	$ids = array_values( array_unique( array_filter( $ids ) ) );
+	return $ids;
+}
+
+public function wps_tofw_shop_order_sortable_columns_callback($cols){
+		$wps_enable_partila_shipement = get_option('tofw_enable_partial_shipment');
+	if ('on' !== $wps_enable_partila_shipement) {
+		return $cols;
+	}
+	$cols['wps_split_shipments'] = 'wps_split_shipments';
+	return $cols;
+}
+
+public function wps_tofw_pre_get_posts_cllbck($q){
+		$wps_enable_partila_shipement = get_option('tofw_enable_partial_shipment');
+	if ('on' !== $wps_enable_partila_shipement) {
+		return;
+	}
+	if ( is_admin() && 'shop_order' === $q->get('post_type') && $q->get('orderby') === 'wps_split_shipments' ) {
+		$q->set( 'meta_key', '_wps_child_count' );
+		$q->set( 'orderby', 'meta_value_num' );
+	}
+}
+
+function wps_tofw_auto_complete_child_orders( $order_id ) {
+	$wps_tofw_auto_comple = get_option('tofw_aut_comp_part_order');
+	$wps_enable_partila_shipement = get_option('tofw_enable_partial_shipment');
+	if ('on' !== $wps_enable_partila_shipement && 'on' != $wps_tofw_auto_comple) {
+		return;
+	}
+    $order = wc_get_order( $order_id );
+    if ( ! $order instanceof WC_Order ) {
+        return;
+    }
+
+    // Get child orders from parent order meta
+    $child_order_ids = (array) $order->get_meta( '_wps_child_order_ids' );
+
+    if ( ! empty( $child_order_ids ) ) {
+        foreach ( $child_order_ids as $child_order_id ) {
+            $child_order = wc_get_order( $child_order_id );
+
+            if ( $child_order instanceof WC_Order ) {
+                // Only update if not already completed
+                if ( $child_order->get_status() !== 'completed' ) {
+                    
+                    // ✅ Update line item meta for each product in child order
+                    foreach ( $child_order->get_items() as $item_id => $item ) {
+                        wc_update_order_item_meta(
+                            $item_id,
+                            '_line_item_status',
+                            'completed'
+                        );
+                    }
+
+                    // ✅ Complete the child order
+                    $child_order->update_status(
+                        'completed',
+                        __( 'Auto-completed because parent order was completed.', 'track-orders-for-woocommerce' )
+                    );
+                }
+            }
+        }
+
+        // ✅ ALSO update the parent order’s own line items to completed
+        foreach ( $order->get_items() as $parent_item_id => $parent_item ) {
+            wc_update_order_item_meta(
+                $parent_item_id,
+                '_line_item_status',
+                'completed'
+            );
+        }
+
+        // Save parent order changes
+        $order->save();
+    }
+}
+
 }

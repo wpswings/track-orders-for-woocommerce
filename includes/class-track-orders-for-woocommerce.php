@@ -231,8 +231,18 @@ class Track_Orders_For_Woocommerce {
 
 		$this->loader->add_action( 'manage_woocommerce_page_wc-orders_columns', $tofw_plugin_admin, 'wps_new_column_track_order_column', 10, 2 );
 		$this->loader->add_action( 'manage_woocommerce_page_wc-orders_custom_column', $tofw_plugin_admin, 'tofw_track_order_col_column', 10, 2 );
-		// $this->loader->add_action( 'init', $tofw_plugin_admin, 'tofw_register_google_embed_blocks' );
 
+		$this->loader->add_action( 'woocommerce_admin_order_item_headers', $tofw_plugin_admin, 'add_line_item_status_header' );
+		$this->loader->add_action( 'woocommerce_admin_order_item_values', $tofw_plugin_admin, 'wps_tofw_add_line_item_status_dropdown',10,3);
+		$this->loader->add_action( 'woocommerce_saved_order_items', $tofw_plugin_admin, 'save_line_item_status',10,2);
+		$this->loader->add_action( 'admin_head', $tofw_plugin_admin, 'line_item_status_admin_css',10);
+		$this->loader->add_action( 'woocommerce_admin_order_items_after_line_items', $tofw_plugin_admin, 'wps_tofw_add_bulk_status_update',10,1);
+		$this->loader->add_filter( 'woocommerce_shop_order_list_table_columns', $tofw_plugin_admin, 'wps_tofw_order_list_table_columns',20,1);
+
+		$this->loader->add_action( 'woocommerce_shop_order_list_table_custom_column', $tofw_plugin_admin, 'wps_tofw_shop_order_list_table_custom_column_callback',10,2);
+        $this->loader->add_filter( 'manage_edit-shop_order_sortable_columns', $tofw_plugin_admin, 'wps_tofw_shop_order_sortable_columns_callback',10,1);
+		$this->loader->add_action( 'pre_get_posts', $tofw_plugin_admin, 'wps_tofw_pre_get_posts_cllbck',20,1);
+		$this->loader->add_action( 'woocommerce_order_status_completed', $tofw_plugin_admin, 'wps_tofw_auto_complete_child_orders',20,1);
 	}
 
 	/**
@@ -295,6 +305,10 @@ class Track_Orders_For_Woocommerce {
 			if ('on' == get_option('wps_tofwp_enable_multi_carrier_tracking')) {
 				$this->loader->add_action('init', $tofw_plugin_public, 'wps_track_order_shortcodes_multiple_carrier');
 			}
+			$this->loader->add_action( 'woocommerce_order_details_before_order_table', $tofw_plugin_public, 'wps_tofw_add_tracking_header_myaccount', 10, 1 );
+			$this->loader->add_action( 'woocommerce_order_details_after_order_table', $tofw_plugin_public, 'wps_tofw_add_tracking_header_thankyou', 10, 1 );
+			$this->loader->add_action( 'woocommerce_new_order', $tofw_plugin_public, 'wps_run_split_on_order', 10, 1 );
+
 		}
 	}
 

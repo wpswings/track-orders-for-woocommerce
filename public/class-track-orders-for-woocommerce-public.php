@@ -477,4 +477,155 @@ class Track_Orders_For_Woocommerce_Public {
 		return ob_get_clean();
 	}
 
+
+public function wps_tofw_add_tracking_header_myaccount( $order ) {
+    if ( ! ( is_account_page() && is_wc_endpoint_url( 'view-order' ) ) ) {
+        return;
+    }
+    $this->wps_tofw_render_partial_tracking( $order );
+}
+
+
+public function wps_tofw_add_tracking_header_thankyou( $order ) {
+    if ( ! is_checkout() || ! is_order_received_page() ) {
+        return;
+    }
+    $this->wps_tofw_render_partial_tracking( $order );
+}
+
+/**
+ * Shared renderer for tracking column
+ */
+public function wps_tofw_render_partial_tracking( $order ) {
+    $wps_enable_partila_shipement = get_option('tofw_enable_partial_shipment');
+    if ( 'on' !== $wps_enable_partila_shipement ) {
+        return;
+    }
+
+    if ( ! $order instanceof WC_Order ) {
+        return;
+    }
+
+    $wps_tofw_tracking_numbers = (array) $order->get_meta( '_wps_child_order_ids' );
+    if ( empty( $wps_tofw_tracking_numbers ) ) {
+        return;
+    }
+
+    // Build map of product name → product ID
+    $wps_tofw_products = [];
+    foreach ( $order->get_items() as $wps_tofw_item ) {
+        $wps_tofw_products[ $wps_tofw_item->get_name() ] = $wps_tofw_item->get_product_id();
+    }
+    ?>
+    <script>
+    document.addEventListener("DOMContentLoaded", function(){
+        const wps_tofw_table = document.querySelector(".woocommerce-table--order-details");
+        if (!wps_tofw_table) return;
+
+        const wps_tofw_theadRow = wps_tofw_table.querySelector("thead tr");
+        if (wps_tofw_theadRow && !wps_tofw_theadRow.querySelector(".tracking-link-col")) {
+            const wps_tofw_th = document.createElement("th");
+            wps_tofw_th.className = "tracking-link-col";
+            wps_tofw_th.innerText = "Partial Tracking Link";
+            wps_tofw_theadRow.appendChild(wps_tofw_th);
+        }
+
+        const wps_tofw_trackingLinks = <?php echo wp_json_encode( $wps_tofw_tracking_numbers ); ?>;
+        const wps_tofw_productMap    = <?php echo wp_json_encode( $wps_tofw_products ); ?>;
+
+        wps_tofw_table.querySelectorAll("tbody tr.woocommerce-table__line-item").forEach(function(wps_tofw_row){
+            const wps_tofw_productName = wps_tofw_row.querySelector(".woocommerce-table__product-name a")?.innerText.trim();
+            const wps_tofw_productId   = wps_tofw_productMap[wps_tofw_productName] || null;
+
+            const wps_tofw_td = document.createElement("td");
+            wps_tofw_td.className = "tracking-link-col";
+
+            if (wps_tofw_productId && wps_tofw_trackingLinks[wps_tofw_productId]) {
+                wps_tofw_td.innerHTML = '<a href="<?php echo esc_url( home_url("/track-your-order/?") ); ?>' 
+                    + wps_tofw_trackingLinks[wps_tofw_productId] 
+                    + '" target="_blank" class="wps-tofw-track-btn">Track Order</a>';
+            } else {
+                wps_tofw_td.textContent = '-';
+            }
+
+            wps_tofw_row.appendChild(wps_tofw_td);
+        });
+    });
+    </script>
+    <?php
+}
+
+
+	public function wps_run_split_on_order( $order_id ) {
+		$wps_enable_partila_shipement = get_option('tofw_enable_partial_shipment');
+		if ( ! $order_id  && 'on' !== $wps_enable_partila_shipement ) {
+			return;
+		}
+
+		// Call your function
+		$this->wps_split_parent_into_children( $order_id );
+	}
+
+function wps_split_parent_into_children( $parent_order_id ) {
+	$parent = wc_get_order( $parent_order_id );
+	if ( ! $parent ) {
+		return new WP_Error( 'wps_no_parent', 'Parent order not found.' );
+	}
+
+	// Prevent dupes.
+	if ( $parent->get_meta( '_wps_children_created' ) ) {
+		return new WP_Error( 'wps_already_done', 'Children already created for this order.' );
+	}
+
+	$child_ids = [];
+	foreach ( $parent->get_items( 'line_item' ) as $item_id => $item ) {
+		$child = wc_create_order( [
+			'status'      => $parent->get_status(),
+			'customer_id' => $parent->get_customer_id(),
+			'currency'    => $parent->get_currency(),
+		] );
+
+		if ( ! $child || ! is_a( $child, 'WC_Order' ) ) {
+			continue;
+		}
+
+		$child->set_parent_id( $parent_order_id );
+		$child->set_address( $parent->get_address( 'billing' ), 'billing' );
+		$child->set_address( $parent->get_address( 'shipping' ), 'shipping' );
+		$child->set_payment_method( $parent->get_payment_method() );
+		$child->set_payment_method_title( $parent->get_payment_method_title() );
+
+		$child_item = new WC_Order_Item_Product();
+		$child_item->set_product_id( $item->get_product_id() );
+		$child_item->set_variation_id( $item->get_variation_id() );
+		$child_item->set_name( $item->get_name() );
+		$child_item->set_quantity( $item->get_quantity() );
+		$child_item->set_subtotal( $item->get_subtotal() );
+		$child_item->set_total( $item->get_total() );
+		$child_item->set_taxes( $item->get_taxes() );
+		$child_item->set_tax_class( $item->get_tax_class() );
+
+		foreach ( $item->get_meta_data() as $meta ) {
+			$child_item->add_meta_data( $meta->key, $meta->value, true );
+		}
+
+		$child->add_item( $child_item );
+		$child->calculate_totals( false );
+		$child->add_order_note( sprintf( 'Created as child order of #%d for item #%d.', $parent_order_id, $item_id ) );
+		$child->update_meta_data( '_wps_is_child_order', 'yes' );
+		$child->save();
+
+		$child_ids[$item->get_product_id()] = $child->get_id();
+	}
+
+	if ( $child_ids ) {
+		$parent->update_meta_data( '_wps_child_order_ids', $child_ids );
+		$parent->update_meta_data( '_wps_children_created', current_time( 'mysql' ) );
+		$parent->add_order_note( 'Child orders created: ' . implode( ', ', array_map( 'wc_clean', $child_ids ) ) );
+		$parent->save();
+		return $child_ids;
+	}
+
+	return new WP_Error( 'wps_no_items', 'No line items to split.' );
+}
 }

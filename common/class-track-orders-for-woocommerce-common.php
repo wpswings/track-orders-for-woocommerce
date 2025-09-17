@@ -1,4 +1,5 @@
 <?php
+
 /**
  * The common functionality of the plugin.
  *
@@ -1558,14 +1559,14 @@ class Track_Orders_For_Woocommerce_Common
 				array(
 					'label'                     => __('Partially Shipped', 'track-orders-for-woocommerce'),
 					'public'                    => true,
-				'exclude_from_search'       => false,
-				'show_in_admin_all_list'    => true,
-				'show_in_admin_status_list' => true,
-				/* translators: %s: count */
-				'label_count'               => false,
-			)
-		);
-	}
+					'exclude_from_search'       => false,
+					'show_in_admin_all_list'    => true,
+					'show_in_admin_status_list' => true,
+					/* translators: %s: count */
+					'label_count'               => false,
+				)
+			);
+		}
 
 		if ('on' !== $wps_tofw_enable_track_order_feature || 'on' !== $wps_tofw_enable_custom_order_feature) {
 			return;
@@ -1650,7 +1651,7 @@ class Track_Orders_For_Woocommerce_Common
 		$wps_tofw_enable_partial_shipment = get_option('tofw_enable_partial_shipment');
 
 		if ('on' === $wps_tofw_enable_partial_shipment && $wps_tofw_part_order_status === 'on') {
-			$order_statuses['wc-partially-shipped'] = _x( 'Partially Shipped', 'Order status', 'track-orders-for-woocommerce' );
+			$order_statuses['wc-partially-shipped'] = _x('Partially Shipped', 'Order status', 'track-orders-for-woocommerce');
 		}
 
 		if ('on' != $wps_tofw_enable_track_order_feature || 'on' != $wps_tofw_enable_custom_order_feature) {
@@ -1670,17 +1671,37 @@ class Track_Orders_For_Woocommerce_Common
 		$custom_order[] = array('packed' => __('Order Packed', 'track-orders-for-woocommerce'));
 
 		if (is_array($custom_order) && ! empty($custom_order) && ! empty($statuses) && is_array($statuses)) {
-			foreach ($custom_order as $key1 => $value1) {
-				foreach ($value1 as $custom_key => $custom_value) {
-					if (in_array('wc-' . $custom_key, $statuses)) {
-						$order_statuses['wc-' . $custom_key] = $custom_value;
-					}
-				}
+			$custom_order = $this->wps_tofw_flatten_statuses($custom_order);
+
+			foreach ($custom_order as $key => $label) {
+				$order_statuses['wc-' . $key] = $label;
 			}
 		}
 
 		return $order_statuses;
 	}
+
+
+	/**
+	 * Function to flatten the custom statuses array.
+	 *
+	 * @param array $custom_order is an array.
+	 * @return array
+	 */
+	public function wps_tofw_flatten_statuses($custom_order)
+	{
+		$flat_statuses = array();
+
+		if (is_array($custom_order) && ! empty($custom_order)) {
+			foreach ($custom_order as $status_item) {
+				if (is_array($status_item)) {
+					foreach ($status_item as $key => $value) {
+						$flat_statuses[$key] = $value;
+					}
+				}
+			}
+		}
+
+		return $flat_statuses;
+	}
 }
-
-
