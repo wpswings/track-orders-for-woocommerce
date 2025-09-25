@@ -77,7 +77,7 @@ class Track_Orders_For_Woocommerce {
 		if ( defined( 'TRACK_ORDERS_FOR_WOOCOMMERCE_VERSION' ) ) {
 			$this->version = TRACK_ORDERS_FOR_WOOCOMMERCE_VERSION;
 		} else {
-			$this->version = '1.1.7';
+			$this->version = '1.1.8';
 		}
 
 		$this->plugin_name = 'track-orders-for-woocommerce';
@@ -941,7 +941,7 @@ class Track_Orders_For_Woocommerce {
 
 						case 'button':
 							?>
-						<div class="wps-form-group">
+						<div class="wps-form-group <?php echo ( isset( $tofw_component['main-class'] ) ? esc_html( $tofw_component['main-class'] ) : '' ); ?>">
 							<div class="wps-form-group__label"></div>
 							<div class="wps-form-group__control">
 								<button class="mdc-button mdc-button--raised" name= "<?php echo ( isset( $tofw_component['name'] ) ? esc_html( $tofw_component['name'] ) : esc_html( $tofw_component['id'] ) ); ?>"

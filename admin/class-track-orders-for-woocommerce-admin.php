@@ -129,7 +129,9 @@ class Track_Orders_For_Woocommerce_Admin {
 
 		wp_enqueue_media();
 		wp_enqueue_script( 'jquery-ui-timepicker-js', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/js/jquery.ui.timepicker.js', array(), time(), false );
-		wp_register_script( 'wps-admin-js', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/js/wps-admin.js', array(), time(), false );
+		
+		wp_register_script( 'wps-admin-js', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/js/wps-admin.js', array(), time(), true );
+
 		wp_localize_script(
 			'wps-admin-js',
 			'wps_admin_param',
@@ -139,6 +141,8 @@ class Track_Orders_For_Woocommerce_Admin {
 				'site_url' => site_url(),
 				'custom_order_status_url'  => get_option( 'wps_tofw_new_custom_order_image' ),
 				'wps_file_include'  => plugin_dir_url( __FILE__ ),
+				'wps_get_child_order'  => $this->get_wps_child_order_ids(),
+				'wps_partial_shipment_enable'  => get_option( 'tofw_enable_partial_shipment' ),
 			),
 		);
 		wp_enqueue_script( 'wps-admin-js' );
@@ -542,6 +546,7 @@ class Track_Orders_For_Woocommerce_Admin {
 		$tofw_settings_general[] = array(
 			'type'        => 'button',
 			'id'          => 'wps_tofw_general_settings_save',
+			'main-class'  => 'wps_tofw_main_class',
 			'button_text' => __( 'Save Settings', 'track-orders-for-woocommerce' ),
 			'class'       => 'wps_tofw_general_settings_save',
 			'name'        => 'wps_tofw_general_settings_save',
@@ -600,6 +605,7 @@ class Track_Orders_For_Woocommerce_Admin {
 		$tofw_partial_shipement_settings[] = array(
 			'type'  => 'button',
 			'id'    => 'wps_tofw_save_partial_shipment',
+			'main-class'  => 'wps_tofw_main_class',
 			'button_text' => __( 'Save Settings', 'track-orders-for-woocommerce' ),
 			'class' => 'tofw-button-class',
 		);
@@ -908,6 +914,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			'id'    => 'wps_tofw_track-order_setting_save',
 			'button_text' => __( 'Save Settings', 'track-orders-for-woocommerce' ),
 			'class' => 'tofw-button-class',
+			'main-class'  => 'wps_tofw_main_class',
 		);
 		return $tofw_track_order_settings;
 	}
@@ -983,6 +990,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			'id'    => 'wps_tofw_custom_order_status_setting_save',
 			'button_text' => __( 'Save Settings', 'track-orders-for-woocommerce' ),
 			'class' => 'tofw-button-class',
+			'main-class'  => 'wps_tofw_main_class',
 		);
 		return $tofw_custom_order_status_settings;
 	}
@@ -1069,6 +1077,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			'id'    => 'wps_tofw_track_order_gmap_settings_save',
 			'button_text' => __( 'Save Settings', 'track-orders-for-woocommerce' ),
 			'class' => 'tofw-button-class',
+			'main-class'  => 'wps_tofw_main_class',
 		);
 		return $tofw_track_order_gmap_settings;
 	}
@@ -1244,6 +1253,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			'id'    => 'wps_tofw_shipping_services_settings_save',
 			'button_text' => __( 'Save Settings', 'track-orders-for-woocommerce' ),
 			'class' => 'tofw-button-class',
+			'main-class'  => 'wps_tofw_main_class',
 		);
 		return $tofw_shipping_services_settings;
 	}
@@ -2263,7 +2273,7 @@ class Track_Orders_For_Woocommerce_Admin {
 
 		$wps_enable_partila_shipement = get_option( 'tofw_enable_partial_shipment' );
 		$order = wc_get_order( $item->get_order_id() );
-		if ( ! $order && 'on' !== $wps_enable_partila_shipement ) {
+		if ( ! $order || 'on' !== $wps_enable_partila_shipement ) {
 			return;
 		}
 
@@ -2286,7 +2296,7 @@ class Track_Orders_For_Woocommerce_Admin {
 				foreach ( $order_statuses as $status_key => $status_name ) {
 					$status_key = str_replace( 'wc-', '', $status_key );
 					$selected   = selected( $current_status, $status_key, false );
-					echo '<option value="' . esc_attr( $status_key ) . '" ' . $selected . '>' . esc_html( $status_name ) . '</option>';
+					echo '<option value="' . esc_attr( $status_key ) . '" ' . esc_attr( $selected ) . '>' . esc_html( $status_name ) . '</option>';
 				}
 
 				echo '</select>';
@@ -2303,8 +2313,15 @@ class Track_Orders_For_Woocommerce_Admin {
 	 */
 	public function save_line_item_status( $order_id, $items ) {
 		$wps_enable_partila_shipement = get_option( 'tofw_enable_partial_shipment' );
+		check_admin_referer( 'update-order_' . $order_id );
 		if ( isset( $_POST['line_item_status'] ) && is_array( $_POST['line_item_status'] ) && 'on' === $wps_enable_partila_shipement ) {
-			foreach ( $_POST['line_item_status'] as $item_id => $status ) {
+			if ( isset( $_POST['line_item_status'] ) && is_array( $_POST['line_item_status'] ) ) {
+				$line_item_statuses = array_map( 'sanitize_text_field', wp_unslash( $_POST['line_item_status'] ) );
+			}
+
+			foreach ( $line_item_statuses as $item_id => $status ) {
+				$item_id = absint( $item_id );
+				$status  = sanitize_text_field( $status );
 				wc_update_order_item_meta( $item_id, '_line_item_status', sanitize_text_field( $status ) );
 				$parent_order = wc_get_order( $order_id );
 				$child_order_ids = $parent_order->get_meta( '_wps_child_order_ids' );
@@ -2405,7 +2422,7 @@ class Track_Orders_For_Woocommerce_Admin {
 	public function wps_tofw_add_bulk_status_update( $order_id ) {
 		$wps_enable_partila_shipement = get_option( 'tofw_enable_partial_shipment' );
 		$order = wc_get_order( $order_id );
-		if ( ! $order instanceof WC_Order && 'on' != $wps_enable_partila_shipement ) {
+		if ( ! $order instanceof WC_Order || 'on' != $wps_enable_partila_shipement ) {
 			return;
 		}
 
@@ -2513,7 +2530,8 @@ class Track_Orders_For_Woocommerce_Admin {
 		if ( 'wps_split_shipments' !== $column || ! $order instanceof WC_Order ) {
 			return;
 		}
-		echo $this->wps_render_split_shipments_cell( $order->get_id(), $order );
+		echo wp_kses_post( $this->wps_render_split_shipments_cell( $order->get_id(), $order ) );
+
 	}
 
 	/**
@@ -2528,7 +2546,9 @@ class Track_Orders_For_Woocommerce_Admin {
 		if ( 'on' !== $wps_enable_partila_shipement ) {
 			return;
 		}
-		$parent_order = $parent_order ?: wc_get_order( $parent_order_id );
+		if ( ! $parent_order ) {
+			$parent_order = wc_get_order( $parent_order_id );
+		}
 		if ( ! $parent_order ) {
 			echo '&mdash;';
 			return;
@@ -2663,7 +2683,6 @@ class Track_Orders_For_Woocommerce_Admin {
 					// Only update if not already completed.
 					if ( $child_order->get_status() !== 'completed' ) {
 
-						// ✅ Update line item meta for each product in child order.
 						foreach ( $child_order->get_items() as $item_id => $item ) {
 							wc_update_order_item_meta(
 								$item_id,
@@ -2672,7 +2691,6 @@ class Track_Orders_For_Woocommerce_Admin {
 							);
 						}
 
-						// ✅ Complete the child order.
 						$child_order->update_status(
 							'completed',
 							__( 'Auto-completed because parent order was completed.', 'track-orders-for-woocommerce' )
@@ -2694,5 +2712,27 @@ class Track_Orders_For_Woocommerce_Admin {
 			$order->save();
 		}
 	}
+
+
+    /**
+	 * Get all child order IDs in the system.
+	 * @return array List of child order IDs.
+	 */
+ 		public function get_wps_child_order_ids() {
+			$args = array(
+				'limit' => -1,
+				'status' => 'any',
+				'return' => 'ids', // Only return IDs
+				'meta_query' => array(
+					array(
+						'key' => '_wps_is_child_order',
+						'compare' => 'EXISTS'
+					)
+				)
+			);
+			
+			return wc_get_orders($args);
+		}
+
 
 }

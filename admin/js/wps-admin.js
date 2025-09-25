@@ -1,7 +1,5 @@
 //code for datatable
-
 jQuery(document).ready(function() {
-
     	/*SETTING A DATEPICKER TO THE METABOX ON ORDER EDIT PAGE*/
 	if( jQuery( '.wps_tofw_est_delivery_date' ).length > 0 ){
 
@@ -81,6 +79,24 @@ jQuery(document).ready(function() {
 				  })
 			   
 			}
-	   }
+	}
+	
+		// Hide child orders from admin listing.
+		if (
+			typeof wps_admin_param !== 'undefined' &&
+			Array.isArray(wps_admin_param.wps_get_child_order) &&
+			wps_admin_param.wps_get_child_order.length > 0 &&
+			wps_admin_param.wps_partial_shipment_enable == 'on'
+		) {
+			jQuery.each(wps_admin_param.wps_get_child_order, function (index, value) {
+				if (value) {
+					var $row = jQuery('#order-' + value);
+					if ($row.length) {
+						$row.hide();
+					}
+				}
+			});
+		}
+
 
 });

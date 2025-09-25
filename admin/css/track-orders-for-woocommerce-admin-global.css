@@ -1248,3 +1248,11 @@ mark.order-status.wps-tofw_status-icon {
   margin-top: -3px;
   max-width: 15px;
 }
+
+.wps_tofw_main_class{
+  position: sticky;
+    bottom: 0;
+    background: white;
+    margin-bottom: 0;
+    padding: 10px 0;
+}
