@@ -1241,3 +1241,10 @@ mark.order-status.wps-tofw_status-icon {
   color: #fff;
   cursor: pointer;
 }
+
+.wps-info-img {
+  display: inline-block;
+  margin-right: 6px;
+  margin-top: -3px;
+  max-width: 15px;
+}

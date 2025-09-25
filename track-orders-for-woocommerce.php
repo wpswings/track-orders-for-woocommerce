@@ -198,9 +198,54 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 	}
 	run_track_orders_for_woocommerce();
 
+		/**
+	 * Plugin Active Detection.
+	 *
+	 * @since    1.0.0
+	 * @param    string $plugin_slug index file of plugin.
+	 */
+	function wps_tofw_lite_is_plugin_active( $plugin_slug = '' ) {
 
-	// Add settings link on plugin page.
-	add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'track_orders_for_woocommerce_settings_link' );
+		if ( empty( $plugin_slug ) ) {
+
+			return false;
+		}
+
+		$active_plugins = (array) get_option( 'active_plugins', array() );
+
+		if ( is_multisite() ) {
+
+			$active_plugins = array_merge( $active_plugins, get_site_option( 'active_sitewide_plugins', array() ) );
+		}
+
+		return in_array( $plugin_slug, $active_plugins, true ) || array_key_exists( $plugin_slug, $active_plugins );
+	}
+
+	
+// Add settings links.
+if ( ! wps_tofw_lite_is_plugin_active( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php' ) ) {
+			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'wps_tofw_lite_plugin_action_links' );
+
+			/**
+			 * Add Settings link if premium version is not available.
+			 *
+			 * @since    1.0.0
+			 * @param    string $links link to admin arena of plugin.
+			 */
+			function wps_tofw_lite_plugin_action_links( $links ) {
+
+				$plugin_links = array(
+					'<a href="' . admin_url( 'admin.php?page=track_orders_for_woocommerce_menu' ) .
+						'">' . esc_html__( 'Settings', 'track-orders-for-woocommerce' ) . '</a>',
+					'<a class="wps-ubo-lite-go-pro" style="background: #05d5d8; color: white; font-weight: 700; padding: 2px 5px; border: 1px solid #05d5d8; border-radius: 5px;" href="https://wpswings.com/product/track-orders-for-woocommerce-pro/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=ot-pro" target="_blank">' . esc_html__( 'GO PRO', 'track-orders-for-woocommerce' ) . '</a>',
+				);
+
+				return array_merge( $plugin_links, $links );
+			}
+		}
+
+
+
 
 	/**
 	 * Settings link.
@@ -227,8 +272,14 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 	function track_orders_for_woocommerce_custom_settings_at_plugin_tab( $links_array, $plugin_file_name ) {
 		if ( strpos( $plugin_file_name, basename( __FILE__ ) ) ) {
 			$links_array[] = '<a href="https://demo.wpswings.com/track-orders-for-woocommerce-pro/?utm_source=wpswings-ot-demo&utm_medium=ot-pro-page&utm_campaign=live-demo" target="_blank"><img src="' . esc_html( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/Demo.svg" class="wps-info-img" alt="Demo image">' . __( 'Demo', 'track-orders-for-woocommerce' ) . '</a>';
+
 			$links_array[] = '<a href="https://docs.wpswings.com/track-orders-for-woocommerce/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=ot-doc-free" target="_blank"><img src="' . esc_html( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/Documentation.svg" class="wps-info-img" alt="documentation image">' . __( 'Documentation', 'track-orders-for-woocommerce' ) . '</a>';
+
+			$links_array[] = '<a href="https://www.youtube.com/watch?v=tQ5tJTjDJTE" target="_blank"><img src="' . esc_html( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/wps-youtube.svg" class="wps-info-img" alt="video image">' . __( 'Video', 'track-orders-for-woocommerce' ) . '</a>';
+
 			$links_array[] = '<a href="https://wpswings.com/submit-query/?utm_source=wpswings-ot-pro-support&utm_medium=ot-org-backend&utm_campaign=support" target="_blank"><img src="' . esc_html( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/Support.svg" class="wps-info-img" alt="support image">' . __( 'Support', 'track-orders-for-woocommerce' ) . '</a>';
+
+			$links_array[] = '<a href="https://wpswings.com/woocommerce-services/" target="_blank"><img src="' . esc_html( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/Services.svg" class="wps-info-img" alt="support image">' . __( 'Services', 'track-orders-for-woocommerce' ) . '</a>';
 		}
 		return $links_array;
 	}

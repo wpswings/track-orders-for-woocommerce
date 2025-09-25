@@ -41,11 +41,15 @@ $tofw_default_tabs = $wps_tofw_obj->wps_std_plug_default_tabs();
 		<a href="https://docs.wpswings.com/track-orders-for-woocommerce/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=ot-doc-free" target="_blank" class="wps-link"><?php esc_html_e( 'Documentation', 'track-orders-for-woocommerce' ); ?></a>
 		<span>|</span>
 		<a href="https://wpswings.com/contact-us/" target="_blank" class="wps-link"><?php esc_html_e( 'Support', 'track-orders-for-woocommerce' ); ?></a>
+		<span>|</span>
+		<a href="https://wpswings.com/woocommerce-services/" target="_blank" class="wps-link"><?php esc_html_e( 'Service', 'track-orders-for-woocommerce' ); ?></a>
 	<?php } else { ?>
 		<h1 class="wps-header-title"><?php echo esc_attr( strtoupper( str_replace( '-', ' ', 'track-orders-for-woocommerce-pro' ) ) ); ?></h1>
 		<a href="https://docs.wpswings.com/track-orders-for-woocommerce-pro/?utm_source=wpswings-ot-doc&utm_medium=ot-pro-page&utm_campaign=documentation" target="_blank" class="wps-link"><?php esc_html_e( 'Documentation', 'track-orders-for-woocommerce' ); ?></a>
 		<span>|</span>
 		<a href="https://wpswings.com/contact-us/" target="_blank" class="wps-link"><?php esc_html_e( 'Support', 'track-orders-for-woocommerce' ); ?></a>
+		<span>|</span>
+		<a href="https://wpswings.com/woocommerce-services/" target="_blank" class="wps-link"><?php esc_html_e( 'Service', 'track-orders-for-woocommerce' ); ?></a>
 		<?php } ?>
 	</div>
 </header>
