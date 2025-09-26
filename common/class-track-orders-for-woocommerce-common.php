@@ -688,7 +688,7 @@ class Track_Orders_For_Woocommerce_Common
 					}
 
 					$message .= '<div class="footer">
-						&copy; ' . gmdate('Y') . ' ' . $site_name . ' Your Company. All rights reserved.
+						&copy; ' . gmdate('Y') . ' ' . get_bloginfo('name') . ' Your Company. All rights reserved.
 					</div>
 					</body>
 					</html>';
