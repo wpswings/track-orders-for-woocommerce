@@ -1,13 +1,13 @@
-=== Track Orders for WooCommerce ===
+=== Track Orders for WooCommerce - Automate your Multi Carrier WooCommerce Shipping === 
 
 Contributors: wpswings
 Donate link: https://wpswings.com/
-Tags: tracking, woocommerce shipping, shipping, shipment tracking, order tracking
+Tags: woocommerce shipping, shipment tracker, shipping, shipment tracking, order tracking
 Requires at least: 6.7.0
 Tested up to: 6.8.2
 WC requires at least: 6.5.0
-WC tested up to: 10.1.1
-Stable tag: 1.1.7
+WC tested up to: 10.2.1
+Stable tag: 1.1.8
 Requires PHP: 7.4
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -16,7 +16,7 @@ Track Orders for WooCommerce – Automate Multi Carrier WooCommerce Shipping wit
 
 == Description ==
 
-📦 Track Orders for WooCommerce is the best [**WooCommerce shipment tracking plugin**](https://wpswings.com/product/track-orders-for-woocommerce-pro/?utm_source=wpswings-ot-pro&utm_medium=ot-org-page&utm_campaign=ot-pro) you’ll ever need. Using this extension, you can enable customers to monitor the delivery process. They can track the shipment from order placement to doorstep delivery. 
+📦 Automate your Multi Carrier  [**WooCommerce Shipping**](https://wpswings.com/product/track-orders-for-woocommerce-pro/?utm_source=wpswings-ot-pro&utm_medium=ot-org-page&utm_campaign=ot-pro). Using this extension, you can enable customers to monitor the delivery process. They can track the shipment from order placement to doorstep delivery. 
 
 It lets you optimize the custom WooCommerce shipping module to make waiting less boring for your customers. On top of that, you can tailor the tracking stages to your shipping process.
 
@@ -26,60 +26,64 @@ Keep your customers updated with real-time tracking and grab their attention whi
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/tQ5tJTjDJTE?si=X1njyU3KIUgMJ3Mn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-=== Why Choose Our WooCommerce Track Orders Plugin? ===
+=== Why Choose Our WooCommerce Shipping Plugin? ===
 
 > You can automate Multi Carrier WooCommerce Shipping with delivery notifications, tracking templates, and live updates.
 
 === WITH OUR WOOCOMMERCE SHIPPING PLUGIN YOU CAN: ===
 
+* Simplify your order processing with partial shipment tracking
 * Multi-Carrier Tracking On the Same Page with live updates
-* Track your orders with three tracking templates
+* Track Orders with multiple tracking templates.
 * Quick order tracker button for customers 
 * Show the icon for order status in the order table
 * Track your orders using the unique order ID only
-* Third-party Shipment Tracking (FedEx)
+* Third-party 3PL Shipment Tracking.
 * Enable Live Map Package Tracking Using Google Map
 * Let customers & guests export orders in a CSV file
 * Email notifications for order status in WooCommerce
-* Show additional order details 
-* Create and use the custom order status.
+* Show additional order details with tracking
+* Create and use unlimited custom order status.
 * Share Tracking URL on WhatsApp. 
+* Create Custom Email Templates with Template Builder
 
 
 === ⭐ KEY FEATURES OF WOOCOMMERCE SHIPPING PLUGIN: ===
 
-#### 1) Multi-Carrier Tracking On Same Page:
+#### 1) Partial Shipment Tracking: 
+Our latest Track Orders plugin update brings partial shipment tracking. Customers placing multiple orders at once will see separate tracking buttons for each order and can track them one by one. As an admin, you can change the parent order status from the backend, mark it as **partially shipped**, and set child orders to be completed automatically when the parent order is completed.
+
+#### 2) Multi-Carrier Tracking On Same Page:
 With the latest update to our WordPress order tracking plugin, we have added support for **on-page live tracking** for over 1000 carriers. Now, customers can track their orders directly on your website without being redirected anywhere else. All they need to do is enter their tracking ID, and the live order status will appear instantly on your site.
 
-
-#### 2) Using Pre-Built Tracking Templates:
+#### 3) Pre-Built Tracking Templates:
 WooCommerce Order Tracker provides a diverse range of **three distinct order-tracking templates**, which enables you to incorporate captivating visual representations for different order statuses, such as on-hold, processing, delivery, and more. 
 
-#### 3) Create Custom Order Status in WooCommerce:
+#### 4) Create Custom Order Status in WooCommerce:
 Order tracker for WooCommerce allows you to create and **use custom order statuses** tailored to your specific order fulfillment workflow. Define order statuses that cater to the distinct stages within your shipping process. 
 
-#### 4) Track your orders With Google Maps:
+#### 5) Track your orders With Google Maps:
 With Google Maps feature allows customers to track their orders in **real-time using Google Maps API** integration. You have to provide the Google Maps API key, the order production house address, and the lessons of the order transit locations. Once enabled, customers can view the progress of their order on a Google Maps map.
 
-#### 5) Third-party Shipment Tracking (FedEx):
-Through the **integration with FedEx's shipment tracking** system, the WooCommerce order tracker plugin allows customers to track their packages using the provided tracking code.
+#### 6) Third-party Shipment Tracking (FedEx):
+Through the **integration with FedEx's shipment tracking** system, the WooCommerce shipping plugin allows customers to track their packages using the provided tracking code.
 
-#### 6) Replace Order Status Text With Icons:
+#### 7) Replace Order Status Text With Icons:
 You can replace the **order status text with relevant icons** in the order details table, allowing customers to grasp their orders' status at a glance. By utilizing icons that are associated with each specific order status, such as a checkmark for "completed" or a clock for "processing," the visual representation becomes more compelling and user-friendly. 
 
-#### 7) Email Notifications for WooCommerce Order Status:
+#### 8) Email Notifications for WooCommerce Order Status:
 Use the order tracking plugin to implement **automated email notifications** that are triggered whenever the WooCommerce order status is updated. You also get access to four email notification templates, allowing you to choose the one that fits your brand.
 
-#### 8) Track Only Using Order ID:
+#### 9) Track Only Using Order ID:
 Enable them to track their orders effortlessly by solely entering their **unique order ID**, without the need for additional information such as email addresses or account logins. 
 
-#### 9) Order Export as CSV File:
+#### 10) Order Export as CSV File:
 With the WooCommerce order tracker, logged-in users and guest users can **export their order details** in a comma-separated values (CSV) file, which contains details like Order ID, Status, Total, Items, Payment Method, Billing Name, and Email address.
 
-#### 10) Order Information:
+#### 11) Order Information:
 Show **customers information** crucial to the order fulfillment process, such as the delivery partner, estimated delivery date, and tracking code. Including the delivery partner's name.
 
-#### 11) Create WooCommerce Order Tracking Shortcode on the tracking Page:
+#### 12) Create WooCommerce Order Tracking Shortcode on the tracking Page:
 By utilizing the page short code, you can add an Order Tracking page anywhere on your WooCommerce store. Use the **form shortcode to implement a Track Order Form** anywhere on your site.
 
 
@@ -122,7 +126,7 @@ Compatible with various themes that are suitable for any kind of WordPress proje
 
 **8. Carriers Supported 1000+:** WooCommerce Shipment Tracking plugin now supports over 1000+ carriers, like DHL, UPS, FedEx, and many more
 
-**9. Custom Email Template Builder :** Create custom email templates with a simple drag-and-drop builder. Select and organize elements like headers, footers, and custom HTML to match your style.
+**9. Custom Email Template Builder:** Create custom email templates with a simple drag-and-drop builder. Select and organize elements like headers, footers, and custom HTML to match your style.
 
 
 
@@ -181,6 +185,8 @@ The manual installation method involves downloading our Track Orders for WooComm
 11. **Track Orders With Google Maps**
 12. **Third-Party Shipping Services (FedEx)**
 13. **Multiple Carrier Tracking Template**
+14. **Partial Shipment Backend Dashboard**
+15. **Partial Order Tracking Frontend**
 
 == Frequently Asked Questions ==
 
@@ -225,6 +231,13 @@ Check out [**Knowledge Base**](https://support.wpswings.com/wordpress-plugins-kn
 Visit [**Community Forums for Track Orders**](https://forums.wpswings.com/topic-tag/track-orders/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=site_forums)
 
 == Changelog ==
+
+= 1.1.8 – Released on 26 September 2025 = 
+* New: Partial Order Shipment Tracking 
+* New: Automatic partial order completion functionality.
+* New: Introduced a custom "Partially Shipped" order status.
+* New: Compatibility with the latest WP(6.8.2) and WC (10.2.1).
+
 = 1.1.7 – Released on 28 August 2025 = 
 * New: Compatibility with the latest WP(6.8.2) and WC (10.1.1)
 * New: Multi-carrier live tracking on the same page.
@@ -309,6 +322,8 @@ Visit [**Community Forums for Track Orders**](https://forums.wpswings.com/topic-
 
 == Upgrade Notice == 
 
-= 1.1.7 – Released on 28 August 2025 = 
-* New: Compatibility with the latest WP(6.8.2) and WC (10.1.1)
-* New: Multi-carrier live tracking on the same page.
+= 1.1.8 – Released on 26 September 2025 = 
+* New: Partial Order Shipment Tracking 
+* New: Automatic partial order completion functionality.
+* New: Introduced a custom "Partially Shipped" order status.
+* New: Compatibility with the latest WP(6.8.2) and WC (10.2.1)
