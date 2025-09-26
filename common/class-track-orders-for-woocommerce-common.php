@@ -1651,7 +1651,7 @@ class Track_Orders_For_Woocommerce_Common
 		$wps_tofw_enable_partial_shipment = get_option('tofw_enable_partial_shipment');
 
 		if ('on' === $wps_tofw_enable_partial_shipment && $wps_tofw_part_order_status === 'on') {
-			$order_statuses['wc-partially-shipped'] = _x('Partially Shipped', 'Order status', 'track-orders-for-woocommerce');
+			$order_statuses['wc-partially-shipped'] = __('Partially Shipped','track-orders-for-woocommerce');
 		}
 
 		if ('on' != $wps_tofw_enable_track_order_feature || 'on' != $wps_tofw_enable_custom_order_feature) {
