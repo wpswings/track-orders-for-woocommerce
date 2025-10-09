@@ -96,3 +96,9 @@ jobs:
             phpcbf-report.txt
             languages/*.pot
             languages/*.mo
+            
+      - name: Run PHPCBF Auto Fix
+          run: |
+            # Automatically fix all fixable coding standard issues
+            phpcbf --standard=phpcs.xml --warning-severity=0 --extensions=php,html .
+          continue-on-error: true
