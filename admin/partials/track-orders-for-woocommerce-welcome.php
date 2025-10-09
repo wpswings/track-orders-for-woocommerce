@@ -20,7 +20,9 @@ $tofw_tab_key = '';
 ?>
 <header>
 	<?php
-	// desc - This hook is used for trial.
+	/**
+	 * Desc - This hook is used for trial.
+	 */
 	do_action( 'wps_tofw_settings_saved_notice' );
 	?>
 	<div class="wps-header-container wps-bg-white wps-r-8">
