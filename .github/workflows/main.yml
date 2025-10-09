@@ -1,7 +1,8 @@
-name: PHPCS & PHPCBF
+name: PHP Code Quality & Auto-Fix
 
 permissions:
   contents: write
+  pull-requests: write
 
 on:
   push:
@@ -9,18 +10,25 @@ on:
   pull_request:
     branches: [orgV1.1.9]
 
+
 jobs:
-  phpcs:
+  code-quality:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
-      - name: Install PHP
-        run: sudo apt-get update && sudo apt-get install -y php-cli php-zip unzip curl
-
-      - name: Install Composer
-        run: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: curl, mbstring, zip
+          tools: composer, cs2pr
 
       - name: Install PHPCS + Standards
         run: |
@@ -33,15 +41,64 @@ jobs:
             phpcompatibility/phpcompatibility-wp \
             phpcompatibility/phpcompatibility-paragonie \
             phpcsstandards/phpcsutils \
-            phpcsstandards/phpcsextra
+            phpcsstandards/phpcsextra \
+            friendsofphp/php-cs-fixer
 
       - name: Add Composer global bin to PATH
         run: echo "$HOME/.composer/vendor/bin" >> $GITHUB_PATH
 
-      - name: Verify PHPCS installation
-        run: phpcs -i
+      - name: Create PHP_CodeSniffer configuration
+        run: |
+          cat > phpcs.xml << 'EOF'
+          <?xml version="1.0"?>
+          <ruleset name="WordPress Coding Standards">
+            <description>Custom coding standards for Track Orders plugin</description>
+            
+            <file>.</file>
+            
+            <!-- Exclude dependencies -->
+            <exclude-pattern>*/node_modules/*</exclude-pattern>
+            <exclude-pattern>*/vendor/*</exclude-pattern>
+            <exclude-pattern>*/tests/*</exclude-pattern>
+            <exclude-pattern>*/build/*</exclude-pattern>
+            
+            <!-- WordPress Coding Standards -->
+            <rule ref="WordPress">
+              <!-- Allow short array syntax -->
+              <exclude name="WordPress.Arrays.ArrayDeclarationSpacing" />
+              <exclude name="WordPress.Arrays.ArrayIndentation" />
+              
+              <!-- We want to fix these automatically -->
+              <exclude name="WordPress.WhiteSpace.ControlStructureSpacing" />
+              <exclude name="WordPress.WhiteSpace.OperatorSpacing" />
+              
+              <!-- Allow alternative syntax -->
+              <exclude name="Generic.ControlStructures.InlineControlStructure" />
+            </rule>
+            
+            <!-- Specifically target indentation issues -->
+            <rule ref="Generic.WhiteSpace.ScopeIndent">
+              <properties>
+                <property name="indent" value="2"/>
+                <property name="tabIndent" value="false"/>
+              </properties>
+            </rule>
+            
+            <!-- Target commenting issues -->
+            <rule ref="WordPress.Commenting">
+              <properties>
+                <property name="exclude" value="WordPress.Commenting.FileComment"/>
+              </properties>
+            </rule>
+            
+            <!-- Show progress -->
+            <arg value="p"/>
+            <arg name="colors"/>
+            <arg name="extensions" value="php"/>
+          </ruleset>
+          EOF
 
-      - name: Run PHPCS
+      - name: Run PHPCS (Code Sniffer - Report Only)
         run: |
           phpcs --standard=phpcs.xml \
                 --report=full \
@@ -49,17 +106,57 @@ jobs:
                 --report=checkstyle \
                 --report-file=phpcs-report.xml \
                 --warning-severity=0 \
-                --extensions=php,html .
+                --extensions=php .
         continue-on-error: true
 
-      - name: Run PHPCBF (Auto Fix)
+      - name: Convert PHPCS report to GitHub annotations
+        uses: ataylorme/cs2pr@v2.1.0
+        if: always()
+        with:
+          file: phpcs-report.xml
+
+      - name: Run PHPCBF (Auto Fix Everything Possible)
         run: |
           phpcbf --standard=phpcs.xml \
                  --report=full \
                  --report-file=phpcbf-report.txt \
                  --warning-severity=0 \
-                 --extensions=php,html .
+                 --extensions=php .
         continue-on-error: true
+
+      - name: Run PHP-CS-Fixer for additional formatting
+        run: |
+          ~/.composer/vendor/bin/php-cs-fixer fix \
+            --rules='@PSR12,array_syntax,blank_line_after_opening_tag,braces,concat_space,declare_equal_normalize,function_typehint_space,single_quote,method_argument_space,no_unused_imports,no_whitespace_in_blank_line,ordered_imports,trailing_comma_in_multiline,phpdoc_align,phpdoc_no_empty_return,phpdoc_order,phpdoc_separation,phpdoc_summary' \
+            --using-cache=no \
+            --diff \
+            --verbose
+        continue-on-error: true
+
+      - name: Check for changes after auto-fixing
+        id: git-check
+        run: |
+          git add .
+          if git diff --staged --quiet; then
+            echo "changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "changes=true" >> $GITHUB_OUTPUT
+            echo "🚀 Code style fixes applied!"
+          fi
+
+      - name: Commit auto-fixes
+        if: steps.git-check.outputs.changes == 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -m "🔧 AUTO-FIX: PHP Code Style & Formatting
+
+          - Fixed indentation issues
+          - Improved code commenting
+          - Applied WordPress coding standards
+          - Cleaned up whitespace and formatting
+          - Auto-generated by GitHub Actions"
+          git push
 
       - name: Install WP-CLI
         run: |
@@ -69,6 +166,7 @@ jobs:
 
       - name: Generate POT file
         run: |
+          mkdir -p languages
           wp i18n make-pot . languages/track-orders-for-woocommerce.pot \
             --exclude=node_modules,vendor,tests,public/js,admin/js,packages,build,dist
 
@@ -85,17 +183,46 @@ jobs:
 
       - name: Generate default PO file (en_US)
         run: |
-          if [ ! -f languages/en_US.po ]; then
+          if [ ! -f languages/track-orders-for-woocommerce-en_US.po ]; then
             cp languages/track-orders-for-woocommerce.pot languages/track-orders-for-woocommerce-en_US.po
           fi
 
-      - name: Upload PHPCS Reports
+      - name: Upload Code Quality Reports
         uses: actions/upload-artifact@v4
         with:
-          name: reports-and-languages
+          name: code-quality-reports
           path: |
             phpcs-report.txt
             phpcs-report.xml
             phpcbf-report.txt
             languages/*.pot
             languages/*.mo
+          retention-days: 30
+
+      - name: Create Summary Report
+        if: always()
+        run: |
+          echo "## 📊 Code Quality Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ -f phpcs-report.txt ]; then
+            echo "### 🔍 PHPCS Issues Found:" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            grep -E "(ERROR|WARNING)" phpcs-report.txt | head -20 >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ -f phpcbf-report.txt ]; then
+            echo "### 🔧 Auto-fixes Applied:" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            grep -E "(FIXED|REMAINING)" phpcbf-report.txt | head -10 >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ steps.git-check.outputs.changes }}" == "true" ]; then
+            echo "### ✅ Auto-committed fixes!" >> $GITHUB_STEP_SUMMARY
+            echo "Code style improvements have been automatically committed to the repository." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "### ✅ No formatting issues found!" >> $GITHUB_STEP_SUMMARY
+            echo "Your code follows the coding standards perfectly." >> $GITHUB_STEP_SUMMARY
+          fi

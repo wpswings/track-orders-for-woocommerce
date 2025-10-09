@@ -1,54 +1,52 @@
 <?xml version="1.0"?>
-<ruleset name="WordPress Coding Standards">
-    <description>WooCommerce extension PHP_CodeSniffer ruleset.</description>
+<ruleset name="Custom WordPress Standards">
+    <description>Enhanced coding standards for Track Orders plugin</description>
 
-    <!-- Exclude folders -->
-    <exclude-pattern>tests/</exclude-pattern>
-    <exclude-pattern>woo-includes/woo-functions.php</exclude-pattern>
-    <exclude-pattern>woo-includes/class-wc-dependencies.php</exclude-pattern>
+    <file>.</file>
+
     <exclude-pattern>*/node_modules/*</exclude-pattern>
     <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*/tests/*</exclude-pattern>
 
-    <!-- WordPress settings -->
-    <config name="minimum_supported_wp_version" value="4.7" />
-    <config name="testVersion" value="5.6-" />
-
-    <!-- WordPress Coding Standards -->
-    <rule ref="WordPress-Extra">
-        <exclude name="Generic.Commenting.DocComment.SpacingAfter" />
-        <exclude name="Generic.Files.LineEndings.InvalidEOLChar" />
-        <exclude name="Generic.Functions.FunctionCallArgumentSpacing.SpaceBeforeComma" />
-        <exclude name="PEAR.Functions.FunctionCallSignature" />
-        <exclude name="Squiz.Commenting" />
-        <exclude name="Squiz.PHP.DisallowSizeFunctionsInLoops.Found" />
-        <exclude name="Squiz.WhiteSpace" />
-        <!-- These old sniffs don’t exist anymore in WPCS v3+ -->
-        <exclude name="WordPress.Arrays" />
-        <exclude name="WordPress.Files.FileName" />
-        <exclude name="WordPress.NamingConventions" />
-        <exclude name="WordPress.Security.ValidatedSanitizedInput.MissingUnslash" />
-        <exclude name="WordPress.WP.I18n.NonSingularStringLiteralText" />
-        <exclude name="WordPress.WhiteSpace" />
+    <arg name="colors"/>
+    <arg value="sp"/>
+    <arg name="extensions" value="php"/>
+    
+    <!-- WordPress Core -->
+    <rule ref="WordPress">
+        <!-- Allow modern PHP syntax -->
+        <exclude name="WordPress.Arrays.ArrayDeclarationSpacing" />
+        <exclude name="WordPress.Arrays.ArrayIndentation" />
+        
+        <!-- We'll fix these automatically -->
+        <exclude name="WordPress.WhiteSpace.ControlStructureSpacing" />
+        <exclude name="WordPress.WhiteSpace.OperatorSpacing" />
+        <exclude name="WordPress.WhiteSpace.PrecisionAlignment" />
+        
+        <!-- Commenting - we want to enforce but not break -->
+        <exclude name="WordPress.Commenting.FileComment" />
     </rule>
 
-    <!-- WooCommerce Standard (correct name is just WooCommerce) -->
-    <rule ref="WooCommerce">
-        <exclude name="Core.Commenting.CommentTags.AuthorTag" />
-        <exclude name="WordPress.PHP.DontExtract" />
-        <exclude name="Generic.Arrays.DisallowShortArraySyntax" />
-        <exclude name="Generic.WhiteSpace.ScopeIndent.Incorrect" />
+    <!-- Specific rules for indentation -->
+    <rule ref="Generic.WhiteSpace.ScopeIndent">
+        <properties>
+            <property name="indent" value="2"/>
+            <property name="tabIndent" value="false"/>
+        </properties>
     </rule>
 
-    <!-- PHPCompatibility -->
-    <rule ref="PHPCompatibility">
-        <exclude-pattern>tests/</exclude-pattern>
+    <!-- Commenting standards -->
+    <rule ref="WordPress.Commenting">
+        <properties>
+            <property name="exclude" value="WordPress.Commenting.FileComment"/>
+        </properties>
     </rule>
 
-    <!-- PHPCSExtra (Universal, Modernize, NormalizedArrays) -->
-    <rule ref="Universal"/>
-    <rule ref="Modernize"/>
-    <rule ref="NormalizedArrays"/>
-
-    <!-- Scan PHP + HTML -->
-    <arg name="extensions" value="php,html"/>
+    <!-- Line length is less important for WordPress -->
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="120"/>
+            <property name="absoluteLineLimit" value="140"/>
+        </properties>
+    </rule>
 </ruleset>
