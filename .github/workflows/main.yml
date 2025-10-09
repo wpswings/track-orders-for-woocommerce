@@ -109,12 +109,6 @@ jobs:
                 --extensions=php .
         continue-on-error: true
 
-      - name: Convert PHPCS report to GitHub annotations
-        uses: ataylorme/cs2pr@v2.1.0
-        if: always()
-        with:
-          file: phpcs-report.xml
-
       - name: Run PHPCBF (Auto Fix Everything Possible)
         run: |
           phpcbf --standard=phpcs.xml \
