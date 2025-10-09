@@ -1,52 +1,46 @@
 <?xml version="1.0"?>
-<ruleset name="Custom WordPress Standards">
-    <description>Enhanced coding standards for Track Orders plugin</description>
-
-    <file>.</file>
-
-    <exclude-pattern>*/node_modules/*</exclude-pattern>
-    <exclude-pattern>*/vendor/*</exclude-pattern>
-    <exclude-pattern>*/tests/*</exclude-pattern>
-
-    <arg name="colors"/>
-    <arg value="sp"/>
-    <arg name="extensions" value="php"/>
+<ruleset name="WordPress Coding Standards">
+  <description>Custom coding standards for Track Orders plugin</description>
+  
+  <file>.</file>
+  
+  <!-- Exclude dependencies -->
+  <exclude-pattern>*/node_modules/*</exclude-pattern>
+  <exclude-pattern>*/vendor/*</exclude-pattern>
+  <exclude-pattern>*/tests/*</exclude-pattern>
+  <exclude-pattern>*/build/*</exclude-pattern>
+  
+  <!-- WordPress Coding Standards -->
+  <rule ref="WordPress">
+    <!-- Allow short array syntax -->
+    <exclude name="WordPress.Arrays.ArrayDeclarationSpacing" />
+    <exclude name="WordPress.Arrays.ArrayIndentation" />
     
-    <!-- WordPress Core -->
-    <rule ref="WordPress">
-        <!-- Allow modern PHP syntax -->
-        <exclude name="WordPress.Arrays.ArrayDeclarationSpacing" />
-        <exclude name="WordPress.Arrays.ArrayIndentation" />
-        
-        <!-- We'll fix these automatically -->
-        <exclude name="WordPress.WhiteSpace.ControlStructureSpacing" />
-        <exclude name="WordPress.WhiteSpace.OperatorSpacing" />
-        <exclude name="WordPress.WhiteSpace.PrecisionAlignment" />
-        
-        <!-- Commenting - we want to enforce but not break -->
-        <exclude name="WordPress.Commenting.FileComment" />
-    </rule>
-
-    <!-- Specific rules for indentation -->
-    <rule ref="Generic.WhiteSpace.ScopeIndent">
-        <properties>
-            <property name="indent" value="2"/>
-            <property name="tabIndent" value="false"/>
-        </properties>
-    </rule>
-
-    <!-- Commenting standards -->
-    <rule ref="WordPress.Commenting">
-        <properties>
-            <property name="exclude" value="WordPress.Commenting.FileComment"/>
-        </properties>
-    </rule>
-
-    <!-- Line length is less important for WordPress -->
-    <rule ref="Generic.Files.LineLength">
-        <properties>
-            <property name="lineLimit" value="120"/>
-            <property name="absoluteLineLimit" value="140"/>
-        </properties>
-    </rule>
+    <!-- We want to fix these automatically -->
+    <exclude name="WordPress.WhiteSpace.ControlStructureSpacing" />
+    <exclude name="WordPress.WhiteSpace.OperatorSpacing" />
+    
+    <!-- Allow alternative syntax -->
+    <exclude name="Generic.ControlStructures.InlineControlStructure" />
+  </rule>
+  
+  <!-- Specifically target indentation issues -->
+  <rule ref="Generic.WhiteSpace.ScopeIndent">
+    <properties>
+      <property name="indent" value="2"/>
+      <property name="tabIndent" value="false"/>
+    </properties>
+  </rule>
+  
+  <!-- Target commenting issues -->
+  <rule ref="WordPress.Commenting">
+    <properties>
+      <property name="exclude" value="WordPress.Commenting.FileComment"/>
+    </properties>
+  </rule>
+  
+  <!-- Show progress -->
+  <arg value="p"/>
+  <arg name="colors"/>
+  <arg name="extensions" value="php"/>
 </ruleset>
