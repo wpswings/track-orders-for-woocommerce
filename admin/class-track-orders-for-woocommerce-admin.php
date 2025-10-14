@@ -2716,4 +2716,50 @@ class Track_Orders_For_Woocommerce_Admin {
 			$order->save();
 		}
 	}
+
+	/**
+	 * Update a parent order's line item meta when a child order status changes.
+	 *
+	 * @param int      $order_id   The ID of the order whose status changed.
+	 * @param string   $old_status The previous status of the order.
+	 * @param string   $new_status The new status of the order.
+	 * @param WC_Order $order      The order object.
+	 */
+	public function wps_update_another_order_on_status_change_hpos( $order_id, $old_status, $new_status, $order ) {
+
+		// Validate order object.
+		if ( ! $order instanceof WC_Order ) {
+			return;
+		}
+
+		// Retrieve linked order metadata (HPOS safe).
+		$is_child_order_id = $order->get_meta( '_wps_is_child_order' );
+		$parent_order_id   = $order->get_meta( '_wps_parent_order_id' );
+		$cart_line_item_id = $order->get_meta( '_wps_parent_item_id' );
+
+		// Validate required metadata before proceeding.
+		if ( 'yes' !== $is_child_order_id || empty( $parent_order_id ) || empty( $cart_line_item_id ) ) {
+			return;
+		}
+
+		// Get parent order object.
+		$target_order = wc_get_order( $parent_order_id );
+		if ( ! $target_order ) {
+			return;
+		}
+
+		// Loop through parent order items and update the matching one.
+		foreach ( $target_order->get_items() as $item_id => $item ) {
+			if ( (int) $item_id === (int) $cart_line_item_id ) {
+				$item->update_meta_data( '_line_item_status', $new_status );
+				$item->save();
+				$target_order->add_order_note( "Line item #{$item_id} updated to status '{$new_status}' due to child order #{$order_id} status change." );
+				break;
+			}
+		}
+
+		// Save changes to the parent order.
+		$target_order->save();
+	}
+
 }

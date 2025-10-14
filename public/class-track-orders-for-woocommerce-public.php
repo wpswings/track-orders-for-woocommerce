@@ -557,6 +557,7 @@ class Track_Orders_For_Woocommerce_Public {
 
 		const wps_tofw_trackingLinks = <?php echo wp_json_encode( $wps_tofw_tracking_numbers ); ?>;
 		const wps_tofw_productMap    = <?php echo wp_json_encode( $wps_tofw_products ); ?>;
+		const wps_otfw_popup_tracking_page = <?php echo json_encode( get_option( 'wps_tofwp_enable_track_order_popup' ) ); ?>;
 
 		wps_tofw_table.querySelectorAll("tbody tr.woocommerce-table__line-item").forEach(function(wps_tofw_row){
 			const wps_tofw_productName = wps_tofw_row.querySelector(".woocommerce-table__product-name a")?.innerText.trim();
@@ -566,9 +567,15 @@ class Track_Orders_For_Woocommerce_Public {
 			wps_tofw_td.className = "tracking-link-col";
 
 			if (wps_tofw_productId && wps_tofw_trackingLinks[wps_tofw_productId]) {
-				wps_tofw_td.innerHTML = '<a href="<?php echo esc_url( home_url( '/track-your-order/?' ) ); ?>' 
+				if ( 'on' === wps_otfw_popup_tracking_page ) {
+					wps_tofw_td.innerHTML = '<a href="<?php echo esc_url( home_url( '/track-your-order/?' ) ); ?>' 
+					+ wps_tofw_trackingLinks[wps_tofw_productId] 
+					+ '&TB_iframe=true&popup_type=track_order" target="_blank" class="wps-tofw-track-btn thickbox">Track Order</a>';
+				} else {
+						wps_tofw_td.innerHTML = '<a href="<?php echo esc_url( home_url( '/track-your-order/?' ) ); ?>' 
 					+ wps_tofw_trackingLinks[wps_tofw_productId] 
 					+ '" target="_blank" class="wps-tofw-track-btn">Track Order</a>';
+				}
 			} else {
 				wps_tofw_td.textContent = '-';
 			}
@@ -658,6 +665,8 @@ class Track_Orders_For_Woocommerce_Public {
 			$child->calculate_totals( false );
 			$child->add_order_note( sprintf( 'Created as child order of #%d for item #%d.', $parent_order_id, $item_id ) );
 			$child->update_meta_data( '_wps_is_child_order', 'yes' );
+			$child->update_meta_data( '_wps_parent_item_id', $item_id );
+			$child->update_meta_data( '_wps_parent_order_id', $parent_order_id );
 			$child->save();
 
 			$child_ids[ $item->get_product_id() ] = $child->get_id();

@@ -243,6 +243,7 @@ class Track_Orders_For_Woocommerce {
         $this->loader->add_filter( 'manage_edit-shop_order_sortable_columns', $tofw_plugin_admin, 'wps_tofw_shop_order_sortable_columns_callback',10,1);
 		$this->loader->add_action( 'pre_get_posts', $tofw_plugin_admin, 'wps_tofw_pre_get_posts_cllbck',20,1);
 		$this->loader->add_action( 'woocommerce_order_status_completed', $tofw_plugin_admin, 'wps_tofw_auto_complete_child_orders',20,1);
+		$this->loader->add_action( 'woocommerce_order_status_changed', $tofw_plugin_admin, 'wps_update_another_order_on_status_change_hpos', 10, 4 );
 	}
 
 	/**
