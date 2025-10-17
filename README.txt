@@ -4,10 +4,10 @@ Contributors: wpswings
 Donate link: https://wpswings.com/
 Tags: woocommerce shipping, shipment tracker, shipping, shipment tracking, order tracking
 Requires at least: 6.7.0
-Tested up to: 6.8.2
+Tested up to: 6.8.3
 WC requires at least: 6.5.0
-WC tested up to: 10.2.1
-Stable tag: 1.1.8
+WC tested up to: 10.2.2
+Stable tag: 1.1.9
 Requires PHP: 7.4
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -231,6 +231,9 @@ Check out [**Knowledge Base**](https://support.wpswings.com/wordpress-plugins-kn
 Visit [**Community Forums for Track Orders**](https://forums.wpswings.com/topic-tag/track-orders/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=site_forums)
 
 == Changelog ==
+= 1.1.9 – Released on 17 October 2025 = 
+* Fix: Deprecated issue and warning fixes during order tracking.
+* New: Compatibility with the latest WP(6.8.3) and WC (10.2.2)
 
 = 1.1.8 – Released on 26 September 2025 = 
 * New: Partial Order Shipment Tracking 
@@ -322,8 +325,6 @@ Visit [**Community Forums for Track Orders**](https://forums.wpswings.com/topic-
 
 == Upgrade Notice == 
 
-= 1.1.8 – Released on 26 September 2025 = 
-* New: Partial Order Shipment Tracking 
-* New: Automatic partial order completion functionality.
-* New: Introduced a custom "Partially Shipped" order status.
-* New: Compatibility with the latest WP(6.8.2) and WC (10.2.1)
+= 1.1.9 – Released on 17 October 2025 = 
+* Fix: Deprecated issue and warning fixes during order tracking.
+* New: Compatibility with the latest WP(6.8.3) and WC (10.2.2)
