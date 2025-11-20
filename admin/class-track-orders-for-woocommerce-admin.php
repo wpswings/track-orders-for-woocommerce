@@ -2552,7 +2552,7 @@ class Track_Orders_For_Woocommerce_Admin
 		foreach ($columns as $key => $label) {
 			$new[$key] = $label;
 			if ('order_status' === $key) {
-				$new['wps_split_shipments'] = __('Partial Shipments', 'wps-track-order');
+				$new['wps_split_shipments'] = __('Partial Shipments', 'track-orders-for-woocommerce');
 			}
 		}
 		return $new;
@@ -2629,7 +2629,7 @@ class Track_Orders_For_Woocommerce_Admin
 				printf(
 					'<div><a href="%s" target="_blank" style="text-decoration:none;">%s #%d</a></div>',
 					esc_url(get_edit_post_link($cid)),
-					esc_html__('Open child order ↗', 'wps-track-order'),
+					esc_html__('Open child order ↗', 'track-orders-for-woocommerce'),
 					(int) $cid
 				);
 			}
