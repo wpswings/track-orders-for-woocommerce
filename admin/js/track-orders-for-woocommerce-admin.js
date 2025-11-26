@@ -1169,12 +1169,11 @@ jQuery(document).ready(function($) {
     }
   });
 	
-	
-      // Add click event for copying shortcode
+      // Add click event for copying shortcode.
       jQuery('.tofw-copy-shortcode').on('click', function (e) {
         e.preventDefault();
 
-        // Find the sibling span with the shortcode
+        // Find the sibling span with the shortcode.
         const $shortcodeSpan = jQuery(this).siblings('.tofw-shortcode');
         const shortcodeText = $shortcodeSpan.text();
 
@@ -1185,5 +1184,115 @@ jQuery(document).ready(function($) {
         } catch (err) {
             console.error('Failed to copy: ', err);
         }
+    });
+});
+
+jQuery(function($){
+    /** OPEN POPUP. **/
+	$('.wps-open-email-popup').on('click', function (e) {
+		e.preventDefault();
+        $('#wps-email-popup').fadeIn(150);
+    });
+
+    /** CLOSE POPUP. **/
+    $('.wps-popup-close, .wps-close-popup').on('click', function(){
+        $('#wps-email-popup').fadeOut(150);
+    });
+
+    /** ADMIN TOGGLE **/
+	// FIXED: Toggle Admin Section.
+	jQuery('#wps_send_admin_mail').on('change', function () {
+    if (jQuery(this).is(':checked')) {
+        jQuery('#wps_admin_section').slideDown(200);
+    } else {
+        jQuery('#wps_admin_section').slideUp(200);
+    }
+});
+
+
+    /* ---------------------------
+       LIVE PREVIEW FUNCTION.
+    ----------------------------*/
+    function wps_build_preview(type) {
+        var subject = (type === 'customer')
+            ? $('#wps_customer_subject').val()
+            : $('#wps_admin_subject').val();
+
+        var body = (type === 'customer')
+            ? $('#wps_customer_body').val()
+            : $('#wps_admin_body').val();
+
+        $.post(tofw_admin_param.ajaxurl, {
+            action: 'wps_preview_wc_email',
+            subject: subject,
+            body: body,
+            nonce: tofw_admin_param.wps_tofw_nonce,
+        }, function(response){
+
+            if(response.success){
+                if (type === 'customer') {
+                    $('#wps-preview-customer .wps-email-preview-inner').html(response.data);
+                } else {
+                    $('#wps-preview-admin .wps-email-preview-inner').html(response.data);
+                }
+            }
+
+        });
+    }
+
+
+    /* ---------------------------
+       PREVIEW BUTTON (toggle).
+    ----------------------------*/
+    $('.wps-preview-email').on('click', function(){
+
+        var type = $(this).data('type');
+        var box = (type === 'customer') ? $('#wps-preview-customer') : $('#wps-preview-admin');
+
+        // Toggle close.
+        if (box.is(':visible')) {
+            box.slideUp(200);
+            return;
+        }
+
+        // Open & load preview.
+        wps_build_preview(type);
+        box.slideDown(200);
+    });
+
+
+    /* ---------------------------
+       REAL-TIME PREVIEW on typing
+    ----------------------------*/
+    $('#wps_customer_subject, #wps_customer_body').on('input', function(){
+        if ($('#wps-preview-customer').is(':visible')) {
+            wps_build_preview('customer');
+        }
+    });
+
+    $('#wps_admin_subject, #wps_admin_body').on('input', function(){
+        if ($('#wps-preview-admin').is(':visible')) {
+            wps_build_preview('admin');
+        }
+    });
+
+
+    /* ---------------------------
+       SAVE SETTINGS
+    ----------------------------*/
+    $('.wps-save-email-template').on('click', function(){
+        $.post(tofw_admin_param.ajaxurl, {
+            action: 'wps_save_delay_email_settings',
+            customer_subject: $('#wps_customer_subject').val(),
+            customer_body: $('#wps_customer_body').val(),
+            admin_subject: $('#wps_admin_subject').val(),
+            admin_body: $('#wps_admin_body').val(),
+            notify_admin: $('#wps_send_admin_mail').is(':checked') ? 'yes' : 'no',
+            nonce: tofw_admin_param.wps_tofw_nonce,
+        }, function(){
+            alert('Settings Saved!');
+            $('#wps-email-popup').fadeOut(150);
+        });
+
     });
 });

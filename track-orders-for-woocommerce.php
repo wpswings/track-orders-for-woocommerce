@@ -15,7 +15,7 @@
  * Plugin Name:       Track Orders for WooCommerce
  * Plugin URI:        https://wpswings.com/product/track-orders-for-woocommerce/
  * Description:       <code><strong>Track Orders for WooCommerce</strong></code> Keep your customers informed in real-time with simple order tracking, transforming their waiting time into an engaging and interactive journey. <a target="_blank" href="https://wpswings.com/woocommerce-plugins/?utm_source=wpswings-orderbump-shop&utm_medium=orderbump-pro-backend&utm_campaign=shop-page" >Elevate your eCommerce store by exploring more on <strong>WP Swings</strong></a>.
- * Version:           1.1.10
+ * Version:           1.2.0
  * Author:            WPSwings
  * Author URI:        https://wpswings.com/
  * Text Domain:       track-orders-for-woocommerce
@@ -27,7 +27,7 @@
  * WC requires at least: 6.5.0
  * WC tested up to:      10.3.5
  * Requires PHP:         7.4
- * Stable tag:           1.1.10
+ * Stable tag:           1.2.0
  *
  * License:           GNU General Public License v3.0
  * License URI:       http://www.gnu.org/licenses/gpl-3.0.html
@@ -60,7 +60,7 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 	 * @since 1.0.0
 	 */
 	function define_track_orders_for_woocommerce_constants() {
-		track_orders_for_woocommerce_constants( 'TRACK_ORDERS_FOR_WOOCOMMERCE_VERSION', '1.1.10' );
+		track_orders_for_woocommerce_constants( 'TRACK_ORDERS_FOR_WOOCOMMERCE_VERSION', '1.2.0' );
 		track_orders_for_woocommerce_constants( 'TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH', plugin_dir_path( __FILE__ ) );
 		track_orders_for_woocommerce_constants( 'TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL', plugin_dir_url( __FILE__ ) );
 		track_orders_for_woocommerce_constants( 'TRACK_ORDERS_FOR_WOOCOMMERCE_SERVER_URL', 'https://wpswings.com' );
@@ -198,7 +198,7 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 	}
 	run_track_orders_for_woocommerce();
 
-		/**
+	/**
 	 * Plugin Active Detection.
 	 *
 	 * @since    1.0.0
@@ -221,28 +221,28 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 		return in_array( $plugin_slug, $active_plugins, true ) || array_key_exists( $plugin_slug, $active_plugins );
 	}
 
-	
-// Add settings links.
-if ( ! wps_tofw_lite_is_plugin_active( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php' ) ) {
-			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'wps_tofw_lite_plugin_action_links' );
 
-			/**
-			 * Add Settings link if premium version is not available.
-			 *
-			 * @since    1.0.0
-			 * @param    string $links link to admin arena of plugin.
-			 */
-			function wps_tofw_lite_plugin_action_links( $links ) {
+	// Add settings links.
+	if ( ! wps_tofw_lite_is_plugin_active( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php' ) ) {
+		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'wps_tofw_lite_plugin_action_links' );
 
-				$plugin_links = array(
-					'<a href="' . admin_url( 'admin.php?page=track_orders_for_woocommerce_menu' ) .
-						'">' . esc_html__( 'Settings', 'track-orders-for-woocommerce' ) . '</a>',
-					'<a class="wps-ubo-lite-go-pro" style="background: #05d5d8; color: white; font-weight: 700; padding: 2px 5px; border: 1px solid #05d5d8; border-radius: 5px;" href="https://wpswings.com/product/track-orders-for-woocommerce-pro/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=ot-pro" target="_blank">' . esc_html__( 'GO PRO', 'track-orders-for-woocommerce' ) . '</a>',
-				);
+		/**
+		 * Add Settings link if premium version is not available.
+		 *
+		 * @since    1.0.0
+		 * @param    string $links link to admin arena of plugin.
+		 */
+		function wps_tofw_lite_plugin_action_links( $links ) {
 
-				return array_merge( $plugin_links, $links );
-			}
+			$plugin_links = array(
+				'<a href="' . admin_url( 'admin.php?page=track_orders_for_woocommerce_menu' ) .
+					'">' . esc_html__( 'Settings', 'track-orders-for-woocommerce' ) . '</a>',
+				'<a class="wps-ubo-lite-go-pro" style="background: #05d5d8; color: white; font-weight: 700; padding: 2px 5px; border: 1px solid #05d5d8; border-radius: 5px;" href="https://wpswings.com/product/track-orders-for-woocommerce-pro/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=ot-pro" target="_blank">' . esc_html__( 'GO PRO', 'track-orders-for-woocommerce' ) . '</a>',
+			);
+
+			return array_merge( $plugin_links, $links );
 		}
+	}
 
 
 
@@ -856,3 +856,25 @@ function wps_create_carrier_logo_database() {
 	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 	dbDelta( $sql );
 }
+
+/**
+ * CRON ACTIVATION & CLEANUP FOR DELIVERY DELAY CHECKS.
+ */
+register_activation_hook(
+	__FILE__,
+	function () {
+		if ( ! wp_next_scheduled( 'wps_check_delivery_delays_cron' ) ) {
+			wp_schedule_event( time(), 'hourly', 'wps_check_delivery_delays_cron' );
+		}
+	}
+);
+
+register_deactivation_hook(
+	__FILE__,
+	function () {
+		$timestamp = wp_next_scheduled( 'wps_check_delivery_delays_cron' );
+		if ( $timestamp ) {
+			wp_unschedule_event( $timestamp, 'wps_check_delivery_delays_cron' );
+		}
+	}
+);

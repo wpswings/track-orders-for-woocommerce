@@ -244,6 +244,12 @@ class Track_Orders_For_Woocommerce {
 		$this->loader->add_action( 'pre_get_posts', $tofw_plugin_admin, 'wps_tofw_pre_get_posts_cllbck',20,1);
 		$this->loader->add_action( 'woocommerce_order_status_completed', $tofw_plugin_admin, 'wps_tofw_auto_complete_child_orders',20,1);
 		$this->loader->add_action( 'woocommerce_order_status_changed', $tofw_plugin_admin, 'wps_update_another_order_on_status_change_hpos', 10, 4 );
+		
+		$this->loader->add_action('admin_footer', $tofw_plugin_admin, 'wps_tofw_admin_footer', 10);
+		$this->loader->add_action('wp_ajax_wps_preview_wc_email', $tofw_plugin_admin, 'wps_preview_wc_email_callback');
+		$this->loader->add_action('wp_ajax_wps_save_delay_email_settings', $tofw_plugin_admin, 'wps_save_delay_email_settings_callback');
+		$this->loader->add_action( 'wps_check_delivery_delays_cron',$tofw_plugin_admin ,'wps_run_delay_cron_master' );
+
 	}
 
 	/**
@@ -873,7 +879,7 @@ class Track_Orders_For_Woocommerce {
 								<label for="" class="wps-form-label"><?php echo ( isset( $tofw_component['title'] ) ? esc_html( $tofw_component['title'] ) : '' ); // WPCS: XSS ok. ?></label>
 							</div>
 							<div class="wps-form-group__control">
-								<div>
+								<div class="wps-tofw-switch-actions">
 									<div class="mdc-switch">
 										<div class="mdc-switch__track"></div>
 										<div class="mdc-switch__thumb-underlay">
@@ -927,9 +933,12 @@ class Track_Orders_For_Woocommerce {
 																	?>
 							"
 											<?php checked( $tofw_component['value'], 'on' ); ?>
-											<button style="margin: 0 0 0 10px;"><?php esc_html_e( 'Configure', 'track-orders-for-woocommerce' ); ?></button>
+											>
 										</div>
 									</div>
+									<?php if ( isset( $tofw_component['configure'] ) && 'yes' === $tofw_component['configure'] ) { ?>
+										<button class="button button-primary  <?php echo esc_attr( $tofw_component['configure-class'] ); ?>"><?php esc_html_e( 'Configure', 'track-orders-for-woocommerce' ); ?></button>
+									<?php } ?>
 								</div>
 								<div class="mdc-text-field-helper-line">
 									<div class="mdc-text-field-helper-text--persistent wps-helper-text" id="" aria-hidden="true"><?php echo ( isset( $tofw_component['description'] ) ? esc_attr( $tofw_component['description'] ) : '' ); ?></div>

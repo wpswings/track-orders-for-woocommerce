@@ -1256,3 +1256,46 @@ mark.order-status.wps-tofw_status-icon {
     margin-bottom: 0;
     padding: 10px 0;
 }
+
+/* Fix for Delay Popup in WP admin area */
+.wps-popup{
+    display:none; position:fixed; top:0; left:0;
+    width:100%; height:100%; background:rgba(0,0,0,0.55);
+    z-index:999999; backdrop-filter:blur(3px);
+}
+.wps-popup-dialog{
+    width:850px; max-width:95%; max-height:90vh;
+    background:#fff; margin:40px auto; border-radius:10px;
+    display:flex; flex-direction:column;
+    box-shadow:0 8px 25px rgba(0,0,0,0.25);
+    animation:wpsFadeIn .25s ease-out;
+}
+@keyframes wpsFadeIn{from{opacity:0; transform:translateY(-10px);}to{opacity:1; transform:translateY(0);}
+}
+.wps-popup-header{
+    padding:16px 20px; background:#f3f4f6;
+    border-bottom:1px solid #ddd; display:flex;
+    justify-content:space-between; align-items:center;
+}
+.wps-popup-close{font-size:25px; cursor:pointer;}
+.wps-popup-body{padding:20px; overflow-y:auto; flex:1;}
+.wps-popup-footer{
+    padding:14px 20px; background:#f3f4f6;
+    border-top:1px solid #ddd; text-align:right;
+}
+.wps-input, .wps-textarea{
+    width:100%; padding:8px; border:1px solid #ccc;
+    border-radius:6px; margin-bottom:12px;
+}
+.wps-textarea{height:150px;}
+.wps-placeholders{
+    background:#f9f9f9; padding:10px;
+    font-size:13px; border-left:3px solid #0073aa;
+}
+.wps-email-preview{
+    background:#fafafa; border:1px solid #ddd; border-radius:6px;
+    padding:10px; margin-top:10px; max-height:300px; overflow:auto;
+}
+.wps-email-preview-inner{
+    background:#fff; padding:15px; border:1px solid #eee;
+}
