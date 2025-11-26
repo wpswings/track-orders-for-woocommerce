@@ -927,7 +927,7 @@ class Track_Orders_For_Woocommerce {
 																	?>
 							"
 											<?php checked( $tofw_component['value'], 'on' ); ?>
-											>
+											<button style="margin: 0 0 0 10px;"><?php esc_html_e( 'Configure', 'track-orders-for-woocommerce' ); ?></button>
 										</div>
 									</div>
 								</div>
