@@ -3019,57 +3019,44 @@ class Track_Orders_For_Woocommerce_Admin {
 		global $wpdb;
 
 		$batch_limit  = 800;
-		$orders_table = esc_sql( $wpdb->prefix . 'wc_orders' );
-		$hpos_meta    = esc_sql( $wpdb->prefix . 'wc_orders_meta' );
-		$legacy_meta  = esc_sql( $wpdb->prefix . 'postmeta' );
+		$orders_table = $wpdb->prefix . 'wc_orders';
+		$hpos_meta    = $wpdb->prefix . 'wc_orders_meta';
+		$legacy_meta  = $wpdb->prefix . 'postmeta';
 
-		$valid_statuses       = array( 'wc-pending', 'wc-processing', 'wc-on-hold' );
-		$status_placeholders  = implode( ',', array_fill( 0, count( $valid_statuses ), '%s' ) );
+		$valid_statuses      = array( 'wc-pending', 'wc-processing', 'wc-on-hold' );
+		$status_placeholders = implode( ',', array_fill( 0, count( $valid_statuses ), '%s' ) );
 
-		// Hybrid query: check BOTH HPOS meta and legacy postmeta.
-		// NOTE: we do not filter by wps_tofw_delay_notified here.
-		$hpos_sql = "
-			SELECT DISTINCT wco.id AS order_id
-			FROM {$orders_table} wco
+		error_log( 'HPOS Delay Check: Querying for orders with estimated delivery date/time...' );
 
-			/* HPOS meta joins */
-			LEFT JOIN {$hpos_meta} h1 ON h1.order_id = wco.id AND h1.meta_key = 'wps_tofw_estimated_delivery_date'
-			LEFT JOIN {$hpos_meta} h2 ON h2.order_id = wco.id AND h2.meta_key = 'wps_tofw_estimated_delivery_time'
-
-			/* Legacy meta joins */
-			LEFT JOIN {$legacy_meta} m1 ON m1.post_id = wco.id AND m1.meta_key = 'wps_tofw_estimated_delivery_date'
-			LEFT JOIN {$legacy_meta} m2 ON m2.post_id = wco.id AND m2.meta_key = 'wps_tofw_estimated_delivery_time'
-
-			WHERE wco.status IN ( {$status_placeholders} )
-
-			  /* DATE must exist in either table */
-			  AND ( h1.meta_value IS NOT NULL OR m1.meta_value IS NOT NULL )
-
-			  /* TIME must exist in either table */
-			  AND ( h2.meta_value IS NOT NULL OR m2.meta_value IS NOT NULL )
-
-			LIMIT %d
-		";
-
+		// Build params array.
 		$params = array_merge( $valid_statuses, array( $batch_limit ) );
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQL.NotPrepared -- table names are escaped above.
+		// Execute the query with prepare.
+    // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$orders = $wpdb->get_results(
 			$wpdb->prepare(
 				"
-        SELECT p.ID AS order_id
-        FROM {$wpdb->posts} p
-        WHERE p.post_type = %s
-        AND p.post_status IN (%s, %s)
-        LIMIT %d
-        ",
+            SELECT DISTINCT wco.id AS order_id
+            FROM {$orders_table} wco
+            LEFT JOIN {$hpos_meta} h1 ON h1.order_id = wco.id AND h1.meta_key = 'wps_tofw_estimated_delivery_date'
+            LEFT JOIN {$hpos_meta} h2 ON h2.order_id = wco.id AND h2.meta_key = 'wps_tofw_estimated_delivery_time'
+            LEFT JOIN {$legacy_meta} m1 ON m1.post_id = wco.id AND m1.meta_key = 'wps_tofw_estimated_delivery_date'
+            LEFT JOIN {$legacy_meta} m2 ON m2.post_id = wco.id AND m2.meta_key = 'wps_tofw_estimated_delivery_time'
+            WHERE wco.status IN ( {$status_placeholders} )
+              AND ( h1.meta_value IS NOT NULL OR m1.meta_value IS NOT NULL )
+              AND ( h2.meta_value IS NOT NULL OR m2.meta_value IS NOT NULL )
+            LIMIT %d
+            ",
 				...$params
 			)
 		);
+    // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
 		if ( empty( $orders ) ) {
 			return;
 		}
+
+		error_log( 'HPOS Delay Check: Found ' . count( $orders ) . ' orders to process.' );
 
 		foreach ( $orders as $row ) {
 			$order = wc_get_order( $row->order_id );
