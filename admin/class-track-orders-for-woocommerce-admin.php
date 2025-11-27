@@ -2978,20 +2978,20 @@ class Track_Orders_For_Woocommerce_Admin {
 
 			// NOTE: we do not filter by wps_tofw_delay_notified here.
 			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQL.NotPrepared -- table names are escaped above.
-			$wps_tofw_sql = $wpdb->prepare(
+		$orders = $wpdb->get_results(
+			$wpdb->prepare(
 				"
-			SELECT p.ID AS order_id
-			FROM {$wps_tofw_posts} p
-			INNER JOIN {$wps_tofw_meta} m1 ON m1.post_id = p.ID AND m1.meta_key = 'wps_tofw_estimated_delivery_date'
-			INNER JOIN {$wps_tofw_meta} m2 ON m2.post_id = p.ID AND m2.meta_key = 'wps_tofw_estimated_delivery_time'
-			WHERE p.post_type = 'shop_order'
-			  AND p.post_status IN ('wc-pending','wc-processing','wc-on-hold')
-			LIMIT %d
-			",
+        SELECT p.ID AS order_id
+        FROM {$wpdb->posts} p
+        INNER JOIN {$wpdb->postmeta} m1 ON m1.post_id = p.ID AND m1.meta_key = 'wps_tofw_estimated_delivery_date'
+        INNER JOIN {$wpdb->postmeta} m2 ON m2.post_id = p.ID AND m2.meta_key = 'wps_tofw_estimated_delivery_time'
+        WHERE p.post_type = 'shop_order'
+          AND p.post_status IN ('wc-pending','wc-processing','wc-on-hold')
+        LIMIT %d
+        ",
 				$batch_limit
-			);
-
-		$orders = $wpdb->get_results( $wps_tofw_sql );
+			)
+		);
 
 		if ( empty( $orders ) ) {
 			return;
@@ -3054,15 +3054,18 @@ class Track_Orders_For_Woocommerce_Admin {
 		$params = array_merge( $valid_statuses, array( $batch_limit ) );
 
 		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQL.NotPrepared -- table names are escaped above.
-		$wps_tofw_sql = call_user_func_array(
-			array( $wpdb, 'prepare' ),
-			array_merge(
-				array( $hpos_sql ),
-				$params
+		$orders = $wpdb->get_results(
+			$wpdb->prepare(
+				"
+        SELECT p.ID AS order_id
+        FROM {$wpdb->posts} p
+        WHERE p.post_type = %s
+        AND p.post_status IN (%s, %s)
+        LIMIT %d
+        ",
+				...$params
 			)
 		);
-
-		$orders = $wpdb->get_results( $wps_tofw_sql );
 
 		if ( empty( $orders ) ) {
 			return;
