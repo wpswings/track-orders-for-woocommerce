@@ -114,38 +114,48 @@ jQuery(document).ready(function ($) {
  
   
   // for custom order status image icons 
-	jQuery('.wps_tofw_other_setting_upload_logo').click(function(){
-    var imageurl = jQuery("#wps_tofw_other_setting_upload_logo").val();
-
-        tb_show('', 'media-upload.php?TB_iframe=true');
-
-        window.send_to_editor = function(html)
-        {
-           var imageurl = jQuery(html).attr('href');
-          
-           if(typeof imageurl == 'undefined')
-           {
-             imageurl = jQuery(html).attr('src');
-           }
-           var last_index = imageurl.lastIndexOf('/');
-            var url_last_part = imageurl.substr(last_index+1);
-            if( url_last_part == '' ){
-              
-              imageurl = jQuery(html).children("img").attr("src");  
-            }   
-           jQuery("#wps_tofw_other_setting_upload_logo").val(imageurl);
-			jQuery("#wps_tofw_other_setting_upload_image").attr("src", imageurl);
-			jQuery("#wps_tofw_other_setting_remove_logo").show();
-
-			//After Edit Function
-			jQuery("#wps_tofw_other_setting_upload_logo_edit").val(imageurl);
-			jQuery("#wps_tofw_other_setting_upload_image_edit").attr("src", imageurl);
-			jQuery("#wps_tofw_other_setting_upload_image_edit").show();
-			jQuery("#wps_preset_image_order_custom").hide();
-           tb_remove();
-        };
-        return false;
-  });
+jQuery('.wps_tofw_other_setting_upload_logo').click(function(e) {
+    e.preventDefault();
+    
+    var button = jQuery(this);
+    
+    // Create the media frame if it doesn't exist
+    var frame = wp.media({
+        title: 'Select or Upload Image',
+        button: {
+            text: 'Use this image'
+        },
+        multiple: false  // Set to true to allow multiple files
+    });
+    
+    // When an image is selected, run a callback
+    frame.on('select', function() {
+        // Get the selected attachment
+        var attachment = frame.state().get('selection').first().toJSON();
+        
+        // Get the image URL
+        var imageurl = attachment.url;
+        
+        // Update the input field and preview
+        jQuery("#wps_tofw_other_setting_upload_logo").val(imageurl);
+        jQuery("#wps_tofw_other_setting_upload_image").attr("src", imageurl);
+        jQuery("#wps_tofw_other_setting_remove_logo").show();
+        
+        // After Edit Function
+        jQuery("#wps_tofw_other_setting_upload_logo_edit").val(imageurl);
+        jQuery("#wps_tofw_other_setting_upload_image_edit").attr("src", imageurl);
+        jQuery("#wps_tofw_other_setting_upload_image_edit").show();
+        jQuery("#wps_preset_image_order_custom").hide();
+        
+        // Optional: You also have access to other attachment data
+        // attachment.id - The attachment ID
+        // attachment.title - The attachment title
+        // attachment.sizes - Different image sizes
+    });
+    
+    // Open the media frame
+    frame.open();
+});
 
 
   jQuery(document).on('click','input#wps_tofw_create_role_box',function(){
@@ -1192,7 +1202,8 @@ jQuery(function($){
 	$('.wps-open-email-popup').on('click', function (e) {
 		e.preventDefault();
         $('#wps-email-popup').fadeIn(150);
-    });
+	});
+	$('#wps-email-popup').fadeOut(150);
 
     /** CLOSE POPUP. **/
     $('.wps-popup-close, .wps-close-popup').on('click', function(){

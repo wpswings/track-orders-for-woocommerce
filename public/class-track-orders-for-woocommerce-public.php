@@ -241,12 +241,12 @@ class Track_Orders_For_Woocommerce_Public {
 					// Check if the retrieved data is valid.
 					if ( is_array( $status_template_mapping ) ) {
 						$current_order_status = $status_name; // Replace this with your dynamic order status.
-						$template1 = false; // Initialize the template variable.
+						$selected_template = false; // Initialize the template variable.
 
 						// Loop through the mapping to find the matching template.
 						foreach ( $status_template_mapping as $mapping ) {
 							if ( isset( $mapping[ $current_order_status ] ) ) {
-								$template1 = $mapping[ $current_order_status ]; // Assign the matched template.
+								$selected_template = $mapping[ $current_order_status ]; // Assign the matched template.
 								break; // Exit the loop after finding the match.
 							}
 						}

@@ -1218,9 +1218,11 @@ mark.order-status.wps-tofw_status-icon {
 .wps-preview-popup {
   display: none;
   position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background: rgba(0,0,0,0.8);
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
   justify-content: center;
   align-items: center;
   z-index: 9999;
@@ -1249,53 +1251,176 @@ mark.order-status.wps-tofw_status-icon {
   max-width: 15px;
 }
 
-.wps_tofw_main_class{
+.wps_tofw_main_class {
   position: sticky;
-    bottom: 0;
-    background: white;
-    margin-bottom: 0;
-    padding: 10px 0;
+  bottom: 0;
+  background: white;
+  margin-bottom: 0;
+  padding: 10px 0;
 }
 
 /* Fix for Delay Popup in WP admin area */
-.wps-popup{
-    display:none; position:fixed; top:0; left:0;
-    width:100%; height:100%; background:rgba(0,0,0,0.55);
-    z-index:999999; backdrop-filter:blur(3px);
+.wps-popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 999999;
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
 }
-.wps-popup-dialog{
-    width:850px; max-width:95%; max-height:90vh;
-    background:#fff; margin:40px auto; border-radius:10px;
-    display:flex; flex-direction:column;
-    box-shadow:0 8px 25px rgba(0,0,0,0.25);
-    animation:wpsFadeIn .25s ease-out;
+
+.wps-popup-dialog {
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh;
+  background: #fff;
+  margin: 40px auto;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+  animation: wpsFadeIn .25s ease-out;
 }
-@keyframes wpsFadeIn{from{opacity:0; transform:translateY(-10px);}to{opacity:1; transform:translateY(0);}
+
+@keyframes wpsFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-.wps-popup-header{
-    padding:16px 20px; background:#f3f4f6;
-    border-bottom:1px solid #ddd; display:flex;
-    justify-content:space-between; align-items:center;
+
+.wps-popup-header {
+  padding: 16px 20px;
+  background: #f3f4f6;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-.wps-popup-close{font-size:25px; cursor:pointer;}
-.wps-popup-body{padding:20px; overflow-y:auto; flex:1;}
-.wps-popup-footer{
-    padding:14px 20px; background:#f3f4f6;
-    border-top:1px solid #ddd; text-align:right;
+
+.wps-popup-close {
+  font-size: 25px;
+  cursor: pointer;
 }
-.wps-input, .wps-textarea{
-    width:100%; padding:8px; border:1px solid #ccc;
-    border-radius:6px; margin-bottom:12px;
+
+.wps-popup-body {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
 }
-.wps-textarea{height:150px;}
-.wps-placeholders{
-    background:#f9f9f9; padding:10px;
-    font-size:13px; border-left:3px solid #0073aa;
+
+.wps-popup-footer {
+  padding: 14px 20px;
+  background: #f3f4f6;
+  border-top: 1px solid #ddd;
+  text-align: right;
 }
-.wps-email-preview{
-    background:#fafafa; border:1px solid #ddd; border-radius:6px;
-    padding:10px; margin-top:10px; max-height:300px; overflow:auto;
+
+.wps-textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #a1a1a1;
+  border-radius: 2px;
+  margin: 10px 0px;
+  color: #5e5e5e !important;
+  background: #f9f9f9;
 }
-.wps-email-preview-inner{
-    background:#fff; padding:15px; border:1px solid #eee;
+
+.wps-textarea {
+  height: 150px;
+}
+
+.wps-placeholders {
+  background: #f9f9f9;
+  padding: 10px;
+  font-size: 13px;
+  border-left: 3px solid #0073aa;
+}
+
+.wps-email-preview {
+  background: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  padding: 10px;
+  margin-top: 10px;
+  max-height: 300px;
+  overflow: auto;
+}
+
+.wps-email-preview-inner {
+  background: #fff;
+  padding: 15px;
+  border: 1px solid #eee;
+}
+
+/* add css 27nov  */
+.wps-popup-body .button-secondary.wps-preview-email {
+  margin: 10px 0;
+  background: #2271b1;
+  color:#ffffff;
+}
+.wps-popup-body .button-secondary.wps-preview-email:hover {
+  margin: 10px 0;
+  background: #135e96;
+  color:#ffffff;
+  border: 1px solid #135e96;
+}
+.wps-popup-body h5,
+#wps_admin_section h4 {
+  margin: 10px 0;
+  color:#000000;
+  font-weight:600;
+}
+
+.wps-popup-body input[type=text] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #a1a1a1;
+    border-radius: 2px;
+    margin: 10px 0px;
+    color: #5e5e5e;
+    background: #f9f9f9;
+}
+.wps-popup-body label {
+    font-size: 16px;
+    color: #000000;
+    display: block;
+}
+.wps-email-preview-inner td {
+    padding: 0;
+}
+.wps-email-preview-inner #header_wrapper h1 {
+    font-size: 30px;
+}
+.wps-popup-header h4 {
+    font-weight: 600;
+    color: #000000;
+}
+.button-primary.wps-open-email-popup {
+    margin: -10px 30px 10px;
+}
+@media only screen and (max-width: 768px) {
+ .wps-email-preview-inner #header_wrapper h1 {
+    font-size: 20px;
+}
+}
+/* css for edit order */
+.wps_tofw_estimated_delivery_datails_wrapper input[type=text] {
+    margin: 5px 0;
+}
+
+.wps_tofw_estimated_delivery_datails_wrapper label {
+    display: block;
 }
