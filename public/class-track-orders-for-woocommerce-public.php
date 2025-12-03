@@ -191,7 +191,7 @@ class Track_Orders_For_Woocommerce_Public {
 	 * @param string $template is the contains path.
 	 * @return string
 	 */
-	public function wps_tofw_include_track_order_page( $template ) {
+public function wps_tofw_include_track_order_page( $template ) {
 		$selected_template = get_option( 'wps_tofw_activated_template' );
 		$wps_tofw_google_map_setting = get_option( 'wps_tofw_trackorder_with_google_map', false );
 		$wps_tofw_enable_track_order_feature = get_option( 'tofw_enable_track_order', 'no' );
@@ -241,12 +241,12 @@ class Track_Orders_For_Woocommerce_Public {
 					// Check if the retrieved data is valid.
 					if ( is_array( $status_template_mapping ) ) {
 						$current_order_status = $status_name; // Replace this with your dynamic order status.
-						$selected_template = false; // Initialize the template variable.
+						$template1 = false; // Initialize the template variable.
 
 						// Loop through the mapping to find the matching template.
 						foreach ( $status_template_mapping as $mapping ) {
 							if ( isset( $mapping[ $current_order_status ] ) ) {
-								$selected_template = $mapping[ $current_order_status ]; // Assign the matched template.
+								$template1 = $mapping[ $current_order_status ]; // Assign the matched template.
 								break; // Exit the loop after finding the match.
 							}
 						}

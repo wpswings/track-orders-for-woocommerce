@@ -225,7 +225,7 @@ class Track_Orders_For_Woocommerce_Common {
 	 * @param string $template is a path.
 	 * @return string
 	 */
-	public function wps_tofw_include_track_order_page( $template ) {
+		public function wps_tofw_include_track_order_page( $template ) {
 		$selected_template = get_option( 'wps_tofw_activated_template' );
 		$wps_tofw_google_map_setting = get_option( 'wps_tofw_trackorder_with_google_map', false );
 		$wps_tofw_enable_track_order_feature = get_option( 'tofw_enable_track_order', 'no' );
