@@ -121,6 +121,7 @@ class Track_Orders_For_Woocommerce_Admin {
 					'address_validation_success' => __( 'Address Successfully Added', 'track-orders-for-woocommerce' ),
 					'selec_address_placeholder' => __( 'Select Your Hubpoint Addresses', 'track-orders-for-woocommerce' ),
 					'site_url' => site_url(),
+					'enable_order_delay_notification' => get_option( 'wps_tofw_enable_order_delay_notification' ),
 
 				)
 			);
@@ -2782,7 +2783,7 @@ class Track_Orders_For_Woocommerce_Admin {
 	 * Render the email template popup in admin footer.
 	 */
 	public function wps_tofw_admin_footer() {
-		if ( 'wpswings_page_track_orders_for_woocommerce_menu' === get_current_screen()->id ) {
+		if ( 'wpswings_page_track_orders_for_woocommerce_menu' === get_current_screen()->id && 'on' === get_option( 'wps_tofw_enable_order_delay_notification' ) ) {
 			$customer_subject = get_option( 'wps_delay_email_customer_subject', 'Delivery Delay Notification - Order {order_id}' );
 			$customer_body    = get_option( 'wps_delay_email_customer_body', '<p>Your delivery has been delayed.</p>' );
 
@@ -3002,8 +3003,6 @@ class Track_Orders_For_Woocommerce_Admin {
 
 			if ( $order ) {
 				$this->wps_process_single_order_delay( $order );
-			} else {
-				error_log( 'Failed to load order object for ID: ' . $row->order_id );
 			}
 		}
 	}
@@ -3025,8 +3024,6 @@ class Track_Orders_For_Woocommerce_Admin {
 
 		$valid_statuses      = array( 'wc-pending', 'wc-processing', 'wc-on-hold' );
 		$status_placeholders = implode( ',', array_fill( 0, count( $valid_statuses ), '%s' ) );
-
-		error_log( 'HPOS Delay Check: Querying for orders with estimated delivery date/time...' );
 
 		// Build params array.
 		$params = array_merge( $valid_statuses, array( $batch_limit ) );
@@ -3056,15 +3053,11 @@ class Track_Orders_For_Woocommerce_Admin {
 			return;
 		}
 
-		error_log( 'HPOS Delay Check: Found ' . count( $orders ) . ' orders to process.' );
-
 		foreach ( $orders as $row ) {
 			$order = wc_get_order( $row->order_id );
 
 			if ( $order ) {
 				$this->wps_process_single_order_delay( $order );
-			} else {
-				error_log( 'Failed to load order object: ' . $row->order_id );
 			}
 		}
 	}
@@ -3101,22 +3094,17 @@ class Track_Orders_For_Woocommerce_Admin {
 
 		// If expected date/time changed → reset notified flag.
 		if ( $last_expected_ts && ( (int) $last_expected_ts !== (int) $expected_timestamp ) ) {
-			error_log( "Order $order_id: Expected date/time changed. Resetting delay_notified." );
 			$order->update_meta_data( 'wps_tofw_delay_notified', '' );
 			$delay_sent = '';
 		}
 
 		// If already notified for this exact expected timestamp → stop.
 		if ( '1' === $delay_sent ) {
-			error_log( "Order $order_id already notified for this expected date. Skipping." );
 			return;
 		}
 
 		// Delay condition.
 		if ( $current_timestamp > $expected_timestamp ) {
-
-			error_log( "Order $order_id is delayed. Sending notifications..." );
-
 			$notify_admin = get_option( 'wps_tofw_notify_admin_delay', 'no' );
 
 			$this->wps_send_delay_email_to_customer( $order, $date, $time );
@@ -3129,15 +3117,11 @@ class Track_Orders_For_Woocommerce_Admin {
 			$order->update_meta_data( 'wps_tofw_delay_notified', '1' );
 			$order->update_meta_data( 'wps_tofw_last_expected_ts', $expected_timestamp );
 			$order->save();
-
-			error_log( "Order $order_id delay flag updated." );
 		} else {
 
 			// Save latest expected timestamp so we detect changes next time.
 			$order->update_meta_data( 'wps_tofw_last_expected_ts', $expected_timestamp );
 			$order->save();
-
-			error_log( "Order $order_id future delivery timestamp stored." );
 		}
 	}
 

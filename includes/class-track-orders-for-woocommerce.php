@@ -936,7 +936,7 @@ class Track_Orders_For_Woocommerce {
 											>
 										</div>
 									</div>
-									<?php if ( isset( $tofw_component['configure'] ) && 'yes' === $tofw_component['configure'] ) { ?>
+									<?php if ( isset( $tofw_component['configure'] ) && 'yes' === $tofw_component['configure'] && 'on' === get_option( 'wps_tofw_enable_order_delay_notification' ) ) { ?>
 										<button class="button button-primary  <?php echo esc_attr( $tofw_component['configure-class'] ); ?>"><?php esc_html_e( 'Configure', 'track-orders-for-woocommerce' ); ?></button>
 									<?php } ?>
 								</div>
