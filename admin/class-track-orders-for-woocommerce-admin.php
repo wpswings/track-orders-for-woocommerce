@@ -2793,7 +2793,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			$notify_admin = get_option( 'wps_tofw_notify_admin_delay', 'no' );
 			?>
 	<!-- MAIN POPUP -->
-	<div id="wps-email-popup" class="wps-popup">
+	<div id="wps-email-popup" class="wps-popup" style="display: none;">
 		<div class="wps-popup-dialog">
 			<div class="wps-popup-header">
 				<strong><h4><?php echo esc_html__( 'Delay Notification', 'track-orders-for-woocommerce' ); ?></h4></strong>
@@ -2974,11 +2974,7 @@ class Track_Orders_For_Woocommerce_Admin {
 		global $wpdb;
 
 		$batch_limit = 800;
-		$wps_tofw_posts      = esc_sql( $wpdb->prefix . 'posts' );
-		$wps_tofw_meta       = esc_sql( $wpdb->prefix . 'postmeta' );
-
-			// NOTE: we do not filter by wps_tofw_delay_notified here.
-			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQL.NotPrepared -- table names are escaped above.
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQL.NotPrepared -- table names are escaped above.
 		$orders = $wpdb->get_results(
 			$wpdb->prepare(
 				"
@@ -3028,26 +3024,32 @@ class Track_Orders_For_Woocommerce_Admin {
 		// Build params array.
 		$params = array_merge( $valid_statuses, array( $batch_limit ) );
 
+		// Sanitize table names using esc_sql().
+		$orders_table = esc_sql( $orders_table );
+		$hpos_meta    = esc_sql( $hpos_meta );
+		$legacy_meta  = esc_sql( $legacy_meta );
+
+		// Build the query string outside of prepare().
+		$query = "
+	SELECT DISTINCT wco.id AS order_id
+	FROM {$orders_table} wco
+	LEFT JOIN {$hpos_meta} h1 ON h1.order_id = wco.id AND h1.meta_key = 'wps_tofw_estimated_delivery_date'
+	LEFT JOIN {$hpos_meta} h2 ON h2.order_id = wco.id AND h2.meta_key = 'wps_tofw_estimated_delivery_time'
+	LEFT JOIN {$legacy_meta} m1 ON m1.post_id = wco.id AND m1.meta_key = 'wps_tofw_estimated_delivery_date'
+	LEFT JOIN {$legacy_meta} m2 ON m2.post_id = wco.id AND m2.meta_key = 'wps_tofw_estimated_delivery_time'
+	WHERE wco.status IN ( {$status_placeholders} )
+	  AND ( h1.meta_value IS NOT NULL OR m1.meta_value IS NOT NULL )
+	  AND ( h2.meta_value IS NOT NULL OR m2.meta_value IS NOT NULL )
+	LIMIT %d
+";
+
 		// Execute the query with prepare.
-    // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$orders = $wpdb->get_results(
 			$wpdb->prepare(
-				"
-            SELECT DISTINCT wco.id AS order_id
-            FROM {$orders_table} wco
-            LEFT JOIN {$hpos_meta} h1 ON h1.order_id = wco.id AND h1.meta_key = 'wps_tofw_estimated_delivery_date'
-            LEFT JOIN {$hpos_meta} h2 ON h2.order_id = wco.id AND h2.meta_key = 'wps_tofw_estimated_delivery_time'
-            LEFT JOIN {$legacy_meta} m1 ON m1.post_id = wco.id AND m1.meta_key = 'wps_tofw_estimated_delivery_date'
-            LEFT JOIN {$legacy_meta} m2 ON m2.post_id = wco.id AND m2.meta_key = 'wps_tofw_estimated_delivery_time'
-            WHERE wco.status IN ( {$status_placeholders} )
-              AND ( h1.meta_value IS NOT NULL OR m1.meta_value IS NOT NULL )
-              AND ( h2.meta_value IS NOT NULL OR m2.meta_value IS NOT NULL )
-            LIMIT %d
-            ",
+				$query, // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 				...$params
 			)
 		);
-    // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
 		if ( empty( $orders ) ) {
 			return;
@@ -3075,9 +3077,6 @@ class Track_Orders_For_Woocommerce_Admin {
 		 * @return void
 		 */
 	public function wps_process_single_order_delay( $order ) {
-
-		$order_id = $order->get_id();
-
 		$date = $order->get_meta( 'wps_tofw_estimated_delivery_date' );
 		$time = $order->get_meta( 'wps_tofw_estimated_delivery_time' );
 

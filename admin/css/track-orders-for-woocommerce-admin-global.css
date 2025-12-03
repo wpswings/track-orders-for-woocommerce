@@ -1270,7 +1270,6 @@ mark.order-status.wps-tofw_status-icon {
   background: rgba(0, 0, 0, 0.55);
   z-index: 999999;
   backdrop-filter: blur(3px);
-  display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
