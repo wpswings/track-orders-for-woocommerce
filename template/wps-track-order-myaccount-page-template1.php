@@ -1225,6 +1225,7 @@ $wps_track_order_js = get_option('wps_tofw_custom_js_name');
 </div>
 </div>
 <?php
+echo do_shortcode('[wps_bump_offer_shortcode]');
 
 /**
  * Woocommerce_after_main_content hook.

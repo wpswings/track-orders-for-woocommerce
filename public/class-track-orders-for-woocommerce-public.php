@@ -22,6 +22,7 @@
 class Track_Orders_For_Woocommerce_Public {
 
 
+
 	/**
 	 * The ID of this plugin.
 	 *
@@ -57,7 +58,7 @@ class Track_Orders_For_Woocommerce_Public {
 	 * @since    1.0.0
 	 */
 	public function tofw_public_enqueue_styles() {
-		wp_enqueue_style( $this->plugin_name, TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'public/css/track-orders-for-woocommerce-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'public/css/track-orders-for-woocommerce-public.css', array(), time(), 'all' );
 	}
 
 	/**
@@ -191,7 +192,7 @@ class Track_Orders_For_Woocommerce_Public {
 	 * @param string $template is the contains path.
 	 * @return string
 	 */
-public function wps_tofw_include_track_order_page( $template ) {
+	public function wps_tofw_include_track_order_page( $template ) {
 		$selected_template = get_option( 'wps_tofw_activated_template' );
 		$wps_tofw_google_map_setting = get_option( 'wps_tofw_trackorder_with_google_map', false );
 		$wps_tofw_enable_track_order_feature = get_option( 'tofw_enable_track_order', 'no' );
@@ -399,7 +400,7 @@ public function wps_tofw_include_track_order_page( $template ) {
 	 * Register shortcodes for tracking order.
 	 */
 	public function wps_track_order_shortcodes_multiple_carrier() {
-		add_shortcode( 'WPS_MUTIPLE_CARRIER_TRACKING_FORM', array( $this, 'wps_fetch_multiple_tracking_carrier_data' ) );
+		 add_shortcode( 'WPS_MUTIPLE_CARRIER_TRACKING_FORM', array( $this, 'wps_fetch_multiple_tracking_carrier_data' ) );
 	}
 
 
@@ -433,46 +434,46 @@ public function wps_tofw_include_track_order_page( $template ) {
 
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'wps_tofw_carrier_logos';
-			$results = $wpdb->get_results(
-				$wpdb->prepare(
-					"SELECT carrier_name, carrier_code, logo_url FROM {$wpdb->prefix}wps_tofw_carrier_logos ORDER BY carrier_name ASC"
-				),
-				ARRAY_A
-			);
+		$results = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT carrier_name, carrier_code, logo_url FROM {$wpdb->prefix}wps_tofw_carrier_logos ORDER BY carrier_name ASC"
+			),
+			ARRAY_A
+		);
 		ob_start();
 		?>
-	<div class="wps-tofw_track <?php echo esc_attr( $align_class ); ?>">
-		<div class="wps-tofw_t-head">
-			<input type="text" placeholder="<?php echo esc_attr__( 'Enter tracking id', 'track-orders-for-woocommerce' ); ?>" id="wps-tofw_th-search" class="wps-tofw_th-in" />
+		<div class="wps-tofw_track <?php echo esc_attr( $align_class ); ?>">
+			<div class="wps-tofw_t-head">
+				<input type="text" placeholder="<?php echo esc_attr__( 'Enter tracking id', 'track-orders-for-woocommerce' ); ?>" id="wps-tofw_th-search" class="wps-tofw_th-in" />
 
-			<select name="tracking-method" id="wps-tofw_th-method">
-				<option value=""><?php echo esc_html__( '-----Select Carrier------', 'track-orders-for-woocommerce' ); ?></option>
-				<?php
-				if ( ! empty( $results ) ) {
-					foreach ( $results as $carrier ) {
-						$name = isset( $carrier['carrier_name'] ) ? esc_html( $carrier['carrier_name'] ) : '';
-						$code = isset( $carrier['carrier_code'] ) ? esc_attr( $carrier['carrier_code'] ) : '';
-						$logo = isset( $carrier['logo_url'] ) ? esc_url( $carrier['logo_url'] ) : '';
+				<select name="tracking-method" id="wps-tofw_th-method">
+					<option value=""><?php echo esc_html__( '-----Select Carrier------', 'track-orders-for-woocommerce' ); ?></option>
+					<?php
+					if ( ! empty( $results ) ) {
+						foreach ( $results as $carrier ) {
+							$name = isset( $carrier['carrier_name'] ) ? esc_html( $carrier['carrier_name'] ) : '';
+							$code = isset( $carrier['carrier_code'] ) ? esc_attr( $carrier['carrier_code'] ) : '';
+							$logo = isset( $carrier['logo_url'] ) ? esc_url( $carrier['logo_url'] ) : '';
 
-						printf(
-							'<option value="%1$s" data-logo="%2$s">%3$s</option>',
-							esc_html( $code ),
-							esc_html( $logo ),
-							esc_html( $name )
-						);
+							printf(
+								'<option value="%1$s" data-logo="%2$s">%3$s</option>',
+								esc_html( $code ),
+								esc_html( $logo ),
+								esc_html( $name )
+							);
+						}
+					} else {
+						echo '<option value="">' . esc_html__( 'No carriers found', 'track-orders-for-woocommerce' ) . '</option>';
 					}
-				} else {
-					echo '<option value="">' . esc_html__( 'No carriers found', 'track-orders-for-woocommerce' ) . '</option>';
-				}
-				?>
-			</select>
+					?>
+				</select>
 
-			<button type="button" id="wps-tofw_th-search-btn"><?php echo esc_html__( 'Track', 'track-orders-for-woocommerce' ); ?></button>
+				<button type="button" id="wps-tofw_th-search-btn"><?php echo esc_html__( 'Track', 'track-orders-for-woocommerce' ); ?></button>
+			</div>
+
+			<div class="wps-tofw_loader" aria-hidden="true"></div>
+			<div class="wps-tofw_t-main" id="wps-tofw_t-main"></div>
 		</div>
-
-		<div class="wps-tofw_loader" aria-hidden="true"></div>
-		<div class="wps-tofw_t-main" id="wps-tofw_t-main"></div>
-	</div>
 		<?php
 		return ob_get_clean();
 	}
@@ -483,14 +484,13 @@ public function wps_tofw_include_track_order_page( $template ) {
 	 * @param WC_Order $order The WooCommerce order object.
 	 */
 	public function wps_tofw_add_tracking_header_myaccount( $order ) {
+
 		if ( ! ( is_account_page() && is_wc_endpoint_url( 'view-order' ) ) ) {
 			return;
 		}
 		if ( ! $order ) {
 			return;
 		}
-
-		// Count products in the order.
 		$items = $order->get_items();
 		if ( count( $items ) > 1 ) {
 			$this->wps_tofw_render_partial_tracking( $order );
@@ -541,49 +541,50 @@ public function wps_tofw_include_track_order_page( $template ) {
 		foreach ( $order->get_items() as $wps_tofw_item ) {
 			$wps_tofw_products[ $wps_tofw_item->get_name() ] = $wps_tofw_item->get_product_id();
 		}
+
 		?>
-	<script>
-	document.addEventListener("DOMContentLoaded", function(){
-		const wps_tofw_table = document.querySelector(".woocommerce-table--order-details");
-		if (!wps_tofw_table) return;
+		<script>
+			document.addEventListener("DOMContentLoaded", function() {
+				const wps_tofw_table = document.querySelector(".woocommerce-table--order-details");
+				if (!wps_tofw_table) return;
 
-		const wps_tofw_theadRow = wps_tofw_table.querySelector("thead tr");
-		if (wps_tofw_theadRow && !wps_tofw_theadRow.querySelector(".tracking-link-col")) {
-			const wps_tofw_th = document.createElement("th");
-			wps_tofw_th.className = "tracking-link-col";
-			wps_tofw_th.innerText = "Partial Tracking Link";
-			wps_tofw_theadRow.appendChild(wps_tofw_th);
-		}
-
-		const wps_tofw_trackingLinks = <?php echo wp_json_encode( $wps_tofw_tracking_numbers ); ?>;
-		const wps_tofw_productMap    = <?php echo wp_json_encode( $wps_tofw_products ); ?>;
-		const wps_otfw_popup_tracking_page = <?php echo json_encode( get_option( 'wps_tofwp_enable_track_order_popup' ) ); ?>;
-
-		wps_tofw_table.querySelectorAll("tbody tr.woocommerce-table__line-item").forEach(function(wps_tofw_row){
-			const wps_tofw_productName = wps_tofw_row.querySelector(".woocommerce-table__product-name a")?.innerText.trim();
-			const wps_tofw_productId   = wps_tofw_productMap[wps_tofw_productName] || null;
-
-			const wps_tofw_td = document.createElement("td");
-			wps_tofw_td.className = "tracking-link-col";
-
-			if (wps_tofw_productId && wps_tofw_trackingLinks[wps_tofw_productId]) {
-				if ( 'on' === wps_otfw_popup_tracking_page ) {
-					wps_tofw_td.innerHTML = '<a href="<?php echo esc_url( home_url( '/track-your-order/?' ) ); ?>' 
-					+ wps_tofw_trackingLinks[wps_tofw_productId] 
-					+ '&TB_iframe=true&popup_type=track_order" target="_blank" class="wps-tofw-track-btn thickbox">Track Order</a>';
-				} else {
-						wps_tofw_td.innerHTML = '<a href="<?php echo esc_url( home_url( '/track-your-order/?' ) ); ?>' 
-					+ wps_tofw_trackingLinks[wps_tofw_productId] 
-					+ '" target="_blank" class="wps-tofw-track-btn">Track Order</a>';
+				const wps_tofw_theadRow = wps_tofw_table.querySelector("thead tr");
+				if (wps_tofw_theadRow && !wps_tofw_theadRow.querySelector(".tracking-link-col")) {
+					const wps_tofw_th = document.createElement("th");
+					wps_tofw_th.className = "tracking-link-col";
+					wps_tofw_th.innerText = "Partial Tracking Link";
+					wps_tofw_theadRow.appendChild(wps_tofw_th);
 				}
-			} else {
-				wps_tofw_td.textContent = '-';
-			}
 
-			wps_tofw_row.appendChild(wps_tofw_td);
-		});
-	});
-	</script>
+				const wps_tofw_trackingLinks = <?php echo wp_json_encode( $wps_tofw_tracking_numbers ); ?>;
+				const wps_tofw_productMap = <?php echo wp_json_encode( $wps_tofw_products ); ?>;
+				const wps_otfw_popup_tracking_page = <?php echo json_encode( get_option( 'wps_tofwp_enable_track_order_popup' ) ); ?>;
+
+				wps_tofw_table.querySelectorAll("tbody tr.woocommerce-table__line-item").forEach(function(wps_tofw_row) {
+					const wps_tofw_productName = wps_tofw_row.querySelector(".woocommerce-table__product-name a")?.textContent.trim();
+					const wps_tofw_productId = wps_tofw_productMap[wps_tofw_productName] || null;
+
+					const wps_tofw_td = document.createElement("td");
+					wps_tofw_td.className = "tracking-link-col";
+
+					if (wps_tofw_productId && wps_tofw_trackingLinks[wps_tofw_productId]) {
+						if ('on' === wps_otfw_popup_tracking_page) {
+							wps_tofw_td.innerHTML = '<a href="<?php echo esc_url( home_url( '/track-your-order/?' ) ); ?>' +
+								wps_tofw_trackingLinks[wps_tofw_productId] +
+								'&TB_iframe=true&popup_type=track_order" target="_blank" class="wps-tofw-track-btn thickbox">Track Order</a>';
+						} else {
+							wps_tofw_td.innerHTML = '<a href="<?php echo esc_url( home_url( '/track-your-order/?' ) ); ?>' +
+								wps_tofw_trackingLinks[wps_tofw_productId] +
+								'" target="_blank" class="wps-tofw-track-btn">Track Order</a>';
+						}
+					} else {
+						wps_tofw_td.textContent = '-';
+					}
+
+					wps_tofw_row.appendChild(wps_tofw_td);
+				});
+			});
+		</script>
 		<?php
 	}
 

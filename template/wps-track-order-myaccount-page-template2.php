@@ -1056,6 +1056,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 	?>
 </div>
 <?php
+echo do_shortcode('[wps_bump_offer_shortcode]');
 
 /**
  * Woocommerce_after_main_content hook.

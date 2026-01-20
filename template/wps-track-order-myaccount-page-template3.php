@@ -885,6 +885,9 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 				</tbody>
 			</table>
 		</section>
+		<?php
+echo do_shortcode('[wps_bump_offer_shortcode]');
+?>
 
 		<?php if ( ! empty( $wps_tofw_enhanced_customer_note ) ) { ?>
 			<div class="wps-tofw-order-tracking-section ">
