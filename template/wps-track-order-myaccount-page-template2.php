@@ -1056,7 +1056,10 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 	?>
 </div>
 <?php
+$wps_tofw_common_enable = get_option( 'wps_tofw_common_enable', false );
+if('on' == $wps_tofw_common_enable){
 echo do_shortcode('[wps_bump_offer_shortcode]');
+}
 
 /**
  * Woocommerce_after_main_content hook.

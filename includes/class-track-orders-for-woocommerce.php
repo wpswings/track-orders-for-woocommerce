@@ -316,6 +316,7 @@ class Track_Orders_For_Woocommerce {
 			$this->loader->add_action( 'woocommerce_order_details_after_order_table', $tofw_plugin_public, 'wps_tofw_add_tracking_header_thankyou', 10, 1 );
 			$this->loader->add_action( 'woocommerce_thankyou', $tofw_plugin_public, 'wps_run_split_on_order', 10, 1 );
 		}
+			$this->loader->add_filter( 'body_class', $tofw_plugin_public, 'wps_tofw_add_body_class' );
 	}
 
 	/**

@@ -12,14 +12,76 @@
  */
 
 $wps_tofw_main_wrapper_class_theme = '';
-$wps_tofw_child_wrapper_class = '';
-$wps_tofw_custom_css_name = '';
-$wps_tofw_custom_js_name = '';
+$wps_tofw_child_wrapper_class      = '';
+$wps_tofw_custom_css_name          = '';
+$wps_tofw_custom_js_name           = '';
 
+// Check dependency plugin (Upsell Order Bump for WooCommerce) availability.
+if ( ! function_exists( 'is_plugin_active' ) ) {
+	include_once ABSPATH . 'wp-admin/includes/plugin.php';
+}
+$wps_tofw_is_upsell_active = (
+	is_plugin_active( 'upsell-order-bump-offer-for-woocommerce/upsell-order-bump-offer-for-woocommerce.php' ) ||
+	is_plugin_active( 'upsell-order-bump-offer-for-woocommerce-pro/upsell-order-bump-offer-for-woocommerce-pro.php' )
+);
+
+$wps_tofw_upsell_plugin_url = 'https://wordpress.org/plugins/upsell-order-bump-offer-for-woocommerce/';
+
+$wps_tofw_enable_upsell_tracking_page = get_option( 'wps_tofw_enable_upsell_tracking_page', '' );
+
+if ( isset( $_POST['wps_tofp_enhance_tracking_save'] ) && check_admin_referer( 'admin_save_data', 'wps_tabs_nonce' ) ) {
+	if ( $wps_tofw_is_upsell_active ) {
+		$wps_tofw_enable_upsell_tracking_page = isset( $_POST['wps_tofw_enable_upsell_tracking_page'] ) ? 'on' : '';
+		update_option( 'wps_tofw_enable_upsell_tracking_page', $wps_tofw_enable_upsell_tracking_page );
+	}
+}
 ?>
 <form action="" method="POST" class="wps-tofw-common-section-form">
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 <div class="wps_tofwp_wrapper">
+
+<div class="wps-form-group wps-msp-text">
+				 <div class="wps-form-group__label">
+							<label for="wps" class="wps-form-label"><?php echo esc_html_e( 'Upsell Tracking Page', 'track-orders-for-woocommerce' ); ?></label>
+						</div>
+							<div class="wps-form-group__control">
+					<div class="mdc-switch">
+						<div class="mdc-switch__track"></div>
+						<div class="mdc-switch__thumb-underlay">
+							<div class="mdc-switch__thumb"></div>
+							<input
+								name="wps_tofw_enable_upsell_tracking_page"
+								type="checkbox"
+								id="wps_tofw_enable_upsell_tracking_page"
+								value="on"
+								class="mdc-switch__native-control"
+								role="switch"
+								<?php checked( 'on', $wps_tofw_enable_upsell_tracking_page ); ?>
+								<?php disabled( ! $wps_tofw_is_upsell_active ); ?>
+							>
+						</div>
+					</div>
+
+								<div class="mdc-text-field-helper-line">
+									<div class="mdc-text-field-helper-text--persistent wps-helper-text" id="" aria-hidden="true">
+									<?php
+									if ( $wps_tofw_is_upsell_active ) {
+										esc_html_e( 'Enable this to display the Upsell Tracking Page cards when the Upsell Funnel Builder for WooCommerce plugin is active.', 'track-orders-for-woocommerce' );
+									} else {
+										echo wp_kses_post(
+											sprintf(
+												/* translators: %s: plugin url */
+												__( 'Activate the "Upsell Funnel Builder for WooCommerce" plugin to use this setting. Download: <a href="%s" target="_blank">Upsell Funnel Builder</a>.', 'track-orders-for-woocommerce' ),
+												esc_url( $wps_tofw_upsell_plugin_url )
+											)
+										);
+									}
+									?>
+									</div>
+								</div>
+					</div>
+		 </div>
+
 
 		<div class="wps-form-group wps-msp-text wps_tofw_pro_tag">
 				 <div class="wps-form-group__label">
@@ -92,10 +154,6 @@ $wps_tofw_custom_js_name = '';
 								</div>
 							</div>
 						</div>
-
-
-
-
 		 <div class="wps-form-group wps_tofw_pro_tag">
 							<div class="wps-form-group__label">
 								<label class="wps-form-label" ><?php echo esc_html_e( 'Tracking Order Page Global JS', 'track-orders-for-woocommerce' ); ?></label>
@@ -123,12 +181,12 @@ $wps_tofw_custom_js_name = '';
 wp_nonce_field( 'admin_save_data', 'wps_tabs_nonce' );
 ?>
 <!-- Save Button -->
-<div class="wps-form-group">
+<div class="wps-form-group wps_tofw_main_class">
 		<div class="wps-form-group__label"></div>
 		<div class="wps-form-group__control">
-			<span class="mdc-button mdc-button--raised wps_tofw_pro_feature" name= "wps_tofp_enhance_tracking_save" id="wps_tofp_enhance_tracking_save"> <span class="mdc-button__ripple"></span>
-				<span class="mdc-button__label "><?php esc_html_e( 'Save Changes', 'track-orders-for-woocommerce' ); ?></span>
-			</span>
+			<button class="mdc-button mdc-button--raised" name= "wps_tofp_enhance_tracking_save" id="wps_tofp_enhance_tracking_save"> <span class="mdc-button__ripple"></span>
+				<span class="mdc-button__label "><?php esc_html_e( 'Save Changes', 'track-orders-for-woocommerce-pro' ); ?></span>
+			</button>
 		</div>
 	</div>
 </form>

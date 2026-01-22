@@ -3832,3 +3832,31 @@ a.wps_swatch_whatsapp_link_template_1 {
   right: 10px;
 }
 
+/* cards layout css start */
+.wps-upsell-track-order-page .wrapup_order_bump {
+  container-type: inline-size;
+  container-name: track-order-con;
+}
+
+.wps-upsell-track-order-page .wps_order_bump_without_popup_wrap {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+#primary #primary,
+#main #main {
+  all: unset;
+}
+@container track-order-con (max-width:800px){
+.wps-upsell-track-order-page .wps_order_bump_without_popup_wrap {
+  grid-template-columns: 1fr 1fr;
+}
+} 
+
+@container track-order-con (max-width:420px){
+.wps-upsell-track-order-page .wps_order_bump_without_popup_wrap {
+  grid-template-columns: 1fr;
+  gap:10px;
+}
+}

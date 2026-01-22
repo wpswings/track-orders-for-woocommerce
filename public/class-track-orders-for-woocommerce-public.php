@@ -683,4 +683,24 @@ class Track_Orders_For_Woocommerce_Public {
 
 		return new WP_Error( 'wps_no_items', 'No line items to split.' );
 	}
+
+	/**
+	 * Add custom body class for track order page.
+	 *
+	 * @param array $classes Existing body classes.
+	 * @return array Modified body classes.
+	 */
+	public function wps_tofw_add_body_class( $classes ) {
+    global $post;
+
+    if (
+        isset( $_SERVER['REQUEST_URI'] ) &&
+        strpos( $_SERVER['REQUEST_URI'], 'track-your-order' ) !== false
+    ) {
+        $classes[] = 'wps-upsell-track-order-page';
+    }
+
+    return $classes;
+
+	}
 }
