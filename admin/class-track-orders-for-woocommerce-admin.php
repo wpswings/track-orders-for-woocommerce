@@ -3029,8 +3029,9 @@ class Track_Orders_For_Woocommerce_Admin {
 		$hpos_meta    = esc_sql( $hpos_meta );
 		$legacy_meta  = esc_sql( $legacy_meta );
 
-		// Build the query string outside of prepare().
-		$query = "
+		$orders = $wpdb->get_results(
+			$wpdb->prepare(
+				"
 	SELECT DISTINCT wco.id AS order_id
 	FROM {$orders_table} wco
 	LEFT JOIN {$hpos_meta} h1 ON h1.order_id = wco.id AND h1.meta_key = 'wps_tofw_estimated_delivery_date'
@@ -3041,12 +3042,7 @@ class Track_Orders_For_Woocommerce_Admin {
 	  AND ( h1.meta_value IS NOT NULL OR m1.meta_value IS NOT NULL )
 	  AND ( h2.meta_value IS NOT NULL OR m2.meta_value IS NOT NULL )
 	LIMIT %d
-";
-
-		// Execute the query with prepare.
-		$orders = $wpdb->get_results(
-			$wpdb->prepare(
-				$query, // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+",
 				...$params
 			)
 		);

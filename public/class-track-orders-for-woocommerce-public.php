@@ -691,16 +691,18 @@ class Track_Orders_For_Woocommerce_Public {
 	 * @return array Modified body classes.
 	 */
 	public function wps_tofw_add_body_class( $classes ) {
-    global $post;
+		global $post;
 
-    if (
-        isset( $_SERVER['REQUEST_URI'] ) &&
-        strpos( $_SERVER['REQUEST_URI'], 'track-your-order' ) !== false
-    ) {
-        $classes[] = 'wps-upsell-track-order-page';
-    }
+		$request_uri = '';
 
-    return $classes;
+		if ( isset( $_SERVER['REQUEST_URI'] ) ) {
+			$request_uri = sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) );
+		}
 
+		if ( $request_uri && false !== strpos( $request_uri, 'track-your-order' ) ) {
+			$classes[] = 'wps-upsell-track-order-page';
+		}
+
+		return $classes;
 	}
 }

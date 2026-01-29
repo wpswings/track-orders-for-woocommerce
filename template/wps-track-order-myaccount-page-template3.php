@@ -886,10 +886,11 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 			</table>
 		</section>
 		<?php
-$wps_tofw_common_enable = get_option( 'wps_tofw_common_enable', false );
-if('on' == $wps_tofw_common_enable){
+$wps_tofw_enable_upsell_tracking_page = get_option( 'wps_tofw_enable_upsell_tracking_page', false );
+if('on' == $wps_tofw_enable_upsell_tracking_page){
 echo do_shortcode('[wps_bump_offer_shortcode]');
 }
+
 ?>
 
 		<?php if ( ! empty( $wps_tofw_enhanced_customer_note ) ) { ?>

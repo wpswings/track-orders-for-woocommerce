@@ -16,7 +16,6 @@ $wps_tofw_child_wrapper_class      = '';
 $wps_tofw_custom_css_name          = '';
 $wps_tofw_custom_js_name           = '';
 
-// Check dependency plugin (Upsell Order Bump for WooCommerce) availability.
 if ( ! function_exists( 'is_plugin_active' ) ) {
 	include_once ABSPATH . 'wp-admin/includes/plugin.php';
 }
@@ -27,12 +26,12 @@ $wps_tofw_is_upsell_active = (
 
 $wps_tofw_upsell_plugin_url = 'https://wordpress.org/plugins/upsell-order-bump-offer-for-woocommerce/';
 
-$wps_tofw_enable_upsell_tracking_page = get_option( 'wps_tofw_enable_upsell_tracking_page', '' );
+$wps_tofw_enable_upsell_tracking_page = get_option( '$wps_tofw_enable_upsell_tracking_page', '' );
 
 if ( isset( $_POST['wps_tofp_enhance_tracking_save'] ) && check_admin_referer( 'admin_save_data', 'wps_tabs_nonce' ) ) {
 	if ( $wps_tofw_is_upsell_active ) {
-		$wps_tofw_enable_upsell_tracking_page = isset( $_POST['wps_tofw_enable_upsell_tracking_page'] ) ? 'on' : '';
-		update_option( 'wps_tofw_enable_upsell_tracking_page', $wps_tofw_enable_upsell_tracking_page );
+		$wps_tofw_enable_upsell_tracking_page = isset( $_POST['$wps_tofw_enable_upsell_tracking_page'] ) ? 'on' : '';
+		update_option( '$wps_tofw_enable_upsell_tracking_page', $wps_tofw_enable_upsell_tracking_page );
 	}
 }
 ?>
@@ -50,9 +49,9 @@ if ( isset( $_POST['wps_tofp_enhance_tracking_save'] ) && check_admin_referer( '
 						<div class="mdc-switch__thumb-underlay">
 							<div class="mdc-switch__thumb"></div>
 							<input
-								name="wps_tofw_enable_upsell_tracking_page"
+								name="$wps_tofw_enable_upsell_tracking_page"
 								type="checkbox"
-								id="wps_tofw_enable_upsell_tracking_page"
+								id="$wps_tofw_enable_upsell_tracking_page"
 								value="on"
 								class="mdc-switch__native-control"
 								role="switch"

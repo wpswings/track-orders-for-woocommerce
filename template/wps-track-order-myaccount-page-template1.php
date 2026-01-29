@@ -275,27 +275,32 @@ $wps_track_order_js = get_option('wps_tofw_custom_js_name');
 
 		if (OrderUtil::custom_orders_table_usage_is_enabled()) {
 			// HPOS usage is enabled.
-			$billing_first_name = $tofw_order->get_billing_first_name() ?? esc_html_e('Not available', 'track-orders-for-woocommerce');
-			$billing_last_name = $tofw_order->get_billing_last_name() ?? esc_html_e('Not available', 'track-orders-for-woocommerce');
-			$billing_address = ($tofw_order->get_billing_address_1() ?? '') . ' ' . ($tofw_order->get_billing_address_2() ?? '');
-			$billing_city = $tofw_order->get_billing_city() ?? esc_html_e('Not available', 'track-orders-for-woocommerce');
-			$billing_state = $tofw_order->get_billing_state() ?? esc_html_e('Not available', 'track-orders-for-woocommerce');
-			$billing_country = $tofw_order->get_billing_country() ?? esc_html_e('Not available', 'track-orders-for-woocommerce');
-			$billing_postcode = $tofw_order->get_billing_postcode() ?? esc_html_e('Not available', 'track-orders-for-woocommerce');
-			$wps_track_order_status = $tofw_order->get_meta('wps_track_order_status', true) ?? esc_html_e('Not available', 'track-orders-for-woocommerce');
-			$wps_phone_number = $tofw_order->get_billing_phone() ?? esc_html_e('Not available', 'track-orders-for-woocommerce');
-			$order_onchange_time = $tofw_order->get_meta('wps_track_order_onchange_time', true) ?? esc_html_e('Not available', 'track-orders-for-woocommerce');
+			$billing_first_name    = $tofw_order->get_billing_first_name() ?: __('Not available', 'track-orders-for-woocommerce');
+			$billing_last_name     = $tofw_order->get_billing_last_name() ?: __('Not available', 'track-orders-for-woocommerce');
+			$billing_address       = ($tofw_order->get_billing_address_1() ?? '') . ' ' . ($tofw_order->get_billing_address_2() ?? '');
+			$billing_city          = $tofw_order->get_billing_city() ?: __('Not available', 'track-orders-for-woocommerce');
+			$billing_state         = $tofw_order->get_billing_state() ?: __('Not available', 'track-orders-for-woocommerce');
+			$billing_country       = $tofw_order->get_billing_country() ?: '';
+			$billing_postcode      = $tofw_order->get_billing_postcode() ?: __('Not available', 'track-orders-for-woocommerce');
+			$wps_track_order_status = $tofw_order->get_meta('wps_track_order_status', true) ?: __('Not available', 'track-orders-for-woocommerce');
+			$wps_phone_number      = $tofw_order->get_billing_phone() ?: __('Not available', 'track-orders-for-woocommerce');
+			$order_onchange_time   = $tofw_order->get_meta('wps_track_order_onchange_time', true) ?: __('Not available', 'track-orders-for-woocommerce');
 		} else {
-			$billing_first_name = get_post_meta($order_id, '_billing_first_name', true) ?? esc_html_e('Not available', 'track-orders-for-woocommerce');
-			$billing_last_name = get_post_meta($order_id, '_billing_last_name', true) ?? esc_html_e('Not available', 'track-orders-for-woocommerce');
-			$billing_address = (get_post_meta($order_id, '_billing_address_1', true) ?? '') . ' ' . (get_post_meta($order_id, '_billing_address_2', true) ?? '');
-			$billing_city = get_post_meta($order_id, '_billing_city', true) ?? esc_html_e('Not available', 'track-orders-for-woocommerce');
-			$billing_state = get_post_meta($order_id, '_billing_state', true) ?? esc_html_e('Not available', 'track-orders-for-woocommerce');
-			$billing_country = get_post_meta($order_id, '_billing_country', true) ?? esc_html_e('Not available', 'track-orders-for-woocommerce');
-			$billing_postcode = get_post_meta($order_id, '_billing_postcode', true) ?? esc_html_e('Not available', 'track-orders-for-woocommerce');
-			$wps_track_order_status = get_post_meta($order_id, 'wps_track_order_status', true) ?? esc_html_e('Not available', 'track-orders-for-woocommerce');
-			$order_onchange_time = get_post_meta($order_id, 'wps_track_order_onchange_time', true) ?? esc_html_e('Not available', 'track-orders-for-woocommerce');
+			$billing_first_name    = get_post_meta($order_id, '_billing_first_name', true) ?: __('Not available', 'track-orders-for-woocommerce');
+			$billing_last_name     = get_post_meta($order_id, '_billing_last_name', true) ?: __('Not available', 'track-orders-for-woocommerce');
+			$billing_address       = (get_post_meta($order_id, '_billing_address_1', true) ?? '') . ' ' . (get_post_meta($order_id, '_billing_address_2', true) ?? '');
+			$billing_city          = get_post_meta($order_id, '_billing_city', true) ?: __('Not available', 'track-orders-for-woocommerce');
+			$billing_state         = get_post_meta($order_id, '_billing_state', true) ?: __('Not available', 'track-orders-for-woocommerce');
+			$billing_country       = get_post_meta($order_id, '_billing_country', true) ?: '';
+			$billing_postcode      = get_post_meta($order_id, '_billing_postcode', true) ?: __('Not available', 'track-orders-for-woocommerce');
+			$wps_track_order_status = get_post_meta($order_id, 'wps_track_order_status', true) ?: __('Not available', 'track-orders-for-woocommerce');
+			$order_onchange_time   = get_post_meta($order_id, 'wps_track_order_onchange_time', true) ?: __('Not available', 'track-orders-for-woocommerce');
 		}
+
+		$countries             = WC()->countries->get_countries();
+		$billing_country_label = ( ! empty( $billing_country ) && isset( $countries[ $billing_country ] ) )
+			? $countries[ $billing_country ]
+			: __('Not available', 'track-orders-for-woocommerce');
 
 
 
@@ -1194,7 +1199,7 @@ $wps_track_order_js = get_option('wps_tofw_custom_js_name');
 					<h3> <?php echo esc_html($billing_first_name) . ' ' . esc_html($billing_last_name) . ' ' . esc_html($wps_billing_phone); ?></h3>
 					<p><?php echo esc_html($billing_address); ?></p>
 					<p><?php echo esc_html($billing_city) . ', ' . esc_html($billing_state) . ' -' . esc_html($billing_postcode); ?></p>
-					<p><?php echo esc_html(WC()->countries->countries[$billing_country]); ?></p>
+					<p><?php echo esc_html($billing_country_label); ?></p>
 				</div>
 			</div>
 		</div>
@@ -1223,9 +1228,10 @@ $wps_track_order_js = get_option('wps_tofw_custom_js_name');
 	}
 	?>
 </div>
+</div>
 <?php
-$wps_tofw_common_enable = get_option( 'wps_tofw_common_enable', false );
-if('on' == $wps_tofw_common_enable){
+$wps_tofw_enable_upsell_tracking_page = get_option( 'wps_tofw_enable_upsell_tracking_page', false );
+if('on' == $wps_tofw_enable_upsell_tracking_page){
 echo do_shortcode('[wps_bump_offer_shortcode]');
 }
 
