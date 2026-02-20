@@ -1364,7 +1364,11 @@ class Track_Orders_For_Woocommerce_Admin {
 					foreach ( $tofw_genaral_settings as $tofw_genaral_setting ) {
 						if ( isset( $tofw_genaral_setting['id'] ) && '' !== $tofw_genaral_setting['id'] ) {
 							if ( isset( $_POST[ $tofw_genaral_setting['id'] ] ) ) {
-								update_option( $tofw_genaral_setting['id'], is_array( $_POST[ $tofw_genaral_setting['id'] ] ) ? map_deep( wp_unslash( $_POST[ $tofw_genaral_setting['id'] ] ), 'sanitize_text_field' ) : sanitize_text_field( wp_unslash( $_POST[ $tofw_genaral_setting['id'] ] ) ) );
+								$tofw_sanitized_value = is_array( $_POST[ $tofw_genaral_setting['id'] ] ) ? map_deep( wp_unslash( $_POST[ $tofw_genaral_setting['id'] ] ), 'sanitize_text_field' ) : sanitize_text_field( wp_unslash( $_POST[ $tofw_genaral_setting['id'] ] ) );
+								if ( 'wps_tofw_google_api_key' === $tofw_genaral_setting['id'] && ! is_array( $tofw_sanitized_value ) ) {
+									$tofw_sanitized_value = trim( $tofw_sanitized_value );
+								}
+								update_option( $tofw_genaral_setting['id'], $tofw_sanitized_value );
 							} else {
 								update_option( $tofw_genaral_setting['id'], '' );
 							}

@@ -23,9 +23,9 @@
  *
  * Requires Plugins:  woocommerce
  * Requires at least:    6.7.0
- * Tested up to:         6.9.0
+ * Tested up to:         6.9.1
  * WC requires at least: 6.5.0
- * WC tested up to:      10.4.2
+ * WC tested up to:      10.5.2
  * Requires PHP:         7.4
  * Stable tag:           1.2.2
  *
@@ -457,7 +457,7 @@ function wps_get_order_data_from_id($default, $order_id)
 	}
 	ob_start();
 ?>
-	<div style="font-family: sans-serif; font-size: 12px; line-height: 1.5; position: absolute; bottom: 20px; left: 20px; width: 95%; max-width: 320px; background: #f8f8f8; border: 1px solid #ccc; border-radius: 6px; padding: 10px; box-sizing: border-box;">
+	<div style="font-family: sans-serif; font-size: 12px; line-height: 1.5; width: 95%; max-width: 320px; background: #f8f8f8; border: 1px solid #ccc; border-radius: 6px; padding: 10px; box-sizing: border-box;">
 		<div style="font-weight: bold; font-size: 13px; color: #333; margin-bottom: 6px;">Track Order Status : </div>
 
 		<div style="margin-bottom: 4px;"><strong>Order ID:</strong> <?php echo esc_html($wps_pgfw_order_id); ?></div>

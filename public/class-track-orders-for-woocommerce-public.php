@@ -85,12 +85,24 @@ class Track_Orders_For_Woocommerce_Public {
 		);
 		wp_enqueue_script( $this->plugin_name );
 		if ( 0 <= strpos( isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '', '/track-your-order' ) ) {
-			$wps_tofw_google_api_key = get_option( 'wps_tofw_google_api_key', '' );
-			wp_enqueue_script( 'wps_new_road_map_script', 'https://maps.googleapis.com/maps/api/js?key= ' . $wps_tofw_google_api_key, '', $this->version, true );
+			$wps_tofw_google_map_setting = get_option( 'wps_tofw_trackorder_with_google_map', false );
+			$wps_tofw_google_api_key     = trim( (string) get_option( 'wps_tofw_google_api_key', '' ) );
 
-			wp_register_script( 'wps-public', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'public/js/wps-public.js', array( 'jquery' ), $this->version, false );
-			wp_localize_script( 'wps-public', 'wps_public_param', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
-			wp_enqueue_script( 'wps-public' );
+			if ( 'on' === $wps_tofw_google_map_setting && '' !== $wps_tofw_google_api_key ) {
+				$wps_tofw_google_maps_url = esc_url_raw(
+					add_query_arg(
+						array(
+							'key' => $wps_tofw_google_api_key,
+						),
+						'https://maps.googleapis.com/maps/api/js'
+					)
+				);
+				wp_enqueue_script( 'wps_new_road_map_script', $wps_tofw_google_maps_url, array(), $this->version, true );
+
+				wp_register_script( 'wps-public', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'public/js/wps-public.js', array( 'jquery' ), $this->version, false );
+				wp_localize_script( 'wps-public', 'wps_public_param', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
+				wp_enqueue_script( 'wps-public' );
+			}
 		}
 	}
 
