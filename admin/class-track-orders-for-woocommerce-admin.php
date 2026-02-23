@@ -2787,7 +2787,13 @@ class Track_Orders_For_Woocommerce_Admin {
 	 * Render the email template popup in admin footer.
 	 */
 	public function wps_tofw_admin_footer() {
-		if ( 'wpswings_page_track_orders_for_woocommerce_menu' === get_current_screen()->id && 'on' === get_option( 'wps_tofw_enable_order_delay_notification' ) ) {
+		$screen = get_current_screen();
+		$screen_id = ( isset( $screen->id ) ) ? $screen->id : '';
+		$allowed_screens = array(
+			'wpswings_page_track_orders_for_woocommerce_menu',
+			'wp-swings_page_track_orders_for_woocommerce_menu',
+		);
+		if ( in_array( $screen_id, $allowed_screens, true ) && 'on' === get_option( 'wps_tofw_enable_order_delay_notification' ) ) {
 			$customer_subject = get_option( 'wps_delay_email_customer_subject', 'Delivery Delay Notification - Order {order_id}' );
 			$customer_body    = get_option( 'wps_delay_email_customer_body', '<p>Your delivery has been delayed.</p>' );
 
