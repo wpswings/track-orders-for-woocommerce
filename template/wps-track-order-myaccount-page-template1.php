@@ -210,7 +210,7 @@ $wps_track_order_js = get_option('wps_tofw_custom_js_name');
 	$status_shipped = 0;
 	if (is_array($get_status_processing) && ! empty($get_status_processing)) {
 		foreach ($get_status_processing as $key => $value) {
-			if (! empty($wps_track_order_status) && in_array($value, $wps_track_order_status)) {
+			if (! empty($wps_track_order_status) && is_array($wps_track_order_status) && in_array($value, $wps_track_order_status)) {
 				$status_process = 1;
 			}
 		}
@@ -218,7 +218,7 @@ $wps_track_order_js = get_option('wps_tofw_custom_js_name');
 
 	if (is_array($get_status_shipping) && ! empty($get_status_shipping)) {
 		foreach ($get_status_shipping as $key1 => $value1) {
-			if (! empty($wps_track_order_status) && in_array($value1, $wps_track_order_status)) {
+			if (! empty($wps_track_order_status) && is_array($wps_track_order_status) && in_array($value1, $wps_track_order_status)) {
 				$status_shipped = 1;
 			}
 		}
@@ -282,7 +282,7 @@ $wps_track_order_js = get_option('wps_tofw_custom_js_name');
 			$billing_state         = $tofw_order->get_billing_state() ?: __('Not available', 'track-orders-for-woocommerce');
 			$billing_country       = $tofw_order->get_billing_country() ?: '';
 			$billing_postcode      = $tofw_order->get_billing_postcode() ?: __('Not available', 'track-orders-for-woocommerce');
-			$wps_track_order_status = $tofw_order->get_meta('wps_track_order_status', true) ?: __('Not available', 'track-orders-for-woocommerce');
+			$wps_track_order_status = $tofw_order->get_meta('wps_track_order_status', true) ?: array();
 			$wps_phone_number      = $tofw_order->get_billing_phone() ?: __('Not available', 'track-orders-for-woocommerce');
 			$order_onchange_time   = $tofw_order->get_meta('wps_track_order_onchange_time', true) ?: __('Not available', 'track-orders-for-woocommerce');
 		} else {
@@ -293,7 +293,7 @@ $wps_track_order_js = get_option('wps_tofw_custom_js_name');
 			$billing_state         = get_post_meta($order_id, '_billing_state', true) ?: __('Not available', 'track-orders-for-woocommerce');
 			$billing_country       = get_post_meta($order_id, '_billing_country', true) ?: '';
 			$billing_postcode      = get_post_meta($order_id, '_billing_postcode', true) ?: __('Not available', 'track-orders-for-woocommerce');
-			$wps_track_order_status = get_post_meta($order_id, 'wps_track_order_status', true) ?: __('Not available', 'track-orders-for-woocommerce');
+			$wps_track_order_status = get_post_meta($order_id, 'wps_track_order_status', true) ?: array();
 			$order_onchange_time   = get_post_meta($order_id, 'wps_track_order_onchange_time', true) ?: __('Not available', 'track-orders-for-woocommerce');
 		}
 
@@ -552,7 +552,7 @@ $wps_track_order_js = get_option('wps_tofw_custom_js_name');
 				$processing_blk = 0;
 				if (is_array($get_status_processing) && ! empty($get_status_processing)) {
 					foreach ($get_status_processing as $key => $value) {
-						if (! empty($wps_track_order_status) && in_array($value, $wps_track_order_status)) {
+						if (! empty($wps_track_order_status) && is_array($wps_track_order_status) && in_array($value, $wps_track_order_status)) {
 							$processing = 1;
 							break;
 						}

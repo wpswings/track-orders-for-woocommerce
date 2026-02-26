@@ -111,16 +111,6 @@ textarea:focus {
   box-shadow: none !important;
 }
 
-select,
-option {
-  color: rgba(0, 0, 0, 0.7) !important;
-  box-shadow: none !important;
-  border-color: rgba(0, 0, 0, 0.38) !important;
-}
-
-select {
-  padding: 10px 30px 10px 15px !important;
-}
 
 .wps-link:focus {
   outline: none;

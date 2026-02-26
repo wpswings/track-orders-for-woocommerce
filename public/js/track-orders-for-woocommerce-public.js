@@ -438,7 +438,7 @@ jQuery(document).ready(function ($) {
 
 
 jQuery(window).load(function () {
-	
+
 	document.body.classList.add("wps-tofw-tracking-modal");
 
 	jQuery(document).on('click','.wps_tofw_17track',function(e){
@@ -468,3 +468,11 @@ jQuery(window).load(function () {
 	});
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    // Select the element with the standard WooCommerce class
+    const orderDetails = document.querySelector('.woocommerce-order-details');
+    // If the element exists, add your custom class
+    if (orderDetails) {
+        orderDetails.classList.add('wps-woocommerce-order-details');
+    }
+});

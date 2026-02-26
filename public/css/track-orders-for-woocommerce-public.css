@@ -3860,3 +3860,17 @@ a.wps_swatch_whatsapp_link_template_1 {
   gap:10px;
 }
 }
+
+/* Buttons alignments start */
+
+.wps-woocommerce-order-details>a.button.button-primary,.wps-woocommerce-order-details>form {
+    display: inline-block;
+    margin: 0 5px 5px 0;
+}
+
+.wps-woocommerce-order-details>form p {
+    margin: 0;
+}
+
+/* Buttons alignments end */
+
