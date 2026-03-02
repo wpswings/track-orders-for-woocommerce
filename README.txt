@@ -4,10 +4,10 @@ Contributors: wpswings
 Donate link: https://wpswings.com/
 Tags: woocommerce shipping, shipment tracker, shipping, shipment tracking, order tracking
 Requires at least: 6.7.0
-Tested up to: 6.9
+Tested up to: 6.9.1
 WC requires at least: 6.5.0
-WC tested up to: 10.4.2
-Stable tag: 1.2.0
+WC tested up to: 10.5.2
+Stable tag: 1.2.2
 Requires PHP: 7.4
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -100,9 +100,10 @@ By utilizing the page short code, you can add an Order Tracking page anywhere on
 
 === 🤝 TRACK ORDERS FOR WOOCOMMERCE COMPATIBILITIES ===
 
-Compatible with various themes that are suitable for any kind of WordPress project.
+Compatible with various themes and plugins that are suitable for any kind of WordPress project.
 
-* [**Flatsome**](https://flatsome.info/) – Multi-Purpose Responsive WooCommerce Theme
+
+* [**Upsell Funnel Builder**](https://wpswings.com/product/upsell-order-bump-offer-for-woocommerce-pro/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=upsell-order-bump-pro) – Display upsell offers on the order tracking page. 
 * [**RMA - Return, Refund and Exchange**](https://wordpress.org/plugins/woo-refund-and-exchange-lite/) - With this compatibility, you can now track the status of return, exchange, and refunded orders via the track orders plugin.
 * [**Visual Composer**](https://visualcomposer.com/) – Free WordPress Website Builder
 * [**Elementor**](https://elementor.com/) – Create, Design, and Host your Website
@@ -235,9 +236,18 @@ Visit [**Community Forums for Track Orders**](https://forums.wpswings.com/topic-
 
 == Changelog ==
 
+= 1.2.2 - Released on 02 March 2026 = 
+* New: Compatibility with the latest WP (6.9.1) and WC (10.5.2)
+* New: Compatibility with RMA Plugin
+
+= 1.2.1 - Released on 30th January 2026 = 
+* New: Upsell product on the order tracking page.
+* Enhancement: Implemented React-based enhancements for tracking settings.
+* New: Compatibility with Upsell funnel builder for WooCommerce 
+
 = 1.2.0 - Released on 8th January 2026 = 
 * New: Email Delay Notification.
-* New: Compatibility with the latest WP 6.9 and WC 10.4.2
+* New: Compatibility with the latest WP 6.9 and WC 10.4.3
 
 = 1.1.10 – Released on 20 November 2025 = 
 * New: Compatibility with the latest WP 6.8.3 and WC 10.3.5
@@ -337,6 +347,6 @@ Visit [**Community Forums for Track Orders**](https://forums.wpswings.com/topic-
 
 == Upgrade Notice == 
 
-= 1.2.0 - Released on 8th January 2026 = 
-* New: Email Delay Notification.
-* New: Compatibility with the latest WP 6.9 and WC 10.4.2
+= 1.2.2 - Released on 02 March 2026 = 
+* New: Compatibility with the latest WP (6.9.1) and WC (10.5.2)
+* New: Compatibility with RMA Plugin
