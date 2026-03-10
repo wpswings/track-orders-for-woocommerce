@@ -77,7 +77,7 @@ class Track_Orders_For_Woocommerce {
 		if ( defined( 'TRACK_ORDERS_FOR_WOOCOMMERCE_VERSION' ) ) {
 			$this->version = TRACK_ORDERS_FOR_WOOCOMMERCE_VERSION;
 		} else {
-			$this->version = '1.2.1';
+			$this->version = '1.2.3';
 		}
 
 		$this->plugin_name = 'track-orders-for-woocommerce';
@@ -438,6 +438,11 @@ class Track_Orders_For_Woocommerce {
 			'title'       => esc_html__( 'Shipping Services', 'track-orders-for-woocommerce' ),
 			'name'        => 'track-orders-for-woocommerce-shipping-services',
 			'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-shipping-services.php',
+		);
+		$tofw_default_tabs['track-orders-for-woocommerce-order-api']      = array(
+			'title'       => esc_html__( 'Order API', 'track-orders-for-woocommerce' ),
+			'name'        => 'track-orders-for-woocommerce-order-api',
+			'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-order-api.php',
 		);
 		$tofw_default_tabs =
 		// desc - filter for trial.
