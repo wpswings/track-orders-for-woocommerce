@@ -87,7 +87,6 @@ $tofw_sample_create_payload_json = wp_json_encode( $tofw_sample_create_payload, 
 }
 .tofw-api-hero {
 	background: linear-gradient(135deg, #eff7ff 0%, #ffffff 65%);
-	border-left: 4px solid var(--tofw-api-blue);
 }
 .tofw-api-title {
 	font-size: 34px;
