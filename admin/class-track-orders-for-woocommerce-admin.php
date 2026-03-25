@@ -3039,23 +3039,25 @@ class Track_Orders_For_Woocommerce_Admin {
 		$hpos_meta    = esc_sql( $hpos_meta );
 		$legacy_meta  = esc_sql( $legacy_meta );
 
+		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$orders = $wpdb->get_results(
 			$wpdb->prepare(
 				"
-	SELECT DISTINCT wco.id AS order_id
-	FROM {$orders_table} wco
-	LEFT JOIN {$hpos_meta} h1 ON h1.order_id = wco.id AND h1.meta_key = 'wps_tofw_estimated_delivery_date'
-	LEFT JOIN {$hpos_meta} h2 ON h2.order_id = wco.id AND h2.meta_key = 'wps_tofw_estimated_delivery_time'
-	LEFT JOIN {$legacy_meta} m1 ON m1.post_id = wco.id AND m1.meta_key = 'wps_tofw_estimated_delivery_date'
-	LEFT JOIN {$legacy_meta} m2 ON m2.post_id = wco.id AND m2.meta_key = 'wps_tofw_estimated_delivery_time'
-	WHERE wco.status IN ( {$status_placeholders} )
-	  AND ( h1.meta_value IS NOT NULL OR m1.meta_value IS NOT NULL )
-	  AND ( h2.meta_value IS NOT NULL OR m2.meta_value IS NOT NULL )
-	LIMIT %d
+SELECT DISTINCT wco.id AS order_id
+FROM {$orders_table} wco
+LEFT JOIN {$hpos_meta} h1 ON h1.order_id = wco.id AND h1.meta_key = 'wps_tofw_estimated_delivery_date'
+LEFT JOIN {$hpos_meta} h2 ON h2.order_id = wco.id AND h2.meta_key = 'wps_tofw_estimated_delivery_time'
+LEFT JOIN {$legacy_meta} m1 ON m1.post_id = wco.id AND m1.meta_key = 'wps_tofw_estimated_delivery_date'
+LEFT JOIN {$legacy_meta} m2 ON m2.post_id = wco.id AND m2.meta_key = 'wps_tofw_estimated_delivery_time'
+WHERE wco.status IN ( {$status_placeholders} )
+  AND ( h1.meta_value IS NOT NULL OR m1.meta_value IS NOT NULL )
+  AND ( h2.meta_value IS NOT NULL OR m2.meta_value IS NOT NULL )
+LIMIT %d
 ",
 				...$params
 			)
 		);
+		// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
 		if ( empty( $orders ) ) {
 			return;
