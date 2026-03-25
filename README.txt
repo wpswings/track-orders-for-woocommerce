@@ -4,10 +4,10 @@ Contributors: wpswings
 Donate link: https://wpswings.com/
 Tags: woocommerce shipping, shipment tracker, shipping, shipment tracking, order tracking
 Requires at least: 6.7.0
-Tested up to: 6.9.1
+Tested up to: 6.9.4
 WC requires at least: 6.5.0
-WC tested up to: 10.5.2
-Stable tag: 1.2.2
+WC tested up to: 10.6.1
+Stable tag: 1.2.3
 Requires PHP: 7.4
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -50,6 +50,7 @@ Keep your customers updated with real-time tracking and grab their attention whi
 
 === ⭐ KEY FEATURES OF WOOCOMMERCE SHIPPING PLUGIN: ===
 
+
 ####1) Email Delay Notification:
 Our Order Tracking plugin now lets you send delay notification emails to customers when their delivery is running late. You can turn this feature on or off anytime, edit the email template, and add details like order ID, customer name, and expected delivery date using dynamic placeholders. You can also send the delay email to the admin if needed.
 
@@ -89,6 +90,11 @@ Show **customers information** crucial to the order fulfillment process, such as
 #### 13) Create WooCommerce Order Tracking Shortcode on the tracking Page:
 By utilizing the page short code, you can add an Order Tracking page anywhere on your WooCommerce store. Use the **form shortcode to implement a Track Order Form** anywhere on your site.
 
+#### 14) Order API: 
+With the latest update our track orders for WooCommerce plugin includes a powerful Order API that helps you easily connect your store with third-party applications. With this API, you can fetch paginated orders with status labels, view details of a specific order, create new orders, and access all available order statuses. 
+For example, if you have a mobile app, you can use the API to display a customer’s recent orders with real-time updates like Processing or Shipped, and even allow order creation directly from the app.
+
+
 
 === LIVE DEMO OF ORDER TRACKER PLUGIN ===
 
@@ -102,7 +108,7 @@ By utilizing the page short code, you can add an Order Tracking page anywhere on
 
 Compatible with various themes and plugins that are suitable for any kind of WordPress project.
 
-
+* Compatibility with [**Coefficient**](https://coefficient.io/) to display your API data in a clear, tabular format.
 * [**Upsell Funnel Builder**](https://wpswings.com/product/upsell-order-bump-offer-for-woocommerce-pro/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=upsell-order-bump-pro) – Display upsell offers on the order tracking page. 
 * [**RMA - Return, Refund and Exchange**](https://wordpress.org/plugins/woo-refund-and-exchange-lite/) - With this compatibility, you can now track the status of return, exchange, and refunded orders via the track orders plugin.
 * [**Visual Composer**](https://visualcomposer.com/) – Free WordPress Website Builder
@@ -236,7 +242,12 @@ Visit [**Community Forums for Track Orders**](https://forums.wpswings.com/topic-
 
 == Changelog ==
 
-= 1.2.2 - Released on 02 March 2026 = 
+= 1.2.3 - Released on 25 March 2026 = 
+* New: Order Details API
+* New: compatibility with the SaaS tool coefficient.
+* New: compatibility with the latest WP 6.9.4 and WC 10.6.1
+
+= 1.2.2 - Released on 03 March 2026 = 
 * New: Compatibility with the latest WP (6.9.1) and WC (10.5.2)
 * New: Compatibility with RMA Plugin
 
@@ -347,6 +358,8 @@ Visit [**Community Forums for Track Orders**](https://forums.wpswings.com/topic-
 
 == Upgrade Notice == 
 
-= 1.2.2 - Released on 02 March 2026 = 
-* New: Compatibility with the latest WP (6.9.1) and WC (10.5.2)
-* New: Compatibility with RMA Plugin
+= 1.2.3 - Released on 25 March 2026 = 
+
+* New: Order Details API
+* New: compatibility with the SaaS tool coefficient.
+* New: compatibility with the latest WP 6.9.4 and WC 10.6.1

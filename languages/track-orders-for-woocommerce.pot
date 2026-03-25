@@ -1,8 +1,8 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Track Orders for WooCommerce 1.2.2\n"
-"POT-Creation-Date: 2026-03-02 17:42+0530\n"
+"Project-Id-Version: Track Orders for WooCommerce 1.2.3\n"
+"POT-Creation-Date: 2026-03-25 11:34+0530\n"
 "PO-Revision-Date: 2023-09-08 12:29+0530\n"
 "Last-Translator: \n"
 "Language-Team: WP Swings\n"
@@ -887,13 +887,13 @@ msgstr ""
 
 #: admin/partials/class-wps-custom-order-status.php:344
 #: admin/partials/class-wps-custom-order-status.php:408
-#: includes/class-track-orders-for-woocommerce.php:978
+#: includes/class-track-orders-for-woocommerce.php:983
 msgid "Upload the image which is used as logo for your custom order statuses."
 msgstr ""
 
 #: admin/partials/class-wps-custom-order-status.php:349
 #: admin/partials/class-wps-custom-order-status.php:413
-#: includes/class-track-orders-for-woocommerce.php:995
+#: includes/class-track-orders-for-woocommerce.php:1000
 msgid "Upload Logo"
 msgstr ""
 
@@ -982,6 +982,101 @@ msgstr ""
 
 #: admin/partials/track-orders-for-woocommerce-developer.php:69
 msgid "Public Hooks"
+msgstr ""
+
+#: admin/partials/track-orders-for-woocommerce-order-api.php:255
+#: includes/class-track-orders-for-woocommerce.php:443
+msgid "Order API"
+msgstr ""
+
+#: admin/partials/track-orders-for-woocommerce-order-api.php:257
+msgid ""
+"Use these endpoints to list orders, fetch order details, create orders, and "
+"read custom/default statuses. Authentication is mandatory for every request."
+msgstr ""
+
+#: admin/partials/track-orders-for-woocommerce-order-api.php:260
+msgid "Base URL"
+msgstr ""
+
+#: admin/partials/track-orders-for-woocommerce-order-api.php:263
+#: admin/partials/track-orders-for-woocommerce-order-api.php:304
+#: admin/partials/track-orders-for-woocommerce-order-api.php:316
+#: admin/partials/track-orders-for-woocommerce-order-api.php:328
+#: admin/partials/track-orders-for-woocommerce-order-api.php:340
+#: admin/partials/track-orders-for-woocommerce-order-api.php:350
+#: admin/partials/track-orders-for-woocommerce-order-api.php:365
+msgid "Copy"
+msgstr ""
+
+#: admin/partials/track-orders-for-woocommerce-order-api.php:270
+msgid "Quick Start"
+msgstr ""
+
+#: admin/partials/track-orders-for-woocommerce-order-api.php:272
+msgid "Create an Application Password from your WordPress user profile."
+msgstr ""
+
+#: admin/partials/track-orders-for-woocommerce-order-api.php:273
+msgid "Use Basic Auth in Postman or your server-side app."
+msgstr ""
+
+#: admin/partials/track-orders-for-woocommerce-order-api.php:274
+msgid "Use the full endpoint URLs below (Base URL + route path)."
+msgstr ""
+
+#: admin/partials/track-orders-for-woocommerce-order-api.php:277
+msgid "Required capability: manage_woocommerce or edit_shop_orders."
+msgstr ""
+
+#: admin/partials/track-orders-for-woocommerce-order-api.php:281
+msgid "Common Query Params"
+msgstr ""
+
+#: admin/partials/track-orders-for-woocommerce-order-api.php:295
+msgid "Available Endpoints"
+msgstr ""
+
+#: admin/partials/track-orders-for-woocommerce-order-api.php:300
+#: admin/partials/track-orders-for-woocommerce-order-api.php:324
+msgid "/orders"
+msgstr ""
+
+#: admin/partials/track-orders-for-woocommerce-order-api.php:301
+msgid ""
+"Returns paginated orders with status label, billing/shipping data, and "
+"tracking meta."
+msgstr ""
+
+#: admin/partials/track-orders-for-woocommerce-order-api.php:312
+msgid "/orders/{id}"
+msgstr ""
+
+#: admin/partials/track-orders-for-woocommerce-order-api.php:313
+msgid ""
+"Returns a specific order. Use include_items=true to include line/shipping/"
+"fee/coupon items."
+msgstr ""
+
+#: admin/partials/track-orders-for-woocommerce-order-api.php:325
+msgid ""
+"Creates a new WooCommerce order. line_items is required in the JSON body."
+msgstr ""
+
+#: admin/partials/track-orders-for-woocommerce-order-api.php:336
+msgid "/order-statuses"
+msgstr ""
+
+#: admin/partials/track-orders-for-woocommerce-order-api.php:337
+msgid "Returns all statuses, including custom statuses."
+msgstr ""
+
+#: admin/partials/track-orders-for-woocommerce-order-api.php:347
+msgid "Sample Create Order Payload"
+msgstr ""
+
+#: admin/partials/track-orders-for-woocommerce-order-api.php:366
+msgid "Copied"
 msgstr ""
 
 #: admin/partials/track-orders-for-woocommerce-overview.php:24
@@ -1432,115 +1527,115 @@ msgstr ""
 msgid "Shipping Services"
 msgstr ""
 
-#: includes/class-track-orders-for-woocommerce.php:452
+#: includes/class-track-orders-for-woocommerce.php:457
 msgid "Enhance Tracking"
 msgstr ""
 
-#: includes/class-track-orders-for-woocommerce.php:458
+#: includes/class-track-orders-for-woocommerce.php:463
 msgid "Global Setting"
 msgstr ""
 
-#: includes/class-track-orders-for-woocommerce.php:464
+#: includes/class-track-orders-for-woocommerce.php:469
 msgid "Order Status Auto"
 msgstr ""
 
-#: includes/class-track-orders-for-woocommerce.php:472
+#: includes/class-track-orders-for-woocommerce.php:477
 msgid "Overview"
 msgstr ""
 
-#: includes/class-track-orders-for-woocommerce.php:477
+#: includes/class-track-orders-for-woocommerce.php:482
 msgid "Developer"
 msgstr ""
 
-#: includes/class-track-orders-for-woocommerce.php:501
+#: includes/class-track-orders-for-woocommerce.php:506
 #, php-format
 msgid ""
 "Unable to locate file at location \"%s\". Some features may not work "
 "properly in this plugin. Please contact us!"
 msgstr ""
 
-#: includes/class-track-orders-for-woocommerce.php:559
+#: includes/class-track-orders-for-woocommerce.php:564
 msgid "N/A (phpversion function does not exist)"
 msgstr ""
 
-#: includes/class-track-orders-for-woocommerce.php:568
+#: includes/class-track-orders-for-woocommerce.php:573
 msgid "N/A (make sure exec function is enabled)"
 msgstr ""
 
-#: includes/class-track-orders-for-woocommerce.php:571
+#: includes/class-track-orders-for-woocommerce.php:576
 msgid "N/A (ABSPATH constant not defined)"
 msgstr ""
 
-#: includes/class-track-orders-for-woocommerce.php:574
+#: includes/class-track-orders-for-woocommerce.php:579
 msgid "N/A (php_uname function does not exist)"
 msgstr ""
 
-#: includes/class-track-orders-for-woocommerce.php:577
+#: includes/class-track-orders-for-woocommerce.php:582
 msgid "N/A (get_bloginfo function does not exist)"
 msgstr ""
 
-#: includes/class-track-orders-for-woocommerce.php:580
+#: includes/class-track-orders-for-woocommerce.php:585
 msgid "N/A (get_option function does not exist)"
 msgstr ""
 
-#: includes/class-track-orders-for-woocommerce.php:583
-#: includes/class-track-orders-for-woocommerce.php:586
-#: includes/class-track-orders-for-woocommerce.php:589
+#: includes/class-track-orders-for-woocommerce.php:588
+#: includes/class-track-orders-for-woocommerce.php:591
+#: includes/class-track-orders-for-woocommerce.php:594
 msgid "Yes"
 msgstr ""
 
-#: includes/class-track-orders-for-woocommerce.php:583
-#: includes/class-track-orders-for-woocommerce.php:586
-#: includes/class-track-orders-for-woocommerce.php:589
+#: includes/class-track-orders-for-woocommerce.php:588
+#: includes/class-track-orders-for-woocommerce.php:591
+#: includes/class-track-orders-for-woocommerce.php:594
 msgid "No"
 msgstr ""
 
-#: includes/class-track-orders-for-woocommerce.php:592
+#: includes/class-track-orders-for-woocommerce.php:597
 msgid "N/A (count_users function does not exist)"
 msgstr ""
 
-#: includes/class-track-orders-for-woocommerce.php:595
+#: includes/class-track-orders-for-woocommerce.php:600
 msgid "0"
 msgstr ""
 
-#: includes/class-track-orders-for-woocommerce.php:598
-#: includes/class-track-orders-for-woocommerce.php:604
-#: includes/class-track-orders-for-woocommerce.php:607
-#: includes/class-track-orders-for-woocommerce.php:635
-#: includes/class-track-orders-for-woocommerce.php:638
+#: includes/class-track-orders-for-woocommerce.php:603
+#: includes/class-track-orders-for-woocommerce.php:609
+#: includes/class-track-orders-for-woocommerce.php:612
+#: includes/class-track-orders-for-woocommerce.php:640
+#: includes/class-track-orders-for-woocommerce.php:643
 msgid "N/A (ini_get function does not exist)"
 msgstr ""
 
-#: includes/class-track-orders-for-woocommerce.php:601
+#: includes/class-track-orders-for-woocommerce.php:606
 msgid "N/A"
 msgstr ""
 
-#: includes/class-track-orders-for-woocommerce.php:619
+#: includes/class-track-orders-for-woocommerce.php:624
 msgid "N/A (gethostname function does not exist)"
 msgstr ""
 
-#: includes/class-track-orders-for-woocommerce.php:622
-#: includes/class-track-orders-for-woocommerce.php:631
+#: includes/class-track-orders-for-woocommerce.php:627
+#: includes/class-track-orders-for-woocommerce.php:636
 msgid "N/A (make sure exec is enabled)"
 msgstr ""
 
-#: includes/class-track-orders-for-woocommerce.php:641
+#: includes/class-track-orders-for-woocommerce.php:646
 msgid "N/A (wp_remote_get function does not exist)"
 msgstr ""
 
-#: includes/class-track-orders-for-woocommerce.php:941
+#: includes/class-track-orders-for-woocommerce.php:946
 msgid "Configure"
 msgstr ""
 
-#: includes/class-track-orders-for-woocommerce.php:972
+#: includes/class-track-orders-for-woocommerce.php:977
 msgid "Upload Tracking Logo"
 msgstr ""
 
-#: includes/class-track-orders-for-woocommerce.php:1007
+#: includes/class-track-orders-for-woocommerce.php:1012
 msgid "Uploaded Logo Preview"
 msgstr ""
 
-#: includes/class-track-orders-for-woocommerce.php:1063
+#: includes/class-track-orders-for-woocommerce.php:1068
 msgid "max="
 msgstr ""
 
@@ -1604,6 +1699,71 @@ msgstr ""
 
 #: onboarding/templates/track-orders-for-woocommerce-onboarding-template.php:45
 msgid "Skip For Now"
+msgstr ""
+
+#: package/rest-api/class-track-orders-for-woocommerce-rest-api.php:235
+msgid "Invalid order status filter provided."
+msgstr ""
+
+#: package/rest-api/class-track-orders-for-woocommerce-rest-api.php:319
+msgid "Order not found."
+msgstr ""
+
+#: package/rest-api/class-track-orders-for-woocommerce-rest-api.php:382
+msgid "Invalid request payload."
+msgstr ""
+
+#: package/rest-api/class-track-orders-for-woocommerce-rest-api.php:391
+msgid "line_items is required and must be a non-empty array."
+msgstr ""
+
+#: package/rest-api/class-track-orders-for-woocommerce-rest-api.php:403
+#, php-format
+msgid "Invalid line item at index %d."
+msgstr ""
+
+#: package/rest-api/class-track-orders-for-woocommerce-rest-api.php:419
+#, php-format
+msgid "line_items[%d] must include a valid product_id."
+msgstr ""
+
+#: package/rest-api/class-track-orders-for-woocommerce-rest-api.php:432
+#, php-format
+msgid "Product %1$d not found for line_items[%2$d]."
+msgstr ""
+
+#: package/rest-api/class-track-orders-for-woocommerce-rest-api.php:446
+#, php-format
+msgid "line_items[%d].quantity must be greater than 0."
+msgstr ""
+
+#: package/rest-api/class-track-orders-for-woocommerce-rest-api.php:492
+msgid "Unable to initialize order."
+msgstr ""
+
+#: package/rest-api/class-track-orders-for-woocommerce-rest-api.php:531
+msgid "Failed to add line item in order."
+msgstr ""
+
+#: package/rest-api/class-track-orders-for-woocommerce-rest-api.php:570
+msgid "Fee"
+msgstr ""
+
+#: package/rest-api/class-track-orders-for-woocommerce-rest-api.php:607
+#, php-format
+msgid "Unable to apply coupon: %s"
+msgstr ""
+
+#: package/rest-api/class-track-orders-for-woocommerce-rest-api.php:659
+msgid "Order created successfully."
+msgstr ""
+
+#: package/rest-api/class-track-orders-for-woocommerce-rest-api.php:681
+msgid "You are not allowed to access this endpoint."
+msgstr ""
+
+#: package/rest-api/class-track-orders-for-woocommerce-rest-api.php:858
+msgid "Invalid status provided for order creation."
 msgstr ""
 
 #: public/class-track-orders-for-woocommerce-public.php:137
