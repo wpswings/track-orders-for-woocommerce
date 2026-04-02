@@ -27,7 +27,7 @@ jQuery(document).ready(function() {
 		var refunded =  wps_admin_param.wps_file_include + 'image/Refund.png';
 		var dispatched =  wps_admin_param.wps_file_include + 'image/Dispatched.png';
 		var shipped =  wps_admin_param.wps_file_include + 'image/Order-Shipped.png';
-		var packed = wps_admin_param.wps_file_include + 'image/Order-Packed.png';
+		var packed = wps_admin_param.wps_file_include + 'image/order-packed.png';
 		var return_requested = wps_admin_param.wps_file_include + 'image/product-return.png';
 		var return_approved = wps_admin_param.wps_file_include + 'image/product-approved.png';
 		var return_cancelled = wps_admin_param.wps_file_include + 'image/product-cancelled.png';

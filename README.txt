@@ -4,7 +4,7 @@ Contributors: wpswings
 Donate link: https://wpswings.com/
 Tags: woocommerce shipping, shipment tracker, shipping, shipment tracking, order tracking
 Requires at least: 6.7.0
-Tested up to: 6.9.4
+Tested up to: 6.9
 WC requires at least: 6.5.0
 WC tested up to: 10.6.1
 Stable tag: 1.2.3
@@ -159,15 +159,21 @@ or connect with us then [**Generate a ticket**](https://wpswings.com/submit-quer
 * Create and Revamp your eCommerce store with [**WooCommerce Services**](https://wpswings.com/woocommerce-services/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=woocommerce-services) 
 * Get Huge Discounts on Track Orders for WooCommerce Plugin – [**Get More Offers**](https://wpswings.com/offers/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=offers)
 
-== THIRD PARTY SERVICES ==
+== External services ==
 
-Our plugin relies on some third-party services. Here is more information about it.
+This plugin connects to a few external services for tracking and onboarding. Each service is only contacted when its related feature is enabled:
 
-* **WP Swings Tracking:** We are using our own [**WP Swings Tracking API**](https://tracking.wpswings.com/) for tracking essential user info. By default, our plugin team receives no sensitive data from you or your website enwpscreate _tracking paged users. We only keep track of the plugin version and the settings that are enabled by you in the plugin. You can read more about the [**plugin’s usage tracking here**](https://wpswings.com/plugin-usage-tracking).
+* **TrackingMore API (`api.trackingmore.com`)** — used for live multi‑carrier tracking and creating shipment records. When a customer/admin enters a tracking number and courier code, the plugin sends those values along with your TrackingMore API key to fetch status updates. Terms: https://www.trackingmore.com/terms.html Privacy: https://www.trackingmore.com/privacy.html
 
-* **Integration with Google Maps:** To make things work smoothly our plugin relies on [**Google Maps API**](https://maps.googleapis.com) to show the accurate information of different Geo locations where the order has been gone through. Users require a Google Maps API key to add Google Maps to their website, They can obtain the API key from the [**Google Cloud API Services**](https://console.cloud.google.com/apis/library) and can learn more about Google Maps' Terms and Conditions from [**here**](https://www.google.com/help/terms_maps/).
+* **DHL Shipment Tracking API (`api-eu.dhl.com`)** — used when you add a DHL tracking number to an order. The plugin sends the tracking number and your DHL API key to retrieve the shipment timeline. Terms: https://developer.dhl.com/terms-and-conditions Privacy: https://www.dhl.com/global-en/home/footer/legal-notices/privacy-notice.html
 
-* **Integration with Hubspot HSforms:** To make the onboarding process smoother we are relying on [**Hubspot HSforms**](https://developers.hubspot.com/docs/cms/building-blocks/forms). Which only gathers the necessary and nonsensitive info like (Plugin Name, Version, and Plugin Deactivation Reasons). You can read more about their [**privacy policy here**](https://legal.hubspot.com/legal-stuff).
+* **Carrier Tracking Links (e.g., DHL, UPS, USPS, FedEx, Royal Mail, Australia Post, OnTrac, DPD, CollectPlus, TForce Logistics, APC Postal Logistics, Estes, ParcelForce, IMEX, ParcelForce, Canada Post, etc.)** — when you enable “Track with Carrier,” the plugin builds a tracking URL and redirects the user to the chosen carrier’s site with their tracking number in the query string. Data sent: tracking number only. Each carrier applies its own terms/privacy; please review the carrier you use.
+
+* **WP Swings telemetry (`tracking.wpswings.com`)** — optional usage tracking that posts site/environment data (site URL, WP/WooCommerce versions, plugin version, active settings) to our server to help improve the plugin. It runs no more than once per week and only after you opt in during onboarding. Terms: https://wpswings.com/terms-of-service/ Privacy: https://wpswings.com/privacy-policy/
+
+* **Google Maps API (`maps.googleapis.com`)** — used for the “Track order with Google Map” view. When enabled, map requests include your Google Maps API key and the coordinates/addresses needed to display the route. Terms: https://www.google.com/help/terms_maps/ Privacy: https://policies.google.com/privacy
+
+* **HubSpot Forms (`forms.hsforms.com`)** — used in the admin onboarding/deactivation survey. It sends the form fields you submit (e.g., email, name, site URL, deactivation reason) to HubSpot to create the support ticket. Terms: https://legal.hubspot.com/terms-of-service Privacy: https://legal.hubspot.com/privacy-policy
 
 == Installation ==
 

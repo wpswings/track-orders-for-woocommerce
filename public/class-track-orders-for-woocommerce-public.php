@@ -570,7 +570,7 @@ class Track_Orders_For_Woocommerce_Public {
 
 				const wps_tofw_trackingLinks = <?php echo wp_json_encode( $wps_tofw_tracking_numbers ); ?>;
 				const wps_tofw_productMap = <?php echo wp_json_encode( $wps_tofw_products ); ?>;
-				const wps_otfw_popup_tracking_page = <?php echo json_encode( get_option( 'wps_tofwp_enable_track_order_popup' ) ); ?>;
+				const wps_otfw_popup_tracking_page = <?php echo wp_json_encode( get_option( 'wps_tofwp_enable_track_order_popup' ) ); ?>;
 
 				wps_tofw_table.querySelectorAll("tbody tr.woocommerce-table__line-item").forEach(function(wps_tofw_row) {
 					const wps_tofw_productName = wps_tofw_row.querySelector(".woocommerce-table__product-name a")?.textContent.trim();

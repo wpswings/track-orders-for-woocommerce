@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <div class="wps-overview__wrapper">
 	<div class="wps-overview__banner">
-		<img src="<?php echo esc_html( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ); ?>admin/image/Plugin_banner_image_Track Order_ for_WooCommerce.jpg" alt="Overview banner image">
+		<img src="<?php echo esc_html( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ); ?>admin/image/plugin-banner-image-track-order-for-woocommerce.jpg" alt="Overview banner image">
 	</div>
 	<div class="wps-overview__content">
 		<div class="wps-overview__content-description">

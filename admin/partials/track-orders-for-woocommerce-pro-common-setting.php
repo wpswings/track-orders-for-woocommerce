@@ -184,7 +184,7 @@ wp_nonce_field( 'admin_save_data', 'wps_tabs_nonce' );
 		<div class="wps-form-group__label"></div>
 		<div class="wps-form-group__control">
 			<button class="mdc-button mdc-button--raised" name= "wps_tofp_enhance_tracking_save" id="wps_tofp_enhance_tracking_save"> <span class="mdc-button__ripple"></span>
-				<span class="mdc-button__label "><?php esc_html_e( 'Save Changes', 'track-orders-for-woocommerce-pro' ); ?></span>
+				<span class="mdc-button__label "><?php esc_html_e( 'Save Changes', 'track-orders-for-woocommerce' ); ?></span>
 			</button>
 		</div>
 	</div>
