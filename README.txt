@@ -6,8 +6,8 @@ Tags: woocommerce shipping, shipment tracker, shipping, shipment tracking, order
 Requires at least: 6.7.0
 Tested up to: 6.9
 WC requires at least: 6.5.0
-WC tested up to: 10.6.1
-Stable tag: 1.2.3
+WC tested up to: 10.6.2
+Stable tag: 1.2.4
 Requires PHP: 7.4
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -248,6 +248,11 @@ Visit [**Community Forums for Track Orders**](https://forums.wpswings.com/topic-
 
 == Changelog ==
 
+= 1.2.4 - Released on 3 April 2026 = 
+* New: compatibility with the WC 10.6.2
+* Fix: Fixing the deprecated function issues 
+
+
 = 1.2.3 - Released on 25 March 2026 = 
 * New: Order Details API
 * New: compatibility with the SaaS tool coefficient.
@@ -364,8 +369,6 @@ Visit [**Community Forums for Track Orders**](https://forums.wpswings.com/topic-
 
 == Upgrade Notice == 
 
-= 1.2.3 - Released on 25 March 2026 = 
-
-* New: Order Details API
-* New: compatibility with the SaaS tool coefficient.
-* New: compatibility with the latest WP 6.9.4 and WC 10.6.1
+= 1.2.4 - Released on 3 April 2026 = 
+* New: compatibility with the WC 10.6.2
+* Fix: Fixing the deprecated function issues 
