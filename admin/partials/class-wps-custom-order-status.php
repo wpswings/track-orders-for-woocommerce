@@ -118,7 +118,6 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 		foreach ( $item as $custom_order_key => $custom_order_status ) {
 			$title = '<strong>' . $custom_order_status . '</strong>';
 
-			// Base actions (always included).
 			$actions = array(
 				'delete' => sprintf(
 					'<a href="javascript:void(0);" data-action="%s" data-key="%s" class="wps_delete_costom_order">' . __( 'Delete', 'track-orders-for-woocommerce' ) . '</a>',
@@ -126,16 +125,6 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 					$custom_order_key
 				),
 			);
-
-			// Add 'edit' action only if the Pro plugin is active.
-			if ( in_array( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php', get_option( 'active_plugins', array() ), true ) ) {
-				$actions['edit'] = sprintf(
-					'<a href="javascript:void(0);" data-action="%s" data-key="%s" data-wps-name="%s" class="wps_edit_costom_order">' . __( 'Edit', 'track-orders-for-woocommerce' ) . '</a>',
-					'edit',
-					$custom_order_key,
-					$custom_order_status
-				);
-			}
 
 			return $title . $this->row_actions( $actions );
 		}
@@ -216,11 +205,6 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 			'cb'      => '<input type="checkbox" />',
 			'name'    => __( 'Custom Order Status Name', 'track-orders-for-woocommerce' ),
 		);
-
-		// Add 'template' column only if the Pro plugin is active.
-		if ( in_array( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php', get_option( 'active_plugins', array() ), true ) ) {
-			$columns['template'] = __( 'Template', 'track-orders-for-woocommerce' );
-		}
 
 		$columns['image'] = __( 'Custom Order Status Image', 'track-orders-for-woocommerce' );
 
@@ -312,29 +296,6 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 							<input type="text" name="wps_tofw_create_order_name" pattern = '^[A-Za-z0-9 ]+$' id="wps_tofw_create_order_name" placeholder="<?php esc_attr_e( 'Type Custom Order Status Name Here', 'track-orders-for-woocommerce' ); ?>">	
 						</td>
 					</tr>
-					<?php
-					if ( in_array( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php', get_option( 'active_plugins', array() ), true ) ) {
-						?>
-					<tr valign="top">
-						<th scope="row" class="titledesc">
-							<label for="wps_tofw_other_setting_upload_logo"><?php esc_html_e( 'Set Specific Template', 'track-orders-for-woocommerce' ); ?></label>
-						</th>
-						<td class="forminp forminp-text">
-						<select name="template" id="wps-template-select">
-							<option value="template1">Classic Tracker</option>
-							<option value="template2">Compact Status</option>
-							<option value="template3">Elegant Flow</option>
-							<option value="template4">Visual Voyage</option>
-							<option value="newtemplate1">Timeline Tracker</option>
-							<option value="newtemplate2">Visual Tracker</option>
-							<option value="newtemplate3">Status Chain</option>
-							<option value="template8">Flowline Tracker</option>
-						</select>
-						</td>
-					</tr>
-						<?php
-					}
-					?>
 					 <tr valign="top">
 						<th scope="row" class="titledesc">
 							<label for="wps_tofw_other_setting_upload_logo"><?php esc_html_e( 'Upload Default Logo', 'track-orders-for-woocommerce' ); ?></label>
@@ -358,71 +319,6 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 				</table>
 				<p class="save_section">
 					<input type="button" id="wps_tofw_create_custom_order_status" value="<?php esc_attr_e( 'Create Order Status', 'track-orders-for-woocommerce' ); ?>" class="button-primary">	
-					<img id="wps_tofw_send_loading" src="<?php echo esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/clock-loading.gif'; ?>">
-				</p>
-			</div>
-
-			<div class="wps_edit_of_custom_status">
-			<div class="wps_tofw_rows_wrap_edit">
-				<input id="wps_tofw_close_edit" value="<?php esc_attr_e( 'Close', 'track-orders-for-woocommerce' ); ?>" class="wps-error-button" type="button">
-			</div>
-
-			<table class="wp-list-table widefat fixed striped">
-				<tr>
-					<th>
-						<label for="wps__new_role_name"><?php esc_html_e( 'Custom Order Status Name', 'track-orders-for-woocommerce' ); ?><label>
-						</th>
-						<td>
-							<input type="text" readonly  = "" name="wps_tofw_create_order_name_edit" pattern = '^[A-Za-z0-9 ]+$' id="wps_tofw_create_order_name" placeholder="<?php esc_attr_e( 'Type Custom Order Status Name Here', 'track-orders-for-woocommerce' ); ?>">	
-						</td>
-					</tr>
-					<?php
-					if ( in_array( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php', get_option( 'active_plugins', array() ), true ) ) {
-						?>
-					<tr valign="top">
-						<th scope="row" class="titledesc">
-							<label for="wps_tofw_other_setting_upload_logo"><?php esc_html_e( 'Set Specific Template', 'track-orders-for-woocommerce' ); ?></label>
-						</th>
-						<td class="forminp forminp-text">
-						<select name="template_edit" id="wps-template-select">
-							<option value="template1">Classic Tracker</option>
-							<option value="template2">Compact Status</option>
-							<option value="template3">Elegant Flow</option>
-							<option value="template4">Visual Voyage</option>
-							<option value="newtemplate1">Timeline Tracker</option>
-							<option value="newtemplate2">Visual Tracker</option>
-							<option value="newtemplate3">Status Chain</option>
-							<option value="template8">Flowline Tracker</option>
-						</select>
-						</td>
-					</tr>
-						<?php
-					}
-					?>
-					 <tr valign="top">
-						<th scope="row" class="titledesc">
-							<label for="wps_tofw_other_setting_upload_logo"><?php esc_html_e( 'Upload Default Logo', 'track-orders-for-woocommerce' ); ?></label>
-						</th>
-						<td class="forminp forminp-text">
-							<?php
-							$attribute_description = __( 'Upload the image which is used as logo for your custom order statuses.', 'track-orders-for-woocommerce' );
-							echo wp_kses_post( wc_help_tip( $attribute_description ) );
-
-							?>
-							<input type="text" readonly class="wps_tofw_other_setting_upload_logo_value" id="wps_tofw_other_setting_upload_logo_edit" name="wps_tofw_other_setting_upload_logo_edit" value=""/>
-							<input class="wps_tofw_other_setting_upload_logo button"  type="button" value=<?php esc_attr_e( 'Upload Logo', 'track-orders-for-woocommerce' ); ?> />
-							
-							<p id="wps_tofw_other_setting_remove_logo_edit">
-								<span class="wps_tofw_other_setting_remove_logo">
-									<img src="" width="50px" height="50px" id="wps_tofw_other_setting_upload_image_edit">
-									<img name="wps_edit_image_logo" alt="Image" width="50px" height="50px" id="wps_preset_image_order_custom">	
-								</span>
-							</p>
-						</td>
-					</tr>
-				</table>
-				<p class="edit_save_section">
-					<input type="button" id="wps_tofw_create_custom_order_status_edit" value="<?php esc_attr_e( 'Update Order Status', 'track-orders-for-woocommerce' ); ?>" class="button-primary">
 					<img id="wps_tofw_send_loading" src="<?php echo esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/clock-loading.gif'; ?>">
 				</p>
 			</div>
@@ -481,5 +377,3 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 }
 	$wps_tofw_user_role_table_list = new WPS_Custom_Order_Status();
 	$wps_tofw_user_role_table_list->prepare_items();
-
-

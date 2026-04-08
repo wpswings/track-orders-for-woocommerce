@@ -274,22 +274,20 @@ class Track_Orders_For_Woocommerce_Public {
 					}
 
 					if ( $found ) {
-						// Determine the path based on the selected template.
-						if ( ( 'template8' === $selected_template || 'template4' === $selected_template || 'newtemplate1' === $selected_template || 'newtemplate2' === $selected_template || 'newtemplate3' === $selected_template ) && is_plugin_active( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php' ) ) {
-							$path = TRACK_ORDERS_FOR_WOOCOMMERCE_PRO_DIR_PATH;
-						} else {
-							$path = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH;
+						$allowed_templates = array( 'template1', 'template2', 'template3' );
+						if ( ! in_array( $selected_template, $allowed_templates, true ) ) {
+							$selected_template = 'template1';
 						}
-						// Construct the template path.
-						$new_template = $path . 'template/wps-track-order-myaccount-page-' . $selected_template . '.php';
+
+						$new_template = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'template/wps-track-order-myaccount-page-' . $selected_template . '.php';
 						$template = $new_template;
 					} else {
-						if ( ( 'template8' === $selected_template || 'template4' === $selected_template || 'newtemplate1' === $selected_template || 'newtemplate2' === $selected_template || 'newtemplate3' === $selected_template ) && ( is_plugin_active( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php' ) ) ) {
-							$path = TRACK_ORDERS_FOR_WOOCOMMERCE_PRO_DIR_PATH;
-						} else {
-							$path = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH;
+						$allowed_templates = array( 'template1', 'template2', 'template3' );
+						if ( ! in_array( $selected_template, $allowed_templates, true ) ) {
+							$selected_template = 'template1';
 						}
-						$new_template = $path . 'template/wps-track-order-myaccount-page-' . $selected_template . '.php';
+
+						$new_template = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'template/wps-track-order-myaccount-page-' . $selected_template . '.php';
 						$template = $new_template;
 					}
 				} else {

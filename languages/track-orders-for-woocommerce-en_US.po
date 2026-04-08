@@ -899,25 +899,6 @@ msgstr ""
 msgid "Update Order Status"
 msgstr ""
 
-#: admin/partials/track-order-for-woocommerce-go-pro.php:27
-msgid "Unlock Enhanced Order Tracking with Pro Version!"
-msgstr ""
-
-#: admin/partials/track-order-for-woocommerce-go-pro.php:44
-msgid "Upgrade to Pro and enhance your WooCommerce order tracking!"
-msgstr ""
-
-#: admin/partials/track-order-for-woocommerce-go-pro.php:53
-msgid ""
-"Get custom order statuses, real-time carrier integration (FedEx, USPS, "
-"Canada Post), and automated email updates. Keep customers informed and "
-"reduce \"Where`s my order?\" inquiries effortlessly."
-msgstr ""
-
-#: admin/partials/track-order-for-woocommerce-go-pro.php:59
-msgid "Upgrade To Premium today!"
-msgstr ""
-
 #: admin/partials/track-orders-for-woocommerce-admin-dashboard.php:21
 msgid "Nonce Not verified"
 msgstr ""
@@ -2312,14 +2293,6 @@ msgstr ""
 
 #: track-orders-for-woocommerce.php:248 track-orders-for-woocommerce.php:269
 msgid "Settings"
-msgstr ""
-
-#: track-orders-for-woocommerce.php:249
-msgid "GO PRO"
-msgstr ""
-
-#: track-orders-for-woocommerce.php:285
-msgid "Demo"
 msgstr ""
 
 #: track-orders-for-woocommerce.php:289

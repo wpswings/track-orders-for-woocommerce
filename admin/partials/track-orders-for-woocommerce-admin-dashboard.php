@@ -28,33 +28,17 @@ $tofw_default_tabs = $wps_tofw_obj->wps_std_plug_default_tabs();
 	<?php
 	// desc - This hook is used for trial.
 	do_action('wps_tofw_settings_saved_notice');
-	$plugin_path = 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php';
-	$wps_pro_is_active = false;
-	// Check if the plugin is active.
-	if (is_plugin_active($plugin_path)) {
-		$wps_pro_is_active = true;
-	}
 	?>
 	<div class="wps-header-container wps-bg-white wps-r-8">
-		<?php if (! $wps_pro_is_active) { ?>
-			<h1 class="wps-header-title"><?php echo esc_attr(strtoupper(str_replace('-', ' ', $wps_tofw_obj->tofw_get_plugin_name()))); ?></h1>
-			<a href="https://docs.wpswings.com/track-orders-for-woocommerce/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=ot-doc-free" target="_blank" class="wps-link"><?php esc_html_e('Documentation', 'track-orders-for-woocommerce'); ?></a>
-			<span>|</span>
-			<a href="https://wpswings.com/contact-us/" target="_blank" class="wps-link"><?php esc_html_e('Support', 'track-orders-for-woocommerce'); ?></a>
-			<span>|</span>
-			<a href="https://wpswings.com/woocommerce-services/" target="_blank" class="wps-link"><?php esc_html_e('Services', 'track-orders-for-woocommerce'); ?></a>
-		<?php } else { ?>
-			<h1 class="wps-header-title"><?php echo esc_attr(strtoupper(str_replace('-', ' ', 'track-orders-for-woocommerce-pro'))); ?></h1>
-			<a href="https://docs.wpswings.com/track-orders-for-woocommerce-pro/?utm_source=wpswings-ot-doc&utm_medium=ot-pro-page&utm_campaign=documentation" target="_blank" class="wps-link"><?php esc_html_e('Documentation', 'track-orders-for-woocommerce'); ?></a>
-			<span>|</span>
-			<a href="https://wpswings.com/contact-us/" target="_blank" class="wps-link"><?php esc_html_e('Support', 'track-orders-for-woocommerce'); ?></a>
-			<span>|</span>
-			<a href="https://wpswings.com/woocommerce-services/" target="_blank" class="wps-link"><?php esc_html_e('Services', 'track-orders-for-woocommerce'); ?></a>
-		<?php } ?>
+		<h1 class="wps-header-title"><?php echo esc_attr(strtoupper(str_replace('-', ' ', $wps_tofw_obj->tofw_get_plugin_name()))); ?></h1>
+		<a href="https://docs.wpswings.com/track-orders-for-woocommerce/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=ot-doc-free" target="_blank" class="wps-link"><?php esc_html_e('Documentation', 'track-orders-for-woocommerce'); ?></a>
+		<span>|</span>
+		<a href="https://wpswings.com/contact-us/" target="_blank" class="wps-link"><?php esc_html_e('Support', 'track-orders-for-woocommerce'); ?></a>
+		<span>|</span>
+		<a href="https://wpswings.com/woocommerce-services/" target="_blank" class="wps-link"><?php esc_html_e('Services', 'track-orders-for-woocommerce'); ?></a>
 	</div>
 </header>
 <?php
-do_action('wps_tofw_licensed_tab_section');
 if (! $error_notice) {
 	$wps_tofw_error_text = esc_html__('Settings saved !', 'track-orders-for-woocommerce');
 }
@@ -84,7 +68,6 @@ if (! $error_notice) {
 		<div>
 			<?php
 			// desc - This hook is used for trial.
-			do_action('wps_msp_before_general_settings_form');
 			// if submenu is directly clicked on woocommerce.
 			if (empty($tofw_active_tab)) {
 				$tofw_active_tab = 'wps_std_plug_general';
@@ -95,8 +78,6 @@ if (! $error_notice) {
 
 			$tofw_tab_content_path = $tofw_default_tabs[$tofw_active_tab]['file_path'];
 			$wps_tofw_obj->wps_tofw_plug_load_template($tofw_tab_content_path, $tofw_active_tab);
-			// desc - This hook is used for trial.
-			do_action('wps_msp_after_general_settings_form');
 			?>
 		</div>
 	</section>

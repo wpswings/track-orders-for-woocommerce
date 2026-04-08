@@ -144,8 +144,6 @@ if ($allowed) {
 		if ($tofw_order) {
 			$order_data = $tofw_order->get_data();
 			// do your stuff.
-		} else {
-			error_log("Invalid order ID: " . print_r($order_id, true));
 		}
 
 
@@ -460,15 +458,13 @@ if ($allowed) {
 
 	} else {
 		if (! empty($address)) {
-
-			$response = wp_remote_get('https://maps.google.com/maps/api/geocode/json?address=' . urlencode($address) . '&key=' . $wps_tofw_google_api_key);
-
-			if (! is_wp_error($response)) {
-				$geocode = wp_remote_retrieve_body($response);
+			$geocode  = '';
+			$response = wp_safe_remote_get( 'https://maps.google.com/maps/api/geocode/json?address=' . urlencode( $address ) . '&key=' . $wps_tofw_google_api_key );
+			if ( ! is_wp_error( $response ) ) {
+				$geocode = wp_remote_retrieve_body( $response );
 			}
-
-			if (! empty($geocode)) {
-				$output = json_decode($geocode);
+			if ( ! empty( $geocode ) ) {
+				$output = json_decode( $geocode );
 			}
 
 

@@ -79,147 +79,6 @@ class Track_Orders_For_Woocommerce_Common {
 	}
 
 	/**
-	 * Validating wpswings license
-	 *
-	 * @since    1.0.0
-	 */
-	public function wps_tofw_validate_license_key() {
-		check_ajax_referer( 'ajax-nonce', 'nonce' );
-		$wps_tofw_purchase_code = ( ! empty( $_POST['purchase_code'] ) ) ? sanitize_text_field( wp_unslash( $_POST['purchase_code'] ) ) : '';
-		$wps_tofw_response = self::track_orders_for_woocommerce_license_code_update( $wps_tofw_purchase_code );
-		if ( is_wp_error( $wps_tofw_response ) ) {
-			echo wp_json_encode(
-				array(
-					'status' => false,
-					'msg' => __(
-						'An unexpected error occurred. Please try again.',
-						'track-orders-for-woocommerce'
-					),
-				)
-			);
-		} else {
-			$wps_tofw_license_data = json_decode( wp_remote_retrieve_body( $wps_tofw_response ) );
-
-			if ( isset( $wps_tofw_license_data->result ) && 'success' === $wps_tofw_license_data->result ) {
-				update_option( 'wps_tofw_license_key', $wps_tofw_purchase_code );
-				update_option( 'wps_tofw_license_check', true );
-
-				echo wp_json_encode(
-					array(
-						'status' => true,
-						'msg' => __(
-							'Successfully Verified. Please Wait.',
-							'track-orders-for-woocommerce'
-						),
-					)
-				);
-			} else {
-				echo wp_json_encode(
-					array(
-						'status' => false,
-						'msg' => $wps_tofw_license_data->message,
-					)
-				);
-			}
-		}
-		wp_die();
-	}
-
-	/**
-	 * Function is used for the sending the track data.
-	 *
-	 * @param boolean $override is a boolean.
-	 * @return void
-	 */
-	public function tofw_wpswings_tracker_send_event( $override = false ) {
-		require_once WC()->plugin_path() . '/includes/class-wc-tracker.php';
-
-		$last_send = get_option( 'wpswings_tracker_last_send' );
-		if ( ! apply_filters( 'wpswings_tracker_send_override', $override ) ) {
-			// Send a maximum of once per week by default.
-			$last_send = $this->wps_tofw_last_send_time();
-			if ( $last_send && $last_send > apply_filters( 'wpswings_tracker_last_send_interval', strtotime( '-1 week' ) ) ) {
-				return;
-			}
-		} else {
-			// Make sure there is at least a 1 hour delay between override sends, we don't want duplicate calls due to double clicking links.
-			$last_send = $this->wps_tofw_last_send_time();
-			if ( $last_send && $last_send > strtotime( '-1 hours' ) ) {
-				return;
-			}
-		}
-		$api_route = '';
-		$api_route = 'mp';
-		$api_route .= 's';
-		// Update time first before sending to ensure it is set.
-		update_option( 'wpswings_tracker_last_send', time() );
-		$params = WC_Tracker::get_tracking_data();
-		$params = apply_filters( 'wpswings_tracker_params', $params );
-		$api_url = 'https://tracking.wpswings.com/wp-json/' . $api_route . '-route/v1/' . $api_route . '-testing-data/';
-		$sucess = wp_safe_remote_post(
-			$api_url,
-			array(
-				'method'      => 'POST',
-				'body'        => wp_json_encode( $params ),
-			)
-		);
-	}
-
-	/**
-	 * Get the updated time.
-	 *
-	 * @name wps_tofw_last_send_time
-	 *
-	 * @since 1.0.0
-	 */
-	public function wps_tofw_last_send_time() {
-		 return apply_filters( 'wpswings_tracker_last_send_time', get_option( 'wpswings_tracker_last_send', false ) );
-	}
-
-	/**
-	 * Update the option for settings from the multistep form.
-	 *
-	 * @name tofw_wps_standard_save_settings_filter
-	 * @since 1.0.0
-	 */
-	public function tofw_wps_standard_save_settings_filter() {
-		check_ajax_referer( 'ajax-nonce', 'nonce' );
-
-		$term_accpted = ! empty( $_POST['consetCheck'] ) ? sanitize_text_field( wp_unslash( $_POST['consetCheck'] ) ) : ' ';
-		if ( ! empty( $term_accpted ) && 'yes' == $term_accpted ) {
-			update_option( 'tofw_enable_tracking', 'on' );
-		}
-		// settings fields.
-		$first_name = ! empty( $_POST['firstName'] ) ? sanitize_text_field( wp_unslash( $_POST['firstName'] ) ) : '';
-		update_option( 'firstname', $first_name );
-
-		$email = ! empty( $_POST['email'] ) ? sanitize_text_field( wp_unslash( $_POST['email'] ) ) : '';
-		update_option( 'email', $email );
-
-		$desc = ! empty( $_POST['desc'] ) ? sanitize_text_field( wp_unslash( $_POST['desc'] ) ) : '';
-		update_option( 'desc', $desc );
-
-		$age = ! empty( $_POST['age'] ) ? sanitize_text_field( wp_unslash( $_POST['age'] ) ) : '';
-		update_option( 'age', $age );
-
-		$first_checkbox = ! empty( $_POST['FirstCheckbox'] ) ? sanitize_text_field( wp_unslash( $_POST['FirstCheckbox'] ) ) : '';
-		update_option( 'first_checkbox', $first_checkbox );
-
-		$checked_first_switch = ! empty( $_POST['checkedA'] ) ? sanitize_text_field( wp_unslash( $_POST['checkedA'] ) ) : '';
-		if ( ! empty( $checked_first_switch ) && $checked_first_switch ) {
-			update_option( 'tofw_radio_switch_demo', 'on' );
-		}
-
-		$checked_second_switch = ! empty( $_POST['checkedB'] ) ? sanitize_text_field( wp_unslash( $_POST['checkedB'] ) ) : '';
-		if ( ! empty( $checked_second_switch ) && $checked_second_switch ) {
-			update_option( 'tofw_radio_reset_license', 'on' );
-		}
-		update_option( 'wps_track_orders_for_woocommerce_multistep_done', 'yes' );
-
-		wp_send_json( 'yes' );
-	}
-
-	/**
 	 * Function to return template.
 	 *
 	 * @param string $template is a path.
@@ -292,23 +151,21 @@ class Track_Orders_For_Woocommerce_Common {
 					}
 
 					if ( $found ) {
-						// Determine the path based on the selected template.
-						if ( ( 'template4' === $template1 || 'new-template1' === $template1 || 'new-template2' === $template1 || 'new-template3' === $template1 || 'template8' === $template1 ) && is_plugin_active( 'track-orders-for-woocommerce-pro/track-orders-for-woocommerce-pro.php' ) ) {
-							$path = TRACK_ORDERS_FOR_WOOCOMMERCE_PRO_DIR_PATH;
-						} else {
-							$path = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH;
+						$allowed_templates = array( 'template1', 'template2', 'template3' );
+						if ( ! in_array( $template1, $allowed_templates, true ) ) {
+							$template1 = 'template1';
 						}
 						// Construct the template path.
-						$new_template = $path . 'template/wps-track-order-myaccount-page-' . $template1 . '.php';
+						$new_template = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'template/wps-track-order-myaccount-page-' . $template1 . '.php';
 						$template = $new_template;
 					} else {
-						if ( 'template4' === $selected_template || 'new-template1' === $selected_template || 'new-template2' === $selected_template || 'new-template3' === $selected_template || 'template8' === $selected_template ) {
-							$path = TRACK_ORDERS_FOR_WOOCOMMERCE_PRO_DIR_PATH;
-						} else {
-							$path = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH;
+						$allowed_templates = array( 'template1', 'template2', 'template3' );
+						if ( ! in_array( $selected_template, $allowed_templates, true ) ) {
+							$selected_template = 'template1';
 						}
-						$new_template = $path . 'template/wps-track-order-myaccount-page-' . $selected_template . '.php';
-						$template = $new_template;
+
+						$new_template = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'template/wps-track-order-myaccount-page-' . $selected_template . '.php';
+						$template      = $new_template;
 					}
 				} else {
 					$new_template = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'template/wps-track-order-myaccount-page-template1.php';
@@ -330,37 +187,6 @@ class Track_Orders_For_Woocommerce_Common {
 	 * @return void
 	 */
 	public function wps_tofw_track_order_status( $order_id, $old_status, $new_status ) {
-
-		require_once TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'package/lib/phpqrcode/phpqrcode.php';
-
-		$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
-		$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
-		$track_order_url = get_permalink( $page_id );
-
-		// Parse the URL.
-		$url_parts = wp_parse_url( $track_order_url );
-		$path = $url_parts['path'];
-		$path = trim( $path, '/' );
-		$path_parts = explode( '/', $path );
-		$last_part = end( $path_parts );
-
-		$order = wc_get_order( $order_id );
-		$site_url = get_site_url() . '/' . $last_part . '/?' . esc_html( $order_id ) . '';
-		$uploads = wp_upload_dir();
-		$path = $uploads['basedir'] . '/tracking_images/';
-		$file  = $path . $order_id . 'tracking_checkin.png';  // address of the image od barcode in which  url is saved.
-		if ( file_exists( $file ) ) {
-
-			wp_delete_file( $file );
-		}
-
-		$path = $uploads['basedir'] . '/tracking_images/';
-		$file = $path . $order_id . 'tracking_checkin.png'; // path  of the image.
-		$ecc = 'M';
-		$pixel_size = 20;
-		$frame_size = 20;
-		// Generate the PNG QR code.
-		QRcode::png( $site_url, $file, $ecc, $pixel_size, $frame_size );
 
 		$old_status = 'wc-' . $old_status;
 		$new_status = 'wc-' . $new_status;
@@ -671,12 +497,6 @@ class Track_Orders_For_Woocommerce_Common {
 					</table>
 					</div>';
 
-					if ( 'on' == get_option( 'wps_tofw_qr_redirect' ) ) {
-						$message .= '<div style="text-align: center; margin-top: 20px;">
-							<img src="' . get_site_url() . '/' . str_replace( ABSPATH, '', $file ) . '" alt="QR" style="width: 200px; height: 200px;" />
-						</div>';
-					}
-
 					$message .= '<div class="footer">
 						&copy; ' . gmdate( 'Y' ) . ' ' . get_bloginfo( 'name' ) . ' Your Company. All rights reserved.
 					</div>
@@ -823,11 +643,6 @@ class Track_Orders_For_Woocommerce_Common {
 						</table>
 						</div>';
 
-					if ( 'on' == get_option( 'wps_tofw_qr_redirect' ) ) {
-						$message .= '<div class="qr-code">
-								<img src="' . get_site_url() . '/' . str_replace( ABSPATH, '', $file ) . '" alt="QR" />
-							</div>';
-					}
 					$site_name = get_bloginfo( 'name' );
 					$message .= '<div class="footer">
 							&copy; ' . gmdate( 'Y' ) . ' ' . $site_name . ' Your Company. All rights reserved.
@@ -1044,14 +859,9 @@ class Track_Orders_For_Woocommerce_Common {
 				</table>
 				</div>';
 
-					if ( 'on' == get_option( 'wps_tofw_qr_redirect' ) ) {
-						$message .= '<div class="qr-code">
-						<img src="' . get_site_url() . '/' . str_replace( ABSPATH, '', $file ) . '" alt="QR" />
-					</div>';
-					}
 					$site_name = get_bloginfo( 'name' );
 					$message .= '<div class="footer">
-					&copy; ' . gmdate( 'Y' ) . ' ' . $site_name . ' All rights reserved. <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+					&copy; ' . gmdate( 'Y' ) . ' ' . $site_name . ' All rights reserved. <a href="' . esc_url( get_privacy_policy_url() ) . '">' . esc_html__( 'Privacy Policy', 'track-orders-for-woocommerce' ) . '</a>
 				</div>
 				</div>
 				</body>
@@ -1203,11 +1013,6 @@ class Track_Orders_For_Woocommerce_Common {
 								</div>
 							</div>';
 
-					if ( 'on' === get_option( 'wps_tofw_qr_redirect' ) ) {
-						$message .= '<div class="qr-code">
-									<img src="' . esc_url( $file_url ) . '" alt="QR Code">
-								</div>';
-					}
 					$site_name = get_bloginfo( 'name' );
 					$message .= '</div>
 						<div class="footer">
@@ -1365,9 +1170,6 @@ class Track_Orders_For_Woocommerce_Common {
 				$message .= '</tbody>
 				</table>
 			</div>';
-				if ( 'on' == get_option( 'wps_tofw_qr_redirect' ) ) {
-					$message .= '<div><img src="' . get_site_url() . '/' . str_replace( ABSPATH, '', $file ) . '" alt= "QR" style="display: block; margin: 0 auto; width: 300px; height: 300px;" /></div>';
-				}
 				$message .= '</body>
 		</html>';
 			}

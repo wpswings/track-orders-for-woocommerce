@@ -75,10 +75,12 @@ class Track_Orders_For_Woocommerce_Activator {
 			$wps_tofw_pages['pages']['wps_fedex_track_order'] = $page_id;
 		}
 
-		update_option( 'wps_tofw_tracking_page', $wps_tofw_pages );
-		update_option( 'tofw_invoice_template', 'template_1');
-		wp_clear_scheduled_hook( 'wpswings_tracker_send_event' );
-		wp_schedule_event( time() + 10, apply_filters( 'wpswings_tracker_event_recurrence', 'daily' ), 'wpswings_tracker_send_event' );
+		$existing_pages = get_option( 'wps_tofw_tracking_page', array() );
+		if ( empty( $existing_pages ) ) {
+			update_option( 'wps_tofw_tracking_page', $wps_tofw_pages );
+		}
+
+		update_option( 'tofw_invoice_template', 'template_1' );
 	}
 
 }

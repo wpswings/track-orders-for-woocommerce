@@ -97,12 +97,6 @@ Track Orders for Woocommerce is compatible with various themes that are suitable
 - [Event Ticket Manager For WooCommerce & Event Ticket Manager For WooCommerce Pro](https://wordpress.org/plugins/event-tickets-manager-for-woocommerce/) - Events and Bookings Calendar, Registration, Event Check-in Using Emails, Edit Your Ticket Content by WP Swings
 
 
-### Take Advantage of the Exclusive Features of the Track Orders For WooCommerce Pro Plugin
-
-Track Orders for WooCommerce Pro enables the addition of multiple shipping services, customization of the tracking process to match specific business needs, and the sending of email reminders with payment links for pending orders, it offers features like tracking templates for engaging customers, shortcodes for creating custom tracking pages and forms, and a Track Your Order popup box for convenient order monitoring within the My Account section.
-
-Note: Get [Track Orders For WooCommerce Pro](https://wpswings.com/product/track-orders-for-woocommerce-pro/?utm_source=ot-github&utm_medium=referral&utm_campaign=ot-pro)
-
 ⭐⭐⭐⭐⭐ - Excellent plugin and support
 The plugin is very useful and support is quite helpful. Definitely recommend. Kudos to the team!  (@stevecaloo) 
 
@@ -110,9 +104,9 @@ The plugin is very useful and support is quite helpful. Definitely recommend. Ku
 
 Our plugin relies on some third-party services. Here is more information about it.
 
-* **WP Swings Tracking:** We are using our own [**WP Swings Tracking API**](https://tracking.wpswings.com/) for tracking essential user info. By default, our plugin team receives no sensitive data from you or your website enwpscreate _tracking paged users. We only keep track of the plugin version and the settings that are enabled by you in the plugin. You can read more about the [**plugin’s usage tracking here**](https://wpswings.com/plugin-usage-tracking).
+* **TrackingMore API:** Used for live multi‑carrier tracking (requires your TrackingMore API key).
 * **Integration with Google Maps:** To make things work smoothly our plugin relies on [**Google Maps API**](https://maps.googleapis.com) to show the accurate information of different Geo locations where the order has been gone through. Users require a Google Maps API key to add Google Maps to their website, They can obtain the API key from the [**Google Cloud API Services**](https://console.cloud.google.com/apis/library) and can learn more about Google Maps' Terms and Conditions from [**here**](https://www.google.com/help/terms_maps/).
-* **Integration with Hubspot HSforms:** To make the onboarding process smoother we are relying on [**Hubspot HSforms**](https://developers.hubspot.com/docs/cms/building-blocks/forms). Which only gathers the necessary and nonsensitive info like (Plugin Name, Version, and Plugin Deactivation Reasons). You can read more about their [**privacy policy here**](https://legal.hubspot.com/legal-stuff).
+* **FedEx Web Services:** Used when FedEx tracking is enabled (requires your FedEx API credentials).
 
 
 ## ❤️SUPPORT

@@ -454,28 +454,7 @@ class Track_Orders_For_Woocommerce {
 		$is_pro_activated = false;
 		$is_pro_activated = apply_filters( 'track_orders_for_woocmmerce_pro_plugin_activated', $is_pro_activated );
 
-		if ( ! $is_pro_activated ) {
-
-			$tofw_default_tabs['track-orders-for-woocommerce-pro-enhance-tracking-org'] = array(
-				'title'       => esc_html__( 'Enhance Tracking', 'track-orders-for-woocommerce' ),
-				'name'        => 'track-orders-for-woocommerce-pro-enhance-tracking-org',
-				'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-pro-enhance-tracking.php',
-			);
-
-			$tofw_default_tabs['track-orders-for-woocommerce-pro-common-setting-org'] = array(
-				'title'       => esc_html__( 'Global Setting', 'track-orders-for-woocommerce' ),
-				'name'        => 'track-orders-for-woocommerce-pro-common-setting-org',
-				'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-pro-common-setting.php',
-			);
-
-			$tofw_default_tabs['track-orders-for-woocommerce-pro-order-status-auto-org']       = array(
-				'title'       => esc_html__( 'Order Status Auto', 'track-orders-for-woocommerce' ),
-				'name'        => 'track-orders-for-woocommerce-pro-order-status-auto-org',
-				'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-pro-order-status-auto.php',
-			);
-
-		}
-
+		
 		$tofw_default_tabs['track-orders-for-woocommerce-overview']      = array(
 			'title'       => esc_html__( 'Overview', 'track-orders-for-woocommerce' ),
 			'name'        => 'track-orders-for-woocommerce-overview',
@@ -573,7 +552,7 @@ class Track_Orders_For_Woocommerce {
 		$tofw_system_status['server_port'] = isset( $_SERVER['SERVER_PORT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_PORT'] ) ) : '';
 
 		// Get the uptime.
-		$tofw_system_status['uptime'] = function_exists( 'exec' ) ? @exec( 'uptime -p' ) : __( 'N/A (make sure exec function is enabled)', 'track-orders-for-woocommerce' );
+		$tofw_system_status['uptime'] = __( 'N/A', 'track-orders-for-woocommerce' );
 
 		// Get the server path.
 		$tofw_system_status['server_path'] = defined( 'ABSPATH' ) ? ABSPATH : __( 'N/A (ABSPATH constant not defined)', 'track-orders-for-woocommerce' );
@@ -627,7 +606,7 @@ class Track_Orders_For_Woocommerce {
 		$tofw_system_status['server_hostname'] = function_exists( 'gethostname' ) ? gethostname() : __( 'N/A (gethostname function does not exist)', 'track-orders-for-woocommerce' );
 
 		// Show the number of processes currently running on the server.
-		$tofw_system_status['processes'] = function_exists( 'exec' ) ? @exec( 'ps aux | wc -l' ) : __( 'N/A (make sure exec is enabled)', 'track-orders-for-woocommerce' );
+		$tofw_system_status['processes'] = __( 'N/A', 'track-orders-for-woocommerce' );
 
 		// Get the memory usage.
 		$tofw_system_status['memory_usage'] = function_exists( 'memory_get_peak_usage' ) ? round( memory_get_peak_usage( true ) / 1024 / 1024, 2 ) : 0;
@@ -636,7 +615,7 @@ class Track_Orders_For_Woocommerce {
 		// Check to see if system is Windows, if so then use an alternative since sys_getloadavg() won't work.
 		if ( stristr( PHP_OS, 'win' ) ) {
 			$tofw_system_status['is_windows']        = true;
-			$tofw_system_status['windows_cpu_usage'] = function_exists( 'exec' ) ? @exec( 'wmic cpu get loadpercentage /all' ) : __( 'N/A (make sure exec is enabled)', 'track-orders-for-woocommerce' );
+			$tofw_system_status['windows_cpu_usage'] = __( 'N/A', 'track-orders-for-woocommerce' );
 		}
 
 		// Get the memory limit.
@@ -646,7 +625,7 @@ class Track_Orders_For_Woocommerce {
 		$tofw_system_status['php_max_execution_time'] = function_exists( 'ini_get' ) ? ini_get( 'max_execution_time' ) : __( 'N/A (ini_get function does not exist)', 'track-orders-for-woocommerce' );
 
 		// Get outgoing IP address.
-		$tofw_system_status['outgoing_ip'] = function_exists( 'wp_remote_get' ) ? wp_remote_retrieve_body( wp_remote_get( 'http://ipecho.net/plain' ) ) : __( 'N/A (wp_remote_get function does not exist)', 'track-orders-for-woocommerce' );
+		$tofw_system_status['outgoing_ip'] = __( 'N/A', 'track-orders-for-woocommerce' );
 
 		$tofw_system_data['php'] = $tofw_system_status;
 		$tofw_system_data['wp']  = $tofw_wordpress_status;
@@ -664,17 +643,6 @@ class Track_Orders_For_Woocommerce {
 		if ( is_array( $tofw_components ) && ! empty( $tofw_components ) ) {
 			foreach ( $tofw_components as $tofw_component ) {
 
-				$pro_group_tag = '';
-				$is_pro_activated = false;
-				$is_pro_activated = apply_filters( 'track_orders_for_woocmmerce_pro_plugin_activated', $is_pro_activated );
-
-				if ( ! $is_pro_activated && isset( $tofw_component['class'] ) ) {
-
-					if ( preg_match( "/\wps_tofw_pro_feature\b/", $tofw_component['class'] ) ) :
-						$pro_group_tag = 'wps_tofw_pro_tag';
-					endif;
-				}
-
 				if ( ! empty( $tofw_component['type'] ) && ! empty( $tofw_component['id'] ) ) {
 					switch ( $tofw_component['type'] ) {
 
@@ -683,7 +651,7 @@ class Track_Orders_For_Woocommerce {
 						case 'email':
 						case 'text':
 							?>
-						<div class="wps-form-group <?php echo esc_attr( $pro_group_tag ); ?> wps-msp-<?php echo esc_attr( $tofw_component['type'] ); ?> <?php echo isset( $tofw_component['classname'] ) ? esc_attr( $tofw_component['classname'] ) : ''; ?>">
+						<div class="wps-form-group wps-msp-<?php echo esc_attr( $tofw_component['type'] ); ?> <?php echo isset( $tofw_component['classname'] ) ? esc_attr( $tofw_component['classname'] ) : ''; ?>">
 							<div class="wps-form-group__label">
 								<label for="<?php echo esc_attr( $tofw_component['id'] ); ?>" class="wps-form-label"><?php echo ( isset( $tofw_component['title'] ) ? esc_html( $tofw_component['title'] ) : '' ); // WPCS: XSS ok. ?></label>
 							</div>
@@ -972,59 +940,9 @@ class Track_Orders_For_Woocommerce {
 							<?php
 							break;
 
-						case 'multi':
-							?>
-								<div class="wps-form-group <?php echo esc_attr( $pro_group_tag ); ?>">
-    <div class="wps-form-group__label wps_enable_dhl_api_key">
-        <label for="wps_tofw_other_setting_upload_logo" class="wps-form-label">
-            <?php esc_html_e( 'Upload Tracking Logo', 'track-orders-for-woocommerce' ); ?>
-        </label>
-    </div>
-
-    <div class="wps-form-group__control wps-pl-4">
-        <?php
-        $attribute_description = __( 'Upload the image which is used as logo for your custom order statuses.', 'track-orders-for-woocommerce' );
-        echo wp_kses_post( wc_help_tip( $attribute_description ) );
-        ?>
-
-        <div class="wps-upload-logo-wrapper" style="margin-top: 10px;">
-            <input 
-                type="text" 
-                readonly 
-                class="wps_tofw_other_setting_upload_logo_value" 
-                id="wps_tofw_other_setting_upload_logo_edit" 
-                name="wps_tofw_other_setting_upload_DHL_ICON" 
-                value="<?php echo esc_attr( $tofw_component['value'] ); ?>" 
-            />
-
-            <input 
-                class="wps_tofw_other_setting_upload_logo button"  
-                type="button" 
-                value="<?php esc_attr_e( 'Upload Logo', 'track-orders-for-woocommerce' ); ?>" 
-            />
-        </div>
-
-        <div id="wps_tofw_other_setting_remove_logo_edit" class="wps-remove-logo-preview" style="margin-top: 10px;">
-            <span class="wps_tofw_other_setting_remove_logo">
-                <img 
-                    src="<?php echo esc_url( $tofw_component['value'] ); ?>" 
-                    width="50" 
-                    height="50" 
-                    id="wps_tofw_other_setting_upload_image_edit"
-					class="wps_hide_icon_for_dhl"
-                    alt="<?php esc_attr_e( 'Uploaded Logo Preview', 'track-orders-for-woocommerce' ); ?>" 
-                />
-            </span>
-        </div>
-		<span><?php echo ( isset( $tofw_component['description'] ) ? esc_attr( $tofw_component['description'] ) : '' ); ?></span>
-    </div>
-</div>
-
-
-							<?php break;
 						case 'temp-select':
 							?>
-									<div class="wps-form-group <?php echo esc_attr( $pro_group_tag ); ?> wps-wpg-<?php echo esc_attr( array_key_exists( 'type', $tofw_component ) ? $tofw_component['type'] : '' ); ?>">
+									<div class="wps-form-group wps-wpg-<?php echo esc_attr( array_key_exists( 'type', $tofw_component ) ? $tofw_component['type'] : '' ); ?>">
 										<div class="wps-form-group__label">
 											<label for="<?php echo esc_attr( array_key_exists( 'id', $tofw_component ) ? $tofw_component['id'] : '' ); ?>" class="wps-form-label"><?php echo esc_html( array_key_exists( 'title', $tofw_component ) ? $tofw_component['title'] : '' ); ?></label>
 										</div>
@@ -1056,7 +974,7 @@ class Track_Orders_For_Woocommerce {
 						case 'date':
 						case 'file':
 							?>
-							<div class="wps-form-group <?php echo esc_attr( $pro_group_tag ); ?> wps-msp-<?php echo esc_attr( $tofw_component['type'] ); ?>">
+							<div class="wps-form-group wps-msp-<?php echo esc_attr( $tofw_component['type'] ); ?>">
 								<div class="wps-form-group__label">
 									<label for="<?php echo esc_attr( $tofw_component['id'] ); ?>" class="wps-form-label"><?php echo ( isset( $tofw_component['title'] ) ? esc_html( $tofw_component['title'] ) : '' ); // WPCS: XSS ok. ?></label>
 								</div>
@@ -1099,59 +1017,7 @@ class Track_Orders_For_Woocommerce {
 					}
 				}
 			}
-			include_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/track-order-for-woocommerce-go-pro.php';
-
 		}
 
-	}
-
-	/**
-	 * Public static variable to be accessed in this plugin.
-	 *
-	 * @var string
-	 */
-	public static $lic_callback_function = 'check_lcns_validity';
-
-	// public static variable to be accessed in this plugin.
-	/**
-	 * Public static variable to be accessed in this plugin.
-	 *
-	 * @var string
-	 */
-	public static $lic_ini_callback_function = 'check_lcns_initial_days';
-
-	/**
-	 * Validate the use of features of this plugin.
-	 *
-	 * @since 1.0.0
-	 */
-	public static function check_lcns_validity() {
-
-		$wps_tofw_lcns_key = get_option( 'wps_tofw_license_key', '' );
-
-		$wps_tofw_lcns_status = get_option( 'wps_tofw_license_check', '' );
-
-		if ( $wps_tofw_lcns_key && true == $wps_tofw_lcns_status ) {
-
-			return true;
-		} else {
-
-			return false;
-		}
-	}
-
-	/**
-	 * Validate the use of features of this plugin for initial days.
-	 *
-	 * @since 1.0.0
-	 */
-	public static function check_lcns_initial_days() {
-
-		$thirty_days = get_option( 'wps_tofw_activated_timestamp', 0 );
-
-		$current_time = current_time( 'timestamp' );
-		$day_count = ( $thirty_days - $current_time ) / ( 24 * 60 * 60 );
-
-		return $day_count;
 	}
 }

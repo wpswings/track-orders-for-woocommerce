@@ -16,13 +16,13 @@ Track Orders for WooCommerce -  WooCommerce Shipping Plugin with delivery notifi
 
 == Description ==
 
-📦 Automate your Multi Carrier  [**WooCommerce Shipping**](https://wpswings.com/product/track-orders-for-woocommerce-pro/?utm_source=wpswings-ot-pro&utm_medium=ot-org-page&utm_campaign=ot-pro). Using this extension, you can enable customers to monitor the delivery process. They can track the shipment from order placement to doorstep delivery. 
+Automate your multi‑carrier order tracking. Using this extension, you can enable customers to monitor the delivery process from order placement to delivery.
 
 It lets you optimize the custom WooCommerce shipping module to make waiting less boring for your customers. On top of that, you can tailor the tracking stages to your shipping process.
 
 Keep your customers updated with real-time tracking and grab their attention while they wait. Incorporate stages into the shipping journey that align with your fulfillment process to provide customers with a comprehensive order tracking and woocommerce shipping experience.
 
-[**Track Orders for WooCommerce Demo**](https://demo.wpswings.com/track-orders-for-woocommerce-pro/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=ot-demo) | [**Track Orders Documentation**](https://docs.wpswings.com/track-orders-for-woocommerce/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=ot-doc-free) | [**Contact Us**](https://wpswings.com/contact-us/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=contact-us) 
+[**Track Orders Documentation**](https://docs.wpswings.com/track-orders-for-woocommerce/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=ot-doc-free) | [**Contact Us**](https://wpswings.com/contact-us/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=contact-us) 
 
 [youtube https://youtu.be/tQ5tJTjDJTE?si=DeSToONHRf_Ts1Ab?rel=0]
 
@@ -45,7 +45,7 @@ Keep your customers updated with real-time tracking and grab their attention whi
 * Show additional order details with tracking
 * Create and use unlimited custom order status.
 * Share Tracking URL on WhatsApp. 
-* Create Custom Email Templates with Template Builder
+* Customize email notifications
 
 
 === ⭐ KEY FEATURES OF WOOCOMMERCE SHIPPING PLUGIN: ===
@@ -118,34 +118,6 @@ Compatible with various themes and plugins that are suitable for any kind of Wor
 * [**Event Ticket Manager For WooCommerce**](https://wordpress.org/plugins/event-tickets-manager-for-woocommerce/) & [**Event Ticket Manager For WooCommerce Pro**](https://wpswings.com/product/membership-for-woocommerce-pro/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=events-pro) – Events and Bookings Calendar, Registration, Event Check-in Using Emails, Edit Your Ticket Content by WP Swings 
 * [**PDF Generator For WordPress**](https://wordpress.org/plugins/pdf-generator-for-wp/) – Generate Invoice via PDF Plugin, embed the tracking button for users easily track their orders directly from the invoice.
 
-=== 🏆 WHAT PREMIUM VERSION OF WOOCOMMERCE SHIPMENT TRACKER OFFERS ===
-
-**1. Send Text Message Notifications:** Our Pro plugin lets you send order-tracking updates to customers via text messages using Twilio’s API integration
-
-**2. Payment Reminders Orders:** Automatically send payment reminders with the Pro plugin to boost conversions. These emails include payment links for pending transactions.
-
-**3. Custom JS and CSS:** Use the global settings to define wrapper classes for your theme, and easily customize the design. With custom CSS and JavaScript, you can adjust the page's look and feel.
-
-**4. Third-Party Shipment Tracking:** Our Pro plugin integrates with trusted shipment tracking systems like FedEx, USPS, and Canada Post. 
-
-**5. Redirect to Tracking Page With QR Code:** WP Swings Shipment tracking plugin lets you include a QR code in order emails, redirecting customers to the tracking page.
-
-**6. Track Your Order Popup:** Set up a "Track Your Order" popup to make order tracking simple and quick for your customers.
-
-**7. DHL Shipping Integration:** With the tracking API, let your customers track their orders easily, no need to visit the carrier’s website. 
-
-**8. Carriers Supported 1000+:** WooCommerce Shipment Tracking plugin now supports over 1000+ carriers, like DHL, UPS, FedEx, and many more
-
-**9. Custom Email Template Builder:** Create custom email templates with a simple drag-and-drop builder. Select and organize elements like headers, footers, and custom HTML to match your style.
-
-
-
-=== Take Advantage of the Exclusive Features of the Track Orders For WooCommerce Pro Plugin ===
-
-This Pro enables the addition of multiple shipping services, customization of the tracking process to match specific business needs, and the sending of email reminders with payment links for pending orders, it offers features like tracking templates for engaging customers, shortcodes for creating custom tracking pages and forms, and a Track Your Order popup box for convenient order monitoring within the My Account section.
-
->**Note**: Get [**Track Orders For WooCommerce Pro**](https://wpswings.com/product/track-orders-for-woocommerce-pro/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=ot-pro)
-
 ⭐⭐⭐⭐⭐ – Excellent plugin and support
 The plugin is very useful, and the support is quite helpful. Recommend. Kudos to the team!  (@stevecaloo) 
 
@@ -161,19 +133,15 @@ or connect with us then [**Generate a ticket**](https://wpswings.com/submit-quer
 
 == External services ==
 
-This plugin connects to a few external services for tracking and onboarding. Each service is only contacted when its related feature is enabled:
+This plugin connects to a few external services for tracking. Each service is only contacted when its related feature is enabled:
 
 * **TrackingMore API (`api.trackingmore.com`)** — used for live multi‑carrier tracking and creating shipment records. When a customer/admin enters a tracking number and courier code, the plugin sends those values along with your TrackingMore API key to fetch status updates. Terms: https://www.trackingmore.com/terms.html Privacy: https://www.trackingmore.com/privacy.html
 
-* **DHL Shipment Tracking API (`api-eu.dhl.com`)** — used when you add a DHL tracking number to an order. The plugin sends the tracking number and your DHL API key to retrieve the shipment timeline. Terms: https://developer.dhl.com/terms-and-conditions Privacy: https://www.dhl.com/global-en/home/footer/legal-notices/privacy-notice.html
-
 * **Carrier Tracking Links (e.g., DHL, UPS, USPS, FedEx, Royal Mail, Australia Post, OnTrac, DPD, CollectPlus, TForce Logistics, APC Postal Logistics, Estes, ParcelForce, IMEX, ParcelForce, Canada Post, etc.)** — when you enable “Track with Carrier,” the plugin builds a tracking URL and redirects the user to the chosen carrier’s site with their tracking number in the query string. Data sent: tracking number only. Each carrier applies its own terms/privacy; please review the carrier you use.
 
-* **WP Swings telemetry (`tracking.wpswings.com`)** — optional usage tracking that posts site/environment data (site URL, WP/WooCommerce versions, plugin version, active settings) to our server to help improve the plugin. It runs no more than once per week and only after you opt in during onboarding. Terms: https://wpswings.com/terms-of-service/ Privacy: https://wpswings.com/privacy-policy/
+* **Google Maps API (`maps.googleapis.com`, `maps.google.com`)** — used for the “Track order with Google Map” view and geocoding. When enabled, requests include your Google Maps API key and the addresses/coordinates needed to display the route. Terms: https://www.google.com/help/terms_maps/ Privacy: https://policies.google.com/privacy
 
-* **Google Maps API (`maps.googleapis.com`)** — used for the “Track order with Google Map” view. When enabled, map requests include your Google Maps API key and the coordinates/addresses needed to display the route. Terms: https://www.google.com/help/terms_maps/ Privacy: https://policies.google.com/privacy
-
-* **HubSpot Forms (`forms.hsforms.com`)** — used in the admin onboarding/deactivation survey. It sends the form fields you submit (e.g., email, name, site URL, deactivation reason) to HubSpot to create the support ticket. Terms: https://legal.hubspot.com/terms-of-service Privacy: https://legal.hubspot.com/privacy-policy
+* **FedEx Web Services (`wsbeta.fedex.com`)** — used when FedEx shipment tracking is enabled. It sends your FedEx API credentials (key/password/account/meter) and the order’s tracking number to FedEx to retrieve tracking events. Terms/Privacy: https://www.fedex.com/en-us/trust-center/privacy.html
 
 == Installation ==
 
