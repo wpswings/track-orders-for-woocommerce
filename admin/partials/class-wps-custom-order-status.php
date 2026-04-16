@@ -260,7 +260,7 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 			wp_verify_nonce( isset( $_POST['wps_tabs_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tabs_nonce'] ) ) : '', 'admin_save_data' );
 			if ( is_array( $_POST ) && ! empty( $_POST ) ) {
 				$redirect_url = get_admin_url() . 'admin.php?page=track_orders_for_woocommerce_menu&tofw_tab=track-orders-for-woocommerce-custom-orders-status';
-				wp_redirect( $redirect_url );
+				wp_safe_redirect( $redirect_url );
 			}
 			$this->items = self::get_feeds();
 			$this->renderHTML();
@@ -364,14 +364,14 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 				update_option( 'wps_tofw_new_custom_order_status', $wps_data_exist_db );
 
 				$redirect_url = get_admin_url() . 'admin.php?page=track_orders_for_woocommerce_menu&tofw_tab=track-orders-for-woocommerce-custom-orders-status';
-				wp_redirect( $redirect_url );
+				wp_safe_redirect( $redirect_url );
 			} else {
 				$redirect_url = get_admin_url() . 'admin.php?page=track_orders_for_woocommerce_menu&tofw_tab=track-orders-for-woocommerce-custom-orders-status';
-				wp_redirect( $redirect_url );
+				wp_safe_redirect( $redirect_url );
 			}
 		} else {
 			$redirect_url = get_admin_url() . 'admin.php?page=track_orders_for_woocommerce_menu&tofw_tab=track-orders-for-woocommerce-custom-orders-status';
-			wp_redirect( $redirect_url );
+			wp_safe_redirect( $redirect_url );
 		}
 	}
 }

@@ -23,9 +23,9 @@
  *
  * Requires Plugins:  woocommerce
  * Requires at least:    6.7.0
- * Tested up to:         6.9.4
+ * Tested up to:         6.9
  * WC requires at least: 6.5.0
- * WC tested up to:      10.7.0
+ * WC tested up to:      10.7
  * Requires PHP:         7.4
  * Stable tag:           1.2.5
  *
@@ -293,7 +293,7 @@ if (in_array('woocommerce/woocommerce.php', get_option('active_plugins', array()
 						$order = wc_get_order($order_id);
 
 						$url = $track_order_url . '?' . $order_id;
-						wp_redirect($url);
+						wp_safe_redirect($url);
 						exit();
 					} else {
 						$_SESSION['wps_tofw_notification'] = __('OrderId or Email is Invalidss', 'track-orders-for-woocommerce');
@@ -303,7 +303,7 @@ if (in_array('woocommerce/woocommerce.php', get_option('active_plugins', array()
 				} else {
 					$order = wc_get_order($order_id);
 					$url = $track_order_url . '?' . $order_id;
-					wp_redirect($url);
+					wp_safe_redirect($url);
 					exit();
 				}
 			} else {
@@ -486,7 +486,7 @@ function wps_delete_carrier_logo_database()
 {
 	global $wpdb;
 	$table_name = $wpdb->prefix . 'wps_tofw_carrier_logos';
-	$wpdb->query($wpdb->prepare('DROP TABLE IF EXISTS %s', $table_name));
+	$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %i', $table_name ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.SchemaChange
 	update_option('wps_tofwp_enable_multi_carrier_tracking', 'off');
 }
 
@@ -562,7 +562,7 @@ function wps_fetch_and_store_carrier_logos()
 		$wpdb->query("TRUNCATE TABLE {$wpdb->prefix}wps_tofw_carrier_logos");
 		$rows_inserted = 0;
 		foreach ($insert_data as $row) {
-			$result = $wpdb->insert(
+			$result = $wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 				$table_name,
 				$row,
 				array('%s', '%s', '%s')

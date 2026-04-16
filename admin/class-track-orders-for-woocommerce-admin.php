@@ -1975,7 +1975,8 @@ class Track_Orders_For_Woocommerce_Admin {
 			'tofw-embed-block',
 			plugins_url( 'src/js/tofw-embed-block.js', __FILE__ ),
 			array( 'wp-blocks', 'wp-editor', 'wp-element', 'wp-components' ),
-			filemtime( plugin_dir_path( __FILE__ ) . '/src/js/tofw-embed-block.js' )
+			filemtime( plugin_dir_path( __FILE__ ) . '/src/js/tofw-embed-block.js' ),
+			true
 		);
 
 		register_block_type(
@@ -2715,7 +2716,7 @@ class Track_Orders_For_Woocommerce_Admin {
 
 		$batch_limit = 800;
 		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQL.NotPrepared -- table names are escaped above.
-		$orders = $wpdb->get_results(
+		$orders = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 			$wpdb->prepare(
 				"
         SELECT p.ID AS order_id
@@ -2770,7 +2771,7 @@ class Track_Orders_For_Woocommerce_Admin {
 		$legacy_meta  = esc_sql( $legacy_meta );
 
 		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		$orders = $wpdb->get_results(
+		$orders = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 			$wpdb->prepare(
 				"
 SELECT DISTINCT wco.id AS order_id

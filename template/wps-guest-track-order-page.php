@@ -10,7 +10,7 @@ $current_user_id = get_current_user_id();
 if ( $current_user_id > 0 ) {
 	$myaccount_page = get_option( 'woocommerce_myaccount_page_id' );
 	$myaccount_page_url = get_permalink( $myaccount_page );
-	wp_redirect( $myaccount_page_url );
+	wp_safe_redirect( $myaccount_page_url );
 	exit;
 }
 

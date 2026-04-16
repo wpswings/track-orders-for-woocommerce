@@ -444,10 +444,8 @@ class Track_Orders_For_Woocommerce_Public {
 
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'wps_tofw_carrier_logos';
-		$results = $wpdb->get_results(
-			$wpdb->prepare(
-				"SELECT carrier_name, carrier_code, logo_url FROM {$wpdb->prefix}wps_tofw_carrier_logos ORDER BY carrier_name ASC"
-			),
+		$results = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			"SELECT carrier_name, carrier_code, logo_url FROM {$wpdb->prefix}wps_tofw_carrier_logos ORDER BY carrier_name ASC",
 			ARRAY_A
 		);
 		ob_start();
