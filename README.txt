@@ -1,8 +1,8 @@
-=== Track Orders for WooCommerce - Multi Carrier WooCommerce Shipping === 
+=== Track Orders for WooCommerce – Multi Carrier WooCommerce Shipping === 
 
 Contributors: wpswings
 Donate link: https://wpswings.com/
-Tags: woocommerce shipping, shipment tracker, shipping, shipment tracking, order tracking
+Tags: woocommerce shipping, track orders, shipping, shipment tracking, order tracking
 Requires at least: 6.7.0
 Tested up to: 6.9
 WC requires at least: 6.5.0
@@ -12,17 +12,17 @@ Requires PHP: 7.4
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Track Orders for WooCommerce -  WooCommerce Shipping Plugin with delivery notifications, tracking templates, and live updates.
+Track Orders for WooCommerce –  WooCommerce Shipping Plugin with delivery notifications, tracking templates, and live updates.
 
 == Description ==
 
-Automate your multi‑carrier order tracking. Using this extension, you can enable customers to monitor the delivery process from order placement to delivery.
+📦 Automate your Multi Carrier  [**WooCommerce Shipping**](https://wpswings.com/product/track-orders-for-woocommerce-pro/?utm_source=wpswings-ot-pro&utm_medium=ot-org-page&utm_campaign=ot-pro). Using this extension, you can enable customers to monitor the delivery process. They can track the shipment from order placement to doorstep delivery. 
 
 It lets you optimize the custom WooCommerce shipping module to make waiting less boring for your customers. On top of that, you can tailor the tracking stages to your shipping process.
 
 Keep your customers updated with real-time tracking and grab their attention while they wait. Incorporate stages into the shipping journey that align with your fulfillment process to provide customers with a comprehensive order tracking and woocommerce shipping experience.
 
-[**Track Orders Documentation**](https://docs.wpswings.com/track-orders-for-woocommerce/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=ot-doc-free) | [**Contact Us**](https://wpswings.com/contact-us/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=contact-us) 
+[**Track Orders for WooCommerce Demo**](https://demo.wpswings.com/track-orders-for-woocommerce-pro/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=ot-demo) | [**Track Orders Documentation**](https://docs.wpswings.com/track-orders-for-woocommerce/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=ot-doc-free) | [**Contact Us**](https://wpswings.com/contact-us/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=contact-us) 
 
 [youtube https://youtu.be/tQ5tJTjDJTE?si=DeSToONHRf_Ts1Ab?rel=0]
 
@@ -45,7 +45,7 @@ Keep your customers updated with real-time tracking and grab their attention whi
 * Show additional order details with tracking
 * Create and use unlimited custom order status.
 * Share Tracking URL on WhatsApp. 
-* Customize email notifications
+* Create Custom Email Templates with Template Builder
 
 
 === ⭐ KEY FEATURES OF WOOCOMMERCE SHIPPING PLUGIN: ===
@@ -110,13 +110,41 @@ Compatible with various themes and plugins that are suitable for any kind of Wor
 
 * Compatibility with [**Coefficient**](https://coefficient.io/) to display your API data in a clear, tabular format.
 * [**Upsell Funnel Builder**](https://wpswings.com/product/upsell-order-bump-offer-for-woocommerce-pro/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=upsell-order-bump-pro) – Display upsell offers on the order tracking page. 
-* [**RMA - Return, Refund and Exchange**](https://wordpress.org/plugins/woo-refund-and-exchange-lite/) - With this compatibility, you can now track the status of return, exchange, and refunded orders via the track orders plugin.
+* [**RMA – Return, Refund and Exchange**](https://wordpress.org/plugins/woo-refund-and-exchange-lite/) – With this compatibility, you can now track the status of return, exchange, and refunded orders via the track orders plugin.
 * [**Visual Composer**](https://visualcomposer.com/) – Free WordPress Website Builder
 * [**Elementor**](https://elementor.com/) – Create, Design, and Host your Website
 * [**WC Vendors**](https://www.wcvendors.com/themes/) – A Modern WordPress Theme
 * [**DIVI Theme**](https://www.elegantthemes.com/gallery/divi/) – The Ultimate WordPress Theme
 * [**Event Ticket Manager For WooCommerce**](https://wordpress.org/plugins/event-tickets-manager-for-woocommerce/) & [**Event Ticket Manager For WooCommerce Pro**](https://wpswings.com/product/membership-for-woocommerce-pro/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=events-pro) – Events and Bookings Calendar, Registration, Event Check-in Using Emails, Edit Your Ticket Content by WP Swings 
 * [**PDF Generator For WordPress**](https://wordpress.org/plugins/pdf-generator-for-wp/) – Generate Invoice via PDF Plugin, embed the tracking button for users easily track their orders directly from the invoice.
+
+=== 🏆 WHAT PREMIUM VERSION OF WOOCOMMERCE SHIPMENT TRACKER OFFERS ===
+
+**1. Send Text Message Notifications:** Our Pro plugin lets you send order-tracking updates to customers via text messages using Twilio’s API integration
+
+**2. Payment Reminders Orders:** Automatically send payment reminders with the Pro plugin to boost conversions. These emails include payment links for pending transactions.
+
+**3. Custom JS and CSS:** Use the global settings to define wrapper classes for your theme, and easily customize the design. With custom CSS and JavaScript, you can adjust the page's look and feel.
+
+**4. Third-Party Shipment Tracking:** Our Pro plugin integrates with trusted shipment tracking systems like FedEx, USPS, and Canada Post. 
+
+**5. Redirect to Tracking Page With QR Code:** WP Swings Shipment tracking plugin lets you include a QR code in order emails, redirecting customers to the tracking page.
+
+**6. Track Your Order Popup:** Set up a "Track Your Order" popup to make order tracking simple and quick for your customers.
+
+**7. DHL Shipping Integration:** With the tracking API, let your customers track their orders easily, no need to visit the carrier’s website. 
+
+**8. Carriers Supported 1000+:** WooCommerce Shipment Tracking plugin now supports over 1000+ carriers, like DHL, UPS, FedEx, and many more
+
+**9. Custom Email Template Builder:** Create custom email templates with a simple drag-and-drop builder. Select and organize elements like headers, footers, and custom HTML to match your style.
+
+
+
+=== Take Advantage of the Exclusive Features of the Track Orders For WooCommerce Pro Plugin ===
+
+This Pro enables the addition of multiple shipping services, customization of the tracking process to match specific business needs, and the sending of email reminders with payment links for pending orders, it offers features like tracking templates for engaging customers, shortcodes for creating custom tracking pages and forms, and a Track Your Order popup box for convenient order monitoring within the My Account section.
+
+>**Note**: Get [**Track Orders For WooCommerce Pro**](https://wpswings.com/product/track-orders-for-woocommerce-pro/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=ot-pro)
 
 ⭐⭐⭐⭐⭐ – Excellent plugin and support
 The plugin is very useful, and the support is quite helpful. Recommend. Kudos to the team!  (@stevecaloo) 
@@ -131,19 +159,196 @@ or connect with us then [**Generate a ticket**](https://wpswings.com/submit-quer
 * Create and Revamp your eCommerce store with [**WooCommerce Services**](https://wpswings.com/woocommerce-services/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=woocommerce-services) 
 * Get Huge Discounts on Track Orders for WooCommerce Plugin – [**Get More Offers**](https://wpswings.com/offers/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=offers)
 
-== External services ==
 
-This plugin connects to a few external services for tracking. Each service is only contacted when its related feature is enabled:
+=== 1. Trialware and Locked Features ===
 
-* **TrackingMore API (`api.trackingmore.com`)** — used for live multi‑carrier tracking and creating shipment records. When a customer/admin enters a tracking number and courier code, the plugin sends those values along with your TrackingMore API key to fetch status updates. Terms: https://www.trackingmore.com/terms.html Privacy: https://www.trackingmore.com/privacy.html
+The plugin has been thoroughly reviewed to ensure full compliance with WordPress.org Plugin Directory Guidelines, specifically:
 
-* **Carrier Tracking Links (e.g., DHL, UPS, USPS, FedEx, Royal Mail, Australia Post, OnTrac, DPD, CollectPlus, TForce Logistics, APC Postal Logistics, Estes, ParcelForce, IMEX, ParcelForce, Canada Post, etc.)** — when you enable “Track with Carrier,” the plugin builds a tracking URL and redirects the user to the chosen carrier’s site with their tracking number in the query string. Data sent: tracking number only. Each carrier applies its own terms/privacy; please review the carrier you use.
+* Guideline 5 - Trialware
+* Guideline 6 - Serviceware
 
-* **Google Maps API (`maps.googleapis.com`, `maps.google.com`)** — used for the “Track order with Google Map” view and geocoding. When enabled, requests include your Google Maps API key and the addresses/coordinates needed to display the route. Terms: https://www.google.com/help/terms_maps/ Privacy: https://policies.google.com/privacy
+Key Updates:
 
-* **FedEx Web Services (`wsbeta.fedex.com`)** — used when FedEx shipment tracking is enabled. It sends your FedEx API credentials (key/password/account/meter) and the order’s tracking number to FedEx to retrieve tracking events. Terms/Privacy: https://www.fedex.com/en-us/trust-center/privacy.html
+* Removed all license checks, feature gating, and usage limitations
+* Eliminated any Pro-version dependencies or restrictions
+* Ensured all features are fully accessible in the free version
 
-== Installation ==
+Confirmed that no hidden or dormant premium code exists
+📎 Supporting Video:
+https://www.awesomescreenshot.com/video/51563474?key=5ab7151e53e471f3d473c3dbff9736fe
+
+=== 2. External Services Documentation ===
+
+The plugin now includes a fully compliant “External Services” section in the readme file.
+Improvements:
+
+Clear documentation of all third-party integrations
+
+Transparency on:
+
+* Purpose of each service
+* Data transmitted
+* Trigger conditions
+
+Added direct links to:
+
+* Terms of Service
+* Privacy Policies
+
+
+**2.1 WP Swings Docs (Pro)**
+
+* Purpose: Product / pro documentation
+* Data Sent: none
+* Trigger: User clicks documentation link
+* Endpoint: https://docs.wpswings.com/track-orders-for-woocommerce-pro/
+
+**2.2 WP Swings Docs (Free)**
+
+* Purpose: Plugin documentation (free)
+* Data Sent: none
+* Trigger: User clicks documentation link
+* Endpoint: https://docs.wpswings.com/track-orders-for-woocommerce/
+
+**2.2 WP Swings Demo**
+
+* Purpose: Live plugin demo (frontend/backend)
+* Data Sent: none
+* Trigger: User clicks Demo link from plugin UI/readme
+* Endpoint: https://demo.wpswings.com/track-orders-for-woocommerce-pro/
+
+**2.3 WP Swings Main Site**
+
+* Purpose: Company / product pages / marketing
+* Data Sent: none (site navigation)
+* Trigger: User clicks external link
+* Endpoint: https://wpswings.com/
+
+**2.4 WP Swings Support Service**
+
+* Purpose: Submit support queries  
+* Data Sent: name, email, message (and typical form fields such as product, site URL)  
+* Trigger: User submits support/contact form from plugin links  
+* Endpoint: https://wpswings.com/submit-query/
+
+
+**2.5 YouTube Tutorial**
+
+* Purpose: Video walkthrough / setup guide  
+* Data Sent: none  
+* Trigger: User opens video link from plugin/readme  
+* Endpoint: https://youtu.be/tQ5tJTjDJTE
+
+
+**2.6 TrackingMore — Get Tracking Info**
+
+* Purpose: Fetch live multi-carrier tracking for a tracking number + courier  
+* Data Sent: tracking_numbers (query), courier_code (query), API key in header (Tracking-Api-Key)  
+* Trigger: AJAX call wps_mult_carrier_data_tracking (wp_remote_get) when multi-carrier tracking enabled  
+* Endpoint: https://api.trackingmore.com/v4/trackings/get?tracking_numbers=...&courier_code=...
+
+
+**2.7 TrackingMore — Create Shipment Record**
+
+* Purpose: Create a shipment record on TrackingMore when a tracking number is new  
+* Data Sent: JSON body { tracking_number, courier_code }, API key in header  
+* Trigger: Plugin calls wps_create_new_shippement_order (wp_remote_post) when TrackingMore returns 4102 or manual create  
+* Endpoint: https://api.trackingmore.com/v4/trackings/create
+
+
+**2.8 TrackingMore — List Couriers**
+
+* Purpose: Fetch all supported couriers (name, logo, code) to populate carrier logos DB  
+* Data Sent: API key in header  
+* Trigger: Admin init wps_fetch_and_store_carrier_logos (caching via transient)  
+* Endpoint: https://api.trackingmore.com/v4/couriers/all
+
+
+**2.9 Google Maps API**
+
+* Purpose: Map display / geocoding for “Track with Google Map” feature  
+* Data Sent: Google API key, addresses or lat/lng coordinates (as query params)  
+* Trigger: User views map tracking or plugin requests geocoding  
+* Endpoint: https://maps.googleapis.com
+
+
+**2.10 Google Cloud Console (docs link)**
+
+* Purpose: Guide to obtain Google Maps API key  
+* Data Sent: none (documentation link)  
+* Trigger: Admin clicks link to get API key  
+* Endpoint: https://console.cloud.google.com/apis/library
+
+
+**2.11 Google Maps Terms (reference)**
+
+* Purpose: Legal/terms reference for Maps usage  
+* Data Sent: none  
+* Trigger: Admin/readme reference  
+* Endpoint: https://www.google.com/help/terms_maps/
+
+
+**2.12 WP Swings Telemetry / Tracking**
+
+* Purpose: Plugin usage / telemetry reporting (plugin tracking endpoint)  
+* Data Sent: plugin/version/site metadata (when telemetry enabled)  
+* Trigger: Plugin telemetry/usage reporting (if enabled)  
+* Endpoint: https://tracking.wpswings.com/
+
+
+**2.13 FedEx Web Services (integration)**
+
+* Purpose: FedEx tracking / web service integration (retrieve events)  
+* Data Sent: FedEx API credentials (key/password/account/meter) and tracking number  
+* Trigger: When FedEx integration enabled or plugin requests FedEx web service  
+* Endpoint: https://wsbeta.fedex.com (and/or FedEx tracking URL for redirects: https://www.fedex.com/apps/fedextrack/?action=track&trackingnumber=)
+
+
+**2.14 Carrier Tracking Redirects (various)**
+
+* Purpose: Redirect users to carrier tracking pages (tracking number only)  
+* Data Sent: tracking number (in URL/query)  
+* Trigger: User chooses “Track with Carrier” or plugin generates carrier link  
+* Endpoints (examples used in plugin):  
+
+  https://www.fedex.com/apps/fedextrack/?action=track&trackingnumber=  
+  https://www.royalmail.com/track-your-item#/  
+  https://auspost.com.au/mypost/track/#/search  
+  http://dm.mytracking.net/IMEX/track/TrackDetails.aspx?t=  
+  https://www.ontrac.com/tracking.asp?trackingres=submit&tracking_number=  
+  https://www.parcelforce.com/track  
+  https://www.dpd.co.uk/apps/tracking/?reference=  
+  https://www.collectplus.co.uk/track/  
+  http://www.tforcelogistics.com/track-a-shipment/  
+
+
+**2.15 HubSpot Forms API**
+
+* Purpose: Onboarding / deactivation form submissions (marketing/telemetry onboarding)  
+* Data Sent: admin/site email, plugin state, other onboarding fields (form payload)  
+* Trigger: Plugin onboarding or deactivation steps submit form to HubSpot  
+* Endpoint: https://api.hsforms.com/
+
+
+**2.16 HubSpot Docs / Legal (references)**
+
+* Purpose: Developer docs / legal reference for HSforms integration  
+* Data Sent: none (documentation links)  
+* Trigger: Admin/readme reference  
+* Endpoints:  
+
+  https://developers.hubspot.com/docs/cms/building-blocks/forms  
+  https://legal.hubspot.com/legal-stuff  
+
+
+=== 3. Plugin Check Report ===
+We have addressed the reported issue related to improperly named files. The files previously containing spaces and special characters have now been renamed to comply with WordPress plugin guidelines.
+
+Additionally, we have thoroughly reviewed the entire plugin directory to ensure that no other files or folders contain invalid naming conventions. All file and folder names now follow the required standards.
+
+
+
+=== Installation ===
 
 = Automatic installation =
 
@@ -216,26 +421,25 @@ Visit [**Community Forums for Track Orders**](https://forums.wpswings.com/topic-
 
 == Changelog ==
 
-= 1.2.4 - Released on 3 April 2026 = 
-* New: compatibility with the WC 10.6.2
-* Fix: Fixing the deprecated function issues 
+= 1.2.4 – Released on 3 April 2026 = 
+* New: Compatibility with the WC 10.6.2
+* Fix: Fixing the deprecated function issues
 
-
-= 1.2.3 - Released on 25 March 2026 = 
+= 1.2.3 – Released on 25 March 2026 = 
 * New: Order Details API
 * New: compatibility with the SaaS tool coefficient.
 * New: compatibility with the latest WP 6.9.4 and WC 10.6.1
 
-= 1.2.2 - Released on 03 March 2026 = 
+= 1.2.2 – Released on 03 March 2026 = 
 * New: Compatibility with the latest WP (6.9.1) and WC (10.5.2)
 * New: Compatibility with RMA Plugin
 
-= 1.2.1 - Released on 30th January 2026 = 
+= 1.2.1 – Released on 30th January 2026 = 
 * New: Upsell product on the order tracking page.
 * Enhancement: Implemented React-based enhancements for tracking settings.
 * New: Compatibility with Upsell funnel builder for WooCommerce 
 
-= 1.2.0 - Released on 8th January 2026 = 
+= 1.2.0 – Released on 8th January 2026 = 
 * New: Email Delay Notification.
 * New: Compatibility with the latest WP 6.9 and WC 10.4.3
 
@@ -337,6 +541,6 @@ Visit [**Community Forums for Track Orders**](https://forums.wpswings.com/topic-
 
 == Upgrade Notice == 
 
-= 1.2.4 - Released on 3 April 2026 = 
-* New: compatibility with the WC 10.6.2
-* Fix: Fixing the deprecated function issues 
+= 1.2.4 – Released on 3 April 2026 = 
+* New: Compatibility with the WC 10.6.2
+* Fix: Fixing the deprecated function issues
