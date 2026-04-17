@@ -160,193 +160,91 @@ or connect with us then [**Generate a ticket**](https://wpswings.com/submit-quer
 * Get Huge Discounts on Track Orders for WooCommerce Plugin – [**Get More Offers**](https://wpswings.com/offers/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=offers)
 
 
-=== 1. Trialware and Locked Features ===
+=== External Services Documentation ===
 
-The plugin has been thoroughly reviewed to ensure full compliance with WordPress.org Plugin Directory Guidelines, specifically:
+**1. WP Swings Support Service**
 
-* Guideline 5 - Trialware
-* Guideline 6 - Serviceware
+Used to allow users to submit queries/support requests.
 
-Key Updates:
-
-* Removed all license checks, feature gating, and usage limitations
-* Eliminated any Pro-version dependencies or restrictions
-* Ensured all features are fully accessible in the free version
-
-Confirmed that no hidden or dormant premium code exists
-📎 Supporting Video:
-https://www.awesomescreenshot.com/video/51563474?key=5ab7151e53e471f3d473c3dbff9736fe
-
-=== 2. External Services Documentation ===
-
-The plugin now includes a fully compliant “External Services” section in the readme file.
-Improvements:
-
-Clear documentation of all third-party integrations
-
-Transparency on:
-
-* Purpose of each service
-* Data transmitted
-* Trigger conditions
-
-Added direct links to:
-
-* Terms of Service
-* Privacy Policies
+* Data sent: Name, Email and Message (user input)
+* Trigger: When the user submits a support query from the plugin dashboard
+* Service endpoint: https://wpswings.com/submit-query/
+* Terms of Service: https://wpswings.com/terms-and-conditions/
+* Privacy Policy: https://wpswings.com/privacy-policy/
 
 
-**2.1 WP Swings Docs (Pro)**
-
-* Purpose: Product / pro documentation
-* Data Sent: none
-* Trigger: User clicks documentation link
-* Endpoint: https://docs.wpswings.com/track-orders-for-woocommerce-pro/
-
-**2.2 WP Swings Docs (Free)**
-
-* Purpose: Plugin documentation (free)
-* Data Sent: none
-* Trigger: User clicks documentation link
-* Endpoint: https://docs.wpswings.com/track-orders-for-woocommerce/
-
-**2.2 WP Swings Demo**
-
-* Purpose: Live plugin demo (frontend/backend)
-* Data Sent: none
-* Trigger: User clicks Demo link from plugin UI/readme
-* Endpoint: https://demo.wpswings.com/track-orders-for-woocommerce-pro/
-
-**2.3 WP Swings Main Site**
-
-* Purpose: Company / product pages / marketing
-* Data Sent: none (site navigation)
-* Trigger: User clicks external link
-* Endpoint: https://wpswings.com/
-
-**2.4 WP Swings Support Service**
-
-* Purpose: Submit support queries  
-* Data Sent: name, email, message (and typical form fields such as product, site URL)  
-* Trigger: User submits support/contact form from plugin links  
-* Endpoint: https://wpswings.com/submit-query/
-
-
-**2.5 YouTube Tutorial**
+**2. YouTube Tutorial**
 
 * Purpose: Video walkthrough / setup guide  
 * Data Sent: none  
 * Trigger: User opens video link from plugin/readme  
 * Endpoint: https://youtu.be/tQ5tJTjDJTE
+* Terms: https://www.youtube.com/t/terms
+* Privacy: https://policies.google.com/privacy
 
 
-**2.6 TrackingMore — Get Tracking Info**
+**3. TrackingMore**
+
+* Terms: https://www.trackingmore.com/legal/terms-of-use 
+* Privacy: https://www.trackingmore.com/legal/privacy-policy
+
+Get Tracking Info
 
 * Purpose: Fetch live multi-carrier tracking for a tracking number + courier  
 * Data Sent: tracking_numbers (query), courier_code (query), API key in header (Tracking-Api-Key)  
 * Trigger: AJAX call wps_mult_carrier_data_tracking (wp_remote_get) when multi-carrier tracking enabled  
 * Endpoint: https://api.trackingmore.com/v4/trackings/get?tracking_numbers=...&courier_code=...
 
-
-**2.7 TrackingMore — Create Shipment Record**
+Create Shipment Record
 
 * Purpose: Create a shipment record on TrackingMore when a tracking number is new  
 * Data Sent: JSON body { tracking_number, courier_code }, API key in header  
 * Trigger: Plugin calls wps_create_new_shippement_order (wp_remote_post) when TrackingMore returns 4102 or manual create  
 * Endpoint: https://api.trackingmore.com/v4/trackings/create
 
+List Couriers
 
-**2.8 TrackingMore — List Couriers**
-
-* Purpose: Fetch all supported couriers (name, logo, code) to populate carrier logos DB  
+* Purpose: Fetch all supported couriers (name, logo, code) to populate carrier logos DB
 * Data Sent: API key in header  
 * Trigger: Admin init wps_fetch_and_store_carrier_logos (caching via transient)  
 * Endpoint: https://api.trackingmore.com/v4/couriers/all
 
 
-**2.9 Google Maps API**
+**4. Google Maps API**
 
 * Purpose: Map display / geocoding for “Track with Google Map” feature  
 * Data Sent: Google API key, addresses or lat/lng coordinates (as query params)  
 * Trigger: User views map tracking or plugin requests geocoding  
 * Endpoint: https://maps.googleapis.com
+* Terms: https://www.google.com/help/terms_maps/
 
-
-**2.10 Google Cloud Console (docs link)**
+**5. Google Cloud Console (Docs link)**
 
 * Purpose: Guide to obtain Google Maps API key  
 * Data Sent: none (documentation link)  
 * Trigger: Admin clicks link to get API key  
 * Endpoint: https://console.cloud.google.com/apis/library
+* Privacy Policy:https://policies.google.com/privacy
+* Terms of Service: https://policies.google.com/terms
 
 
-**2.11 Google Maps Terms (reference)**
-
-* Purpose: Legal/terms reference for Maps usage  
-* Data Sent: none  
-* Trigger: Admin/readme reference  
-* Endpoint: https://www.google.com/help/terms_maps/
-
-
-**2.12 WP Swings Telemetry / Tracking**
+**6. WP Swings Telemetry / Tracking**
 
 * Purpose: Plugin usage / telemetry reporting (plugin tracking endpoint)  
 * Data Sent: plugin/version/site metadata (when telemetry enabled)  
-* Trigger: Plugin telemetry/usage reporting (if enabled)  
+* Trigger: Plugin telemetry/usage reporting, Opt-in only (never pre-enabled)
 * Endpoint: https://tracking.wpswings.com/
+* Terms of Service: https://wpswings.com/terms-and-conditions/
+* Privacy Policy: https://wpswings.com/privacy-policy/
 
+**7. HubSpot Forms API**
 
-**2.13 FedEx Web Services (integration)**
-
-* Purpose: FedEx tracking / web service integration (retrieve events)  
-* Data Sent: FedEx API credentials (key/password/account/meter) and tracking number  
-* Trigger: When FedEx integration enabled or plugin requests FedEx web service  
-* Endpoint: https://wsbeta.fedex.com (and/or FedEx tracking URL for redirects: https://www.fedex.com/apps/fedextrack/?action=track&trackingnumber=)
-
-
-**2.14 Carrier Tracking Redirects (various)**
-
-* Purpose: Redirect users to carrier tracking pages (tracking number only)  
-* Data Sent: tracking number (in URL/query)  
-* Trigger: User chooses “Track with Carrier” or plugin generates carrier link  
-* Endpoints (examples used in plugin):  
-
-  https://www.fedex.com/apps/fedextrack/?action=track&trackingnumber=  
-  https://www.royalmail.com/track-your-item#/  
-  https://auspost.com.au/mypost/track/#/search  
-  http://dm.mytracking.net/IMEX/track/TrackDetails.aspx?t=  
-  https://www.ontrac.com/tracking.asp?trackingres=submit&tracking_number=  
-  https://www.parcelforce.com/track  
-  https://www.dpd.co.uk/apps/tracking/?reference=  
-  https://www.collectplus.co.uk/track/  
-  http://www.tforcelogistics.com/track-a-shipment/  
-
-
-**2.15 HubSpot Forms API**
-
+* Data sent: Name, email, site URL, and feedback when forms are submitted.
 * Purpose: Onboarding / deactivation form submissions (marketing/telemetry onboarding)  
-* Data Sent: admin/site email, plugin state, other onboarding fields (form payload)  
 * Trigger: Plugin onboarding or deactivation steps submit form to HubSpot  
-* Endpoint: https://api.hsforms.com/
-
-
-**2.16 HubSpot Docs / Legal (references)**
-
-* Purpose: Developer docs / legal reference for HSforms integration  
-* Data Sent: none (documentation links)  
-* Trigger: Admin/readme reference  
-* Endpoints:  
-
-  https://developers.hubspot.com/docs/cms/building-blocks/forms  
-  https://legal.hubspot.com/legal-stuff  
-
-
-=== 3. Plugin Check Report ===
-We have addressed the reported issue related to improperly named files. The files previously containing spaces and special characters have now been renamed to comply with WordPress plugin guidelines.
-
-Additionally, we have thoroughly reviewed the entire plugin directory to ensure that no other files or folders contain invalid naming conventions. All file and folder names now follow the required standards.
-
-
+* Endpoint: https://api.hsforms.com/ (submission endpoint built from this base)
+* Terms: https://legal.hubspot.com/terms-of-service
+* Privacy: https://legal.hubspot.com/privacy-policy
 
 === Installation ===
 
