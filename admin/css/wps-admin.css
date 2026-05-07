@@ -704,3 +704,577 @@ textarea:focus {
     max-width: 50%;
   }
 }
+
+/*=====  Track Orders Admin Redesign  ======*/
+.tofw-admin-shell {
+  background: #f4e5fb;
+  margin-right: 10px;
+  min-height: calc(100vh - 32px);
+  padding: 14px 0 28px;
+  font-size: 15px;
+}
+
+.tofw-admin-shell__topbar {
+  background: linear-gradient(90deg, #4b0f74 0%, #2f004c 100%);
+  border-radius: 0 0 18px 18px;
+  height: 32px;
+  margin-bottom: 10px;
+}
+
+.tofw-admin-shell__frame {
+  padding: 0 10px;
+}
+
+.tofw-admin-shell__masthead,
+.tofw-admin-shell__tabs,
+.tofw-admin-shell__content-card,
+.tofw-admin-sidecard,
+.tofw-admin-shell .notice,
+.tofw-admin-shell .updated,
+.tofw-admin-shell .error {
+  background: #fffdfd;
+  border: 1px solid #efd8fb;
+  border-radius: 16px;
+  box-shadow: none;
+}
+
+.tofw-admin-shell .notice,
+.tofw-admin-shell .updated,
+.tofw-admin-shell .error {
+  margin: 0 0 12px;
+  padding: 10px 14px;
+}
+
+.tofw-admin-shell__masthead,
+.tofw-admin-shell__tabs {
+  margin-bottom: 12px;
+  padding: 14px 18px;
+}
+
+.tofw-admin-shell__masthead {
+  background: linear-gradient(90deg, #4b0f74 0%, #31004e 100%);
+  border: 0;
+  border-radius: 28px;
+  min-height: 64px;
+  padding: 14px 20px;
+}
+
+.tofw-admin-shell__tabs {
+  align-items: center;
+  display: flex;
+  gap: 18px;
+}
+
+.tofw-admin-shell__brand {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-start;
+  min-height: 36px;
+}
+
+.tofw-admin-shell__badge {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 999px;
+  color: #ffffff;
+  display: inline-flex;
+  font-family: "NunitoSans-Bold";
+  font-size: 13px;
+  letter-spacing: 0.4px;
+  line-height: 1;
+  min-height: 34px;
+  padding: 9px 18px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.tofw-admin-shell.is-pro-active .tofw-admin-shell__badge {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.tofw-admin-shell__brand-copy {
+  align-items: center;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0;
+}
+
+.tofw-admin-shell__title {
+  color: #ffffff;
+  font-family: "NunitoSans-ExtraBold";
+  font-size: 18px;
+  line-height: 1.3;
+}
+
+.tofw-admin-shell__version {
+  display: none;
+}
+
+.tofw-admin-shell__tabs-version {
+  color: #7e7592;
+  flex: 0 0 auto;
+  font-family: "NunitoSans-Bold";
+  font-size: 15px;
+  line-height: 1;
+}
+
+.tofw-admin-shell__tab-list {
+  align-items: center;
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.tofw-admin-shell__tab-item {
+  margin: 0;
+}
+
+.tofw-admin-shell__tab-link {
+  border-bottom: 2px solid transparent;
+  color: #33174c;
+  display: inline-flex;
+  font-family: "NunitoSans-Bold";
+  font-size: 15px;
+  line-height: 1.5;
+  padding: 12px 0;
+  transition: 0.2s ease;
+}
+
+.tofw-admin-shell__tab-link:hover,
+.tofw-admin-shell__tab-link:focus {
+  color: #33174c;
+  outline: none;
+  box-shadow: none;
+}
+
+.tofw-admin-shell__tab-link.is-active {
+  border-bottom-color: #ffbf12;
+}
+
+.tofw-admin-shell__content-grid {
+  align-items: start;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: minmax(0, 1fr) 290px;
+}
+
+.tofw-admin-shell__content-card {
+  min-height: 720px;
+  overflow: hidden;
+  padding: 18px 14px;
+}
+
+.tofw-admin-shell__sidebar {
+  display: grid;
+  gap: 12px;
+}
+
+.tofw-admin-sidecard {
+  padding: 14px;
+}
+
+.tofw-admin-sidecard.is-accent {
+  background: #fff8e9;
+}
+
+.tofw-admin-sidecard__title-wrap {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+.tofw-admin-sidecard__title {
+  color: #4c2487;
+  font-family: "NunitoSans-ExtraBold";
+  font-size: 19px;
+  line-height: 1.35;
+  margin-bottom: 10px;
+}
+
+.tofw-admin-sidecard__star {
+  align-items: center;
+  background: #ffca28;
+  border-radius: 999px;
+  color: #4c2487;
+  display: inline-flex;
+  font-family: "NunitoSans-ExtraBold";
+  font-size: 14px;
+  height: 28px;
+  justify-content: center;
+  min-width: 28px;
+}
+
+.tofw-admin-sidecard__text,
+.tofw-admin-sidecard__footer {
+  color: #8f81a5;
+  font-family: "NunitoSans-Regular";
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.tofw-admin-sidecard__footer {
+  margin-top: 8px;
+  text-align: center;
+}
+
+.tofw-admin-sidecard__actions,
+.tofw-admin-sidecard__services {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.tofw-admin-sidecard__button,
+.tofw-admin-sidecard__service {
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #edd6fb;
+  border-radius: 12px;
+  color: #371848;
+  display: flex;
+  font-family: "NunitoSans-Bold";
+  font-size: 15px;
+  justify-content: space-between;
+  min-height: 48px;
+  padding: 12px 16px;
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.tofw-admin-sidecard__button:hover,
+.tofw-admin-sidecard__button:focus,
+.tofw-admin-sidecard__service:hover,
+.tofw-admin-sidecard__service:focus {
+  box-shadow: none;
+  color: #371848;
+}
+
+.tofw-admin-sidecard__button.is-dark {
+  background: #050505;
+  border-color: #050505;
+  color: #ffffff;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.tofw-admin-sidecard__button.is-secondary::after,
+.tofw-admin-sidecard__service::after {
+  color: #6f2ca7;
+  content: "›";
+  font-size: 18px;
+  line-height: 1;
+  margin-left: 12px;
+}
+
+.tofw-admin-sidecard__button.is-dark::after {
+  content: "";
+  margin: 0;
+}
+
+.tofw-admin-shell .wps-overview__wrapper {
+  width: 100%;
+}
+
+.tofw-admin-shell .wps-overview__wrapper .wps-overview__banner,
+.tofw-admin-shell .wps-overview__wrapper .wps-overview__content .wps-overview__content-description,
+.tofw-admin-shell .wps-overview__wrapper .wps-overview__content .wps-overview__keywords .wps-overview__keywords-item .wps-overview__keywords-card,
+.tofw-admin-shell .wps-wetm-wrap,
+.tofw-admin-shell .wps-tofwp-wrap,
+.tofw-admin-shell .wps_tofwp_wrapper,
+.tofw-admin-shell .table-responsive {
+  background: #ffffff;
+  border: 1px solid #efd8fb;
+  border-radius: 14px;
+  box-shadow: none;
+}
+
+.tofw-admin-shell .wps-wetm-wrap,
+.tofw-admin-shell .wps-tofwp-wrap {
+  max-width: none;
+}
+
+.tofw-admin-shell .thirty-days-notice {
+  background: #fffafc;
+  border: 1px solid #efd8fb;
+  border-radius: 14px;
+  margin: 0 0 12px;
+  padding: 14px 16px;
+}
+
+.tofw-admin-shell form {
+  margin: 0;
+}
+
+.tofw-admin-shell .wps-form-group {
+  align-items: flex-start;
+  border-bottom: 1px solid #f1e3f8;
+  margin: 0;
+  padding: 18px 0;
+}
+
+.tofw-admin-shell .wps-form-group:last-child {
+  border-bottom: 0;
+  padding-bottom: 4px;
+}
+
+.tofw-admin-shell .wps-form-group__label {
+  max-width: 320px;
+}
+
+.tofw-admin-shell .wps-form-group__label .wps-form-label {
+  color: #31144a;
+  font-family: "NunitoSans-Bold";
+  font-size: 18px;
+  line-height: 1.45;
+}
+
+.tofw-admin-shell .wps-form-group__control {
+  max-width: calc(100% - 320px);
+}
+
+.tofw-admin-shell .wps-helper-text,
+.tofw-admin-shell .mdc-text-field-helper-text--persistent {
+  color: #9b8cae;
+  font-family: "NunitoSans-Regular";
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.tofw-admin-shell .mdc-text-field,
+.tofw-admin-shell select,
+.tofw-admin-shell textarea,
+.tofw-admin-shell input[type="text"],
+.tofw-admin-shell input[type="number"],
+.tofw-admin-shell input[type="email"],
+.tofw-admin-shell input[type="password"] {
+  max-width: 100%;
+}
+
+.tofw-admin-shell .mdc-text-field {
+  width: min(100%, 430px);
+}
+
+.tofw-admin-shell .mdc-text-field--outlined .mdc-notched-outline__leading,
+.tofw-admin-shell .mdc-text-field--outlined .mdc-notched-outline__notch,
+.tofw-admin-shell .mdc-text-field--outlined .mdc-notched-outline__trailing {
+  border-color: #ead5f8 !important;
+}
+
+.tofw-admin-shell .mdc-text-field__input,
+.tofw-admin-shell select,
+.tofw-admin-shell textarea,
+.tofw-admin-shell input[type="text"],
+.tofw-admin-shell input[type="number"],
+.tofw-admin-shell input[type="email"],
+.tofw-admin-shell input[type="password"] {
+  color: #4e4260;
+}
+
+.tofw-admin-shell .mdc-switch {
+  align-items: center;
+  display: inline-block;
+  flex: 0 0 auto;
+  gap: 10px;
+  height: 28px;
+  margin-right: 34px;
+  overflow: visible;
+  position: relative;
+  transform: none;
+  transform-origin: left center;
+  width: 52px;
+}
+
+.tofw-admin-shell .mdc-switch::after {
+  color: #b3b0cd;
+  content: "off";
+  font-family: "NunitoSans-Bold";
+  font-size: 15px;
+  left: 64px;
+  min-width: 18px;
+  line-height: 1;
+  position: absolute;
+  text-transform: lowercase;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.tofw-admin-shell .wps-form-group__control > div:has(> .mdc-switch),
+.tofw-admin-shell .wps-form-group__control .wps-tofw-switch-actions {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  min-height: 28px;
+  width: fit-content;
+}
+
+.tofw-admin-shell .mdc-switch:has(.mdc-switch__native-control:checked)::after {
+  color: #d99300;
+  content: "on";
+}
+
+.tofw-admin-shell .mdc-switch__track {
+  background: #ffffff !important;
+  border: 2px solid #cbcbe0;
+  border-radius: 999px;
+  box-sizing: border-box;
+  height: 28px;
+  inset: 0;
+  opacity: 1 !important;
+  position: absolute;
+  width: 52px;
+}
+
+.tofw-admin-shell .mdc-switch__thumb-underlay {
+  height: 20px;
+  left: 4px !important;
+  position: absolute;
+  right: auto !important;
+  top: 4px !important;
+  transform: none !important;
+  transition: left 90ms cubic-bezier(0.4, 0, 0.2, 1);
+  width: 20px;
+}
+
+.tofw-admin-shell .mdc-switch__thumb {
+  background: #9c9ebb !important;
+  border: 0;
+  border-radius: 50%;
+  box-shadow: none;
+  height: 20px;
+  width: 20px;
+}
+
+.tofw-admin-shell .mdc-switch .mdc-switch__native-control {
+  cursor: pointer;
+  height: 28px;
+  left: -4px;
+  opacity: 0;
+  position: absolute;
+  right: auto !important;
+  top: -4px;
+  transform: none !important;
+  width: 60px;
+  z-index: 3;
+}
+
+.tofw-admin-shell .mdc-switch:has(.mdc-switch__native-control:checked) .mdc-switch__track {
+  border-color: #ffb400;
+}
+
+.tofw-admin-shell .mdc-switch.mdc-switch--checked .mdc-switch__thumb-underlay,
+.tofw-admin-shell .mdc-switch:has(.mdc-switch__native-control:checked) .mdc-switch__thumb-underlay {
+  left: 28px !important;
+  transform: none !important;
+}
+
+.tofw-admin-shell .mdc-switch.mdc-switch--checked .mdc-switch__native-control,
+.tofw-admin-shell .mdc-switch:has(.mdc-switch__native-control:checked) .mdc-switch__native-control {
+  transform: none !important;
+}
+
+.tofw-admin-shell .mdc-switch:has(.mdc-switch__native-control:checked) .mdc-switch__thumb {
+  background: #ffb400 !important;
+}
+
+.tofw-admin-shell .mdc-switch:has(.mdc-switch__native-control:disabled) {
+  opacity: 0.55;
+}
+
+.tofw-admin-shell .mdc-button,
+.tofw-admin-shell button.button,
+.tofw-admin-shell button.button-primary,
+.tofw-admin-shell .button-primary.woocommerce-save-button {
+  background: #050505;
+  border-color: #050505;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+  color: #ffffff;
+  min-height: 36px;
+  padding: 8px 18px !important;
+  text-transform: none;
+}
+
+.tofw-admin-shell .mdc-button:hover,
+.tofw-admin-shell .mdc-button:focus,
+.tofw-admin-shell button.button:hover,
+.tofw-admin-shell button.button:focus,
+.tofw-admin-shell button.button-primary:hover,
+.tofw-admin-shell button.button-primary:focus,
+.tofw-admin-shell .button-primary.woocommerce-save-button:hover,
+.tofw-admin-shell .button-primary.woocommerce-save-button:focus {
+  background: #050505;
+  border-color: #050505;
+  color: #ffffff;
+}
+
+.tofw-admin-shell .dataTables_wrapper {
+  padding: 0;
+}
+
+.tofw-admin-shell .dataTables_wrapper .dataTable tr,
+.tofw-admin-shell .dataTables_wrapper .dataTable tr td,
+.tofw-admin-shell .dataTables_wrapper .dataTable thead th {
+  background: #ffffff !important;
+}
+
+.tofw-admin-shell .dataTables_wrapper .dataTable thead th {
+  color: #31144a;
+}
+
+@media (max-width: 1280px) {
+  .tofw-admin-shell__content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tofw-admin-shell__sidebar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .tofw-admin-shell__sidebar {
+    grid-template-columns: 1fr;
+  }
+
+  .tofw-admin-shell .wps-form-group__label,
+  .tofw-admin-shell .wps-form-group__control {
+    max-width: 100%;
+  }
+
+  .tofw-admin-shell .wps-form-group {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 782px) {
+  .tofw-admin-shell {
+    margin-right: 0;
+  }
+
+  .tofw-admin-shell__frame {
+    padding: 0 6px;
+  }
+
+  .tofw-admin-shell__masthead,
+  .tofw-admin-shell__tabs,
+  .tofw-admin-shell__content-card,
+  .tofw-admin-sidecard {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .tofw-admin-shell__brand {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .tofw-admin-shell__tabs {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+}

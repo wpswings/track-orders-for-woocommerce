@@ -400,6 +400,34 @@ class Track_Orders_For_Woocommerce {
 	}
 
 	/**
+	 * Check whether the pro add-on is active.
+	 *
+	 * @return bool
+	 */
+	public function tofw_is_pro_active() {
+		$is_pro_activated = false;
+		return (bool) apply_filters( 'track_orders_for_woocmmerce_pro_plugin_activated', $is_pro_activated );
+	}
+
+	/**
+	 * Get the admin header badge label.
+	 *
+	 * @return string
+	 */
+	public function tofw_get_admin_badge_text() {
+		return $this->tofw_is_pro_active() ? esc_html__( 'Pro Active', 'track-orders-for-woocommerce' ) : esc_html__( 'Free Active', 'track-orders-for-woocommerce' );
+	}
+
+	/**
+	 * Get the admin version text.
+	 *
+	 * @return string
+	 */
+	public function tofw_get_admin_version_label() {
+		return 'v' . $this->tofw_get_version();
+	}
+
+	/**
 	 * Predefined default wps_std_plug tabs.
 	 *
 	 * @return Array       An key=>value pair of Track Orders For Woocommerce tabs.
@@ -451,8 +479,7 @@ class Track_Orders_For_Woocommerce {
 		// desc - filter for trial.
 		apply_filters( 'track_orders_for_woocmmerce_admin_settings_tabs', $tofw_default_tabs );
 
-		$is_pro_activated = false;
-		$is_pro_activated = apply_filters( 'track_orders_for_woocmmerce_pro_plugin_activated', $is_pro_activated );
+		$is_pro_activated = $this->tofw_is_pro_active();
 
 		
 		$tofw_default_tabs['track-orders-for-woocommerce-overview']      = array(
