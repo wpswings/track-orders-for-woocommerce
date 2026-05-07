@@ -983,6 +983,114 @@ textarea:focus {
   padding: 18px 14px;
 }
 
+.tofw-admin-shell .tofwp-license-tab__hero {
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #efd8fb;
+  border-radius: 24px;
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  padding: 18px 20px;
+  margin-bottom: 20px;
+}
+
+.tofw-admin-shell .tofwp-license-tab__hero-copy {
+  display: grid;
+  gap: 6px;
+}
+
+.tofw-admin-shell .tofwp-license-tab__eyebrow {
+  color: #f39a00;
+  font-family: "NunitoSans-Bold";
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.tofw-admin-shell .tofwp-license-tab__hero-title {
+  color: #2b0b49;
+  font-family: "NunitoSans-ExtraBold";
+  font-size: 22px;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.tofw-admin-shell .tofwp-license-tab__hero-text {
+  color: #7d6f92;
+  font-family: "NunitoSans-Regular";
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.tofw-admin-shell .tofwp-license-tab__doc-link.button.button-primary {
+  align-items: center;
+  border-radius: 16px;
+  display: inline-flex;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 186px;
+  padding: 10px 18px;
+  white-space: nowrap;
+}
+
+.tofwp-license-tab__hero {
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #efd8fb;
+  border-radius: 24px;
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  padding: 18px 20px;
+  margin-bottom: 20px;
+}
+
+.tofwp-license-tab__hero-copy {
+  display: grid;
+  gap: 6px;
+}
+
+.tofwp-license-tab__eyebrow {
+  color: #f39a00;
+  font-family: "NunitoSans-Bold";
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.tofwp-license-tab__hero-title {
+  color: #2b0b49;
+  font-family: "NunitoSans-ExtraBold";
+  font-size: 22px;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.tofwp-license-tab__hero-text {
+  color: #7d6f92;
+  font-family: "NunitoSans-Regular";
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.tofwp-license-tab__doc-link.button.button-primary {
+  align-items: center;
+  border-radius: 16px;
+  display: inline-flex;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 186px;
+  padding: 10px 18px;
+  white-space: nowrap;
+}
+
 .tofw-admin-shell__sidebar {
   display: grid;
   gap: 12px;
@@ -1095,6 +1203,26 @@ textarea:focus {
 
 .tofw-admin-sidecard__button--expert {
   width: 100%;
+}
+
+@media (max-width: 900px) {
+  .tofw-admin-shell .tofwp-license-tab__hero {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .tofw-admin-shell .tofwp-license-tab__doc-link.button.button-primary {
+    width: 100%;
+  }
+
+  .tofwp-license-tab__hero {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .tofwp-license-tab__doc-link.button.button-primary {
+    width: 100%;
+  }
 }
 
 body.tofw-expert-modal-open {
