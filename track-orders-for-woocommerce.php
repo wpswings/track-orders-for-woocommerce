@@ -15,7 +15,7 @@
  * Plugin Name:       Track Orders for WooCommerce
  * Plugin URI:        https://wpswings.com/product/track-orders-for-woocommerce/
  * Description:       <code><strong>Track Orders for WooCommerce</strong></code> Keep your customers informed in real-time with simple order tracking, transforming their waiting time into an engaging and interactive journey. <a target="_blank" href="https://wpswings.com/woocommerce-plugins/?utm_source=wpswings-orderbump-shop&utm_medium=orderbump-pro-backend&utm_campaign=shop-page" >Elevate your eCommerce store by exploring more on <strong>WP Swings</strong></a>.
- * Version:           1.2.5
+ * Version:           1.2.6
  * Author:            WPSwings
  * Author URI:        https://wpswings.com/
  * Text Domain:       track-orders-for-woocommerce
@@ -23,11 +23,11 @@
  *
  * Requires Plugins:  woocommerce
  * Requires at least:    6.7.0
- * Tested up to:         6.9
+ * Tested up to:         6.9.4
  * WC requires at least: 6.5.0
  * WC tested up to:      10.7
  * Requires PHP:         7.4
- * Stable tag:           1.2.4
+ * Stable tag:           1.2.6
  *
  * License:           GNU General Public License v3.0
  * License URI:       http://www.gnu.org/licenses/gpl-3.0.html
@@ -61,7 +61,7 @@ if (in_array('woocommerce/woocommerce.php', get_option('active_plugins', array()
 	 */
 	function define_track_orders_for_woocommerce_constants()
 	{
-		track_orders_for_woocommerce_constants('TRACK_ORDERS_FOR_WOOCOMMERCE_VERSION', '1.2.5');
+		track_orders_for_woocommerce_constants('TRACK_ORDERS_FOR_WOOCOMMERCE_VERSION', '1.2.6');
 		track_orders_for_woocommerce_constants('TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH', plugin_dir_path(__FILE__));
 		track_orders_for_woocommerce_constants('TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL', plugin_dir_url(__FILE__));
 	}

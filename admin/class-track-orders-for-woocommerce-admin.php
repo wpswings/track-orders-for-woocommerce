@@ -121,6 +121,9 @@ class Track_Orders_For_Woocommerce_Admin {
 					'selec_address_placeholder' => __( 'Select Your Hubpoint Addresses', 'track-orders-for-woocommerce' ),
 					'site_url' => site_url(),
 					'enable_order_delay_notification' => get_option( 'wps_tofw_enable_order_delay_notification' ),
+					'talk_to_expert_nonce' => wp_create_nonce( 'wps_tofw_talk_to_expert_nonce' ),
+					'talk_to_expert_action' => 'wps_tofw_submit_talk_to_expert',
+					'talk_to_expert_success_fallback' => __( 'Thank you for submitting your request. Our team will contact you soon.', 'track-orders-for-woocommerce' ),
 
 				)
 			);
@@ -1990,7 +1993,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			'embed_block_param',
 			array(
 				'ajaxurl'             => admin_url( 'admin-ajax.php' ),
-				'reloadurl'           => admin_url( 'admin.php?page=pdf_generator_for_wp_menu' ),
+				'reloadurl'           => admin_url( 'admin.php?page=track_orders_for_woocommerce_menu' ),
 			)
 		);
 	}

@@ -1288,3 +1288,147 @@ jQuery(function ($) {
 		});
 	}
 });
+
+jQuery(function ($) {
+	const $modal = $('.pgfw-expert-modal');
+
+	if (!$modal.length) {
+		return;
+	}
+
+	const $form = $modal.find('[data-pgfw-expert-form="true"]');
+	const $formPanel = $modal.find('[data-pgfw-expert-form-panel="true"]');
+	const $thankYouPanel = $modal.find('[data-pgfw-expert-thank-you="true"]');
+	const $status = $modal.find('[data-pgfw-expert-state="true"]');
+	const $submit = $modal.find('[data-pgfw-expert-submit="true"]');
+	const submitLabel = $submit.data('pgfw-submit-label') || 'Submit Request';
+	const loadingLabel = $submit.data('pgfw-submit-loading-label') || 'Sending...';
+	let closeTimer = null;
+
+	function serializeForm(form) {
+		const formData = new FormData(form);
+		const payload = {};
+
+		formData.forEach(function (value, key) {
+			const normalizedKey = key.slice(-2) === '[]' ? key.slice(0, -2) : key;
+
+			if (Object.prototype.hasOwnProperty.call(payload, normalizedKey)) {
+				if (!Array.isArray(payload[normalizedKey])) {
+					payload[normalizedKey] = [payload[normalizedKey]];
+				}
+
+				payload[normalizedKey].push(value);
+			} else {
+				payload[normalizedKey] = key.slice(-2) === '[]' ? [value] : value;
+			}
+		});
+
+		return payload;
+	}
+
+	function setStatus(message, type) {
+		$status
+			.removeClass('is-error is-success')
+			.addClass(type ? 'is-' + type : '')
+			.text(message || '');
+
+		if (message) {
+			$status.removeAttr('hidden');
+		} else {
+			$status.attr('hidden', true);
+		}
+	}
+
+	function resetModalState() {
+		if (closeTimer) {
+			window.clearTimeout(closeTimer);
+			closeTimer = null;
+		}
+
+		$form.get(0).reset();
+		$submit.prop('disabled', false).text(submitLabel);
+		setStatus('', '');
+		$formPanel.removeAttr('hidden').attr('aria-hidden', 'false');
+		$thankYouPanel.attr('hidden', true).attr('aria-hidden', 'true');
+	}
+
+	function openModal() {
+		resetModalState();
+		$modal.prop('hidden', false).attr('aria-hidden', 'false').addClass('is-open');
+		$('body').addClass('tofw-expert-modal-open');
+		window.setTimeout(function () {
+			$modal.find('input, select, textarea, button').filter(':visible').first().trigger('focus');
+		}, 20);
+	}
+
+	function closeModal() {
+		if (closeTimer) {
+			window.clearTimeout(closeTimer);
+			closeTimer = null;
+		}
+
+		$modal.removeClass('is-open').attr('aria-hidden', 'true').prop('hidden', true);
+		$('body').removeClass('tofw-expert-modal-open');
+	}
+
+	$(document).on('click', '[data-pgfw-open-expert-modal="true"]', function (event) {
+		event.preventDefault();
+		openModal();
+	});
+
+	$modal.on('click', '[data-pgfw-close-expert-modal="true"]', function (event) {
+		event.preventDefault();
+		closeModal();
+	});
+
+	$(document).on('keydown', function (event) {
+		if ('Escape' === event.key && $modal.hasClass('is-open')) {
+			closeModal();
+		}
+	});
+
+	$form.on('submit', function (event) {
+		event.preventDefault();
+
+		const formElement = $form.get(0);
+
+		if (formElement && !formElement.reportValidity()) {
+			return;
+		}
+
+		$submit.prop('disabled', true).text(loadingLabel);
+		setStatus('', '');
+
+		$.ajax({
+			url: tofw_admin_param.ajaxurl,
+			method: 'POST',
+			dataType: 'json',
+			data: {
+				action: tofw_admin_param.talk_to_expert_action,
+				nonce: tofw_admin_param.talk_to_expert_nonce,
+				form_data: JSON.stringify(serializeForm(formElement)),
+			},
+		}).done(function (response) {
+			if (!response || !response.success) {
+				const message = response && response.data && response.data.message ? response.data.message : 'Something went wrong while submitting the form. Please try again.';
+				setStatus(message, 'error');
+				return;
+			}
+
+			const message = response.data && response.data.message ? response.data.message : tofw_admin_param.talk_to_expert_success_fallback;
+			$modal.find('[data-pgfw-expert-thank-you-message="true"]').text(message);
+			$formPanel.attr('hidden', true).attr('aria-hidden', 'true');
+			$thankYouPanel.removeAttr('hidden').attr('aria-hidden', 'false');
+			setStatus('', '');
+			closeTimer = window.setTimeout(function () {
+				closeModal();
+			}, 2500);
+		}).fail(function (xhr) {
+			const response = xhr && xhr.responseJSON ? xhr.responseJSON : null;
+			const message = response && response.data && response.data.message ? response.data.message : 'Something went wrong while submitting the form. Please try again.';
+			setStatus(message, 'error');
+		}).always(function () {
+			$submit.prop('disabled', false).text(submitLabel);
+		});
+	});
+});

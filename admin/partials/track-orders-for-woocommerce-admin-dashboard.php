@@ -24,14 +24,31 @@ global $wps_tofw_obj;
 
 $tofw_active_tab   = isset( $_GET['tofw_tab'] ) ? sanitize_key( $_GET['tofw_tab'] ) : 'track-orders-for-woocommerce-general';
 $tofw_default_tabs = $wps_tofw_obj->wps_std_plug_default_tabs();
+$tofw_primary_tabs = array();
+$tofw_overflow_tabs = array();
+$tofw_use_overflow = false;
 
 if ( empty( $tofw_active_tab ) || ! isset( $tofw_default_tabs[ $tofw_active_tab ] ) ) {
 	$tofw_active_tab = 'track-orders-for-woocommerce-general';
 }
 
+foreach ( $tofw_default_tabs as $tofw_tab_key => $tofw_tab_config ) {
+	if ( $tofw_use_overflow ) {
+		$tofw_overflow_tabs[ $tofw_tab_key ] = $tofw_tab_config;
+		continue;
+	}
+
+	$tofw_primary_tabs[ $tofw_tab_key ] = $tofw_tab_config;
+
+	if ( 'track-orders-for-woocommerce-order-api' === $tofw_tab_key ) {
+		$tofw_use_overflow = true;
+	}
+}
+
 $tofw_badge_text   = $wps_tofw_obj->tofw_get_admin_badge_text();
 $tofw_version_text = $wps_tofw_obj->tofw_get_admin_version_label();
 $tofw_is_pro       = $wps_tofw_obj->tofw_is_pro_active();
+$tofw_more_active  = isset( $tofw_overflow_tabs[ $tofw_active_tab ] );
 ?>
 <div class="tofw-admin-shell <?php echo $tofw_is_pro ? 'is-pro-active' : 'is-free-active'; ?>">
 	
@@ -53,7 +70,7 @@ $tofw_is_pro       = $wps_tofw_obj->tofw_is_pro_active();
 		<nav class="tofw-admin-shell__tabs" aria-label="<?php esc_attr_e( 'Plugin settings tabs', 'track-orders-for-woocommerce' ); ?>">
 			<span class="tofw-admin-shell__tabs-version"><?php echo esc_html( $tofw_version_text ); ?></span>
 			<ul class="tofw-admin-shell__tab-list">
-				<?php foreach ( $tofw_default_tabs as $tofw_tab_key => $tofw_tab_config ) : ?>
+				<?php foreach ( $tofw_primary_tabs as $tofw_tab_key => $tofw_tab_config ) : ?>
 					<?php $tofw_tab_classes = 'tofw-admin-shell__tab-link' . ( $tofw_active_tab === $tofw_tab_key ? ' is-active' : '' ); ?>
 					<li class="tofw-admin-shell__tab-item">
 						<a id="<?php echo esc_attr( $tofw_tab_key ); ?>" href="<?php echo esc_url( admin_url( 'admin.php?page=track_orders_for_woocommerce_menu&tofw_tab=' . $tofw_tab_key ) ); ?>" class="<?php echo esc_attr( $tofw_tab_classes ); ?>">
@@ -61,6 +78,26 @@ $tofw_is_pro       = $wps_tofw_obj->tofw_is_pro_active();
 						</a>
 					</li>
 				<?php endforeach; ?>
+				<?php if ( ! empty( $tofw_overflow_tabs ) ) : ?>
+					<li class="tofw-admin-shell__tab-item tofw-admin-shell__tab-item--more">
+						<details class="tofw-admin-shell__more<?php echo $tofw_more_active ? ' is-active' : ''; ?>">
+							<summary class="tofw-admin-shell__more-trigger">
+								<span><?php esc_html_e( 'More', 'track-orders-for-woocommerce' ); ?></span>
+								<span class="tofw-admin-shell__more-icon" aria-hidden="true"></span>
+							</summary>
+							<ul class="tofw-admin-shell__more-menu">
+								<?php foreach ( $tofw_overflow_tabs as $tofw_tab_key => $tofw_tab_config ) : ?>
+									<?php $tofw_tab_classes = 'tofw-admin-shell__more-link' . ( $tofw_active_tab === $tofw_tab_key ? ' is-active' : '' ); ?>
+									<li class="tofw-admin-shell__more-item">
+										<a id="<?php echo esc_attr( $tofw_tab_key ); ?>" href="<?php echo esc_url( admin_url( 'admin.php?page=track_orders_for_woocommerce_menu&tofw_tab=' . $tofw_tab_key ) ); ?>" class="<?php echo esc_attr( $tofw_tab_classes ); ?>">
+											<?php echo esc_html( $tofw_tab_config['title'] ); ?>
+										</a>
+									</li>
+								<?php endforeach; ?>
+							</ul>
+						</details>
+					</li>
+				<?php endif; ?>
 			</ul>
 		</nav>
 
@@ -97,7 +134,7 @@ $tofw_is_pro       = $wps_tofw_obj->tofw_is_pro_active();
 						<a class="tofw-admin-sidecard__service" target="_blank" rel="noopener noreferrer" href="https://wpswings.com/speed-optimization-service/"><?php esc_html_e( 'Speed Optimization', 'track-orders-for-woocommerce' ); ?></a>
 						<a class="tofw-admin-sidecard__service" target="_blank" rel="noopener noreferrer" href="https://wpswings.com/woocommerce-development-services/"><?php esc_html_e( 'WooCommerce Development Services', 'track-orders-for-woocommerce' ); ?></a>
 					</div>
-					<a class="tofw-admin-sidecard__button is-dark" target="_blank" rel="noopener noreferrer" href="https://wpswings.com/woocommerce-services/"><?php esc_html_e( 'Talk to an Expert', 'track-orders-for-woocommerce' ); ?></a>
+					<button type="button" class="tofw-admin-sidecard__button is-dark tofw-admin-sidecard__button--expert" data-pgfw-open-expert-modal="true"><?php esc_html_e( 'Talk to an Expert', 'track-orders-for-woocommerce' ); ?></button>
 					<p class="tofw-admin-sidecard__footer"><?php esc_html_e( 'Services by WP Swings', 'track-orders-for-woocommerce' ); ?></p>
 				</div>
 

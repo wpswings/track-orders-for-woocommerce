@@ -80,7 +80,7 @@ class Track_Orders_For_Woocommerce {
 		if ( defined( 'TRACK_ORDERS_FOR_WOOCOMMERCE_VERSION' ) ) {
 			$this->version = TRACK_ORDERS_FOR_WOOCOMMERCE_VERSION;
 		} else {
-			$this->version = '1.2.5';
+			$this->version = '1.2.6';
 		}
 
 		$this->plugin_name = 'track-orders-for-woocommerce';
@@ -138,8 +138,14 @@ class Track_Orders_For_Woocommerce {
 				include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-track-orders-for-woocommerce-onboarding-steps.php';
 			}
 
+			include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-track-orders-for-woocommerce-talk-to-expert-form.php';
+
 			if ( class_exists( 'Track_Orders_For_Woocommerce_Onboarding_Steps' ) ) {
 				$msp_onboard_steps = new Track_Orders_For_Woocommerce_Onboarding_Steps();
+			}
+
+			if ( class_exists( 'Track_Orders_For_Woocommerce_Talk_To_Expert_Form' ) ) {
+				new Track_Orders_For_Woocommerce_Talk_To_Expert_Form();
 			}
 		} else {
 
@@ -424,7 +430,13 @@ class Track_Orders_For_Woocommerce {
 	 * @return string
 	 */
 	public function tofw_get_admin_version_label() {
-		return 'v' . $this->tofw_get_version();
+		$version = $this->tofw_get_version();
+
+		if ( $this->tofw_is_pro_active() && defined( 'TRACK_ORDERS_FOR_WOOCOMMERCE_PRO_VERSION' ) ) {
+			$version = TRACK_ORDERS_FOR_WOOCOMMERCE_PRO_VERSION;
+		}
+
+		return 'v' . $version;
 	}
 
 	/**
