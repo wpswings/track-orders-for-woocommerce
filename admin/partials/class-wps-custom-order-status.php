@@ -277,12 +277,12 @@ class WPS_Custom_Order_Status extends WP_List_Table {
 	 */
 	public function renderHTML() {
 		?>
-		<div class="wps_tofw_rows_wrap">
+		<div class="wps_tofw_rows_wrap" style="justify-content: flex-start !important; margin-bottom: 20px;">
 			<input id="wps_tofw_create_role_box" value="<?php esc_attr_e( 'Create Custom Order Status', 'track-orders-for-woocommerce' ); ?>" class="button-primary" type="button">
 		</div>
 		<!-- messages :: start -->
 		<div class="wps_notices_order_tracker">
-			
+
 		</div>
 		<!-- messages :: end -->
 		<div id="wps_tofw_create_box">
