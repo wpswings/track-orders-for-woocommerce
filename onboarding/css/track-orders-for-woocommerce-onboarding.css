@@ -467,3 +467,8 @@ input#s2id_autogen1 {
 
 
 /*=====  End of MEDIA QUERIES  ======*/
+
+.wps-info-img{
+    height:20px;
+    margin: 0 5px;
+}
