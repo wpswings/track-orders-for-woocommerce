@@ -1646,6 +1646,77 @@ body.tofw-expert-modal-open {
   max-width: calc(100% - 320px);
 }
 
+.tofw-admin-shell .wps-wpg-temp-select .wps-form-group__control {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tofw-admin-shell .wpg_invoice_preview_options {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(4, minmax(118px, 1fr));
+  max-width: 620px;
+  width: 100%;
+}
+
+.tofw-admin-shell .wpg_invoice_preview_wrap {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+}
+
+.tofw-admin-shell .wpg_invoice_preview_card {
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #ead5f8;
+  border-radius: 18px;
+  display: flex;
+  justify-content: center;
+  min-height: 104px;
+  padding: 12px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  width: 100%;
+}
+
+.tofw-admin-shell .wpg_invoice_preview_wrap:hover .wpg_invoice_preview_card {
+  border-color: #d8b5f0;
+  transform: translateY(-1px);
+}
+
+.tofw-admin-shell .wpg_invoice_preview_wrap img {
+  cursor: pointer;
+  display: block;
+  height: 78px;
+  max-width: 100%;
+  object-fit: contain;
+  width: 100%;
+}
+
+.tofw-admin-shell .wpg_invoice_preview_meta {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: 18px;
+}
+
+.tofw-admin-shell .wpg_invoice_preview_meta input[type="radio"] {
+  border-color: #c9bdd9;
+  margin: 0;
+}
+
+.tofw-admin-shell .wpg_invoice_preview_wrap:has(input[type="radio"]:checked) .wpg_invoice_preview_card {
+  border-color: #d99300;
+  box-shadow: 0 0 0 2px rgba(217, 147, 0, 0.14);
+}
+
+.tofw-admin-shell .wps-wpg-temp-select .mdc-text-field-helper-line {
+  margin-top: 14px;
+  width: 100%;
+}
+
 .tofw-admin-shell .wps-helper-text,
 .tofw-admin-shell .mdc-text-field-helper-text--persistent {
   color: #9b8cae;
@@ -2241,6 +2312,11 @@ body.tofw-expert-modal-open {
     width: 100%;
   }
 
+  .tofw-admin-shell .wpg_invoice_preview_options {
+    grid-template-columns: repeat(2, minmax(118px, 1fr));
+    max-width: 420px;
+  }
+
   .tofw-admin-shell .bulkactions select,
   .tofw-admin-shell .bulkactions .button,
   .tofw-admin-shell .bulkactions .button.action {
@@ -2302,5 +2378,19 @@ body.tofw-expert-modal-open {
   .tofw-admin-shell .wp-list-table.widefat th.column-image,
   .tofw-admin-shell .wp-list-table.widefat td.column-image {
     min-width: 140px;
+  }
+
+  .tofw-admin-shell .wpg_invoice_preview_options {
+    max-width: 100%;
+  }
+
+  .tofw-admin-shell .wpg_invoice_preview_card {
+    min-height: 96px;
+  }
+}
+
+@media (max-width: 520px) {
+  .tofw-admin-shell .wpg_invoice_preview_options {
+    grid-template-columns: 1fr;
   }
 }

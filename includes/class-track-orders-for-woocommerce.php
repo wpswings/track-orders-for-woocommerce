@@ -987,21 +987,31 @@ class Track_Orders_For_Woocommerce {
 										</div>
 										<div class="wps-form-group__control">
 									<?php
-									foreach ( $tofw_component['value'] as $tofw_sub_component ) {
 										?>
-												<span  class="wpg_invoice_preview_wrap">
-												<img src="<?php echo ( isset( $tofw_sub_component['src'] ) ? esc_attr( $tofw_sub_component['src'] ) : '' ); ?>" width="100"  alt="">
-												<input 
-												class="<?php echo esc_attr( array_key_exists( 'class', $tofw_sub_component ) ? $tofw_sub_component['class'] : '' ); ?>" 
-												name="<?php echo esc_attr( array_key_exists( 'name', $tofw_sub_component ) ? $tofw_sub_component['name'] : '' ); ?>"
-												id="<?php echo esc_attr( array_key_exists( 'id', $tofw_sub_component ) ? $tofw_sub_component['id'] : '' ); ?>"
-												type="<?php echo esc_attr( array_key_exists( 'type', $tofw_sub_component ) ? $tofw_sub_component['type'] : '' ); ?>"
-												value="<?php echo esc_attr( array_key_exists( 'value', $tofw_sub_component ) ? $tofw_sub_component['value'] : '' ); ?>"
-											<?php checked( $tofw_component['selected'], $tofw_sub_component['value'] ); ?>
+											<div class="wpg_invoice_preview_options">
+										<?php
+										foreach ( $tofw_component['value'] as $tofw_sub_component ) {
+											$preview_title = isset( $tofw_sub_component['title'] ) ? $tofw_sub_component['title'] : '';
+											?>
+												<label class="wpg_invoice_preview_wrap" for="<?php echo esc_attr( array_key_exists( 'id', $tofw_sub_component ) ? $tofw_sub_component['id'] : '' ); ?>">
+													<span class="wpg_invoice_preview_card">
+														<img src="<?php echo ( isset( $tofw_sub_component['src'] ) ? esc_attr( $tofw_sub_component['src'] ) : '' ); ?>" alt="<?php echo esc_attr( $preview_title ); ?>" loading="lazy">
+													</span>
+													<span class="wpg_invoice_preview_meta">
+														<input 
+														class="<?php echo esc_attr( array_key_exists( 'class', $tofw_sub_component ) ? $tofw_sub_component['class'] : '' ); ?>" 
+														name="<?php echo esc_attr( array_key_exists( 'name', $tofw_sub_component ) ? $tofw_sub_component['name'] : '' ); ?>"
+														id="<?php echo esc_attr( array_key_exists( 'id', $tofw_sub_component ) ? $tofw_sub_component['id'] : '' ); ?>"
+														type="<?php echo esc_attr( array_key_exists( 'type', $tofw_sub_component ) ? $tofw_sub_component['type'] : '' ); ?>"
+														value="<?php echo esc_attr( array_key_exists( 'value', $tofw_sub_component ) ? $tofw_sub_component['value'] : '' ); ?>"
+													<?php checked( $tofw_component['selected'], $tofw_sub_component['value'] ); ?>
 	
-												>
-											</span>
-											<?php } ?>
+														>
+														<span class="screen-reader-text"><?php echo esc_html( $preview_title ); ?></span>
+													</span>
+												</label>
+										<?php } ?>
+											</div>
 											<div class="mdc-text-field-helper-line">
 												<div class="mdc-text-field-helper-text--persistent wps-helper-text" id="" aria-hidden="true"><?php echo wp_kses_post( array_key_exists( 'description', $tofw_component ) ? $tofw_component['description'] : '' ); ?></div>
 											</div>
