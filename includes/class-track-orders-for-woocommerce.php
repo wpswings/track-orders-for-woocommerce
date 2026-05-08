@@ -966,7 +966,7 @@ class Track_Orders_For_Woocommerce {
 
 						case 'button':
 							?>
-						<div class="wps-form-group <?php echo ( isset( $tofw_component['main-class'] ) ? esc_html( $tofw_component['main-class'] ) : '' ); ?>">
+						<div class="wps-form-group <?php echo ( isset( $tofw_component['main-class'] ) ? esc_html( $tofw_component['main-class'] ) : '' ); ?>" style="display: flex; justify-content: flex-end !important;">
 							<div class="wps-form-group__label"></div>
 							<div class="wps-form-group__control">
 								<button class="mdc-button mdc-button--raised" name= "<?php echo ( isset( $tofw_component['name'] ) ? esc_html( $tofw_component['name'] ) : esc_html( $tofw_component['id'] ) ); ?>"
