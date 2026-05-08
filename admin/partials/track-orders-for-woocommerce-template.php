@@ -15,6 +15,11 @@ $activated_template = get_option( 'wps_tofw_activated_template', '' );
 $template1 = __( 'Activate', 'track-orders-for-woocommerce' );
 $template2 = __( 'Activate', 'track-orders-for-woocommerce' );
 $template3 = __( 'Activate', 'track-orders-for-woocommerce' );
+$template4 = __( 'Activate', 'track-orders-for-woocommerce' );
+$new_template1 = __( 'Activate', 'track-orders-for-woocommerce' );
+$new_template2 = __( 'Activate', 'track-orders-for-woocommerce' );
+$new_template3 = __( 'Activate', 'track-orders-for-woocommerce' );
+$template8 = __( 'Activate', 'track-orders-for-woocommerce' );
 
 $template1_class1 = '';
 $template1_class2 = '';
@@ -29,6 +34,16 @@ if ( 'template1' === $activated_template ) {
 } elseif ( 'template3' === $activated_template ) {
 	$template3        = __( 'Activated', 'track-orders-for-woocommerce' );
 	$template1_class3 = 'wps_tyo_activated';
+} elseif ( 'template4' === $activated_template ) {
+	$template4 = __( 'Activated', 'track-orders-for-woocommerce' );
+} elseif ( 'newtemplate1' === $activated_template ) {
+	$new_template1 = __( 'Activated', 'track-orders-for-woocommerce' );
+} elseif ( 'newtemplate2' === $activated_template ) {
+	$new_template2 = __( 'Activated', 'track-orders-for-woocommerce' );
+} elseif ( 'newtemplate3' === $activated_template ) {
+	$new_template3 = __( 'Activated', 'track-orders-for-woocommerce' );
+} elseif ( 'template8' === $activated_template ) {
+	$template8 = __( 'Activated', 'track-orders-for-woocommerce' );
 }
 ?>
 
@@ -87,9 +102,10 @@ if ( 'template1' === $activated_template ) {
 			</div>
 		</div>
 	</div>
+	<?php do_action( 'wps_tofw_template_tab', $template4, $new_template1, $new_template2, $new_template3, $template8 ); ?>
 </div>
 
-<div class="hidden_wrapper">
+<div class="hidden_wrapper" hidden>
 	<div id="wps_template_1" class="wps_hide_template">
 		<img src="<?php echo esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/ot02.png'; ?>">
 	</div>
@@ -99,4 +115,5 @@ if ( 'template1' === $activated_template ) {
 	<div id="wps_template_3" class="wps_hide_template">
 		<img src="<?php echo esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/ot01.jpg'; ?>">
 	</div>
+	<?php do_action( 'wps_tofw_preview_template' ); ?>
 </div>

@@ -2002,7 +2002,6 @@ body.tofw-expert-modal-open {
 .tofw-admin-shell .tablenav.bottom {
   align-items: center;
   display: flex;
-  flex-wrap: wrap;
   gap: 10px;
   justify-content: space-between;
   padding: 0;
@@ -2013,9 +2012,75 @@ body.tofw-expert-modal-open {
   float: none;
 }
 
+.tofw-admin-shell .tablenav .actions,
+.tofw-admin-shell .bulkactions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0;
+}
+
 .tofw-admin-shell .tablenav .actions select,
 .tofw-admin-shell .search-box input[type="search"] {
   min-height: 44px;
+}
+
+.tofw-admin-shell .bulkactions select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: #ffffff;
+  background-image: linear-gradient(45deg, transparent 50%, #6f2ca7 50%), linear-gradient(135deg, #6f2ca7 50%, transparent 50%);
+  background-position: calc(100% - 22px) calc(50% - 2px), calc(100% - 16px) calc(50% - 2px);
+  background-repeat: no-repeat;
+  background-size: 6px 6px, 6px 6px;
+  border: 1px solid #d9c2ea;
+  border-radius: 14px;
+  box-shadow: none;
+  color: #4e4260;
+  font-family: "NunitoSans-Bold";
+  font-size: 15px;
+  line-height: 1.2;
+  margin: 0;
+  min-height: 50px;
+  min-width: 124px;
+  padding: 0 42px 0 16px;
+}
+
+.tofw-admin-shell .bulkactions select:focus {
+  border-color: #6f2ca7;
+  box-shadow: 0 0 0 1px #6f2ca7;
+  outline: none;
+}
+
+.tofw-admin-shell .bulkactions .button,
+.tofw-admin-shell .bulkactions .button.action {
+  align-items: center;
+  background: #050505;
+  border: 1px solid #050505;
+  border-radius: 14px;
+  box-shadow: none;
+  color: #ffffff;
+  display: inline-flex;
+  font-family: "NunitoSans-Bold";
+  font-size: 15px;
+  justify-content: center;
+  margin: 0;
+  min-height: 40px;
+  padding: 4px 31px;
+  text-shadow: none;
+}
+
+.tofw-admin-shell .bulkactions .button:hover,
+.tofw-admin-shell .bulkactions .button:focus,
+.tofw-admin-shell .bulkactions .button.action:hover,
+.tofw-admin-shell .bulkactions .button.action:focus {
+  background: #050505;
+  border-color: #050505;
+  box-shadow: none;
+  color: #ffffff;
+  outline: none;
 }
 
 .tofw-admin-shell .tablenav-pages .button,
@@ -2041,6 +2106,80 @@ body.tofw-expert-modal-open {
 
 .tofw-admin-shell .dataTables_wrapper .dataTable thead th {
   color: #31144a;
+}
+
+.tofw-admin-shell .wp-list-table.widefat {
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: auto;
+}
+
+.tofw-admin-shell .wp-list-table.widefat tfoot {
+  display: none;
+}
+
+.tofw-admin-shell .wp-list-table.widefat .check-column {
+  padding-left: 16px;
+  padding-right: 8px;
+  width: 48px;
+}
+
+.tofw-admin-shell .wp-list-table.widefat thead .check-column,
+.tofw-admin-shell .wp-list-table.widefat tfoot .check-column {
+  vertical-align: middle;
+}
+
+.tofw-admin-shell .wp-list-table.widefat th.column-name,
+.tofw-admin-shell .wp-list-table.widefat td.column-name {
+  width: 52%;
+}
+
+.tofw-admin-shell .wp-list-table.widefat th.column-image,
+.tofw-admin-shell .wp-list-table.widefat td.column-image {
+  min-width: 180px;
+}
+
+.tofw-admin-shell .wp-list-table.widefat td.column-name,
+.tofw-admin-shell .wp-list-table.widefat td.column-image {
+  vertical-align: middle;
+}
+
+.tofw-admin-shell .wp-list-table.widefat tbody td,
+.tofw-admin-shell .wp-list-table.widefat tbody th {
+  min-height: 92px;
+}
+
+.tofw-admin-shell .wp-list-table.widefat td.column-image {
+  text-align: center;
+}
+
+.tofw-admin-shell .wp-list-table.widefat td.column-image img {
+  background: #f8f2ff;
+  border: 1px solid #efd8fb;
+  border-radius: 16px;
+  display: block;
+  height: 68px;
+  margin: 0 auto;
+  object-fit: contain;
+  padding: 8px;
+  width: 68px;
+}
+
+.tofw-admin-shell .wp-list-table.widefat .row-actions {
+  margin-top: 8px;
+}
+
+.tofw-admin-shell .wp-list-table.widefat .row-actions .delete a {
+  color: #b42345;
+}
+
+.tofw-admin-shell .tablenav.bottom {
+  margin-top: 14px;
+}
+
+.tofw-admin-shell .tablenav.bottom .tablenav-pages:empty,
+.tofw-admin-shell .tablenav.top .tablenav-pages:empty {
+  display: none;
 }
 
 @media (max-width: 1280px) {
@@ -2089,6 +2228,23 @@ body.tofw-expert-modal-open {
   .tofw-admin-shell .save_section,
   .tofw-admin-shell .wps_tofw_rows_wrap {
     justify-content: flex-start;
+  }
+
+  .tofw-admin-shell .tablenav.top,
+  .tofw-admin-shell .tablenav.bottom {
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .tofw-admin-shell .tablenav .actions,
+  .tofw-admin-shell .bulkactions {
+    width: 100%;
+  }
+
+  .tofw-admin-shell .bulkactions select,
+  .tofw-admin-shell .bulkactions .button,
+  .tofw-admin-shell .bulkactions .button.action {
+    width: 100%;
   }
 
   .tofw-admin-shell .wps-form-group__label,
@@ -2141,5 +2297,10 @@ body.tofw-expert-modal-open {
     left: 0;
     min-width: min(280px, calc(100vw - 48px));
     right: auto;
+  }
+
+  .tofw-admin-shell .wp-list-table.widefat th.column-image,
+  .tofw-admin-shell .wp-list-table.widefat td.column-image {
+    min-width: 140px;
   }
 }

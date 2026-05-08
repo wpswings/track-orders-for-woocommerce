@@ -84,11 +84,25 @@ class Track_Orders_For_Woocommerce_Common {
 	 * @param string $template is a path.
 	 * @return string
 	 */
-		public function wps_tofw_include_track_order_page( $template ) {
+	public function wps_tofw_include_track_order_page( $template ) {
 		$selected_template = get_option( 'wps_tofw_activated_template' );
 		$wps_tofw_google_map_setting = get_option( 'wps_tofw_trackorder_with_google_map', false );
 		$wps_tofw_enable_track_order_feature = get_option( 'tofw_enable_track_order', 'no' );
 		$status_name = '';
+		$template_paths = array(
+			'template1' => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'template/wps-track-order-myaccount-page-template1.php',
+			'template2' => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'template/wps-track-order-myaccount-page-template2.php',
+			'template3' => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'template/wps-track-order-myaccount-page-template3.php',
+		);
+
+		if ( defined( 'TRACK_ORDERS_FOR_WOOCOMMERCE_PRO_DIR_PATH' ) ) {
+			$template_paths['template4'] = TRACK_ORDERS_FOR_WOOCOMMERCE_PRO_DIR_PATH . 'template/wps-track-order-myaccount-page-template4.php';
+			$template_paths['newtemplate1'] = TRACK_ORDERS_FOR_WOOCOMMERCE_PRO_DIR_PATH . 'template/wps-track-order-myaccount-page-newtemplate1.php';
+			$template_paths['newtemplate2'] = TRACK_ORDERS_FOR_WOOCOMMERCE_PRO_DIR_PATH . 'template/wps-track-order-myaccount-page-newtemplate2.php';
+			$template_paths['newtemplate3'] = TRACK_ORDERS_FOR_WOOCOMMERCE_PRO_DIR_PATH . 'template/wps-track-order-myaccount-page-newtemplate3.php';
+			$template_paths['template8'] = TRACK_ORDERS_FOR_WOOCOMMERCE_PRO_DIR_PATH . 'template/wps-track-order-myaccount-page-template8.php';
+		}
+
 		if ( 'on' != $wps_tofw_enable_track_order_feature ) {
 			return $template;
 		}
@@ -151,25 +165,19 @@ class Track_Orders_For_Woocommerce_Common {
 					}
 
 					if ( $found ) {
-						$allowed_templates = array( 'template1', 'template2', 'template3' );
-						if ( ! in_array( $template1, $allowed_templates, true ) ) {
+						if ( ! isset( $template_paths[ $template1 ] ) ) {
 							$template1 = 'template1';
 						}
-						// Construct the template path.
-						$new_template = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'template/wps-track-order-myaccount-page-' . $template1 . '.php';
-						$template = $new_template;
+						$template = $template_paths[ $template1 ];
 					} else {
-						$allowed_templates = array( 'template1', 'template2', 'template3' );
-						if ( ! in_array( $selected_template, $allowed_templates, true ) ) {
+						if ( ! isset( $template_paths[ $selected_template ] ) ) {
 							$selected_template = 'template1';
 						}
 
-						$new_template = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'template/wps-track-order-myaccount-page-' . $selected_template . '.php';
-						$template      = $new_template;
+						$template = $template_paths[ $selected_template ];
 					}
 				} else {
-					$new_template = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'template/wps-track-order-myaccount-page-template1.php';
-					$template = $new_template;
+					$template = $template_paths['template1'];
 				}
 			}
 		}

@@ -485,58 +485,61 @@ jQuery('.wps_tofw_other_setting_upload_logo').click(function(e) {
 	});
 	
 
-	jQuery('.hidden_wrapper').hide();
+	const setTemplatePreviewVisibility = function (isVisible) {
+		jQuery('.hidden_wrapper').prop('hidden', !isVisible);
+	};
+
+	setTemplatePreviewVisibility(false);
 	jQuery(document).on('click','#wps_tofw_preview_first',function(){
-		jQuery(".hidden_wrapper").show();
+		setTemplatePreviewVisibility(true);
 	});
 	jQuery(document).on('click','#wps_tofw_preview_second',function(){
-		jQuery(".hidden_wrapper").show();
+		setTemplatePreviewVisibility(true);
 	});
 	jQuery(document).on('click','#wps_tofw_preview_third',function(){
-		jQuery(".hidden_wrapper").show();
+		setTemplatePreviewVisibility(true);
 	});
-	jQuery('.hidden_wrapper').hide();
 	jQuery(document).on('click','#wps_tofw_preview_fourth',function(){
-		jQuery(".hidden_wrapper").show();
+		setTemplatePreviewVisibility(true);
 	});
 	jQuery(document).on('click','#wps_tofw_preview_new_template_1',function(){
-		jQuery(".hidden_wrapper").show();
+		setTemplatePreviewVisibility(true);
 	});
 	jQuery(document).on('click','#wps_tofw_preview_new_template_3',function(){
-		jQuery(".hidden_wrapper").show();
+		setTemplatePreviewVisibility(true);
 	});
 	jQuery(document).on('click','#wps_tofw_preview_new_template_8',function(){
-		jQuery(".hidden_wrapper").show();
+		setTemplatePreviewVisibility(true);
 	});
 	jQuery(document).on('click','#wps_tofw_preview_new_template_2',function(){
-		jQuery(".hidden_wrapper").show();
+		setTemplatePreviewVisibility(true);
 	});
 	jQuery(document).on('click','#wps_template_1',function(){
-		jQuery(".hidden_wrapper").hide();
+		setTemplatePreviewVisibility(false);
 	});
 	jQuery(document).on('click','#wps_template_2',function(){
-		jQuery(".hidden_wrapper").hide();
+		setTemplatePreviewVisibility(false);
 	});
 	jQuery(document).on('click','#wps_template_3',function(){
-		jQuery(".hidden_wrapper").hide();
+		setTemplatePreviewVisibility(false);
 	});
 	jQuery(document).on('click','#wps_template_4',function(){
-		jQuery(".hidden_wrapper").hide();
+		setTemplatePreviewVisibility(false);
 	});
 	jQuery(document).on('click','#wps_new_template_1',function(){
-		jQuery(".hidden_wrapper").hide();
+		setTemplatePreviewVisibility(false);
 	});
 	jQuery(document).on('click','#wps_new_template_2',function(){
-		jQuery(".hidden_wrapper").hide();
+		setTemplatePreviewVisibility(false);
 	});
 	jQuery(document).on('click','#wps_new_template_3',function(){
-		jQuery(".hidden_wrapper").hide();
+		setTemplatePreviewVisibility(false);
 	});
 	jQuery(document).on('click','#wps_new_template_8',function(){
-		jQuery(".hidden_wrapper").hide();
+		setTemplatePreviewVisibility(false);
 	});
 	jQuery(document).on('click','#wps_new_template_8',function(){
-		jQuery(".hidden_wrapper").hide();
+		setTemplatePreviewVisibility(false);
   });
   
 

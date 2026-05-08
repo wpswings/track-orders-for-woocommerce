@@ -529,7 +529,7 @@ img#wps_tofw_send_loading {
 }
 
 .wps_tofw_template>div:hover .wps_tofw_temlate_wrapper {
-  background-color: #e3e3e3;
+  background-color: #fff;
 }
 
 .hidden_wrapper>div {
@@ -544,6 +544,10 @@ img#wps_tofw_send_loading {
   transform: translateY(-40%);
   width: 100%;
   z-index: 2147483647;
+}
+
+.hidden_wrapper[hidden] {
+  display: none !important;
 }
 
 .hidden_wrapper::before {
