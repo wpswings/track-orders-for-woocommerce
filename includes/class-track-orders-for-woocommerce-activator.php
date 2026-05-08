@@ -28,59 +28,53 @@ class Track_Orders_For_Woocommerce_Activator {
 	 * @since    1.0.0
 	 */
 	public static function track_orders_for_woocommerce_activate() {
-		$email = get_option( 'admin_email', false );
-		$admin = get_user_by( 'email', $email );
-		$admin_id = $admin->ID;
 
-		$wps_tofw_tracking = array(
-			'post_author'    => $admin_id,
-			'post_name'      => 'track-your-order',
-			'post_title'     => __( 'Track Order', 'track-orders-for-woocommerce' ),
-			'post_type'      => 'page',
-			'post_status'    => 'publish',
+		$email    = get_option( 'admin_email', false );
+		$admin    = get_user_by( 'email', $email );
+		$admin_id = ! empty( $admin->ID ) ? $admin->ID : 1;
 
+		$wps_tofw_pages = get_option( 'wps_tofw_tracking_page', array() );
+
+		$pages = array(
+			'wps_track_order_page' => array(
+				'post_name'  => 'track-your-order',
+				'post_title' => __( 'Track Order', 'track-orders-for-woocommerce' ),
+			),
+			'wps_guest_track_order_page' => array(
+				'post_name'  => 'guest-track-order-form',
+				'post_title' => __( 'Track Your Order', 'track-orders-for-woocommerce' ),
+			),
+			'wps_fedex_track_order' => array(
+				'post_name'  => 'track-fedex-order',
+				'post_title' => __( 'Shipment Tracking', 'track-orders-for-woocommerce' ),
+			),
 		);
 
-		$page_id = wp_insert_post( $wps_tofw_tracking );
-		$wps_tofw_pages = array();
-		if ( $page_id ) {
-			$wps_tofw_pages['pages']['wps_track_order_page'] = $page_id;
+		foreach ( $pages as $key => $page_data ) {
+
+			$existing_page = get_page_by_path( $page_data['post_name'], OBJECT, 'page' );
+
+			if ( ! empty( $existing_page->ID ) ) {
+				$wps_tofw_pages['pages'][ $key ] = $existing_page->ID;
+				continue;
+			}
+
+			$page_id = wp_insert_post(
+				array(
+					'post_author' => $admin_id,
+					'post_name'   => $page_data['post_name'],
+					'post_title'  => $page_data['post_title'],
+					'post_type'   => 'page',
+					'post_status' => 'publish',
+				)
+			);
+
+			if ( ! is_wp_error( $page_id ) && $page_id ) {
+				$wps_tofw_pages['pages'][ $key ] = $page_id;
+			}
 		}
 
-		$wps_tofw_guest_request_form = array(
-			'post_author'    => $admin_id,
-			'post_name'      => 'guest-track-order-form',
-			'post_title'     => __( 'Track Your Order', 'track-orders-for-woocommerce' ),
-			'post_type'      => 'page',
-			'post_status'    => 'publish',
-
-		);
-
-		$page_id = wp_insert_post( $wps_tofw_guest_request_form );
-
-		if ( $page_id ) {
-			$wps_tofw_pages['pages']['wps_guest_track_order_page'] = $page_id;
-		}
-		$wps_tofw_fed_ex_tracking = array(
-			'post-author'   => $admin_id,
-			'post_name'     => 'track-fedEx-order',
-			'post_title'    => __( 'Shipment Tracking', 'track-orders-for-woocommerce' ),
-			'post_type'     => 'page',
-			'post_status'   => 'publish',
-
-		);
-
-		$page_id = wp_insert_post( $wps_tofw_fed_ex_tracking );
-		if ( $page_id ) {
-			$wps_tofw_pages['pages']['wps_fedex_track_order'] = $page_id;
-		}
-
-		$existing_pages = get_option( 'wps_tofw_tracking_page', array() );
-		if ( empty( $existing_pages ) ) {
-			update_option( 'wps_tofw_tracking_page', $wps_tofw_pages );
-		}
-
+		update_option( 'wps_tofw_tracking_page', $wps_tofw_pages );
 		update_option( 'tofw_invoice_template', 'template_1' );
 	}
-
 }
