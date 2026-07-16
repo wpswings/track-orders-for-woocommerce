@@ -186,7 +186,6 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 		<?php
 	}
 
-	$allowed = true;
 	if ( true == $allowed ) {
 
 		$tofw_order = new WC_Order( $order_id );
