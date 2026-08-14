@@ -100,6 +100,21 @@ class VersionCompatibilityTest extends PolyfillTestCase {
 	}
 
 	/**
+	 * Test WooCommerce 11.0.1 compatibility.
+	 */
+	public function testWooCommerce1101Compatibility() {
+		$main_file = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'track-orders-for-woocommerce.php';
+		$main_content = file_get_contents($main_file);
+
+		$this->assertStringContainsString('WC tested up to:      11.0.1', $main_content);
+
+		$readme_file = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'README.txt';
+		$readme_content = file_get_contents($readme_file);
+
+		$this->assertStringContainsString('WC tested up to: 11.0.1', $readme_content);
+	}
+
+	/**
 	 * Test HPOS compatibility declared.
 	 */
 	public function testHposCompatibilityDeclared() {
