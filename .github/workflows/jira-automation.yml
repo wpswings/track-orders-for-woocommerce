@@ -51,17 +51,17 @@ jobs:
           echo "Available transitions:"
           echo "$TRANSITIONS" | jq '.transitions[] | {id: .id, name: .name}'
 
-          # Find the "Code Review" transition ID
-          TRANSITION_ID=$(echo "$TRANSITIONS" | jq -r '.transitions[] | select(.name | test("Code Review"; "i")) | .id' | head -1)
+          # Find the "Move to next Status" or "Code Review" transition ID
+          TRANSITION_ID=$(echo "$TRANSITIONS" | jq -r '.transitions[] | select(.name | test("Move to next Status|Code Review"; "i")) | .id' | head -1)
 
           if [ -z "$TRANSITION_ID" ]; then
-            echo "❌ No 'Code Review' transition found for issue $ISSUE_KEY"
+            echo "❌ No 'Move to next Status' or 'Code Review' transition found for issue $ISSUE_KEY"
             echo "Available transitions:"
             echo "$TRANSITIONS" | jq -r '.transitions[] | .name'
             exit 0
           fi
 
-          echo "Transitioning $ISSUE_KEY to Code Review (transition ID: $TRANSITION_ID)"
+          echo "Transitioning $ISSUE_KEY using transition ID: $TRANSITION_ID"
 
           # Transition the issue
           RESPONSE=$(curl -s -w "\n%{http_code}" -u "$JIRA_USER_EMAIL:$JIRA_API_TOKEN" \
@@ -74,9 +74,9 @@ jobs:
           BODY=$(echo "$RESPONSE" | sed '$d')
 
           if [ "$HTTP_CODE" -eq 204 ] || [ "$HTTP_CODE" -eq 200 ]; then
-            echo "✅ Successfully moved $ISSUE_KEY to Code Review"
+            echo "✅ Successfully transitioned $ISSUE_KEY to next status"
             echo "### ✅ Jira Issue Updated" >> $GITHUB_STEP_SUMMARY
-            echo "Issue [$ISSUE_KEY]($JIRA_BASE_URL/browse/$ISSUE_KEY) has been moved to **Code Review**" >> $GITHUB_STEP_SUMMARY
+            echo "Issue [$ISSUE_KEY]($JIRA_BASE_URL/browse/$ISSUE_KEY) has been moved to the next status in the workflow" >> $GITHUB_STEP_SUMMARY
           else
             echo "❌ Failed to transition issue. HTTP Status: $HTTP_CODE"
             echo "Response: $BODY"
@@ -95,7 +95,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `🎯 Jira issue [${issueKey}](${jiraBaseUrl}/browse/${issueKey}) has been automatically moved to **Code Review** status.`
+              body: `🎯 Jira issue [${issueKey}](${jiraBaseUrl}/browse/${issueKey}) has been automatically moved to the next status in the workflow.`
             });
 
   move-to-qa:
@@ -144,17 +144,17 @@ jobs:
           echo "Available transitions:"
           echo "$TRANSITIONS" | jq '.transitions[] | {id: .id, name: .name}'
 
-          # Find the "QA" or "Ready for QA" transition ID
-          TRANSITION_ID=$(echo "$TRANSITIONS" | jq -r '.transitions[] | select(.name | test("QA|Testing"; "i")) | .id' | head -1)
+          # Find the "Move to next Status" or "QA" transition ID
+          TRANSITION_ID=$(echo "$TRANSITIONS" | jq -r '.transitions[] | select(.name | test("Move to next Status|QA|Testing"; "i")) | .id' | head -1)
 
           if [ -z "$TRANSITION_ID" ]; then
-            echo "❌ No 'QA' or 'Testing' transition found for issue $ISSUE_KEY"
+            echo "❌ No 'Move to next Status' or 'QA' transition found for issue $ISSUE_KEY"
             echo "Available transitions:"
             echo "$TRANSITIONS" | jq -r '.transitions[] | .name'
             exit 0
           fi
 
-          echo "Transitioning $ISSUE_KEY to QA (transition ID: $TRANSITION_ID)"
+          echo "Transitioning $ISSUE_KEY using transition ID: $TRANSITION_ID"
 
           # Transition the issue
           RESPONSE=$(curl -s -w "\n%{http_code}" -u "$JIRA_USER_EMAIL:$JIRA_API_TOKEN" \
@@ -167,9 +167,9 @@ jobs:
           BODY=$(echo "$RESPONSE" | sed '$d')
 
           if [ "$HTTP_CODE" -eq 204 ] || [ "$HTTP_CODE" -eq 200 ]; then
-            echo "✅ Successfully moved $ISSUE_KEY to QA"
-            echo "### ✅ Jira Issue Moved to QA" >> $GITHUB_STEP_SUMMARY
-            echo "Issue [$ISSUE_KEY]($JIRA_BASE_URL/browse/$ISSUE_KEY) has been moved to **QA** status after PR merge" >> $GITHUB_STEP_SUMMARY
+            echo "✅ Successfully transitioned $ISSUE_KEY to next status"
+            echo "### ✅ Jira Issue Updated After Merge" >> $GITHUB_STEP_SUMMARY
+            echo "Issue [$ISSUE_KEY]($JIRA_BASE_URL/browse/$ISSUE_KEY) has been moved to the next status after PR merge" >> $GITHUB_STEP_SUMMARY
           else
             echo "❌ Failed to transition issue. HTTP Status: $HTTP_CODE"
             echo "Response: $BODY"
@@ -188,5 +188,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `✅ PR merged! Jira issue [${issueKey}](${jiraBaseUrl}/browse/${issueKey}) has been automatically moved to **QA** status.`
+              body: `✅ PR merged! Jira issue [${issueKey}](${jiraBaseUrl}/browse/${issueKey}) has been automatically moved to the next status.`
             });
