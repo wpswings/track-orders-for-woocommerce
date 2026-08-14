@@ -63,11 +63,15 @@ jobs:
 
           echo "Transitioning $ISSUE_KEY using transition ID: $TRANSITION_ID"
 
-          # Transition the issue
+          # Get PR information for comment
+          PR_NUMBER="${{ github.event.pull_request.number }}"
+          PR_URL="${{ github.event.pull_request.html_url }}"
+
+          # Transition the issue with a comment
           RESPONSE=$(curl -s -w "\n%{http_code}" -u "$JIRA_USER_EMAIL:$JIRA_API_TOKEN" \
             -X POST \
             -H "Content-Type: application/json" \
-            -d "{\"transition\":{\"id\":\"$TRANSITION_ID\"}}" \
+            -d "{\"transition\":{\"id\":\"$TRANSITION_ID\"},\"update\":{\"comment\":[{\"add\":{\"body\":\"Pull Request [#${PR_NUMBER}|${PR_URL}] has been opened and is ready for code review.\"}}]}}" \
             "$JIRA_BASE_URL/rest/api/3/issue/$ISSUE_KEY/transitions")
 
           HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
@@ -156,11 +160,16 @@ jobs:
 
           echo "Transitioning $ISSUE_KEY using transition ID: $TRANSITION_ID"
 
-          # Transition the issue
+          # Get PR information for comment
+          PR_NUMBER="${{ github.event.pull_request.number }}"
+          PR_URL="${{ github.event.pull_request.html_url }}"
+          PR_TITLE="${{ github.event.pull_request.title }}"
+
+          # Transition the issue with a comment
           RESPONSE=$(curl -s -w "\n%{http_code}" -u "$JIRA_USER_EMAIL:$JIRA_API_TOKEN" \
             -X POST \
             -H "Content-Type: application/json" \
-            -d "{\"transition\":{\"id\":\"$TRANSITION_ID\"}}" \
+            -d "{\"transition\":{\"id\":\"$TRANSITION_ID\"},\"update\":{\"comment\":[{\"add\":{\"body\":\"Pull Request [#${PR_NUMBER}|${PR_URL}] - ${PR_TITLE} has been merged and is ready for QA testing.\"}}]}}" \
             "$JIRA_BASE_URL/rest/api/3/issue/$ISSUE_KEY/transitions")
 
           HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
