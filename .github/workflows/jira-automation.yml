@@ -67,11 +67,11 @@ jobs:
           PR_NUMBER="${{ github.event.pull_request.number }}"
           PR_URL="${{ github.event.pull_request.html_url }}"
 
-          # Transition the issue with a comment
+          # Transition the issue with a comment (using ADF format)
           RESPONSE=$(curl -s -w "\n%{http_code}" -u "$JIRA_USER_EMAIL:$JIRA_API_TOKEN" \
             -X POST \
             -H "Content-Type: application/json" \
-            -d "{\"transition\":{\"id\":\"$TRANSITION_ID\"},\"update\":{\"comment\":[{\"add\":{\"body\":\"Pull Request [#${PR_NUMBER}|${PR_URL}] has been opened and is ready for code review.\"}}]}}" \
+            -d "{\"transition\":{\"id\":\"$TRANSITION_ID\"},\"update\":{\"comment\":[{\"add\":{\"body\":{\"type\":\"doc\",\"version\":1,\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"Pull Request \"},{\"type\":\"text\",\"text\":\"#${PR_NUMBER}\",\"marks\":[{\"type\":\"link\",\"attrs\":{\"href\":\"${PR_URL}\"}}]},{\"type\":\"text\",\"text\":\" has been opened and is ready for code review.\"}]}]}}}]}}" \
             "$JIRA_BASE_URL/rest/api/3/issue/$ISSUE_KEY/transitions")
 
           HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
@@ -165,11 +165,11 @@ jobs:
           PR_URL="${{ github.event.pull_request.html_url }}"
           PR_TITLE="${{ github.event.pull_request.title }}"
 
-          # Transition the issue with a comment
+          # Transition the issue with a comment (using ADF format)
           RESPONSE=$(curl -s -w "\n%{http_code}" -u "$JIRA_USER_EMAIL:$JIRA_API_TOKEN" \
             -X POST \
             -H "Content-Type: application/json" \
-            -d "{\"transition\":{\"id\":\"$TRANSITION_ID\"},\"update\":{\"comment\":[{\"add\":{\"body\":\"Pull Request [#${PR_NUMBER}|${PR_URL}] - ${PR_TITLE} has been merged and is ready for QA testing.\"}}]}}" \
+            -d "{\"transition\":{\"id\":\"$TRANSITION_ID\"},\"update\":{\"comment\":[{\"add\":{\"body\":{\"type\":\"doc\",\"version\":1,\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"Pull Request \"},{\"type\":\"text\",\"text\":\"#${PR_NUMBER}\",\"marks\":[{\"type\":\"link\",\"attrs\":{\"href\":\"${PR_URL}\"}}]},{\"type\":\"text\",\"text\":\" (${PR_TITLE}) has been merged and is ready for QA testing.\"}]}]}}}]}}" \
             "$JIRA_BASE_URL/rest/api/3/issue/$ISSUE_KEY/transitions")
 
           HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
