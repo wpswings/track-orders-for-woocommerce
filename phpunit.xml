@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
+    bootstrap="tests/bootstrap.php"
+    colors="true"
+    verbose="true"
+    stopOnFailure="false"
+    failOnWarning="true"
+    failOnRisky="true">
+
+    <testsuites>
+        <testsuite name="Track Orders for WooCommerce Test Suite">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <coverage processUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">includes</directory>
+            <directory suffix=".php">admin</directory>
+            <directory suffix=".php">public</directory>
+        </include>
+        <exclude>
+            <directory>vendor</directory>
+            <directory>tests</directory>
+            <directory>node_modules</directory>
+            <file>track-orders-for-woocommerce.php</file>
+            <file>uninstall.php</file>
+        </exclude>
+    </coverage>
+
+    <php>
+        <const name="WP_TESTS_PHPUNIT_POLYFILLS_PATH" value="vendor/yoast/phpunit-polyfills"/>
+        <ini name="display_errors" value="1"/>
+        <ini name="error_reporting" value="-1"/>
+    </php>
+</phpunit>

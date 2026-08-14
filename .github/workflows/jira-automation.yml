@@ -1,0 +1,192 @@
+name: Jira Automation
+
+on:
+  pull_request:
+    types: [opened, reopened, closed]
+
+jobs:
+  move-to-code-review:
+    if: github.event.action == 'opened' || github.event.action == 'reopened'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Extract Jira Issue Key from PR
+        id: extract-issue
+        run: |
+          # Extract Jira issue key from PR title or branch name
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+
+          # Try to find WPS-XXXX pattern in PR title first
+          ISSUE_KEY=$(echo "$PR_TITLE" | grep -oE 'WPS-[0-9]+' | head -1)
+
+          # If not found in title, try branch name
+          if [ -z "$ISSUE_KEY" ]; then
+            ISSUE_KEY=$(echo "$BRANCH_NAME" | grep -oE 'WPS-[0-9]+' | head -1)
+          fi
+
+          if [ -z "$ISSUE_KEY" ]; then
+            echo "No Jira issue key found in PR title or branch name"
+            echo "issue_found=false" >> $GITHUB_OUTPUT
+          else
+            echo "Found Jira issue: $ISSUE_KEY"
+            echo "issue_key=$ISSUE_KEY" >> $GITHUB_OUTPUT
+            echo "issue_found=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Transition Jira Issue to Code Review
+        if: steps.extract-issue.outputs.issue_found == 'true'
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+          ISSUE_KEY: ${{ steps.extract-issue.outputs.issue_key }}
+        run: |
+          # Get available transitions for the issue
+          TRANSITIONS=$(curl -s -u "$JIRA_USER_EMAIL:$JIRA_API_TOKEN" \
+            -X GET \
+            -H "Content-Type: application/json" \
+            "$JIRA_BASE_URL/rest/api/3/issue/$ISSUE_KEY/transitions")
+
+          echo "Available transitions:"
+          echo "$TRANSITIONS" | jq '.transitions[] | {id: .id, name: .name}'
+
+          # Find the "Code Review" transition ID
+          TRANSITION_ID=$(echo "$TRANSITIONS" | jq -r '.transitions[] | select(.name | test("Code Review"; "i")) | .id' | head -1)
+
+          if [ -z "$TRANSITION_ID" ]; then
+            echo "❌ No 'Code Review' transition found for issue $ISSUE_KEY"
+            echo "Available transitions:"
+            echo "$TRANSITIONS" | jq -r '.transitions[] | .name'
+            exit 0
+          fi
+
+          echo "Transitioning $ISSUE_KEY to Code Review (transition ID: $TRANSITION_ID)"
+
+          # Transition the issue
+          RESPONSE=$(curl -s -w "\n%{http_code}" -u "$JIRA_USER_EMAIL:$JIRA_API_TOKEN" \
+            -X POST \
+            -H "Content-Type: application/json" \
+            -d "{\"transition\":{\"id\":\"$TRANSITION_ID\"}}" \
+            "$JIRA_BASE_URL/rest/api/3/issue/$ISSUE_KEY/transitions")
+
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+
+          if [ "$HTTP_CODE" -eq 204 ] || [ "$HTTP_CODE" -eq 200 ]; then
+            echo "✅ Successfully moved $ISSUE_KEY to Code Review"
+            echo "### ✅ Jira Issue Updated" >> $GITHUB_STEP_SUMMARY
+            echo "Issue [$ISSUE_KEY]($JIRA_BASE_URL/browse/$ISSUE_KEY) has been moved to **Code Review**" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Failed to transition issue. HTTP Status: $HTTP_CODE"
+            echo "Response: $BODY"
+            exit 1
+          fi
+
+      - name: Add Comment to PR
+        if: steps.extract-issue.outputs.issue_found == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issueKey = '${{ steps.extract-issue.outputs.issue_key }}';
+            const jiraBaseUrl = '${{ secrets.JIRA_BASE_URL }}';
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `🎯 Jira issue [${issueKey}](${jiraBaseUrl}/browse/${issueKey}) has been automatically moved to **Code Review** status.`
+            });
+
+  move-to-qa:
+    if: github.event.action == 'closed' && github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Extract Jira Issue Key from PR
+        id: extract-issue
+        run: |
+          # Extract Jira issue key from PR title or branch name
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+
+          # Try to find WPS-XXXX pattern in PR title first
+          ISSUE_KEY=$(echo "$PR_TITLE" | grep -oE 'WPS-[0-9]+' | head -1)
+
+          # If not found in title, try branch name
+          if [ -z "$ISSUE_KEY" ]; then
+            ISSUE_KEY=$(echo "$BRANCH_NAME" | grep -oE 'WPS-[0-9]+' | head -1)
+          fi
+
+          if [ -z "$ISSUE_KEY" ]; then
+            echo "No Jira issue key found in PR title or branch name"
+            echo "issue_found=false" >> $GITHUB_OUTPUT
+          else
+            echo "Found Jira issue: $ISSUE_KEY"
+            echo "issue_key=$ISSUE_KEY" >> $GITHUB_OUTPUT
+            echo "issue_found=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Transition Jira Issue to QA
+        if: steps.extract-issue.outputs.issue_found == 'true'
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+          ISSUE_KEY: ${{ steps.extract-issue.outputs.issue_key }}
+        run: |
+          # Get available transitions for the issue
+          TRANSITIONS=$(curl -s -u "$JIRA_USER_EMAIL:$JIRA_API_TOKEN" \
+            -X GET \
+            -H "Content-Type: application/json" \
+            "$JIRA_BASE_URL/rest/api/3/issue/$ISSUE_KEY/transitions")
+
+          echo "Available transitions:"
+          echo "$TRANSITIONS" | jq '.transitions[] | {id: .id, name: .name}'
+
+          # Find the "QA" or "Ready for QA" transition ID
+          TRANSITION_ID=$(echo "$TRANSITIONS" | jq -r '.transitions[] | select(.name | test("QA|Testing"; "i")) | .id' | head -1)
+
+          if [ -z "$TRANSITION_ID" ]; then
+            echo "❌ No 'QA' or 'Testing' transition found for issue $ISSUE_KEY"
+            echo "Available transitions:"
+            echo "$TRANSITIONS" | jq -r '.transitions[] | .name'
+            exit 0
+          fi
+
+          echo "Transitioning $ISSUE_KEY to QA (transition ID: $TRANSITION_ID)"
+
+          # Transition the issue
+          RESPONSE=$(curl -s -w "\n%{http_code}" -u "$JIRA_USER_EMAIL:$JIRA_API_TOKEN" \
+            -X POST \
+            -H "Content-Type: application/json" \
+            -d "{\"transition\":{\"id\":\"$TRANSITION_ID\"}}" \
+            "$JIRA_BASE_URL/rest/api/3/issue/$ISSUE_KEY/transitions")
+
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+
+          if [ "$HTTP_CODE" -eq 204 ] || [ "$HTTP_CODE" -eq 200 ]; then
+            echo "✅ Successfully moved $ISSUE_KEY to QA"
+            echo "### ✅ Jira Issue Moved to QA" >> $GITHUB_STEP_SUMMARY
+            echo "Issue [$ISSUE_KEY]($JIRA_BASE_URL/browse/$ISSUE_KEY) has been moved to **QA** status after PR merge" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Failed to transition issue. HTTP Status: $HTTP_CODE"
+            echo "Response: $BODY"
+            exit 1
+          fi
+
+      - name: Add Comment to PR
+        if: steps.extract-issue.outputs.issue_found == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issueKey = '${{ steps.extract-issue.outputs.issue_key }}';
+            const jiraBaseUrl = '${{ secrets.JIRA_BASE_URL }}';
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `✅ PR merged! Jira issue [${issueKey}](${jiraBaseUrl}/browse/${issueKey}) has been automatically moved to **QA** status.`
+            });
