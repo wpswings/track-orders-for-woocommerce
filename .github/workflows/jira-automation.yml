@@ -63,15 +63,11 @@ jobs:
 
           echo "Transitioning $ISSUE_KEY using transition ID: $TRANSITION_ID"
 
-          # Get PR information for comment
-          PR_NUMBER="${{ github.event.pull_request.number }}"
-          PR_URL="${{ github.event.pull_request.html_url }}"
-
-          # Transition the issue with a comment (using ADF format)
+          # Transition the issue first
           RESPONSE=$(curl -s -w "\n%{http_code}" -u "$JIRA_USER_EMAIL:$JIRA_API_TOKEN" \
             -X POST \
             -H "Content-Type: application/json" \
-            -d "{\"transition\":{\"id\":\"$TRANSITION_ID\"},\"update\":{\"comment\":[{\"add\":{\"body\":{\"type\":\"doc\",\"version\":1,\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"Pull Request \"},{\"type\":\"text\",\"text\":\"#${PR_NUMBER}\",\"marks\":[{\"type\":\"link\",\"attrs\":{\"href\":\"${PR_URL}\"}}]},{\"type\":\"text\",\"text\":\" has been opened and is ready for code review.\"}]}]}}}]}}" \
+            -d "{\"transition\":{\"id\":\"$TRANSITION_ID\"}}" \
             "$JIRA_BASE_URL/rest/api/3/issue/$ISSUE_KEY/transitions")
 
           HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
@@ -79,6 +75,24 @@ jobs:
 
           if [ "$HTTP_CODE" -eq 204 ] || [ "$HTTP_CODE" -eq 200 ]; then
             echo "✅ Successfully transitioned $ISSUE_KEY to next status"
+
+            # Now add a comment to the issue
+            PR_NUMBER="${{ github.event.pull_request.number }}"
+            PR_URL="${{ github.event.pull_request.html_url }}"
+
+            COMMENT_RESPONSE=$(curl -s -w "\n%{http_code}" -u "$JIRA_USER_EMAIL:$JIRA_API_TOKEN" \
+              -X POST \
+              -H "Content-Type: application/json" \
+              -d "{\"body\":{\"type\":\"doc\",\"version\":1,\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"Pull Request \"},{\"type\":\"text\",\"text\":\"#${PR_NUMBER}\",\"marks\":[{\"type\":\"link\",\"attrs\":{\"href\":\"${PR_URL}\"}}]},{\"type\":\"text\",\"text\":\" has been opened and is ready for code review.\"}]}]}}" \
+              "$JIRA_BASE_URL/rest/api/3/issue/$ISSUE_KEY/comment")
+
+            COMMENT_HTTP_CODE=$(echo "$COMMENT_RESPONSE" | tail -n1)
+            if [ "$COMMENT_HTTP_CODE" -eq 201 ] || [ "$COMMENT_HTTP_CODE" -eq 200 ]; then
+              echo "✅ Added comment to Jira issue"
+            else
+              echo "⚠️ Warning: Failed to add comment (HTTP $COMMENT_HTTP_CODE), but transition succeeded"
+            fi
+
             echo "### ✅ Jira Issue Updated" >> $GITHUB_STEP_SUMMARY
             echo "Issue [$ISSUE_KEY]($JIRA_BASE_URL/browse/$ISSUE_KEY) has been moved to the next status in the workflow" >> $GITHUB_STEP_SUMMARY
           else
@@ -160,16 +174,11 @@ jobs:
 
           echo "Transitioning $ISSUE_KEY using transition ID: $TRANSITION_ID"
 
-          # Get PR information for comment
-          PR_NUMBER="${{ github.event.pull_request.number }}"
-          PR_URL="${{ github.event.pull_request.html_url }}"
-          PR_TITLE="${{ github.event.pull_request.title }}"
-
-          # Transition the issue with a comment (using ADF format)
+          # Transition the issue first
           RESPONSE=$(curl -s -w "\n%{http_code}" -u "$JIRA_USER_EMAIL:$JIRA_API_TOKEN" \
             -X POST \
             -H "Content-Type: application/json" \
-            -d "{\"transition\":{\"id\":\"$TRANSITION_ID\"},\"update\":{\"comment\":[{\"add\":{\"body\":{\"type\":\"doc\",\"version\":1,\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"Pull Request \"},{\"type\":\"text\",\"text\":\"#${PR_NUMBER}\",\"marks\":[{\"type\":\"link\",\"attrs\":{\"href\":\"${PR_URL}\"}}]},{\"type\":\"text\",\"text\":\" (${PR_TITLE}) has been merged and is ready for QA testing.\"}]}]}}}]}}" \
+            -d "{\"transition\":{\"id\":\"$TRANSITION_ID\"}}" \
             "$JIRA_BASE_URL/rest/api/3/issue/$ISSUE_KEY/transitions")
 
           HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
@@ -177,6 +186,25 @@ jobs:
 
           if [ "$HTTP_CODE" -eq 204 ] || [ "$HTTP_CODE" -eq 200 ]; then
             echo "✅ Successfully transitioned $ISSUE_KEY to next status"
+
+            # Now add a comment to the issue
+            PR_NUMBER="${{ github.event.pull_request.number }}"
+            PR_URL="${{ github.event.pull_request.html_url }}"
+            PR_TITLE="${{ github.event.pull_request.title }}"
+
+            COMMENT_RESPONSE=$(curl -s -w "\n%{http_code}" -u "$JIRA_USER_EMAIL:$JIRA_API_TOKEN" \
+              -X POST \
+              -H "Content-Type: application/json" \
+              -d "{\"body\":{\"type\":\"doc\",\"version\":1,\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"Pull Request \"},{\"type\":\"text\",\"text\":\"#${PR_NUMBER}\",\"marks\":[{\"type\":\"link\",\"attrs\":{\"href\":\"${PR_URL}\"}}]},{\"type\":\"text\",\"text\":\" (${PR_TITLE}) has been merged and is ready for QA testing.\"}]}]}}" \
+              "$JIRA_BASE_URL/rest/api/3/issue/$ISSUE_KEY/comment")
+
+            COMMENT_HTTP_CODE=$(echo "$COMMENT_RESPONSE" | tail -n1)
+            if [ "$COMMENT_HTTP_CODE" -eq 201 ] || [ "$COMMENT_HTTP_CODE" -eq 200 ]; then
+              echo "✅ Added comment to Jira issue"
+            else
+              echo "⚠️ Warning: Failed to add comment (HTTP $COMMENT_HTTP_CODE), but transition succeeded"
+            fi
+
             echo "### ✅ Jira Issue Updated After Merge" >> $GITHUB_STEP_SUMMARY
             echo "Issue [$ISSUE_KEY]($JIRA_BASE_URL/browse/$ISSUE_KEY) has been moved to the next status after PR merge" >> $GITHUB_STEP_SUMMARY
           else
