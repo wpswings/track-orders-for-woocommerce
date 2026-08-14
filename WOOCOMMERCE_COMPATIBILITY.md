@@ -119,3 +119,7 @@ This plugin has been tested and certified compatible with WooCommerce 11.0.1.
 
 ---
 **Note:** This compatibility report should be updated with each major WooCommerce release.
+
+## Change Log
+- 2026-08-14: Initial compatibility testing with WooCommerce 11.0.1 completed
+- 2026-08-14: Jira automation workflow implemented and tested
