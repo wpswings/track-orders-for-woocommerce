@@ -7,7 +7,7 @@ Requires at least: 6.7.0
 Tested up to: 6.9
 WC requires at least: 6.5.0
 WC tested up to: 11.0.1
-Stable tag: 1.2.7
+Stable tag: 1.2.8
 Requires PHP: 7.4
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -319,7 +319,10 @@ Visit [**Community Forums for Track Orders**](https://forums.wpswings.com/topic-
 
 == Changelog ==
 
-= 1.2.5 – Released on 17 April 2026 = 
+= 1.2.8 – Released on 21 September 2026 =
+* Security Fix: Hardened the guest order-export request so it requires both the Order Id and the billing email, verified with a constant-time comparison against that single order, instead of matching billing email alone against every order in the store. Credit to Pedro Pinho / WPScan for the responsible disclosure.
+
+= 1.2.5 – Released on 17 April 2026 =
 * New: Compatibility with latest WP(6.9.4) & WC(10.7)
 
 = 1.2.4 – Released on 3 April 2026 = 

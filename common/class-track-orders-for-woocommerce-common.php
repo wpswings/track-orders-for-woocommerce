@@ -1294,44 +1294,25 @@ class Track_Orders_For_Woocommerce_Common {
 	 */
 	public function wps_tofw_export_my_orders_guest_user_callback() {
 		check_ajax_referer( 'tofw_common_param_nonce', 'nonce' );
-		$email = isset( $_POST['email'] ) ? sanitize_text_field( wp_unslash( $_POST['email'] ) ) : '';
-		$_orders = array();
-		if ( ! empty( $email ) ) {
-			$_orders_temp = wc_get_orders(
-				array(
-					'status'      => array_keys( wc_get_order_statuses() ),
-					'numberposts' => -1,
-					'return'      => 'ids', // Specify 'ids' to get only the order IDs.
-				)
-			);
-			$wps_check = 'failed';
-			if ( ! empty( $_orders_temp ) && is_array( $_orders_temp ) ) {
-				foreach ( $_orders_temp as $key => $id ) {
 
-					$_order = new WC_Order( $id );
-					if ( $_order->get_billing_email() == $email ) {
-						$_orders[] = $id;
-						$main_arr = array(
-							'status' => 'successs',
-							'file_name' => 'wps_order_details',
-						);
-						$wps_check = 'success';
-					} else {
-						$main_arr = array(
-							'status' => 'failed',
-						);
-					}
-				}
-				$order_details = $this->wps_tofw_get_csv_order_details( $_orders );
+		$order_id = isset( $_POST['order_id'] ) ? absint( $_POST['order_id'] ) : 0;
+		$email    = isset( $_POST['email'] ) ? sanitize_email( wp_unslash( $_POST['email'] ) ) : '';
+
+		$main_arr = array(
+			'status' => 'failed',
+		);
+
+		if ( $order_id && $email ) {
+			$order = wc_get_order( $order_id );
+
+			if ( $order instanceof WC_Order && hash_equals( (string) $order->get_billing_email(), (string) $email ) ) {
+				$order_details = $this->wps_tofw_get_csv_order_details( array( $order_id ) );
 				$main_arr = array(
-					'status' => $wps_check,
+					'status'     => 'success',
+					'file_name'  => 'wps_order_details',
 					'order_data' => $order_details,
 				);
 			}
-		} else {
-			$main_arr = array(
-				'status' => 'failed',
-			);
 		}
 
 		echo wp_json_encode( $main_arr );
