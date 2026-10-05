@@ -53,75 +53,22 @@ if ( true == $allowed ) {
 		 * @since 1.0.0
 		 */
 		$reason = apply_filters( 'wps_tofw_track_choose_order', $reason );
-	} else {
-		if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
-			// HPOS usage is enabled.
-			$order_customer_id = get_post_field( 'post_author', $order_id );
-		} else {
-			$order_customer_id = get_post_field( 'post_author', $order_id );
-		}
-
+	} elseif ( ! wps_tofw_can_view_order( $order_id ) ) {
 		if ( $current_user_id > 0 ) {
-			if ( $order_customer_id != $current_user_id ) {
-				$myaccount_page = get_option( 'woocommerce_myaccount_page_id' );
-				$myaccount_page_url = get_permalink( $myaccount_page );
-				$allowed = false;
-				$reason = __( 'This order #', 'track-orders-for-woocommerce' ) . $order_id . __( 'is not associated to your account.', 'track-orders-for-woocommerce' ) . "<a href='$myaccount_page_url'>" . __( 'Click Here ', 'track-orders-for-woocommerce' ) . '</a>';
-
-				/**
-				 * Add reason.
-				 *
-				 * @since 1.0.0
-				 */
-				$reason = apply_filters( 'wps_tofw_track_choose_order', $reason );
-			}
-		} else // check order associated to customer account or not for guest user.
-		{
-			if ( 'on' != get_option( 'wps_tofw_enable_track_order_using_order_id', 'no' ) ) {
-
-				$tofw_user_email = filter_var( isset( $_SESSION['wps_tofw_email'] ), FILTER_SANITIZE_EMAIL );
-				if ( filter_var( $tofw_user_email, FILTER_VALIDATE_EMAIL ) ) {
-					$tofw_user_email = filter_var( isset( $_SESSION['wps_tofw_email'] ), FILTER_SANITIZE_EMAIL );
-
-
-					if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
-						// HPOS usage is enabled.
-						$order_email = $order_obj->get_meta( '_billing_email', true );
-					} else {
-						$order_email = get_post_meta( $order_id, '_billing_email', true );
-					}
-
-
-					if ( $tofw_user_email != $order_email ) {
-						$allowed = false;
-						$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
-						$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
-						$myaccount_page_url = get_permalink( $page_id );
-						$reason = __( 'This order #', 'track-orders-for-woocommerce' ) . $order_id . __( 'is not associated to your account.', 'track-orders-for-woocommerce' ) . "<a href='$myaccount_page_url'>" . __( 'Click Here ', 'track-orders-for-woocommerce' ) . '</a>';
-
-						/**
-						 * Add reason.
-						 *
-						 * @since 1.0.0
-						 */
-						$reason = apply_filters( 'wps_tofw_track_choose_order', $reason );
-					}
-				} else {
-
-					$myaccount_page = get_option( 'woocommerce_myaccount_page_id' );
-					$myaccount_page_url = get_permalink( $myaccount_page );
-					$allowed = false;
-					$reason = __( 'This order #', 'track-orders-for-woocommerce' ) . $order_id . __( ' is not associated to your account.', 'track-orders-for-woocommerce' ) . "<a href='$myaccount_page_url'>" . __( 'Click Here ', 'track-orders-for-woocommerce' ) . '</a>';
-
-					/**
-					 * Add reason.
-					 *
-					 * @since 1.0.0
-					 */
-					$reason = apply_filters( 'wps_tofw_track_choose_order', $reason );
-				}
-			}
+			$myaccount_page_url = get_permalink( get_option( 'woocommerce_myaccount_page_id' ) );
+		} else {
+			$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
+			$myaccount_page_url = get_permalink( $wps_tofw_pages['pages']['wps_guest_track_order_page'] );
 		}
+		$allowed = false;
+		$reason = __( 'This order #', 'track-orders-for-woocommerce' ) . absint( $order_id ) . __( ' is not associated to your account.', 'track-orders-for-woocommerce' ) . '<a href="' . esc_url( $myaccount_page_url ) . '">' . __( 'Click Here ', 'track-orders-for-woocommerce' ) . '</a>';
+
+		/**
+		 * Add reason.
+		 *
+		 * @since 1.0.0
+		 */
+		$reason = apply_filters( 'wps_tofw_track_choose_order', $reason );
 	}
 } else {
 	$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );

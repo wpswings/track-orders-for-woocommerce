@@ -315,6 +315,98 @@ if (in_array('woocommerce/woocommerce.php', get_option('active_plugins', array()
 		ob_end_flush();
 	}
 	add_action('init', 'wps_tofw_set_session');
+
+	/**
+	 * Get the order id requested on the track order page.
+	 *
+	 * @return int
+	 */
+	function wps_tofw_get_requested_order_id()
+	{
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$order_id = isset($_POST['order_id']) ? sanitize_text_field(wp_unslash($_POST['order_id'])) : '';
+		if ('' === $order_id) {
+			$link_array = explode('?', isset($_SERVER['REQUEST_URI']) ? sanitize_text_field(wp_unslash($_SERVER['REQUEST_URI'])) : '');
+			if (count($link_array) < 2) {
+				return 0;
+			}
+			$order_id = end($link_array);
+			if (empty($order_id)) {
+				$order_id = $link_array[count($link_array) - 2];
+			}
+		}
+		return absint($order_id);
+	}
+
+	/**
+	 * Check whether the current visitor may view the tracking details of an order.
+	 *
+	 * A logged-in user must be the customer of the order. A guest must have verified
+	 * the order's billing email through the guest track order form, unless the store
+	 * has enabled tracking by order id only.
+	 *
+	 * @param int|string $order_id Order id.
+	 * @return bool
+	 */
+	function wps_tofw_can_view_order($order_id)
+	{
+		$order = is_numeric($order_id) ? wc_get_order(absint($order_id)) : false;
+		if (! $order instanceof WC_Order) {
+			return false;
+		}
+
+		$current_user_id = get_current_user_id();
+		if ($current_user_id > 0) {
+			$allowed = (int) $order->get_customer_id() === $current_user_id;
+		} elseif ('on' == get_option('wps_tofw_enable_track_order_using_order_id', 'no')) {
+			$allowed = true;
+		} else {
+			$session_started = false;
+			if (! session_id() && ! headers_sent() && isset($_COOKIE[session_name()])) {
+				session_start();
+				$session_started = true;
+			}
+			$session_email = isset($_SESSION['wps_tofw_email']) ? sanitize_email(wp_unslash($_SESSION['wps_tofw_email'])) : '';
+			if ($session_started) {
+				session_write_close();
+			}
+			$billing_email = $order->get_billing_email();
+			$allowed = '' !== $session_email && '' !== $billing_email && 0 === strcasecmp($session_email, $billing_email);
+		}
+
+		/**
+		 * Filter whether the current visitor may view the order on the track order page.
+		 *
+		 * @since 1.2.8
+		 */
+		return (bool) apply_filters('wps_tofw_can_view_order', $allowed, $order, $current_user_id);
+	}
+
+	/**
+	 * Fall back to the default template, which shows an access notice, when the
+	 * visitor may not view the requested order. Runs after every tracking template
+	 * filter so it applies to whichever template would render the order.
+	 *
+	 * @param string $template Template path.
+	 * @return string
+	 */
+	function wps_tofw_restrict_track_order_template($template)
+	{
+		if ('on' != get_option('tofw_enable_track_order', 'no')) {
+			return $template;
+		}
+		$wps_tofw_pages = get_option('wps_tofw_tracking_page');
+		$page_id = isset($wps_tofw_pages['pages']['wps_track_order_page']) ? $wps_tofw_pages['pages']['wps_track_order_page'] : 0;
+		if (empty($page_id) || ! is_page($page_id)) {
+			return $template;
+		}
+		$order_id = wps_tofw_get_requested_order_id();
+		if ($order_id > 0 && ! wps_tofw_can_view_order($order_id)) {
+			return TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'template/wps-track-order-myaccount-page-template1.php';
+		}
+		return $template;
+	}
+	add_filter('template_include', 'wps_tofw_restrict_track_order_template', PHP_INT_MAX);
 } else {
 	wps_tofw_dependency_checkup();
 }
