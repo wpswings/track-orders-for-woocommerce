@@ -10,7 +10,7 @@ $current_user_id = get_current_user_id();
 if ( $current_user_id > 0 ) {
 	$myaccount_page = get_option( 'woocommerce_myaccount_page_id' );
 	$myaccount_page_url = get_permalink( $myaccount_page );
-	wp_redirect( $myaccount_page_url );
+	wp_safe_redirect( $myaccount_page_url );
 	exit;
 }
 
@@ -53,14 +53,14 @@ $wps_track_order_css = get_option( 'wps_tofw_tracking_order_custom_css' );
 			?>
 			</h2>
 			<?php
-			$tofw_notification = isset( $_SESSION['wps_tofw_notification'] ) ? esc_attr( htmlspecialchars( sanitize_text_field( wp_unslash( $_SESSION['wps_tofw_notification'] ) ) ), ENT_QUOTES, 'UTF-8' ) : '';
-			if ( isset( $tofw_notification ) && ! empty( $tofw_notification ) ) {
-				$tofw_notification = isset( $_SESSION['wps_tofw_notification'] ) ? esc_attr( htmlspecialchars( sanitize_text_field( wp_unslash( $_SESSION['wps_tofw_notification'] ) ) ), ENT_QUOTES, 'UTF-8' ) : '';
+				$tofw_notification = isset( $_SESSION['wps_tofw_notification'] ) ? sanitize_text_field( wp_unslash( $_SESSION['wps_tofw_notification'] ) ) : '';
+				if ( isset( $tofw_notification ) && ! empty( $tofw_notification ) ) {
+					$tofw_notification = isset( $_SESSION['wps_tofw_notification'] ) ? sanitize_text_field( wp_unslash( $_SESSION['wps_tofw_notification'] ) ) : '';
 
-				?>
-				<ul class="woocommerce-error">
-						<li><strong><?php esc_html_e( 'ERROR', 'track-orders-for-woocommerce' ); ?></strong>: <?php echo esc_html( $tofw_notification ); ?></li>
-				</ul>
+					?>
+					<ul class="woocommerce-error">
+							<li><strong><?php esc_html_e( 'ERROR', 'track-orders-for-woocommerce' ); ?></strong>: <?php echo esc_html( $tofw_notification ); ?></li>
+					</ul>
 				<?php
 				unset( $_SESSION['wps_tofw_notification'] );
 			}
@@ -109,10 +109,14 @@ if ( 'on' == $check ) {
 
 	<div>
 		<form method="POST">
-			<h3><?php esc_html_e( '!------ Export Your All Orders Using Email ------!', 'track-orders-for-woocommerce' ); ?></h3>
+			<h3><?php esc_html_e( '!------ Export Your Order Using Order Id & Email ------!', 'track-orders-for-woocommerce' ); ?></h3>
+			<p class="woocommerce-FormRow woocommerce-FormRow--wide form-row form-row-wide">
+				<label for="wps_wot_export_order_id"><?php esc_html_e( 'Enter Order Id', 'track-orders-for-woocommerce' ); ?><span class="required"> *</span></label>
+				<input type="text" required id="wps_wot_export_order_id" name="wps_wot_export_order_id" class="woocommerce-Input wps_wot_export_order_id woocommerce-Input--text input-text">
+			</p>
 			<p class="woocommerce-FormRow woocommerce-FormRow--wide form-row form-row-wide">
 				<label for="wps_wot_export_email"><?php esc_html_e( 'Enter Email', 'track-orders-for-woocommerce' ); ?><span class="required"> *</span></label>
-				<input type="email" required  class="woocommerce-Input wps_wot_export_email woocommerce-Input--text input-text">
+				<input type="email" required id="wps_wot_export_email" name="wps_wot_export_email" class="woocommerce-Input wps_wot_export_email woocommerce-Input--text input-text">
 				<input type="hidden" name="track_order_nonce_name" value="<?php wp_create_nonce( 'track_order_nonce' ); ?>">
 				<input type="submit"  value="<?php esc_attr_e( 'Export Orders', 'track-orders-for-woocommerce' ); ?>"  class="woocommerce-Button wps_tofw_guest_user_export_button button">
 			</p>

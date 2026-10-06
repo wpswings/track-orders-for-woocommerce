@@ -1,7 +1,5 @@
 //code for datatable
-
 jQuery(document).ready(function() {
-
     	/*SETTING A DATEPICKER TO THE METABOX ON ORDER EDIT PAGE*/
 	if( jQuery( '.wps_tofw_est_delivery_date' ).length > 0 ){
 
@@ -16,20 +14,20 @@ jQuery(document).ready(function() {
 	
 	}
 
-	 // status icon
+	 // status icon.
 	var is_enable_status_icon = wps_admin_param.is_enable_status_icon;
 
 	if ('on' == is_enable_status_icon) {
-		var processing = wps_admin_param.wps_file_include + 'image/Processing.png';//
-		var completed = wps_admin_param.wps_file_include + 'image/Complete.png';//
-		var on_hold = wps_admin_param.wps_file_include + 'image/On-hold.png';//
-		var pending =  wps_admin_param.wps_file_include + 'image/pending.png';//
-		var cancelled =  wps_admin_param.wps_file_include + 'image/Cancelled.png';//
-		var failed =  wps_admin_param.wps_file_include + 'image/Failed.png';//
-		var refunded =  wps_admin_param.wps_file_include + 'image/Refund.png';//
-		var dispatched =  wps_admin_param.wps_file_include + 'image/Dispatched.png';//
-		var shipped =  wps_admin_param.wps_file_include + 'image/Order-Shipped.png';//
-		var packed = wps_admin_param.wps_file_include + 'image/Order-Packed.png';//
+		var processing = wps_admin_param.wps_file_include + 'image/Processing.png';
+		var completed = wps_admin_param.wps_file_include + 'image/Complete.png';
+		var on_hold = wps_admin_param.wps_file_include + 'image/On-hold.png';
+		var pending =  wps_admin_param.wps_file_include + 'image/pending.png';
+		var cancelled =  wps_admin_param.wps_file_include + 'image/Cancelled.png';
+		var failed =  wps_admin_param.wps_file_include + 'image/Failed.png';
+		var refunded =  wps_admin_param.wps_file_include + 'image/Refund.png';
+		var dispatched =  wps_admin_param.wps_file_include + 'image/Dispatched.png';
+		var shipped =  wps_admin_param.wps_file_include + 'image/Order-Shipped.png';
+		var packed = wps_admin_param.wps_file_include + 'image/order-packed.png';
 		var return_requested = wps_admin_param.wps_file_include + 'image/product-return.png';
 		var return_approved = wps_admin_param.wps_file_include + 'image/product-approved.png';
 		var return_cancelled = wps_admin_param.wps_file_include + 'image/product-cancelled.png';
@@ -38,6 +36,7 @@ jQuery(document).ready(function() {
 		var exchange_approved = wps_admin_param.wps_file_include + 'image/exchange_approved.svg';
 		var exchange_cancel = wps_admin_param.wps_file_include + 'image/exchange_cancel.svg';
 		var partially_cancel = wps_admin_param.wps_file_include + 'image/draft.png';
+		var partially_shipped = wps_admin_param.wps_file_include + 'image/partial.png';
 
 			jQuery('.wp-list-table .status-processing .order_status ').html('<mark class="order-status wps-tofw_status-icon status-processing" title ="processing"><img src="' + processing + '" height="40" width="40"></mark> ');
 			jQuery('.wp-list-table .status-completed .order_status ').html('<mark class="order-status wps-tofw_status-icon status-completed"  title ="completed"><img src="' + completed + '" height="40" width="40"></mark> ');
@@ -58,6 +57,8 @@ jQuery(document).ready(function() {
 
 
 		jQuery('.wp-list-table .status-return-cancelled .order_status ').html('<mark class="order-status wps-tofw_status-icon status-return-cancelled"  title ="return cancelled"><img src="' + return_cancelled + '" height="40" width="40"></mark> ');
+		
+		jQuery('.wp-list-table .status-partially-shipped .order_status ').html('<mark class="order-status wps-tofw_status-icon status-partially-shipped"  title ="partially shipped"><img src="' + partially_shipped + '" height="40" width="40"></mark> ');
 
 
 		//RMA Exchange.
@@ -81,6 +82,5 @@ jQuery(document).ready(function() {
 				  })
 			   
 			}
-	   }
-
+	}
 });

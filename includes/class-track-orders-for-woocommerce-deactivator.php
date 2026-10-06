@@ -30,19 +30,6 @@ class Track_Orders_For_Woocommerce_Deactivator {
 	 */
 	public static function track_orders_for_woocommerce_deactivate() {
 		wp_clear_scheduled_hook( 'wps_tofw_daily_notification' );
-		delete_option( 'wps_tofw_warning_notification_message' );
-		delete_option( 'wps_tofw_warning_notification' );
-		update_option( 'wps_enable_dhl_tracking', '' );
-
-		$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
-
-		if ( isset( $wps_tofw_pages['pages'] ) && ! empty( $wps_tofw_pages['pages'] ) ) {
-			$pages = $wps_tofw_pages['pages'];
-			foreach ( $pages as $page_id ) {
-				wp_delete_post( $page_id, true );
-			}
-		}
-		delete_option( 'wps_tofw_tracking_page' );
 
 	}
 

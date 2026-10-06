@@ -11,6 +11,7 @@
 
 use Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableController;
 use Automattic\WooCommerce\Utilities\OrderUtil;
+
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -21,6 +22,9 @@ use Automattic\WooCommerce\Utilities\OrderUtil;
  * @subpackage Track_Orders_For_Woocommerce/admin
  */
 class Track_Orders_For_Woocommerce_Admin {
+
+
+
 
 
 	/**
@@ -50,7 +54,22 @@ class Track_Orders_For_Woocommerce_Admin {
 
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
+	}
 
+	/**
+	 * Return a stable asset version so admin assets can be cached between loads.
+	 *
+	 * @param string $relative_path Relative path from the plugin root.
+	 * @return string
+	 */
+	private function tofw_get_asset_version( $relative_path ) {
+		$asset_path = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . ltrim( $relative_path, '/' );
+
+		if ( file_exists( $asset_path ) ) {
+			return (string) filemtime( $asset_path );
+		}
+
+		return (string) $this->version;
 	}
 
 	/**
@@ -61,23 +80,20 @@ class Track_Orders_For_Woocommerce_Admin {
 	 */
 	public function tofw_admin_enqueue_styles( $hook ) {
 		$screen = get_current_screen();
+		$is_tofw_screen = isset( $screen->id ) && ( 'wp-swings_page_home' === $screen->id || 'pluginhhhs' === $screen->id || 'wpswings_page_track_orders_for_woocommerce_menu' === $screen->id || 'wp-swings_page_track_orders_for_woocommerce_menu' === $screen->id );
 
-		if ( isset( $screen->id ) && ( 'wp-swings_page_home' === $screen->id || 'pluginhhhs' === $screen->id || 'wpswings_page_track_orders_for_woocommerce_menu' === $screen->id || 'wp-swings_page_track_orders_for_woocommerce_menu' === $screen->id ) ) {
-
-			wp_enqueue_style( 'track-orders-for-woocommerce-select2-css', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/select-2/track-orders-for-woocommerce-select2.css', array(), time(), 'all' );
-
-			wp_enqueue_style( 'track-orders-for-woocommerce-meterial-css', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/material-design/material-components-web.min.css', array(), time(), 'all' );
-			wp_enqueue_style( 'track-orders-for-woocommerce-meterial-css2', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/material-design/material-components-v5.0-web.min.css', array(), time(), 'all' );
-			wp_enqueue_style( 'track-orders-for-woocommerce-meterial-lite', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/material-design/material-lite.min.css', array(), time(), 'all' );
-
-			wp_enqueue_style( $this->plugin_name, TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/css/track-orders-for-woocommerce-admin.scss', array(), $this->version, 'all' );
-			wp_enqueue_style( 'wps-admin-min-css', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/css/wps-admin.min.css', array(), $this->version, 'all' );
-			wp_enqueue_style( 'wps-datatable-css', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/datatables/media/css/jquery.dataTables.min.css', array(), $this->version, 'all' );
+		if ( ! $is_tofw_screen ) {
+			return;
 		}
-		wp_enqueue_style( 'track-orders-for-woocommerce-meterial-icons-css', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/material-design/icon.css', array(), time(), 'all' );
 
-		wp_enqueue_style( $this->plugin_name . '-admin-global', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/css/track-orders-for-woocommerce-admin-global.css', array( 'track-orders-for-woocommerce-meterial-icons-css' ), time(), 'all' );
-
+		wp_enqueue_style( 'track-orders-for-woocommerce-select2-css', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/select-2/track-orders-for-woocommerce-select2.css', array(), $this->tofw_get_asset_version( 'package/lib/select-2/track-orders-for-woocommerce-select2.css' ), 'all' );
+		wp_enqueue_style( 'track-orders-for-woocommerce-meterial-css', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/material-design/material-components-web.min.css', array(), $this->tofw_get_asset_version( 'package/lib/material-design/material-components-web.min.css' ), 'all' );
+		wp_enqueue_style( 'track-orders-for-woocommerce-meterial-css2', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/material-design/material-components-v5.0-web.min.css', array(), $this->tofw_get_asset_version( 'package/lib/material-design/material-components-v5.0-web.min.css' ), 'all' );
+		wp_enqueue_style( 'track-orders-for-woocommerce-meterial-lite', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/material-design/material-lite.min.css', array(), $this->tofw_get_asset_version( 'package/lib/material-design/material-lite.min.css' ), 'all' );
+		wp_enqueue_style( 'track-orders-for-woocommerce-meterial-icons-css', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/material-design/icon.css', array(), $this->tofw_get_asset_version( 'package/lib/material-design/icon.css' ), 'all' );
+		wp_enqueue_style( $this->plugin_name, TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/css/wps-admin.css', array(), $this->tofw_get_asset_version( 'admin/css/wps-admin.css' ), 'all' );
+		wp_enqueue_style( $this->plugin_name . '-admin-global', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/css/track-orders-for-woocommerce-admin-global.css', array( 'track-orders-for-woocommerce-meterial-icons-css' ), $this->tofw_get_asset_version( 'admin/css/track-orders-for-woocommerce-admin-global.css' ), 'all' );
+		wp_enqueue_style( 'wps-datatable-css', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/datatables/media/css/jquery.dataTables.min.css', array(), $this->tofw_get_asset_version( 'package/lib/datatables/media/css/jquery.dataTables.min.css' ), 'all' );
 	}
 
 	/**
@@ -89,17 +105,20 @@ class Track_Orders_For_Woocommerce_Admin {
 	public function tofw_admin_enqueue_scripts( $hook ) {
 
 		$screen = get_current_screen();
-		if ( isset( $screen->id ) && ( 'wpswings_page_home' === $screen->id || 'wpswings_page_track_orders_for_woocommerce_menu' === $screen->id || 'wp-swings_page_track_orders_for_woocommerce_menu' === $screen->id ) ) {
+		$is_tofw_screen = isset( $screen->id ) && ( 'wpswings_page_home' === $screen->id || 'wpswings_page_track_orders_for_woocommerce_menu' === $screen->id || 'wp-swings_page_track_orders_for_woocommerce_menu' === $screen->id );
 
-			wp_enqueue_script( 'track-orders-for-woocommerce-select2', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/select-2/track-orders-for-woocommerce-select2.js', array( 'jquery' ), time(), false );
+		if ( ! $is_tofw_screen ) {
+			return;
+		}
 
-			wp_enqueue_script( 'track-orders-for-woocommerce-metarial-js', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/material-design/material-components-web.min.js', array(), time(), false );
-			wp_enqueue_script( 'track-orders-for-woocommerce-metarial-js2', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/material-design/material-components-v5.0-web.min.js', array(), time(), false );
-			wp_enqueue_script( 'track-orders-for-woocommerce-metarial-lite', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/material-design/material-lite.min.js', array(), time(), false );
-			wp_enqueue_script( 'track-orders-for-woocommerce-datatable', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/datatables.net/js/jquery.dataTables.min.js', array(), time(), false );
-			wp_enqueue_script( 'track-orders-for-woocommerce-datatable-btn', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/datatables.net/buttons/dataTables.buttons.min.js', array(), time(), false );
-			wp_enqueue_script( 'track-orders-for-woocommerce-datatable-btn-2', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/datatables.net/buttons/buttons.html5.min.js', array(), time(), false );
-			wp_register_script( $this->plugin_name . 'admin-js', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/js/track-orders-for-woocommerce-admin.js', array( 'jquery', 'track-orders-for-woocommerce-select2', 'track-orders-for-woocommerce-metarial-js', 'track-orders-for-woocommerce-metarial-js2', 'track-orders-for-woocommerce-metarial-lite' ), $this->version, false );
+		wp_enqueue_script( 'track-orders-for-woocommerce-select2', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/select-2/track-orders-for-woocommerce-select2.js', array( 'jquery' ), $this->tofw_get_asset_version( 'package/lib/select-2/track-orders-for-woocommerce-select2.js' ), true );
+		wp_enqueue_script( 'track-orders-for-woocommerce-metarial-js', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/material-design/material-components-web.min.js', array(), $this->tofw_get_asset_version( 'package/lib/material-design/material-components-web.min.js' ), true );
+		wp_enqueue_script( 'track-orders-for-woocommerce-metarial-js2', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/material-design/material-components-v5.0-web.min.js', array(), $this->tofw_get_asset_version( 'package/lib/material-design/material-components-v5.0-web.min.js' ), true );
+		wp_enqueue_script( 'track-orders-for-woocommerce-metarial-lite', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/material-design/material-lite.min.js', array(), $this->tofw_get_asset_version( 'package/lib/material-design/material-lite.min.js' ), true );
+		wp_enqueue_script( 'track-orders-for-woocommerce-datatable', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/datatables.net/js/jquery.dataTables.min.js', array(), $this->tofw_get_asset_version( 'package/lib/datatables.net/js/jquery.dataTables.min.js' ), true );
+		wp_enqueue_script( 'track-orders-for-woocommerce-datatable-btn', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/datatables.net/buttons/dataTables.buttons.min.js', array(), $this->tofw_get_asset_version( 'package/lib/datatables.net/buttons/dataTables.buttons.min.js' ), true );
+		wp_enqueue_script( 'track-orders-for-woocommerce-datatable-btn-2', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'package/lib/datatables.net/buttons/buttons.html5.min.js', array(), $this->tofw_get_asset_version( 'package/lib/datatables.net/buttons/buttons.html5.min.js' ), true );
+		wp_register_script( $this->plugin_name . 'admin-js', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/js/track-orders-for-woocommerce-admin.js', array( 'jquery', 'track-orders-for-woocommerce-select2', 'track-orders-for-woocommerce-metarial-js', 'track-orders-for-woocommerce-metarial-js2', 'track-orders-for-woocommerce-metarial-lite' ), $this->tofw_get_asset_version( 'admin/js/track-orders-for-woocommerce-admin.js' ), true );
 			wp_localize_script(
 				$this->plugin_name . 'admin-js',
 				'tofw_admin_param',
@@ -119,17 +138,21 @@ class Track_Orders_For_Woocommerce_Admin {
 					'address_validation_success' => __( 'Address Successfully Added', 'track-orders-for-woocommerce' ),
 					'selec_address_placeholder' => __( 'Select Your Hubpoint Addresses', 'track-orders-for-woocommerce' ),
 					'site_url' => site_url(),
+					'enable_order_delay_notification' => get_option( 'wps_tofw_enable_order_delay_notification' ),
+					'talk_to_expert_nonce' => wp_create_nonce( 'wps_tofw_talk_to_expert_nonce' ),
+					'talk_to_expert_action' => 'wps_tofw_submit_talk_to_expert',
+					'talk_to_expert_success_fallback' => __( 'Thank you for submitting your request. Our team will contact you soon.', 'track-orders-for-woocommerce' ),
 
 				)
 			);
 			wp_enqueue_script( $this->plugin_name . 'admin-js' );
-
-		}
 		add_thickbox();
 
 		wp_enqueue_media();
-		wp_enqueue_script( 'jquery-ui-timepicker-js', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/js/jquery.ui.timepicker.js', array(), time(), false );
-		wp_register_script( 'wps-admin-js', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/js/wps-admin.js', array(), time(), false );
+		wp_enqueue_script( 'jquery-ui-timepicker-js', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/js/jquery.ui.timepicker.js', array(), $this->tofw_get_asset_version( 'admin/js/jquery.ui.timepicker.js' ), true );
+
+		wp_register_script( 'wps-admin-js', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/js/wps-admin.js', array(), $this->tofw_get_asset_version( 'admin/js/wps-admin.js' ), true );
+
 		wp_localize_script(
 			'wps-admin-js',
 			'wps_admin_param',
@@ -142,7 +165,6 @@ class Track_Orders_For_Woocommerce_Admin {
 			),
 		);
 		wp_enqueue_script( 'wps-admin-js' );
-
 	}
 
 	/**
@@ -153,13 +175,14 @@ class Track_Orders_For_Woocommerce_Admin {
 	public function tofw_options_page() {
 		global $submenu;
 		if ( empty( $GLOBALS['admin_page_hooks']['wps-plugins'] ) ) {
-			add_menu_page( 'WP Swings', 'WP Swings', 'manage_options', 'wps-plugins', array( $this, 'wps_plugins_listing_page' ), TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/image/wpswings_logo.png', 15 );
+			// Place WP Swings menu just below Plugins (core uses 65).
+			add_menu_page( 'WP Swings', 'WP Swings', 'manage_options', 'wps-plugins', array( $this, 'wps_plugins_listing_page' ), TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/image/wpswings_logo.png', 66 );
 
 			add_submenu_page( 'wps-plugins', 'Home', 'Home', 'manage_options', 'home', array( $this, 'wpswings_welcome_callback_function' ) );
 
 			$tofw_menus =
-			// desc - filter for trial.
-			apply_filters( 'wps_add_plugins_menus_array', array() );
+				// desc - filter for trial.
+				apply_filters( 'wps_add_plugins_menus_array', array() );
 
 			if ( is_array( $tofw_menus ) && ! empty( $tofw_menus ) ) {
 				foreach ( $tofw_menus as $tofw_key => $tofw_value ) {
@@ -176,8 +199,7 @@ class Track_Orders_For_Woocommerce_Admin {
 				}
 				if ( ! $is_home ) {
 
-						add_submenu_page( 'wps-plugins', 'Home', 'Home', 'manage_options', 'home', array( $this, 'wpswings_welcome_callback_function' ), 1 );
-
+					add_submenu_page( 'wps-plugins', 'Home', 'Home', 'manage_options', 'home', array( $this, 'wpswings_welcome_callback_function' ), 1 );
 				}
 			}
 		}
@@ -200,7 +222,7 @@ class Track_Orders_For_Woocommerce_Admin {
 	 * @since 1.0.0
 	 */
 	public function wps_tofw_remove_default_submenu() {
-		global $submenu;
+		 global $submenu;
 		if ( is_array( $submenu ) && array_key_exists( 'wps-plugins', $submenu ) ) {
 			if ( isset( $submenu['wps-plugins'][0] ) ) {
 				unset( $submenu['wps-plugins'][0] );
@@ -233,8 +255,8 @@ class Track_Orders_For_Woocommerce_Admin {
 	 */
 	public function wps_plugins_listing_page() {
 		$active_marketplaces =
-		// desc - filter for trial.
-		apply_filters( 'wps_adds_plugins_menus_array', array() );
+			// desc - filter for trial.
+			apply_filters( 'wps_adds_plugins_menus_array', array() );
 		if ( is_array( $active_marketplaces ) && ! empty( $active_marketplaces ) ) {
 			include TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/welcome.php';
 		}
@@ -246,7 +268,6 @@ class Track_Orders_For_Woocommerce_Admin {
 	 * @since 1.0.0
 	 */
 	public function tofw_options_menu_html() {
-
 		include_once TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-admin-dashboard.php';
 	}
 
@@ -282,7 +303,6 @@ class Track_Orders_For_Woocommerce_Admin {
 	 * Developer_public_hooks_listing
 	 */
 	public function wps_developer_public_hooks_listing() {
-
 		$public_hooks = array();
 		$val          = self::wps_developer_hooks_function( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'public/' );
 
@@ -406,6 +426,20 @@ class Track_Orders_For_Woocommerce_Admin {
 				),
 			),
 			array(
+				'title' => __( 'Enable Order Delay Notification', 'track-orders-for-woocommerce' ),
+				'type'  => 'radio-switch',
+				'description'  => __( 'Notify customers about order delays via email.', 'track-orders-for-woocommerce' ),
+				'id'    => 'wps_tofw_enable_order_delay_notification',
+				'value' => get_option( 'wps_tofw_enable_order_delay_notification' ),
+				'class' => 'wps_tofw_enable_order_delay_notification',
+				'configure' => 'yes',
+				'configure-class' => 'wps-open-email-popup',
+				'options' => array(
+					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
+					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
+				),
+			),
+			array(
 				'title' => __( 'Enable E-mail Notification Feature', 'track-orders-for-woocommerce' ),
 				'type'  => 'radio-switch',
 				'description'  => __( 'Send the E-Mail Notification to the Customer on Changing Order Status', 'track-orders-for-woocommerce' ),
@@ -419,102 +453,130 @@ class Track_Orders_For_Woocommerce_Admin {
 			),
 		);
 
+		$template_options = array(
+			array(
+				'title' => __( 'Template1', 'track-orders-for-woocommerce' ),
+				'type'  => 'radio',
+				'id'    => 'wpg_invoice_template_one',
+				'class' => 'wpg_invoice_template_one wpg_invoice_preview',
+				'name'  => 'tofw_invoice_template',
+				'value' => 'template_1',
+				'src'   => esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/ot_1.3.png',
+			),
+			array(
+				'title' => __( 'Template2', 'track-orders-for-woocommerce' ),
+				'type'  => 'radio',
+				'id'    => 'wpg_invoice_template_two',
+				'class' => 'wpg_invoice_template_two wpg_invoice_preview',
+				'src'   => esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/ot_2.png',
+				'name'  => 'tofw_invoice_template',
+				'value' => 'template_2',
+			),
+			array(
+				'title' => __( 'Template3', 'track-orders-for-woocommerce' ),
+				'type'  => 'radio',
+				'id'    => 'wpg_invoice_template_three',
+				'class' => 'wpg_invoice_template_three wpg_invoice_preview',
+				'src'   => esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/ot_1.png',
+				'name'  => 'tofw_invoice_template',
+				'value' => 'template_3',
+			),
+			array(
+				'title' => __( 'Template4', 'track-orders-for-woocommerce' ),
+				'type'  => 'radio',
+				'id'    => 'wpg_invoice_template_four',
+				'class' => 'wpg_invoice_template_four wpg_invoice_preview',
+				'src'   => esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/track_4.png',
+				'name'  => 'tofw_invoice_template',
+				'value' => 'template_4',
+			),
+		);
+
+		$tofw_settings_general[] = array(
+			'title'       => __( 'Choose Template', 'track-orders-for-woocommerce' ),
+			'type'        => 'temp-select',
+			'id'          => 'tofw_invoice_template',
+			'description' => __( 'This template will be used as in email notification', 'track-orders-for-woocommerce' ),
+			'selected'    => get_option( 'tofw_invoice_template' ),
+			'value'       => $template_options,
+		);
+
 		$tofw_settings_general =
-		/**
-		 * Filter is for returning something.
-		 *
-		 * @since 1.0.0
-		 */
-		apply_filters( 'tofw_general_settings_array_filter', $tofw_settings_general );
-
-		$is_pro_activated = false;
-		$is_pro_activated = apply_filters( 'track_orders_for_woocmmerce_pro_plugin_activated', $is_pro_activated );
-
-		if ( ! $is_pro_activated ) {
-			$tofw_settings_general[] = array(
-				'title'       => __( 'Choose Template', 'track-orders-for-woocommerce' ),
-				'type'        => 'temp-select',
-				'class'       => 'wps_tofw_pro_feature',
-				'id'          => 'tofw_invoice_template',
-				'description' => __( 'This template will be used as in email notification', 'track-orders-for-woocommerce' ),
-				'selected'    => '',
-				'value'       => array(
-					array(
-						'title' => __( 'Template1', 'track-orders-for-woocommerce' ),
-						'type'  => 'radio',
-						'id'    => 'wpg_invoice_template_one',
-						'class' => 'wpg_invoice_template_one wpg_invoice_preview wps_tofw_pro_feature',
-						'name'  => 'tofw_invoice_template',
-						'value' => '',
-						'src'   => esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/ot_1.3.png',
-					),
-					array(
-						'title' => __( 'Template2', 'track-orders-for-woocommerce' ),
-						'type'  => 'radio',
-						'id'    => 'wpg_invoice_template_two',
-						'class' => 'wpg_invoice_template_two wpg_invoice_preview wps_tofw_pro_feature',
-						'src'   => esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/ot_2.png',
-						'name'  => 'tofw_invoice_template',
-						'value' => '',
-					),
-					array(
-						'title' => __( 'Template3', 'track-orders-for-woocommerce' ),
-						'type'  => 'radio',
-						'id'    => 'wpg_invoice_template_three',
-						'class' => 'wpg_invoice_template_three wpg_invoice_preview wps_tofw_pro_feature',
-						'src'   => esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/ot_1.png',
-						'name'  => 'tofw_invoice_template',
-						'value' => '',
-					),
-					array(
-						'title' => __( 'Template4', 'track-orders-for-woocommerce' ),
-						'type'  => 'radio',
-						'id'    => 'wpg_invoice_template_four',
-						'class' => 'wpg_invoice_template_three wpg_invoice_preview wps_tofw_pro_feature',
-						'src'   => esc_attr( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL ) . 'admin/image/ot_4.png',
-						'name'  => 'tofw_invoice_template',
-						'value' => '',
-					),
-				),
-			);
-
-			$tofw_settings_general[] =
-			array(
-				'title' => __( 'Enable QR Redirection Feature', 'track-orders-for-woocommerce' ),
-				'type'  => 'radio-switch',
-				'description'  => __( 'Send the QR in Email Notification on Changing Order Status', 'track-orders-for-woocommerce' ),
-				'id'    => 'wps_tofw_qr_redirect',
-				'value' => '',
-				'class' => 'wps_tofw_qr_redirect wps_tofw_pro_feature',
-				'options' => array(
-					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
-					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
-				),
-			);
-
-			$tofw_settings_general[] =
-			array(
-				'title' => __( 'Enable DHL Tracking', 'track-orders-for-woocommerce' ),
-				'type'  => 'radio-switch',
-				'description'  => __( 'Allow users to track DHL shipments directly using the tracking number without redirecting to carriers page', 'track-orders-for-woocommerce' ),
-				'id'    => 'wps_enable_dhl_tracking',
-				'value' => '',
-				'class' => 'wps_tofw_qr_redirect wps_tofw_pro_feature',
-				'options' => array(
-					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
-					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
-				),
-			);
-		}
+			/**
+			 * Filter is for returning something.
+			 *
+			 * @since 1.0.0
+			 */
+			apply_filters( 'tofw_general_settings_array_filter', $tofw_settings_general );
 
 		$tofw_settings_general[] = array(
 			'type'        => 'button',
 			'id'          => 'wps_tofw_general_settings_save',
+			'main-class'  => 'wps_tofw_main_class',
 			'button_text' => __( 'Save Settings', 'track-orders-for-woocommerce' ),
 			'class'       => 'wps_tofw_general_settings_save',
 			'name'        => 'wps_tofw_general_settings_save',
 		);
 		return $tofw_settings_general;
+	}
+
+	/**
+	 * Track Orders For Woocommerce admin menu page.
+	 *
+	 * @since 1.0.0
+	 * @param array $tofw_partial_shipement_settings fields.
+	 */
+	public function tofw_track_order_partial_shipement_array_callbck( $tofw_partial_shipement_settings ) {
+
+		$tofw_partial_shipement_settings = array(
+			array(
+				'title' => __( 'Enable Partial Shipment Feature', 'track-orders-for-woocommerce' ),
+				'type'  => 'radio-switch',
+				'id'    => 'tofw_enable_partial_shipment',
+				'value' => get_option( 'tofw_enable_partial_shipment' ),
+				'class' => 'tofw-radio-switch-class',
+				'description'  => __( 'Enable functionality for partial shipment.', 'track-orders-for-woocommerce' ),
+				'options' => array(
+					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
+					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
+				),
+			),
+			array(
+				'title' => __( 'Auto Complete Partial Order ', 'track-orders-for-woocommerce' ),
+				'type'  => 'radio-switch',
+				'id'    => 'tofw_aut_comp_part_order',
+				'description'  => __( 'Auto complete the partial order once the parent order completed.', 'track-orders-for-woocommerce' ),
+				'value' => get_option( 'tofw_aut_comp_part_order' ),
+				'class' => 'tofw-radio-switch-class',
+				'options' => array(
+					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
+					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
+				),
+			),
+			array(
+				'title' => __( 'Create the “Partially Shipped” order status ', 'track-orders-for-woocommerce' ),
+				'type'  => 'radio-switch',
+				'id'    => 'tofw_part_order_status',
+				'description'  => __( 'Register a new order status titled ‘Partially Shipped’.', 'track-orders-for-woocommerce' ),
+				'value' => get_option( 'tofw_part_order_status' ),
+				'class' => 'tofw-radio-switch-class',
+				'options' => array(
+					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
+					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
+				),
+			),
+		);
+
+		// save button.
+		$tofw_partial_shipement_settings[] = array(
+			'type'  => 'button',
+			'id'    => 'wps_tofw_save_partial_shipment',
+			'main-class'  => 'wps_tofw_main_class',
+			'button_text' => __( 'Save Settings', 'track-orders-for-woocommerce' ),
+			'class' => 'tofw-button-class',
+		);
+
+		return $tofw_partial_shipement_settings;
 	}
 
 	/**
@@ -559,17 +621,17 @@ class Track_Orders_For_Woocommerce_Admin {
 				'id'    => 'tofw_enable_track_order',
 				'value' => get_option( 'tofw_enable_track_order' ),
 				'class' => 'tofw-radio-switch-class',
-				'description'  => 'Enable functionality for tracking order.',
+				'description'  => __( 'Enable functionality for tracking order.', 'track-orders-for-woocommerce' ),
 				'options' => array(
 					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
 					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
 				),
 			),
 			array(
-				'title' => __( 'Enable Track Orders Button Feature Below Order details in My Account Section. ', 'track-orders-for-woocommerce' ),
+				'title' => __( 'Enable Track Orders Button Below Order Details ', 'track-orders-for-woocommerce' ),
 				'type'  => 'radio-switch',
 				'id'    => 'tofw_enable_track_order_below',
-				'description'  => 'Enable functionality for tracking order below order deatils at my account page.',
+				'description'  => __( 'Enable functionality for tracking order below order deatils at my account page.', 'track-orders-for-woocommerce' ),
 				'value' => get_option( 'tofw_enable_track_order_below' ),
 				'class' => 'tofw-radio-switch-class',
 				'options' => array(
@@ -578,7 +640,7 @@ class Track_Orders_For_Woocommerce_Admin {
 				),
 			),
 			array(
-				'title' => __( 'Enter Text For Track Order Below Order details in My Account Section.', 'track-orders-for-woocommerce' ),
+				'title' => __( 'Enter Track Order Text Below Order Details', 'track-orders-for-woocommerce' ),
 				'type'  => 'text',
 				'description'  => __( 'Enter Text For Track Order Below Order details in My Account Section.', 'track-orders-for-woocommerce' ),
 				'id'    => 'tofw_enable_track_order_below_text',
@@ -587,7 +649,7 @@ class Track_Orders_For_Woocommerce_Admin {
 				'class' => 'tofw-radio-switch-class',
 			),
 			array(
-				'title' => __( 'Enter Note For Track Order Below Order details in My Account Section.', 'track-orders-for-woocommerce' ),
+				'title' => __( 'Enter Track Order Note Below Order Details', 'track-orders-for-woocommerce' ),
 				'type'  => 'textarea',
 				'description'  => __( 'Enter Note For Track Order Below Order details in My Account Section.', 'track-orders-for-woocommerce' ),
 				'id'    => 'tofw_enable_track_order_below_textarea',
@@ -597,7 +659,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			),
 
 			array(
-				'title' => __( 'Enable Track Orders Button Feature as Action on Order details in My Account Section. ', 'track-orders-for-woocommerce' ),
+				'title' => __( 'Enable Track Orders Button Action in Order Details ', 'track-orders-for-woocommerce' ),
 				'type'  => 'radio-switch',
 				'id'    => 'tofw_enable_track_order_below_action',
 				'description'  => 'Enable functionality for tracking order as Action on order deatils at my account page.',
@@ -609,37 +671,13 @@ class Track_Orders_For_Woocommerce_Admin {
 				),
 			),
 			array(
-				'title' => __( 'Enter Text For Track Order as Action on Order details in My Account Section.', 'track-orders-for-woocommerce' ),
+				'title' => __( 'Enter Track Order Action Text in Account Section', 'track-orders-for-woocommerce' ),
 				'type'  => 'text',
 				'description'  => __( 'Enter Text For Track Order as Action on Order details in My Account Section.', 'track-orders-for-woocommerce' ),
 				'id'    => 'tofw_enable_track_order_below_action_text',
 				'placeholder' => 'Text For Order Action',
 				'value' => get_option( 'tofw_enable_track_order_below_action_text', __( 'Track Order', 'track-orders-for-woocommerce' ) ),
 				'class' => 'tofw-radio-switch-class',
-			),
-
-			array(
-				'title' => __( 'Enable Use Of Custom Order Status', 'track-orders-for-woocommerce' ),
-				'type'  => 'radio-switch',
-				'id'    => 'tofw_enable_use_custom_status',
-				'value' => get_option( 'tofw_enable_use_custom_status' ),
-				'class' => 'tofw-radio-switch-class',
-				'options' => array(
-					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
-					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
-				),
-			),
-
-			array(
-				'title' => __( 'Enable WhatsApp Feature', 'track-orders-for-woocommerce' ),
-				'type'  => 'radio-switch',
-				'id'    => 'tofw_enable_whatsapp_share_track_order',
-				'value' => get_option( 'tofw_enable_whatsapp_share_track_order' ),
-				'class' => 'tofw-radio-switch-class',
-				'options' => array(
-					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
-					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
-				),
 			),
 
 			array(
@@ -684,132 +722,56 @@ class Track_Orders_For_Woocommerce_Admin {
 				'options' => $order_status,
 			),
 
+			array(
+				'title' => __( 'Enable WhatsApp Feature', 'track-orders-for-woocommerce' ),
+				'type'  => 'radio-switch',
+				'description'  => __( 'Activate this option to allow sharing tracking information URLs with customers via WhatsApp.', 'track-orders-for-woocommerce' ),
+				'id'    => 'tofw_enable_whatsapp_share_track_order',
+				'value' => get_option( 'tofw_enable_whatsapp_share_track_order' ),
+				'class' => 'tofw-radio-switch-class',
+				'options' => array(
+					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
+					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
+				),
+			),
+			array(
+				'title' => __( 'Enable Multi-Carrier Tracking', 'track-orders-for-woocommerce' ),
+				'type'  => 'radio-switch-copy',
+				'description'  => __( '--> it will show multiple carrier tracking form on page.', 'track-orders-for-woocommerce' ),
+				'shortcode' => '[WPS_MUTIPLE_CARRIER_TRACKING_FORM]',
+				'id'    => 'wps_tofwp_enable_multi_carrier_tracking',
+				'value' => get_option( 'wps_tofwp_enable_multi_carrier_tracking' ),
+				'class' => 'tofw-radio-switch-class',
+				'options' => array(
+					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
+					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
+				),
+			),
+			array(
+				'title' => __( 'Enter API Key', 'track-orders-for-woocommerce' ),
+				'type'  => 'text',
+				'description' => __( 'Enter your API Key to enable courier services. To get your API Key, <a href="https://www.trackingmore.com/docs/trackingmore/d5ac362fc3cda-api-quick-start-guide" target="_blank">visit the TrackingMore API dashboard</a>.', 'track-orders-for-woocommerce' ),
+				'id'    => 'wps_tofwp_multi_carrier_api_key',
+				'value' => get_option( 'wps_tofwp_multi_carrier_api_key' ),
+				'class' => 'tofw-radio-switch-class',
+			),
+
 		);
 
 		$tofw_track_order_settings =
-		/**
-		 * Filter is for returning something.
-		 *
-		 * @since 1.0.0
-		 */
-		apply_filters( 'tofw_track_order_settings_array_filter', $tofw_track_order_settings );
-
-		$is_pro_activated = false;
-		$is_pro_activated = apply_filters( 'track_orders_for_woocmmerce_pro_plugin_activated', $is_pro_activated );
-
-		if ( ! $is_pro_activated ) {
-
-			$tofw_track_order_settings_pro = array(
-				array(
-					'title' => __( 'Enable Track Your Order Feature in pop-up box ( Order Action )', 'track-orders-for-woocommerce' ),
-					'type'  => 'radio-switch',
-					'id'    => 'wps_tofwp_enable_track_order_popup',
-					'value' => '',
-					'description'  => __( 'Pop-up will open on Order Action Track Order button', 'track-orders-for-woocommerce' ),
-
-					'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
-					'options' => array(
-						'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
-						'no' => __( 'NO', 'track-orders-for-woocommerce' ),
-					),
-				),
-				array(
-					'title' => __( 'Enable Shortcode to create Order Tracking page', 'track-orders-for-woocommerce' ),
-					'type'  => 'radio-switch-copy',
-					'description'  => __( '-->it will show my-account-page for logged in user and it will show tracking form for guest user.', 'track-orders-for-woocommerce' ),
-
-					'shortcode' => '[wps_create_tracking_page]',
-					'id'    => 'wps_tofwp_create_tracking_page',
-					'value' => '',
-					'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
-					'options' => array(
-						'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
-						'no' => __( 'NO', 'track-orders-for-woocommerce' ),
-					),
-				),
-				array(
-					'title' => __( 'Enable Shortcode to show track order form', 'track-orders-for-woocommerce' ),
-					'type'  => 'radio-switch-copy',
-					'description'  => __( '--> it will show tracking form for logged in user as well as guest user.', 'track-orders-for-woocommerce' ),
-					'shortcode' => '[wps_track_order_form]',
-					'id'    => 'wps_tofwp_track_order_form',
-					'value' => '',
-					'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
-					'options' => array(
-						'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
-						'no' => __( 'NO', 'track-orders-for-woocommerce' ),
-					),
-				),
-				array(
-					'title' => __( 'Enable to send pay link on pending status', 'track-orders-for-woocommerce' ),
-					'type'  => 'radio-switch',
-					'description'  => __( 'Send Mail Notification contains Pay link on pending payment order status', 'track-orders-for-woocommerce' ),
-					'id'    => 'wps_tofwp_send_pay_link',
-					'value' => '',
-					'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
-					'options' => array(
-						'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
-						'no' => __( 'NO', 'track-orders-for-woocommerce' ),
-					),
-				),
-
-				array(
-					'title' => __( 'Enable to send message text on changing order status', 'track-orders-for-woocommerce' ),
-					'type'  => 'radio-switch',
-					'description'  => __( 'Send Message Text  Notification on every order status change', 'track-orders-for-woocommerce' ),
-					'id'    => 'wps_tofwp_enable_send_msg_text',
-					'value' => '',
-					'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
-					'options' => array(
-						'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
-						'no' => __( 'NO', 'track-orders-for-woocommerce' ),
-					),
-				),
-
-				array(
-					'title' => __( 'Enter Twilio API Sid', 'track-orders-for-woocommerce' ),
-					'type'  => 'text',
-					'description'  => __( 'Enter twilio API sid here', 'track-orders-for-woocommerce' ),
-					'id'    => 'wps_tofwp_twillio_sid',
-					'value' => '',
-					'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
-				),
-				array(
-					'title' => __( 'Enter Twilio API Token', 'track-orders-for-woocommerce' ),
-					'type'  => 'text',
-					'description'  => __( 'Enable twilio API token here.', 'track-orders-for-woocommerce' ),
-					'id'    => 'wps_tofwp_twillio_api_token',
-					'value' => '',
-					'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
-				),
-				array(
-					'title' => __( 'Enter Twilio Sending Number', 'track-orders-for-woocommerce' ),
-					'type'  => 'text',
-					'description'  => __( 'Enable twilio sending number here.', 'track-orders-for-woocommerce' ),
-					'id'    => 'wps_tofwp_twillio_send_number',
-					'value' => '',
-					'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
-				),
-				array(
-					'title' => __( 'Enter Content to send in Sms with ticket', 'track-orders-for-woocommerce' ),
-					'type'  => 'text',
-					'description'  => __( 'Use Placeholders  {customer} for Customer-Name, {order-id} for Order ID and {tracking-url} for Tracking URL.', 'track-orders-for-woocommerce' ),
-					'id'    => 'wps_tofwp_twillio_content_here',
-					'value' => '',
-					'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
-				),
-
-			);
-
-			$tofw_track_order_settings = array_merge( $tofw_track_order_settings, $tofw_track_order_settings_pro );
-
-		}
+			/**
+			 * Filter is for returning something.
+			 *
+			 * @since 1.0.0
+			 */
+			apply_filters( 'tofw_track_order_settings_array_filter', $tofw_track_order_settings );
 
 		$tofw_track_order_settings[] = array(
 			'type'  => 'button',
 			'id'    => 'wps_tofw_track-order_setting_save',
 			'button_text' => __( 'Save Settings', 'track-orders-for-woocommerce' ),
 			'class' => 'tofw-button-class',
+			'main-class'  => 'wps_tofw_main_class',
 		);
 		return $tofw_track_order_settings;
 	}
@@ -837,6 +799,19 @@ class Track_Orders_For_Woocommerce_Admin {
 
 		$tofw_custom_order_status_settings = array(
 			array(
+				'title' => __( 'Enable Use Of Custom Order Status', 'track-orders-for-woocommerce' ),
+				'description'  => __( 'Enable to use Custom Statuses to Use in Tracking.', 'track-orders-for-woocommerce' ),
+				'type'  => 'radio-switch',
+				'id'    => 'tofw_enable_use_custom_status',
+				'value' => get_option( 'tofw_enable_use_custom_status' ),
+				'class' => 'tofw-radio-switch-class',
+				'options' => array(
+					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
+					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
+				),
+			),
+
+			array(
 				'title' => __( 'Custom Order Statuses', 'track-orders-for-woocommerce' ),
 				'type'  => 'multiselect',
 				'description'  => __( 'Select Custom Statuses to Use in Tracking.', 'track-orders-for-woocommerce' ),
@@ -860,21 +835,21 @@ class Track_Orders_For_Woocommerce_Admin {
 		);
 
 		$tofw_custom_order_status_settings =
-		/**
-		 * Filter is for returning something.
-		 *
-		 * @since 1.0.0
-		 */
-		apply_filters( 'tofw_custom_order_status_array_filter', $tofw_custom_order_status_settings );
+			/**
+			 * Filter is for returning something.
+			 *
+			 * @since 1.0.0
+			 */
+			apply_filters( 'tofw_custom_order_status_array_filter', $tofw_custom_order_status_settings );
 
 		$tofw_custom_order_status_settings[] = array(
 			'type'  => 'button',
 			'id'    => 'wps_tofw_custom_order_status_setting_save',
 			'button_text' => __( 'Save Settings', 'track-orders-for-woocommerce' ),
 			'class' => 'tofw-button-class',
+			'main-class'  => 'wps_tofw_main_class',
 		);
 		return $tofw_custom_order_status_settings;
-
 	}
 
 	/**
@@ -947,18 +922,19 @@ class Track_Orders_For_Woocommerce_Admin {
 		);
 
 		$tofw_track_order_gmap_settings =
-		/**
-		 * Filter is for returning something.
-		 *
-		 * @since 1.0.0
-		 */
-		apply_filters( 'tofw_track_order_gmap_settings_array_filter', $tofw_track_order_gmap_settings );
+			/**
+			 * Filter is for returning something.
+			 *
+			 * @since 1.0.0
+			 */
+			apply_filters( 'tofw_track_order_gmap_settings_array_filter', $tofw_track_order_gmap_settings );
 
 		$tofw_track_order_gmap_settings[] = array(
 			'type'  => 'button',
 			'id'    => 'wps_tofw_track_order_gmap_settings_save',
 			'button_text' => __( 'Save Settings', 'track-orders-for-woocommerce' ),
 			'class' => 'tofw-button-class',
+			'main-class'  => 'wps_tofw_main_class',
 		);
 		return $tofw_track_order_gmap_settings;
 	}
@@ -985,19 +961,9 @@ class Track_Orders_For_Woocommerce_Admin {
 				),
 			),
 			array(
-				'title' => __( 'Enter The Shop Address ', 'track-orders-for-woocommerce' ),
-				'type'  => 'text',
-				'description'  => '',
-				'id'    => 'wps_tofw_shop_address',
-				'value' => get_option( 'wps_tofw_shop_address' ),
-				'class' => '',
-				'style' => 'width:10em;',
-
-			),
-			array(
 				'title' => __( 'Enable FedEx Shipment Tracking', 'track-orders-for-woocommerce' ),
 				'type'  => 'radio-switch',
-				'description'  => '',
+				'description'  => __( 'Enable real-time FedEx tracking information on customer orders.', 'track-orders-for-woocommerce' ),
 				'id'    => 'wps_tofw_enable_track_order_using_api',
 				'value' => get_option( 'wps_tofw_enable_track_order_using_api' ),
 				'class' => 'tofw-radio-switch-class',
@@ -1009,31 +975,34 @@ class Track_Orders_For_Woocommerce_Admin {
 			array(
 				'title' => __( 'Enter Your FedEx User Key  ', 'track-orders-for-woocommerce' ),
 				'type'  => 'text',
-				'description'  => '',
+				'description'  => __( 'Enable integration with FedEx by entering your unique user key.', 'track-orders-for-woocommerce' ),
 				'id'    => 'wps_fedex_userkey',
 				'value' => get_option( 'wps_fedex_userkey' ),
 				'class' => '',
 				'style' => 'width:10em;',
+				'classname' => 'wps_fedex_field',
 
 			),
 			array(
 				'title' => __( 'Enter Your FedEx User Password   ', 'track-orders-for-woocommerce' ),
 				'type'  => 'text',
-				'description'  => '',
+				'description'  => __( 'Enable FedEx integration by providing your account password securely.', 'track-orders-for-woocommerce' ),
 				'id'    => 'wps_fedex_userpassword',
 				'value' => get_option( 'wps_fedex_userpassword' ),
 				'class' => '',
 				'style' => 'width:10em;',
+				'classname' => 'wps_fedex_field',
 
 			),
 			array(
 				'title' => __( 'Enter Your FedEx Account Number', 'track-orders-for-woocommerce' ),
 				'type'  => 'text',
-				'description'  => '',
+				'description'  => __( 'Enable FedEx services by providing your account number.', 'track-orders-for-woocommerce' ),
 				'id'    => 'wps_fedex_account_number',
 				'value' => get_option( 'wps_fedex_account_number' ),
 				'class' => '',
 				'style' => 'width:10em;',
+				'classname' => 'wps_fedex_field',
 
 			),
 			array(
@@ -1044,101 +1013,25 @@ class Track_Orders_For_Woocommerce_Admin {
 				'value' => get_option( 'wps_fedex_meter_number' ),
 				'class' => '',
 				'style' => 'width:10em;',
+				'classname' => 'wps_fedex_field',
 
 			),
 		);
 
 		$tofw_shipping_services_settings =
-		/**
-		 * Filter is for returning something.
-		 *
-		 * @since 1.0.0
-		 */
-		apply_filters( 'tofw_shipping_services_settings_array_filter', $tofw_shipping_services_settings );
-
-		$is_pro_activated = false;
-		$is_pro_activated = apply_filters( 'track_orders_for_woocmmerce_pro_plugin_activated', $is_pro_activated );
-
-		if ( ! $is_pro_activated ) {
-
-			$tofw_shipping_services_settings[] = array(
-				'title' => __( 'Enable USPS Shipment Tracking API', 'track-orders-for-woocommerce' ),
-				'type'  => 'radio-switch',
-				'id'    => 'wps_tofwp_enable_usps_tracking',
-				'value' => '',
-				'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
-				'options' => array(
-					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
-					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
-				),
-			);
-			$tofw_shipping_services_settings[] = array(
-				'title' => __( 'USPS Username', 'track-orders-for-woocommerce' ),
-				'type'  => 'text',
-				'description'  => __( 'Enter Your USPS Username Here', 'track-orders-for-woocommerce' ),
-				'id'    => 'wps_tofwp_usps_tracking_user_key',
-				'value' => '',
-				'class' => 'wps_tofw_pro_feature',
-
-			);
-			$tofw_shipping_services_settings[] = array(
-				'title' => __( 'USPS User Password', 'track-orders-for-woocommerce' ),
-				'type'  => 'text',
-				'description'  => __( 'Enter Your USPS Password Here', 'track-orders-for-woocommerce' ),
-				'id'    => 'wps_tofwp_usps_tracking_user_password',
-				'value' => '',
-				'class' => 'wps_tofw_pro_feature',
-
-			);
-			$tofw_shipping_services_settings[] = array(
-				'title' => __( 'Enable Canada Post Shipment Tracking API', 'track-orders-for-woocommerce' ),
-				'type'  => 'radio-switch',
-				'id'    => 'wps_tofwp_enable_canadapost_tracking',
-				'value' => '',
-				'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
-				'options' => array(
-					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
-					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
-				),
-			);
-			$tofw_shipping_services_settings[] = array(
-				'title' => __( 'Canada Post Username', 'track-orders-for-woocommerce' ),
-				'type'  => 'text',
-				'description'  => __( 'Enter Your wps_tofwp_canadapost_tracking_user_key Username Here', 'track-orders-for-woocommerce' ),
-				'id'    => 'wps_tofwp_canadapost_tracking_user_key',
-				'value' => '',
-				'class' => 'wps_tofw_pro_feature',
-
-			);
-			$tofw_shipping_services_settings[] = array(
-				'title' => __( 'Canada Post User Password', 'track-orders-for-woocommerce' ),
-				'type'  => 'text',
-				'description'  => __( 'Enter Your Canada Post Password Here', 'track-orders-for-woocommerce' ),
-				'id'    => 'wps_tofwp_canadapost_tracking_user_password',
-				'value' => '',
-				'class' => 'wps_tofw_pro_feature',
-
-			);
-			$tofw_shipping_services_settings[] = array(
-				'title' => __( 'Enable 17Track.net Tracking Feature', 'track-orders-for-woocommerce' ),
-				'type'  => 'radio-switch',
-				'id'    => 'wps_tofwp_enable_17track_integration',
-				'value' => '',
-				'description'  => __( 'Note :- To use this feature please disable **Enable Third Party Tracking API** option.', 'track-orders-for-woocommerce' ),
-				'class' => 'tofw-radio-switch-class wps_tofw_pro_feature',
-				'options' => array(
-					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
-					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
-				),
-			);
-
-		}
+			/**
+			 * Filter is for returning something.
+			 *
+			 * @since 1.0.0
+			 */
+			apply_filters( 'tofw_shipping_services_settings_array_filter', $tofw_shipping_services_settings );
 
 		$tofw_shipping_services_settings[] = array(
 			'type'  => 'button',
 			'id'    => 'wps_tofw_shipping_services_settings_save',
 			'button_text' => __( 'Save Settings', 'track-orders-for-woocommerce' ),
 			'class' => 'tofw-button-class',
+			'main-class'  => 'wps_tofw_main_class',
 		);
 		return $tofw_shipping_services_settings;
 	}
@@ -1159,61 +1052,53 @@ class Track_Orders_For_Woocommerce_Admin {
 			return;
 		}
 
-		if ( isset( $_POST['tofw_button_demo'] ) ) {
-
-			$screen = get_current_screen();
-
-			if ( isset( $screen->id ) && ( 'wp-swings_page_home' === $screen->id || 'wpswings_page_home' === $screen->id ) ) {
-
-				$enable_tracking = ! empty( $_POST['tofw_enable_tracking'] ) ? sanitize_text_field( wp_unslash( $_POST['tofw_enable_tracking'] ) ) : '';
-				update_option( 'tofw_enable_tracking', $enable_tracking );
-			}
-		}
 		if ( isset( $_POST['wps_tofw_general_settings_save'] ) ) {
 			$wps_msp_gen_flag     = false;
 			$tofw_genaral_settings =
-			// desc - filter for trial.
-			apply_filters( 'tofw_general_settings_array', array() );
+				// desc - filter for trial.
+				apply_filters( 'tofw_general_settings_array', array() );
 			$wps_settings_save_progress = true;
-			update_option(
-				'wps_enable_dhl_track_icon',
-				isset( $_POST['wps_tofw_other_setting_upload_DHL_ICON'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_other_setting_upload_DHL_ICON'] ) ) : ''
-			);
-
 		}
 		if ( isset( $_POST['wps_tofw_track-order_setting_save'] ) ) {
 			$wps_msp_gen_flag     = false;
 			$tofw_genaral_settings =
-			// desc - filter for trial.
-			apply_filters( 'tofw_track_order_array', array() );
+				// desc - filter for trial.
+				apply_filters( 'tofw_track_order_array', array() );
+			$wps_settings_save_progress = true;
+		}
+		if ( isset( $_POST['wps_tofw_save_partial_shipment'] ) ) {
+			$wps_msp_gen_flag     = false;
+			$tofw_genaral_settings =
+				// desc - filter for trial.
+				apply_filters( 'tofw_track_order_partial_shipement_array', array() );
 			$wps_settings_save_progress = true;
 		}
 		if ( isset( $_POST['wps_tofw_custom_order_status_setting_save'] ) ) {
 			$wps_msp_gen_flag     = false;
 			$tofw_genaral_settings =
-			// desc - filter for trial.
-			apply_filters( 'tofw_custom_order_status_array', array() );
+				// desc - filter for trial.
+				apply_filters( 'tofw_custom_order_status_array', array() );
 			$wps_settings_save_progress = true;
 		}
 		if ( isset( $_POST['wps_tofw_track_order_gmap_settings_save'] ) ) {
 			$wps_msp_gen_flag     = false;
 			$tofw_genaral_settings =
-			// desc - filter for trial.
-			apply_filters( 'tofw_track_order_gmap_settings_array', array() );
+				// desc - filter for trial.
+				apply_filters( 'tofw_track_order_gmap_settings_array', array() );
 			$wps_settings_save_progress = true;
 		}
 		if ( isset( $_POST['wps_tofw_shipping_services_settings_save'] ) ) {
 			$wps_msp_gen_flag     = false;
 			$tofw_genaral_settings =
-			// desc - filter for trial.
-			apply_filters( 'tofw_shipping_services_settings_array', array() );
+				// desc - filter for trial.
+				apply_filters( 'tofw_shipping_services_settings_array', array() );
 			$wps_settings_save_progress = true;
 		}
 		if ( isset( $_POST['wps_tofp_enhance_tracking_save'] ) ) {
 			$wps_msp_gen_flag     = false;
 			$tofw_genaral_settings =
-			// desc - filter for trial.
-			apply_filters( 'wps_tofp_enhance_tracking__array', array() );
+				// desc - filter for trial.
+				apply_filters( 'wps_tofp_enhance_tracking__array', array() );
 			$wps_settings_save_progress = true;
 		}
 
@@ -1229,7 +1114,11 @@ class Track_Orders_For_Woocommerce_Admin {
 					foreach ( $tofw_genaral_settings as $tofw_genaral_setting ) {
 						if ( isset( $tofw_genaral_setting['id'] ) && '' !== $tofw_genaral_setting['id'] ) {
 							if ( isset( $_POST[ $tofw_genaral_setting['id'] ] ) ) {
-								update_option( $tofw_genaral_setting['id'], is_array( $_POST[ $tofw_genaral_setting['id'] ] ) ? map_deep( wp_unslash( $_POST[ $tofw_genaral_setting['id'] ] ), 'sanitize_text_field' ) : sanitize_text_field( wp_unslash( $_POST[ $tofw_genaral_setting['id'] ] ) ) );
+								$tofw_sanitized_value = is_array( $_POST[ $tofw_genaral_setting['id'] ] ) ? map_deep( wp_unslash( $_POST[ $tofw_genaral_setting['id'] ] ), 'sanitize_text_field' ) : sanitize_text_field( wp_unslash( $_POST[ $tofw_genaral_setting['id'] ] ) );
+								if ( 'wps_tofw_google_api_key' === $tofw_genaral_setting['id'] && ! is_array( $tofw_sanitized_value ) ) {
+									$tofw_sanitized_value = trim( $tofw_sanitized_value );
+								}
+								update_option( $tofw_genaral_setting['id'], $tofw_sanitized_value );
 							} else {
 								update_option( $tofw_genaral_setting['id'], '' );
 							}
@@ -1252,7 +1141,7 @@ class Track_Orders_For_Woocommerce_Admin {
 	/**
 	 * Sanitation for an array
 	 *
-	 * @param $array $wps_input_array is the array data.
+	 * @param array $wps_input_array is the array data.
 	 *
 	 * @return array
 	 */
@@ -1299,7 +1188,6 @@ class Track_Orders_For_Woocommerce_Admin {
 			update_option( 'wps_tofw_new_custom_order_status', $value );
 			update_option( 'wps_tofw_new_custom_order_image', $custom_order_image_url );
 			update_option( 'wps_tofw_new_custom_template', $set_value_temp );
-
 		} else {
 
 			$create_custom_order_status = isset( $_POST['wps_tofw_new_role_name'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_new_role_name'] ) ) : '';
@@ -1317,7 +1205,7 @@ class Track_Orders_For_Woocommerce_Admin {
 
 			$create_custom_order_status1 = isset( $_POST['wps_tofw_new_role_name'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_new_role_name'] ) ) : '';
 			$tem = isset( $_POST['wps_template_select'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_template_select'] ) ) : '';
-				// Ensure it's an array.
+			// Ensure it's an array.
 			if ( ! is_array( $set_value_temp ) ) {
 				$set_value_temp = array();
 			}
@@ -1344,9 +1232,9 @@ class Track_Orders_For_Woocommerce_Admin {
 		$wps_key_name_space = isset( $_POST['wps_key_name_space'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_key_name_space'] ) ) : '';
 		$wps_custom_key = isset( $_POST['wps_custom_key'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_custom_key'] ) ) : '';
 
-			$template_array = get_option( 'wps_tofw_new_custom_template', array() );
+		$template_array = get_option( 'wps_tofw_new_custom_template', array() );
 
-			$search_key_template = $wps_key_name_space;
+		$search_key_template = $wps_key_name_space;
 
 		foreach ( $template_array as $item ) {
 
@@ -1368,7 +1256,6 @@ class Track_Orders_For_Woocommerce_Admin {
 
 		echo wp_json_encode( $wps_response );
 		wp_die();
-
 	}
 
 
@@ -1379,8 +1266,7 @@ class Track_Orders_For_Woocommerce_Admin {
 	 * @link http://www.wpswings.com/
 	 */
 	public function wps_tofw_save_edit_custom_order_status_callback() {
-
-		check_ajax_referer( 'ajax-nonce', 'nonce' );
+		 check_ajax_referer( 'ajax-nonce', 'nonce' );
 		$wps_response = array();
 
 		$wps_tofw_edit_order_status = isset( $_POST['wps_tofw_edit_order_status'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_edit_order_status'] ) ) : '';
@@ -1417,7 +1303,6 @@ class Track_Orders_For_Woocommerce_Admin {
 		echo wp_json_encode( $wps_response );
 
 		wp_die();
-
 	}
 
 
@@ -1427,7 +1312,6 @@ class Track_Orders_For_Woocommerce_Admin {
 	 * @link http://www.wpswings.com/
 	 */
 	public function wps_tofw_delete_custom_order_status_callback() {
-
 		check_ajax_referer( 'ajax-nonce', 'nonce' );
 		$wps_tofw_old_selected_statuses = get_option( 'wps_tofw_new_settings_custom_statuses_for_order_tracking', false );
 		$wps_custom_action = isset( $_POST['wps_custom_action'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_custom_action'] ) ) : '';
@@ -1440,7 +1324,6 @@ class Track_Orders_For_Woocommerce_Admin {
 					foreach ( $value as $wps_order_key => $wps_order_status ) {
 						if ( $wps_order_key === $wps_custom_key ) {
 							unset( $custom_order_status_exist[ $key ] );
-
 						}
 					}
 				}
@@ -1524,8 +1407,8 @@ class Track_Orders_For_Woocommerce_Admin {
 
 		if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
 			$screen = wc_get_container()->get( CustomOrdersTableController::class )->custom_orders_table_usage_is_enabled()
-			? wc_get_page_screen_id( 'shop-order' )
-			: 'shop_order';
+				? wc_get_page_screen_id( 'shop-order' )
+				: 'shop_order';
 
 			add_meta_box( 'wps_tofw_track_order', __( 'Enter Estimated Delivery Date', 'track-orders-for-woocommerce' ), array( $this, 'wps_tofw_track_order_metabox' ), $screen, 'side', 'high' );
 
@@ -1581,11 +1464,12 @@ class Track_Orders_For_Woocommerce_Admin {
 					if ( is_array( $wps_tofw_all_selected_cities ) && ! empty( $wps_tofw_all_selected_cities ) ) {
 						foreach ( $wps_tofw_all_selected_cities as $custom_key => $custom_value ) {
 							?>
-							<option value="<?php echo esc_attr( $custom_value ); ?>" 
-													  <?php
-														if ( isset( $wps_tofw_saved_selected_cities ) && '' != $wps_tofw_saved_selected_cities && $custom_value == $wps_tofw_saved_selected_cities ) {
-															echo 'selected';}
-														?>
+							<option value="<?php echo esc_attr( $custom_value ); ?>"
+								<?php
+								if ( isset( $wps_tofw_saved_selected_cities ) && '' != $wps_tofw_saved_selected_cities && $custom_value == $wps_tofw_saved_selected_cities ) {
+									echo 'selected';
+								}
+								?>
 								><?php echo esc_html( str_replace( 'wps_address_', '', $custom_value ) ); ?></option>
 							<?php
 						}
@@ -1624,13 +1508,13 @@ class Track_Orders_For_Woocommerce_Admin {
 			}
 
 			?>
-		<div class="wps_tofw_estimated_delivery_datails_wrapper">
-			<input type="hidden" name="wps_tofw_delivery_nonce_name" value="<?php wp_create_nonce( 'wps_tofw_delivery_nonce' ); ?>">
-			<label for="wps_tofw_est_delivery_date"><?php esc_html_e( 'Delivery Date', 'track-orders-for-woocommerce' ); ?></label>
-			<input type="text" class="wps_tofw_est_delivery_date" id="wps_tofw_est_delivery_date" name="wps_tofw_est_delivery_date" value="<?php echo esc_attr( $expected_delivery_date ); ?>" placeholder="<?php esc_attr_e( 'Enter Delivery Date', 'track-orders-for-woocommerce' ); ?>"></input>
-			<label for="wps_tofw_est_delivery_time"><?php esc_html_e( 'Delivery Time', 'track-orders-for-woocommerce' ); ?></label>				
-			<input type="text" class="wps_tofw_est_delivery_time" name="wps_tofw_est_delivery_time" id="wps_tofw_est_delivery_time" value="<?php echo esc_attr( $expected_delivery_time ); ?>" placeholder="<?php esc_attr_e( 'Enter Delivery time', 'track-orders-for-woocommerce' ); ?>"></input>
-		</div>
+			<div class="wps_tofw_estimated_delivery_datails_wrapper">
+				<input type="hidden" name="wps_tofw_delivery_nonce_name" value="<?php wp_create_nonce( 'wps_tofw_delivery_nonce' ); ?>">
+				<label for="wps_tofw_est_delivery_date"><?php esc_html_e( 'Delivery Date', 'track-orders-for-woocommerce' ); ?></label>
+				<input type="text" class="wps_tofw_est_delivery_date" id="wps_tofw_est_delivery_date" name="wps_tofw_est_delivery_date" value="<?php echo esc_attr( $expected_delivery_date ); ?>" placeholder="<?php esc_attr_e( 'Enter Delivery Date', 'track-orders-for-woocommerce' ); ?>"></input>
+				<label for="wps_tofw_est_delivery_time"><?php esc_html_e( 'Delivery Time', 'track-orders-for-woocommerce' ); ?></label>
+				<input type="text" class="wps_tofw_est_delivery_time" name="wps_tofw_est_delivery_time" id="wps_tofw_est_delivery_time" value="<?php echo esc_attr( $expected_delivery_time ); ?>" placeholder="<?php esc_attr_e( 'Enter Delivery time', 'track-orders-for-woocommerce' ); ?>"></input>
+			</div>
 			<?php
 		}
 	}
@@ -1675,32 +1559,33 @@ class Track_Orders_For_Woocommerce_Admin {
 
 			if ( 'on' == $wps_tofw_enable_track_order_feature ) {
 				?>
-					
+
 				<div class="wps_tofw_shipping_service_wrapper">
 					<select name="wps_tofw_selected_shipping_services">
 						<option><?php esc_html_e( '---Select shipping Services---', 'track-orders-for-woocommerce' ); ?></option>
-					<?php
-					if ( isset( $wps_diffrent_shipping_services ) && ! empty( $wps_diffrent_shipping_services ) ) {
-						foreach ( $wps_diffrent_shipping_services as $key => $value ) {
-							?>
-							<option value="<?php echo esc_attr( $key ); ?>"
-												  <?php
-													if ( $key == $selected_method ) {
-														echo 'selected'; }
-													?>
-								><?php echo esc_html( $value ); ?></option>
+						<?php
+						if ( isset( $wps_diffrent_shipping_services ) && ! empty( $wps_diffrent_shipping_services ) ) {
+							foreach ( $wps_diffrent_shipping_services as $key => $value ) {
+								?>
+								<option value="<?php echo esc_attr( $key ); ?>"
+									<?php
+									if ( $key == $selected_method ) {
+										echo 'selected';
+									}
+									?>
+									><?php echo esc_html( $value ); ?></option>
 								<?php
+							}
 						}
-					}
-					?>
-				</select>
-				<input type="hidden" name="wps_tofw_selected_shipping_services_nonce_name" value="<?php wp_create_nonce( 'wps_tofw_selected_shipping_services_nonce' ); ?>">
-			</div>
-			<div class="wps_tofw_ship_tracking_wrapper">
-				<label for="wps_tofw_user_tracking_number"><?php esc_html_e( 'Tracking Number', 'track-orders-for-woocommerce' ); ?></label>
-				<input type="text" name="wps_tofw_tracking_number" id="wps_tofw_tracking_number" value="<?php echo esc_attr( $wps_tofw_track_id ); ?>" placeholder="<?php esc_attr_e( 'Enter Tracking Number', 'track-orders-for-woocommerce' ); ?>"></input>
-			</div>
-					<?php
+						?>
+					</select>
+					<input type="hidden" name="wps_tofw_selected_shipping_services_nonce_name" value="<?php wp_create_nonce( 'wps_tofw_selected_shipping_services_nonce' ); ?>">
+				</div>
+				<div class="wps_tofw_ship_tracking_wrapper">
+					<label for="wps_tofw_user_tracking_number"><?php esc_html_e( 'Tracking Number', 'track-orders-for-woocommerce' ); ?></label>
+					<input type="text" name="wps_tofw_tracking_number" id="wps_tofw_tracking_number" value="<?php echo esc_attr( $wps_tofw_track_id ); ?>" placeholder="<?php esc_attr_e( 'Enter Tracking Number', 'track-orders-for-woocommerce' ); ?>"></input>
+				</div>
+				<?php
 			} elseif ( 'on' == $wps_tofwp_enable_track_17track_feature ) {
 				?>
 				<div class="wps_tyo_ship_tracking_wrapper">
@@ -1710,7 +1595,6 @@ class Track_Orders_For_Woocommerce_Admin {
 				<?php
 			}
 		}
-
 	}
 
 	/**
@@ -1742,7 +1626,8 @@ class Track_Orders_For_Woocommerce_Admin {
 					$order_obj->save();
 				} else {
 					$order_obj->update_meta_data( 'wps_tofw_estimated_delivery_time', false );
-					$order_obj->save();}
+					$order_obj->save();
+				}
 			} else {
 
 				if ( isset( $_POST['wps_tofw_est_delivery_date'] ) && sanitize_text_field( wp_unslash( $_POST['wps_tofw_est_delivery_date'] ) ) != '' ) {
@@ -1792,7 +1677,7 @@ class Track_Orders_For_Woocommerce_Admin {
 				$headers[] = 'Content-Type: text/html; charset=UTF-8';
 				$wps_tracking_url = get_post_meta( $order_id, 'wps_tofw_enhanced_order_company', true );
 				$wps_tracking_number = get_post_meta( $order_id, 'wps_tofw_enhanced_tracking_no', true );
-				if ( '3.0.0' > WC()->version ) {
+				if ( version_compare( WC()->version, '3.0.0', '<' ) ) {
 					$fname = get_post_meta( $post_id, '_billing_first_name', true );
 					$lname = get_post_meta( $post_id, '_billing_last_name', true );
 					$to = get_post_meta( $post_id, '_billing_email', true );
@@ -1910,11 +1795,11 @@ class Track_Orders_For_Woocommerce_Admin {
 										<th>' . __( 'Order Id', 'track-orders-for-woocommerce' ) . '</th>
 										<th>' . __( 'Tracking Number ', 'track-orders-for-woocommerce' ) . '</th>
 									</tr>';
-									$wps_user_tracking_number = get_post_meta( $post_id, 'wps_tofw_package_tracking_number', true );
-									$message .= '<tr>
+				$wps_user_tracking_number = get_post_meta( $post_id, 'wps_tofw_package_tracking_number', true );
+				$message .= '<tr>
 									<td>' . $wps_user_tracking_number . '</td>
 								</tr>';
-								$message .= '</tbody>
+				$message .= '</tbody>
 							</table>
 							<div>
 								<a href=' . $wps_tracking_url . '>' . $wps_tracking_number . '</a>
@@ -1963,7 +1848,6 @@ class Track_Orders_For_Woocommerce_Admin {
 				}
 			}
 		}
-
 	}
 
 	/**
@@ -2035,7 +1919,6 @@ class Track_Orders_For_Woocommerce_Admin {
 
 									update_post_meta( $order->id, 'wps_tofw_track_custom_cities', $wps_tofw_previous_saved_cities );
 									update_post_meta( $order->id, 'wps_tofw_custom_change_time', $wps_tofw_previous_saved_changed_time );
-
 								}
 							}
 						}
@@ -2054,7 +1937,6 @@ class Track_Orders_For_Woocommerce_Admin {
 				}
 			}
 		}
-
 	}
 
 	/**
@@ -2067,15 +1949,15 @@ class Track_Orders_For_Woocommerce_Admin {
 	public function tofw_track_order_col_column( $column_name, $order ) {
 		// WC_Order object is available as $order variable here.
 		$wps_tofw_pages = get_option( 'wps_tofw_tracking_page' );
-			$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
-			$track_order_url = get_permalink( $page_id );
+		$page_id = $wps_tofw_pages['pages']['wps_track_order_page'];
+		$track_order_url = get_permalink( $page_id );
 
-				// Parse the URL.
-				$url_parts = wp_parse_url( $track_order_url );
-				$path = $url_parts['path'];
-				$path = trim( $path, '/' );
-				$path_parts = explode( '/', $path );
-				$last_part = end( $path_parts );
+		// Parse the URL.
+		$url_parts = wp_parse_url( $track_order_url );
+		$path = $url_parts['path'];
+		$path = trim( $path, '/' );
+		$path_parts = explode( '/', $path );
+		$last_part = end( $path_parts );
 
 		if ( 'tofw_track_order_col' === $column_name ) {
 			;
@@ -2084,10 +1966,8 @@ class Track_Orders_For_Woocommerce_Admin {
 				echo '<a href="' . esc_url( $site_url ) . '" target="_blank">
         <img src="' . esc_url( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'admin/image/track_icon.png' ) . '" alt="Icon" style="width: 40px; height: 40px;">
       </a>';
-
 			}
 		}
-
 	}
 
 	/**
@@ -2101,6 +1981,982 @@ class Track_Orders_For_Woocommerce_Admin {
 		$columns['tofw_track_order_col'] = 'Tracking Order';
 		// return the modified array.
 		return $columns;
+	}
+
+
+	/**
+	 * Register google embed block.
+	 *
+	 * @return void
+	 */
+	public function register_google_embed_blocks() {
+		wp_register_script(
+			'tofw-embed-block',
+			plugins_url( 'src/js/tofw-embed-block.js', __FILE__ ),
+			array( 'wp-blocks', 'wp-editor', 'wp-element', 'wp-components' ),
+			filemtime( plugin_dir_path( __FILE__ ) . '/src/js/tofw-embed-block.js' ),
+			true
+		);
+
+		register_block_type(
+			'wpswings/tofw-embed-block',
+			array(
+				'editor_script' => 'tofw-embed-block',
+			)
+		);
+
+		wp_localize_script(
+			'tofw-embed-block',
+			'embed_block_param',
+			array(
+				'ajaxurl'             => admin_url( 'admin-ajax.php' ),
+				'reloadurl'           => admin_url( 'admin.php?page=track_orders_for_woocommerce_menu' ),
+			)
+		);
+	}
+
+
+	/**
+	 * Add line item status header to the order edit screen.
+	 */
+	public function add_line_item_status_header() {
+		 $wps_enable_partila_shipement = get_option( 'tofw_enable_partial_shipment' );
+		if ( 'on' !== $wps_enable_partila_shipement ) {
+			return;
+		}
+		echo '<th class="line-item-status">Status</th>';
+	}
+
+	/**
+	 * Add line item status dropdown to each line item in the order edit screen.
+	 *
+	 * @param WC_Product    $product The product object.
+	 * @param WC_Order_Item $item The order item object.
+	 * @param int           $item_id The order item ID.
+	 */
+	public function wps_tofw_add_line_item_status_dropdown( $product, $item, $item_id ) {
+
+		if ( $item->get_type() !== 'line_item' ) {
+			return;
+		}
+
+		$wps_enable_partila_shipement = get_option( 'tofw_enable_partial_shipment' );
+		$order = wc_get_order( $item->get_order_id() );
+		if ( ! $order || 'on' !== $wps_enable_partila_shipement ) {
+			return;
+		}
+
+		// Count products in the order.
+		$items = $order->get_items();
+		if ( count( $items ) > 1 ) {
+			$current_status = wc_get_order_item_meta( $item_id, '_line_item_status', true );
+			if ( empty( $current_status ) ) {
+				$current_status = $order->get_status();
+			}
+
+			// Check if child order.
+			$wps_tofw_is_child_order = $order->get_meta( '_wps_child_order_ids' );
+			if ( ! empty( $wps_tofw_is_child_order ) ) {
+				$order_statuses = wc_get_order_statuses();
+
+				echo '<td class="line-item-status" width="20%">';
+				echo '<select name="line_item_status[' . esc_attr( $item_id ) . ']" class="line-item-status-select" style="width: 100%;">';
+
+				foreach ( $order_statuses as $status_key => $status_name ) {
+					$status_key = str_replace( 'wc-', '', $status_key );
+					$selected   = selected( $current_status, $status_key, false );
+					echo '<option value="' . esc_attr( $status_key ) . '" ' . esc_attr( $selected ) . '>' . esc_html( $status_name ) . '</option>';
+				}
+
+				echo '</select>';
+				echo '</td>';
+			}
+		}
+	}
+
+	/**
+	 * Save line item status when order is saved.
+	 *
+	 * @param int   $order_id Order ID.
+	 * @param array $items Array of order items.
+	 */
+	public function save_line_item_status( $order_id, $items ) {
+		$wps_enable_partila_shipement = get_option( 'tofw_enable_partial_shipment' );
+		check_admin_referer( 'update-order_' . $order_id );
+		if ( isset( $_POST['line_item_status'] ) && is_array( $_POST['line_item_status'] ) && 'on' === $wps_enable_partila_shipement ) {
+			if ( isset( $_POST['line_item_status'] ) && is_array( $_POST['line_item_status'] ) ) {
+				$line_item_statuses = array_map( 'sanitize_text_field', wp_unslash( $_POST['line_item_status'] ) );
+			}
+
+			foreach ( $line_item_statuses as $item_id => $status ) {
+				$item_id = absint( $item_id );
+				$status  = sanitize_text_field( $status );
+				wc_update_order_item_meta( $item_id, '_line_item_status', sanitize_text_field( $status ) );
+				$parent_order = wc_get_order( $order_id );
+				$child_order_ids = $parent_order->get_meta( '_wps_child_order_ids' );
+
+				foreach ( $child_order_ids as $key => $value ) {
+					if ( $this->wps_get_product_id_from_item( $item_id ) == $key ) {
+						$order = wc_get_order( $value );
+						$order->update_status( $status );
+						$child_order = wc_get_order( $value );
+						$child_order->add_order_note( 'Status updated from parent order' );
+					}
+				}
+
+				// Optional: Create a note when status changes.
+				$order = wc_get_order( $order_id );
+				$item = $order->get_item( $item_id );
+				if ( $item ) {
+					$product_name = $item->get_name();
+					$status_name = wc_get_order_status_name( $status );
+					$order->add_order_note(
+						sprintf( 'Line item "%s" status changed to: %s', $product_name, $status_name )
+					);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Get product ID from order item ID.
+	 *
+	 * @param int    $item_id Order item ID.
+	 * @param string $return_type Type of ID to return: 'product_id', 'variation_id', 'both', or 'array'.
+	 * @return int|array|false Product ID, variation ID, both, or array of IDs; false on failure.
+	 */
+	public function wps_get_product_id_from_item( $item_id, $return_type = 'product_id' ) {
+		$wps_enable_partila_shipement = get_option( 'tofw_enable_partial_shipment' );
+		if ( ! $item_id && 'on' !== $wps_enable_partila_shipement ) {
+			return false;
+		}
+
+		try {
+			$item = new WC_Order_Item_Product( $item_id );
+			$product_id = $item->get_product_id();
+			$variation_id = $item->get_variation_id();
+
+			switch ( $return_type ) {
+				case 'product_id':
+					return $product_id ? intval( $product_id ) : false;
+				case 'variation_id':
+					return $variation_id ? intval( $variation_id ) : false;
+				case 'both':
+					return $variation_id ? intval( $variation_id ) : intval( $product_id );
+				case 'array':
+					return array(
+						'product_id' => $product_id ? intval( $product_id ) : 0,
+						'variation_id' => $variation_id ? intval( $variation_id ) : 0,
+						'is_variation' => ! empty( $variation_id ),
+					);
+
+				default:
+					return $product_id ? intval( $product_id ) : false;
+			}
+		} catch ( Exception $e ) {
+			return false;
+		}
+	}
+
+	/**
+	 * Add custom CSS for the line item status column.
+	 */
+	public function line_item_status_admin_css() {
+		$wps_enable_partila_shipement = get_option( 'tofw_enable_partial_shipment' );
+		$screen = get_current_screen();
+		if ( $screen && 'shop_order' === $screen->id && 'on' == $wps_enable_partila_shipement ) {
+			?>
+			<style>
+				.line-item-status {
+					text-align: center !important;
+				}
+
+				.line-item-status-select {
+					font-size: 12px;
+					padding: 2px 4px;
+				}
+
+				.woocommerce_order_items .line-item-status {
+					border-left: 1px solid #dfdfdf;
+				}
+			</style>
+			<?php
+		}
+	}
+
+	/**
+	 * Add bulk status update dropdown above line items table.
+	 *
+	 * @param int $order_id Order ID.
+	 */
+	public function wps_tofw_add_bulk_status_update( $order_id ) {
+		$wps_enable_partila_shipement = get_option( 'tofw_enable_partial_shipment' );
+		$order = wc_get_order( $order_id );
+		if ( ! $order instanceof WC_Order || 'on' != $wps_enable_partila_shipement ) {
+			return;
+		}
+
+		$wps_tofw_is_child_order = $order->get_meta( '_wps_child_order_ids' );
+		$order = wc_get_order( $order_id );
+		if ( ! $order ) {
+			return;
+		}
+
+		// Count products in the order.
+		$items = $order->get_items();
+		if ( count( $items ) > 1 ) {
+
+			if ( ! empty( $wps_tofw_is_child_order ) ) {
+				$order_statuses = wc_get_order_statuses();
+				?>
+				<tr class="bulk-status-update">
+					<td colspan="2">
+						<strong><?php esc_html_e( 'Bulk Status Update:', 'track-orders-for-woocommerce' ); ?></strong>
+					</td>
+					<td colspan="4">
+						<select id="bulk_line_item_status" style="width: 200px;">
+							<option value=""><?php esc_html_e( 'Select status…', 'track-orders-for-woocommerce' ); ?></option>
+							<?php
+							foreach ( $order_statuses as $status_key => $status_name ) :
+								$status_key = str_replace( 'wc-', '', $status_key );
+								?>
+								<option value="<?php echo esc_attr( $status_key ); ?>">
+									<?php echo esc_html( $status_name ); ?>
+								</option>
+							<?php endforeach; ?>
+						</select>
+						<button type="button" id="apply_bulk_status" class="button">
+							<?php esc_html_e( 'Apply to All', 'track-orders-for-woocommerce' ); ?>
+						</button>
+					</td>
+				</tr>
+
+				<script>
+					jQuery(document).ready(function($) {
+						$('#apply_bulk_status').on('click', function() {
+							var selectedStatus = $('#bulk_line_item_status').val();
+							if (selectedStatus) {
+								$('.line-item-status-select').val(selectedStatus).trigger('change');
+							}
+						});
+
+						// Visual feedback when a status changes.
+						$(document).on('change', '.line-item-status-select', function() {
+							$(this).closest('tr').addClass('status-changed');
+						});
+					});
+				</script>
+
+				<style>
+					.status-changed {
+						background-color: #fff2cd !important;
+					}
+
+					.bulk-status-update td {
+						padding: 10px;
+						background-color: #f9f9f9;
+						border-top: 2px solid #ddd;
+					}
+				</style>
+				<?php
+			}
+		}
+	}
+
+
+	/**
+	 * Add the "Partial Shipments" column to the orders list table.
+	 *
+	 * @param array $columns Existing columns.
+	 * @return array Modified columns.
+	 */
+	public function wps_tofw_order_list_table_columns( $columns ) {
+		$wps_enable_partila_shipement = get_option( 'tofw_enable_partial_shipment' );
+		if ( 'on' !== $wps_enable_partila_shipement ) {
+			return $columns;
+		}
+		// place after order_status.
+		$new = array();
+		foreach ( $columns as $key => $label ) {
+			$new[ $key ] = $label;
+			if ( 'order_status' === $key ) {
+				$new['wps_split_shipments'] = __( 'Partial Shipments', 'track-orders-for-woocommerce' );
+			}
+		}
+		return $new;
+	}
+
+	/**
+	 * Render the column content.
+	 *
+	 * @param string   $column The column key.
+	 * @param WC_Order $order The order object.
+	 */
+	public function wps_tofw_shop_order_list_table_custom_column_callback( $column, $order ) {
+		$wps_enable_partila_shipement = get_option( 'tofw_enable_partial_shipment' );
+		if ( 'on' !== $wps_enable_partila_shipement ) {
+			return;
+		}
+
+		$wps_tofw_is_child_order = $order->get_meta( '_wps_child_order_ids' );
+
+		if ( ! isset( $wps_tofw_is_child_order ) ) {
+			return;
+		}
+
+		if ( 'wps_split_shipments' !== $column || ! $order instanceof WC_Order ) {
+			return;
+		}
+		echo wp_kses_post( (string) $this->wps_render_split_shipments_cell( $order->get_id(), $order ) );
+	}
+
+	/**
+	 * Shared renderer for the cell content.
+	 * Shows child order count and a compact status summary.
+	 *
+	 * @param int      $parent_order_id The parent order ID.
+	 * @param WC_Order $parent_order The parent order object (optional, will be loaded.
+	 */
+	public function wps_render_split_shipments_cell( $parent_order_id, $parent_order = null ) {
+		$wps_enable_partila_shipement = get_option( 'tofw_enable_partial_shipment' );
+		if ( 'on' !== $wps_enable_partila_shipement ) {
+			return;
+		}
+		if ( ! $parent_order ) {
+			$parent_order = wc_get_order( $parent_order_id );
+		}
+		if ( ! $parent_order ) {
+			echo '&mdash;';
+			return;
+		}
+
+		$children = $this->wps_get_child_orders_ids( $parent_order );
+		if ( empty( $children ) ) {
+			echo '<span style="opacity:.7;">&mdash;</span>';
+			return;
+		}
+
+		$map = array();
+		foreach ( $children as $cid ) {
+			$c = wc_get_order( $cid );
+			if ( ! $c ) {
+				continue;
+			}
+			$st = $c->get_status();
+			if ( ! isset( $map[ $st ] ) ) {
+				$map[ $st ] = 0;
+			}
+			$map[ $st ]++;
+		}
+
+		if ( ! empty( $children ) ) {
+			echo '<div style="margin-top:4px;">';
+			foreach ( $children as $cid ) {
+				printf(
+					'<div><a href="%s" target="_blank" style="text-decoration:none;">%s #%d</a></div>',
+					esc_url( get_edit_post_link( $cid ) ),
+					esc_html__( 'Open child order ↗', 'track-orders-for-woocommerce' ),
+					(int) $cid
+				);
+			}
+			echo '</div>';
+		}
+	}
+
+
+	/**
+	 * Get child orders for a parent order.
+	 * Strategy A: true parent/child via post_parent
+	 * Strategy B: meta list on parent (_child_order_ids)
+	 *
+	 * @param WC_Order $parent_order The parent order.
+	 */
+	public function wps_get_child_orders_ids( WC_Order $parent_order ): array {
+		$wps_enable_partila_shipement = get_option( 'tofw_enable_partial_shipment' );
+		if ( 'on' !== $wps_enable_partila_shipement ) {
+			return '';
+		}
+		$parent_id = $parent_order->get_id();
+		$ids = array();
+
+		$sub = wc_get_orders(
+			array(
+				'limit'  => -1,
+				'parent' => $parent_id,
+				'return' => 'ids',
+				'type'   => array( 'shop_order' ),
+			)
+		);
+		if ( ! empty( $sub ) ) {
+			$ids = array_merge( $ids, $sub );
+		}
+
+		$meta_key   = apply_filters( 'wps_to_child_orders_meta_key', '_child_order_ids' );
+		$child_list = (array) $parent_order->get_meta( $meta_key, true );
+		if ( ! empty( $child_list ) ) {
+			$ids = array_merge( $ids, array_map( 'absint', $child_list ) );
+		}
+
+		$ids = array_values( array_unique( array_filter( $ids ) ) );
+		return $ids;
+	}
+
+	/**
+	 * Make the column sortable.
+	 *
+	 * @param array $cols Existing columns.
+	 * @return array Modified columns.
+	 */
+	public function wps_tofw_shop_order_sortable_columns_callback( $cols ) {
+		$wps_enable_partila_shipement = get_option( 'tofw_enable_partial_shipment' );
+		if ( 'on' !== $wps_enable_partila_shipement ) {
+			return $cols;
+		}
+		$cols['wps_split_shipments'] = 'wps_split_shipments';
+		return $cols;
+	}
+
+	/**
+	 * Adjust the query to sort by child order count.
+	 *
+	 * @param WP_Query $q The current query object.
+	 */
+	public function wps_tofw_pre_get_posts_cllbck( $q ) {
+		$wps_enable_partila_shipement = get_option( 'tofw_enable_partial_shipment' );
+		if ( 'on' !== $wps_enable_partila_shipement ) {
+			return;
+		}
+		if ( is_admin() && 'shop_order' === $q->get( 'post_type' ) && $q->get( 'orderby' ) === 'wps_split_shipments' ) {
+			$q->set( 'meta_key', '_wps_child_count' );
+			$q->set( 'orderby', 'meta_value_num' );
+		}
+	}
+
+	/**
+	 * When a parent order is completed, auto-complete all its child orders.
+	 *
+	 * @param int $order_id The ID of the order being completed.
+	 */
+	public function wps_tofw_auto_complete_child_orders( $order_id ) {
+		$wps_tofw_auto_comple = get_option( 'tofw_aut_comp_part_order' );
+		$wps_enable_partila_shipement = get_option( 'tofw_enable_partial_shipment' );
+		if ( 'on' !== $wps_enable_partila_shipement || 'on' != $wps_tofw_auto_comple ) {
+			return;
+		}
+		$order = wc_get_order( $order_id );
+		if ( ! $order instanceof WC_Order ) {
+			return;
+		}
+
+		// Get child orders from parent order meta.
+		$child_order_ids = (array) $order->get_meta( '_wps_child_order_ids' );
+
+		if ( ! empty( $child_order_ids ) ) {
+			foreach ( $child_order_ids as $child_order_id ) {
+				$child_order = wc_get_order( $child_order_id );
+
+				if ( $child_order instanceof WC_Order ) {
+					// Only update if not already completed.
+					if ( $child_order->get_status() !== 'completed' ) {
+
+						foreach ( $child_order->get_items() as $item_id => $item ) {
+							wc_update_order_item_meta(
+								$item_id,
+								'_line_item_status',
+								'completed'
+							);
+						}
+
+						$child_order->update_status(
+							'completed',
+							__( 'Auto-completed because parent order was completed.', 'track-orders-for-woocommerce' )
+						);
+					}
+				}
+			}
+
+			foreach ( $order->get_items() as $parent_item_id => $parent_item ) {
+				wc_update_order_item_meta(
+					$parent_item_id,
+					'_line_item_status',
+					'completed'
+				);
+			}
+
+			// Save parent order changes.
+			$order->save();
+		}
+	}
+
+	/**
+	 * Update a parent order's line item meta when a child order status changes.
+	 *
+	 * @param int      $order_id   The ID of the order whose status changed.
+	 * @param string   $old_status The previous status of the order.
+	 * @param string   $new_status The new status of the order.
+	 * @param WC_Order $order      The order object.
+	 */
+	public function wps_update_another_order_on_status_change_hpos( $order_id, $old_status, $new_status, $order ) {
+
+		// Validate order object.
+		if ( ! $order instanceof WC_Order ) {
+			return;
+		}
+
+		// Retrieve linked order metadata (HPOS safe).
+		$is_child_order_id = $order->get_meta( '_wps_is_child_order' );
+		$parent_order_id   = $order->get_meta( '_wps_parent_order_id' );
+		$cart_line_item_id = $order->get_meta( '_wps_parent_item_id' );
+
+		// Validate required metadata before proceeding.
+		if ( 'yes' !== $is_child_order_id || empty( $parent_order_id ) || empty( $cart_line_item_id ) ) {
+			return;
+		}
+
+		// Get parent order object.
+		$target_order = wc_get_order( $parent_order_id );
+		if ( ! $target_order ) {
+			return;
+		}
+
+		// Loop through parent order items and update the matching one.
+		foreach ( $target_order->get_items() as $item_id => $item ) {
+			if ( (int) $item_id === (int) $cart_line_item_id ) {
+				$item->update_meta_data( '_line_item_status', $new_status );
+				$item->save();
+				$target_order->add_order_note( "Line item #{$item_id} updated to status '{$new_status}' due to child order #{$order_id} status change." );
+				break;
+			}
+		}
+
+		// Save changes to the parent order.
+		$target_order->save();
+	}
+
+	/**
+	 * Render the email template popup in admin footer.
+	 */
+	public function wps_tofw_admin_footer() {
+		$screen = get_current_screen();
+		$screen_id = ( isset( $screen->id ) ) ? $screen->id : '';
+		$allowed_screens = array(
+			'wpswings_page_track_orders_for_woocommerce_menu',
+			'wp-swings_page_track_orders_for_woocommerce_menu',
+		);
+		if ( in_array( $screen_id, $allowed_screens, true ) && 'on' === get_option( 'wps_tofw_enable_order_delay_notification' ) ) {
+			$customer_subject = get_option( 'wps_delay_email_customer_subject', 'Delivery Delay Notification - Order {order_id}' );
+			$customer_body    = get_option( 'wps_delay_email_customer_body', '<p>Your delivery has been delayed.</p>' );
+
+			$admin_subject = get_option( 'wps_delay_email_admin_subject', 'Order Delay - {order_id}' );
+			$admin_body    = get_option( 'wps_delay_email_admin_body', '<p>An order has been delayed.</p>' );
+
+			$notify_admin = get_option( 'wps_tofw_notify_admin_delay', 'no' );
+			?>
+	<!-- MAIN POPUP -->
+	<div id="wps-email-popup" class="wps-popup" style="display: none;">
+		<div class="wps-popup-dialog">
+			<div class="wps-popup-header">
+				<strong><h4><?php echo esc_html__( 'Delay Notification', 'track-orders-for-woocommerce' ); ?></h4></strong>
+				<span class="wps-popup-close">&times;</span>
+			</div>
+			<div class="wps-popup-body">
+				<label class="wps-toggle">
+					<input type="checkbox" id="wps_send_admin_mail" <?php checked( $notify_admin, 'yes' ); ?>>
+					<span>Send Delay Email to Admin</span>
+				</label>
+				<hr>
+
+				<strong><h5><?php echo esc_html__( 'Customer Email Template', 'track-orders-for-woocommerce' ); ?></h5></strong>
+
+				<label><?php echo esc_html__( 'Subject', 'track-orders-for-woocommerce' ); ?></label>
+				<input type="text" id="wps_customer_subject" class="wps-input"
+					   value="<?php echo esc_attr( $customer_subject ); ?>">
+
+				<label><?php echo esc_html__( 'Email Body (HTML Allowed)', 'track-orders-for-woocommerce' ); ?></label>
+				<textarea id="wps_customer_body" class="wps-textarea"><?php echo esc_textarea( $customer_body ); ?></textarea>
+
+				<p class="wps-placeholders">
+					<strong><?php echo esc_html__( 'Placeholders:', 'track-orders-for-woocommerce' ); ?></strong><br>
+					{order_id}, {customer_name}, {expected_date}, {expected_time},<br>
+					{expected_datetime}, {order_url}
+				</p>
+
+				<!-- PREVIEW BUTTON -->
+				<button type="button"
+						class="button button-secondary wps-preview-email"
+						data-type="customer"
+						style="margin-bottom:10px;">
+					<?php echo esc_html__( 'Preview Customer Email', 'track-orders-for-woocommerce' ); ?>
+				</button>
+
+				<!-- PREVIEW BOX -->
+				<div id="wps-preview-customer" class="wps-email-preview" style="display:none;">
+					<div class="wps-email-preview-inner"></div>
+				</div>
+
+				<hr>
+
+				<!-- ADMIN EMAIL SETTINGS -->
+					<div id="wps_admin_section" style="<?php echo ( 'yes' === $notify_admin ) ? '' : 'display:none;'; ?>">
+
+					<strong><h4><?php echo esc_html__( 'Admin Email Template', 'track-orders-for-woocommerce' ); ?></h4></strong>
+
+					<label><?php echo esc_html__( 'Subject', 'track-orders-for-woocommerce' ); ?></label>
+					<input type="text" id="wps_admin_subject" class="wps-input"
+						   value="<?php echo esc_attr( $admin_subject ); ?>">
+
+					<label><?php echo esc_html__( 'Email Body (HTML Allowed)', 'track-orders-for-woocommerce' ); ?></label>
+					<textarea id="wps_admin_body" class="wps-textarea"><?php echo esc_textarea( $admin_body ); ?></textarea>
+
+					<p class="wps-placeholders">
+						<strong><?php echo esc_html__( 'Placeholders:', 'track-orders-for-woocommerce' ); ?></strong><br>
+						{order_id}, {customer_name}, {expected_date}, {expected_time},<br>
+						{expected_datetime}, {order_url}
+					</p>
+
+					<!-- PREVIEW BUTTON -->
+					<button type="button"
+							class="button button-secondary wps-preview-email"
+							data-type="admin"
+							style="margin-bottom:10px;">
+						<?php echo esc_html__( 'Preview Admin Email', 'track-orders-for-woocommerce' ); ?>
+					</button>
+
+					<!-- PREVIEW BOX -->
+					<div id="wps-preview-admin" class="wps-email-preview" style="display:none;">
+						<div class="wps-email-preview-inner"></div>
+					</div>
+
+				</div>
+
+			</div>
+
+			<!-- FOOTER -->
+			<div class="wps-popup-footer">
+				<button class="button button-primary wps-save-email-template"><?php echo esc_html__( 'Save Settings', 'track-orders-for-woocommerce' ); ?></button>
+				<button class="button wps-close-popup"><?php echo esc_html__( 'Close', 'track-orders-for-woocommerce' ); ?></button>
+			</div>
+
+		</div>
+	</div>
+
+			<?php
+		}
+	}
+
+
+		/**
+		 * Handle preview email AJAX request.
+		 *
+		 * @return void
+		 */
+	public function wps_preview_wc_email_callback() {
+		check_ajax_referer( 'ajax-nonce', 'nonce' );
+
+		$subject = isset( $_POST['subject'] ) ? sanitize_text_field( wp_unslash( $_POST['subject'] ) ) : '';
+		$body    = isset( $_POST['body'] ) ? wp_kses_post( wp_unslash( $_POST['body'] ) ) : '';
+
+		$sample = array(
+			'{order_id}'        => '1234',
+			'{customer_name}'   => 'John Doe',
+			'{expected_date}'   => 'November 28, 2025',
+			'{expected_time}'   => '11:15 AM',
+			'{expected_datetime}' => 'November 28, 2025 11:15 AM',
+			'{order_url}'       => site_url( '/my-account/view-order/1234/' ),
+		);
+
+		foreach ( $sample as $tag => $value ) {
+			$subject = str_replace( $tag, $value, $subject );
+			$body    = str_replace( $tag, $value, $body );
+		}
+
+		$mailer = WC()->mailer();
+		$final_html = $mailer->wrap_message( $subject, wpautop( $body ) );
+
+		wp_send_json_success( $final_html );
+	}
+
+		/**
+		 * Save delay email settings.
+		 *
+		 * @return void
+		 */
+	public function wps_save_delay_email_settings_callback() {
+		check_ajax_referer( 'ajax-nonce', 'nonce' );
+
+		$customer_subject = isset( $_POST['customer_subject'] ) ? sanitize_text_field( wp_unslash( $_POST['customer_subject'] ) ) : '';
+		$customer_body    = isset( $_POST['customer_body'] ) ? wp_kses_post( wp_unslash( $_POST['customer_body'] ) ) : '';
+		$admin_subject    = isset( $_POST['admin_subject'] ) ? sanitize_text_field( wp_unslash( $_POST['admin_subject'] ) ) : '';
+		$admin_body       = isset( $_POST['admin_body'] ) ? wp_kses_post( wp_unslash( $_POST['admin_body'] ) ) : '';
+		$notify_admin     = isset( $_POST['notify_admin'] ) ? sanitize_text_field( wp_unslash( $_POST['notify_admin'] ) ) : 'no';
+
+		update_option( 'wps_delay_email_customer_subject', $customer_subject );
+		update_option( 'wps_delay_email_customer_body', $customer_body );
+
+		update_option( 'wps_delay_email_admin_subject', $admin_subject );
+		update_option( 'wps_delay_email_admin_body', $admin_body );
+
+		update_option( 'wps_tofw_notify_admin_delay', ( 'yes' === $notify_admin ) ? 'yes' : 'no' );
+
+		wp_send_json_success( 'Saved' );
+	}
+
+		/**
+		 * Decide which delay cron handler to execute based on HPOS availability.
+		 *
+		 * @return void
+		 */
+	public function wps_run_delay_cron_master() {
+
+		// Detect HPOS.
+		$is_hpos = (
+		class_exists( '\Automattic\WooCommerce\Utilities\OrderUtil' ) &&
+		\Automattic\WooCommerce\Utilities\OrderUtil::custom_orders_table_usage_is_enabled()
+		);
+
+		if ( $is_hpos ) {
+			$this->wps_check_orders_for_delay_hpos();
+		} else {
+			$this->wps_check_orders_for_delay_legacy();
+		}
+	}
+
+
+
+		/**
+		 * 3. LEGACY MODE — Using wp_posts / wp_postmeta.
+		 *
+		 * Check legacy (posts/postmeta) orders for delayed deliveries.
+		 *
+		 * @return void
+		 */
+	public function wps_check_orders_for_delay_legacy() {
+		global $wpdb;
+
+		$batch_limit = 800;
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQL.NotPrepared -- table names are escaped above.
+		$orders = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$wpdb->prepare(
+				"
+        SELECT p.ID AS order_id
+        FROM {$wpdb->posts} p
+        INNER JOIN {$wpdb->postmeta} m1 ON m1.post_id = p.ID AND m1.meta_key = 'wps_tofw_estimated_delivery_date'
+        INNER JOIN {$wpdb->postmeta} m2 ON m2.post_id = p.ID AND m2.meta_key = 'wps_tofw_estimated_delivery_time'
+        WHERE p.post_type = 'shop_order'
+          AND p.post_status IN ('wc-pending','wc-processing','wc-on-hold')
+        LIMIT %d
+        ",
+				$batch_limit
+			)
+		);
+
+		if ( empty( $orders ) ) {
+			return;
+		}
+
+		foreach ( $orders as $row ) {
+			$order = wc_get_order( $row->order_id );
+
+			if ( $order ) {
+				$this->wps_process_single_order_delay( $order );
+			}
+		}
+	}
+
+
+
+	/**
+	 * Check HPOS (wc_orders/wc_orders_meta) orders for delayed deliveries.
+	 *
+	 * @return void
+	 */
+	public function wps_check_orders_for_delay_hpos() {
+		global $wpdb;
+
+		$batch_limit  = 800;
+		$orders_table = $wpdb->prefix . 'wc_orders';
+		$hpos_meta    = $wpdb->prefix . 'wc_orders_meta';
+		$legacy_meta  = $wpdb->prefix . 'postmeta';
+
+		$valid_statuses      = array( 'wc-pending', 'wc-processing', 'wc-on-hold' );
+		$status_placeholders = implode( ',', array_fill( 0, count( $valid_statuses ), '%s' ) );
+
+		// Build params array.
+		$params = array_merge( $valid_statuses, array( $batch_limit ) );
+
+		// Sanitize table names using esc_sql().
+		$orders_table = esc_sql( $orders_table );
+		$hpos_meta    = esc_sql( $hpos_meta );
+		$legacy_meta  = esc_sql( $legacy_meta );
+
+		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$orders = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$wpdb->prepare(
+				"
+SELECT DISTINCT wco.id AS order_id
+FROM {$orders_table} wco
+LEFT JOIN {$hpos_meta} h1 ON h1.order_id = wco.id AND h1.meta_key = 'wps_tofw_estimated_delivery_date'
+LEFT JOIN {$hpos_meta} h2 ON h2.order_id = wco.id AND h2.meta_key = 'wps_tofw_estimated_delivery_time'
+LEFT JOIN {$legacy_meta} m1 ON m1.post_id = wco.id AND m1.meta_key = 'wps_tofw_estimated_delivery_date'
+LEFT JOIN {$legacy_meta} m2 ON m2.post_id = wco.id AND m2.meta_key = 'wps_tofw_estimated_delivery_time'
+WHERE wco.status IN ( {$status_placeholders} )
+  AND ( h1.meta_value IS NOT NULL OR m1.meta_value IS NOT NULL )
+  AND ( h2.meta_value IS NOT NULL OR m2.meta_value IS NOT NULL )
+LIMIT %d
+",
+				...$params
+			)
+		);
+		// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+
+		if ( empty( $orders ) ) {
+			return;
+		}
+
+		foreach ( $orders as $row ) {
+			$order = wc_get_order( $row->order_id );
+
+			if ( $order ) {
+				$this->wps_process_single_order_delay( $order );
+			}
+		}
+	}
+
+
+
+		/**
+		 * 5. DELAY CHECK — COMMON FOR BOTH HPOS & LEGACY.
+		 * Handles:
+		 *  - detecting if date/time changed.
+		 *  - resetting notified flag.
+		 *  - sending emails.
+		 *
+		 * @param WC_Order $order Order object being inspected.
+		 * @return void
+		 */
+	public function wps_process_single_order_delay( $order ) {
+		$date = $order->get_meta( 'wps_tofw_estimated_delivery_date' );
+		$time = $order->get_meta( 'wps_tofw_estimated_delivery_time' );
+
+		if ( ! $date || ! $time ) {
+			return;
+		}
+
+		$expected_timestamp = strtotime( $date . ' ' . $time );
+		$current_timestamp  = current_time( 'timestamp' );
+
+		// Load meta.
+		$last_expected_ts = $order->get_meta( 'wps_tofw_last_expected_ts' );
+		$delay_sent       = $order->get_meta( 'wps_tofw_delay_notified' );
+
+		// If expected date/time changed → reset notified flag.
+		if ( $last_expected_ts && ( (int) $last_expected_ts !== (int) $expected_timestamp ) ) {
+			$order->update_meta_data( 'wps_tofw_delay_notified', '' );
+			$delay_sent = '';
+		}
+
+		// If already notified for this exact expected timestamp → stop.
+		if ( '1' === $delay_sent ) {
+			return;
+		}
+
+		// Delay condition.
+		if ( $current_timestamp > $expected_timestamp ) {
+			$notify_admin = get_option( 'wps_tofw_notify_admin_delay', 'no' );
+
+			$this->wps_send_delay_email_to_customer( $order, $date, $time );
+
+			if ( 'yes' === $notify_admin ) {
+				$this->wps_send_delay_email_to_admin( $order, $date, $time );
+			}
+
+			// Save meta.
+			$order->update_meta_data( 'wps_tofw_delay_notified', '1' );
+			$order->update_meta_data( 'wps_tofw_last_expected_ts', $expected_timestamp );
+			$order->save();
+		} else {
+
+			// Save latest expected timestamp so we detect changes next time.
+			$order->update_meta_data( 'wps_tofw_last_expected_ts', $expected_timestamp );
+			$order->save();
+		}
+	}
+
+		/**
+		 * 6. CUSTOMER EMAIL.
+		 *
+		 * @param WC_Order $order Order object.
+		 * @param string   $date  Expected date.
+		 * @param string   $time  Expected time.
+		 * @return void
+		 */
+	public function wps_send_delay_email_to_customer( $order, $date, $time ) {
+
+		$mailer = WC()->mailer();
+
+		$subject = get_option( 'wps_delay_email_customer_subject', 'Delivery Delay - Order {order_id}' );
+		$body    = get_option( 'wps_delay_email_customer_body', '<p>Your delivery is delayed.</p>' );
+
+		// Placeholder replacement.
+		$placeholders = array(
+			'{order_id}'        => $order->get_id(),
+			'{customer_name}'   => $order->get_billing_first_name(),
+			'{expected_date}'   => $date,
+			'{expected_time}'   => $time,
+			'{expected_datetime}' => $date . ' ' . $time,
+			'{order_url}'       => $order->get_view_order_url(),
+		);
+
+		$subject = str_replace( array_keys( $placeholders ), array_values( $placeholders ), $subject );
+		$body    = str_replace( array_keys( $placeholders ), array_values( $placeholders ), $body );
+
+		// Wrap inside WooCommerce template.
+		$heading = 'Delivery Delay Notification';
+		$wrapped = $mailer->wrap_message( $heading, $body );
+		$headers = array( 'Content-Type: text/html; charset=UTF-8' );
+
+		$mailer->send( $order->get_billing_email(), $subject, $wrapped, $headers );
+	}
+
+
+
+		/**
+		 * 7. ADMIN EMAIL.
+		 *
+		 * @param WC_Order $order Order object.
+		 * @param string   $date  Expected date.
+		 * @param string   $time  Expected time.
+		 * @return void
+		 */
+	public function wps_send_delay_email_to_admin( $order, $date, $time ) {
+
+		if ( 'yes' !== get_option( 'wps_tofw_notify_admin_delay', 'no' ) ) {
+			return;
+		}
+
+		$mailer = WC()->mailer();
+
+		$subject = get_option( 'wps_delay_email_admin_subject', 'Order Delay - {order_id}' );
+		$body    = get_option( 'wps_delay_email_admin_body', '<p>An order is delayed.</p>' );
+
+		// Placeholder replacement.
+		$placeholders = array(
+			'{order_id}'        => $order->get_id(),
+			'{customer_name}'   => $order->get_billing_first_name(),
+			'{expected_date}'   => $date,
+			'{expected_time}'   => $time,
+			'{expected_datetime}' => $date . ' ' . $time,
+			'{order_url}'       => admin_url( 'post.php?post=' . $order->get_id() . '&action=edit' ),
+		);
+
+		$subject = str_replace( array_keys( $placeholders ), array_values( $placeholders ), $subject );
+		$body    = str_replace( array_keys( $placeholders ), array_values( $placeholders ), $body );
+
+		$heading = 'Order Delay Notice';
+		$wrapped = $mailer->wrap_message( $heading, $body );
+		$headers = array( 'Content-Type: text/html; charset=UTF-8' );
+
+		$mailer->send( get_option( 'admin_email' ), $subject, $wrapped, $headers );
 	}
 
 }

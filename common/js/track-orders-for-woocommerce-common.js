@@ -65,14 +65,16 @@
 	
 		jQuery(document).on( 'click', '.wps_tofw_guest_user_export_button', function(e){
 			e.preventDefault();
-			var email = jQuery(this).parent().find( '.wps_wot_export_email' ).val();
-			
+			var order_id = jQuery(this).closest( 'form' ).find( '.wps_wot_export_order_id' ).val();
+			var email = jQuery(this).closest( 'form' ).find( '.wps_wot_export_email' ).val();
+
 			jQuery.ajax({
 				url:tofw_common_param.ajaxurl,
 				type:"POST",
 				datatType: 'JSON',
 				data: {
 					action : 'wps_tofw_export_my_orders_guest_user',
+					order_id : order_id,
 					email  : email,
 					nonce : tofw_common_param.nonce,
 				},success:function(response){
@@ -90,7 +92,7 @@
 					   var encodedUri = encodeURI(csvContent);
 							download(filename, encodedUri);
 					} else {
-						alert('The email address you provided is not recognized. Please try again.');
+						alert('The order id and email you provided do not match. Please try again.');
 					}
 				
 				}	

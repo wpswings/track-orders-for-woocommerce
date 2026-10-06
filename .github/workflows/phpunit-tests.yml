@@ -1,0 +1,158 @@
+name: PHPUnit Tests
+
+on:
+
+  pull_request:
+    branches: [ '**' ]
+
+permissions:
+  contents: read
+
+jobs:
+  phpunit:
+    name: PHPUnit Tests (PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['7.4', '8.0', '8.1', '8.2', '8.3']
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP ${{ matrix.php }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mysqli, zip, gd
+          coverage: xdebug
+          tools: composer
+
+      - name: Validate composer.json
+        run: composer validate --strict
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Run PHPUnit tests
+        run: |
+          vendor/bin/phpunit --verbose --testdox
+
+      - name: Run PHPUnit with coverage
+        if: matrix.php == '8.1'
+        run: |
+          vendor/bin/phpunit --coverage-text --coverage-clover=coverage.xml
+
+      - name: Upload coverage to Codecov
+        if: matrix.php == '8.1'
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage.xml
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false
+
+      - name: Archive test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phpunit-results-php-${{ matrix.php }}
+          path: |
+            tests/
+            coverage.xml
+          retention-days: 7
+
+      - name: Test Summary
+        if: always()
+        run: |
+          echo "## PHPUnit Test Results (PHP ${{ matrix.php }})" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ $? -eq 0 ]; then
+            echo "✅ **All tests passed!**" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Some tests failed!**" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Create GitHub Issue on Test Failure
+        if: failure()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const workflowName = context.workflow;
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const branch = context.ref.replace('refs/heads/', '');
+            const sha = context.sha.substring(0, 7);
+            const phpVersion = '${{ matrix.php }}';
+
+            let prNumber = '';
+            let prTitle = '';
+            if (context.payload.pull_request) {
+              prNumber = context.payload.pull_request.number;
+              prTitle = context.payload.pull_request.title;
+            }
+
+            const issueTitle = `[PHPUnit Failed] PHP ${phpVersion} - ${prTitle || branch} - ${sha}`;
+            const issueBody = `## 🔴 PHPUnit Test Failure Report
+
+            **Workflow:** ${workflowName}
+            **PHP Version:** ${phpVersion}
+            **Branch:** \`${branch}\`
+            **Commit:** \`${sha}\`
+            ${prNumber ? `**Pull Request:** #${prNumber}` : ''}
+            **Triggered by:** @${context.actor}
+            **Run URL:** ${runUrl}
+
+            ### Details
+            PHPUnit tests have failed for PHP version ${phpVersion}. Please review the test results and fix the failing tests.
+
+            ### Action Required
+            1. Review the [workflow run](${runUrl}) for detailed test failure messages
+            2. Download the test artifacts for more information
+            3. Fix the failing tests locally
+            4. Ensure tests pass on PHP ${phpVersion}
+            5. Push the fixes to trigger a new test run
+
+            ### Test Environment
+            - PHP Version: ${phpVersion}
+            - Test Framework: PHPUnit
+
+            ---
+            *This issue was automatically created by GitHub Actions*`;
+
+            // Check if similar issue already exists
+            const existingIssues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'automated-failure,phpunit',
+              per_page: 100
+            });
+
+            const similarIssue = existingIssues.data.find(issue =>
+              issue.title.includes(sha) && issue.title.includes('PHPUnit Failed') && issue.title.includes(`PHP ${phpVersion}`)
+            );
+
+            if (!similarIssue) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: issueTitle,
+                body: issueBody,
+                labels: ['automated-failure', 'phpunit', 'tests', 'bug']
+              });
+            } else {
+              console.log('Similar issue already exists:', similarIssue.number);
+            }

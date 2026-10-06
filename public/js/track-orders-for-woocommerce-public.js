@@ -358,9 +358,88 @@ if (window.history.replaceState) {
 	window.history.replaceState(null, null, window.location.href);
 }
 
-jQuery(window).load(function () {
-	
+jQuery(document).ready(function ($) {
+	$('#wps-tofw_th-search-btn').on('click', function () {
+		jQuery("#wps-tofw_t-main").hide();
+		const wps_tracking_number = $('#wps-tofw_th-search').val();
+		const wps_tracking_method = $('#wps-tofw_th-method').val();
+		if (wps_tracking_number && wps_tracking_method) {
+				
+			$('.wps-tofw_loader').show();
 
+			$.ajax({
+				url: tofw_public_param.ajaxurl,
+				type: 'POST',
+				dataType: 'json',
+
+				data: {
+					action: 'wps_mult_carrier_data_tracking',
+					tracking_number: wps_tracking_number,
+					courier_code: wps_tracking_method,
+					nonce: tofw_public_param.carrier_auth_nonce
+				},
+				beforeSend: function () {
+					$('#wps-tofw_th-search-btn').prop('disabled', true).text('Searching…');
+				},
+				success: function (response) {
+					if (!response || !response.success) {
+						$('.wps-tofw_loader').hide();
+						jQuery("#wps-tofw_t-main").html('<p class = "wps_tofw_error">No tracking information found.</p>');
+						$('#wps-tofw_th-search-btn').prop('disabled', false).text('Search');
+					} else {
+						$('.wps-tofw_loader').hide();
+						jQuery("#wps-tofw_t-main").show();
+						let checkpoints = response.data[0];
+
+						if (checkpoints && checkpoints.length) {
+
+							let html = '<ul>';
+							checkpoints.forEach(function (item) {
+								wps_tofw_ts = item.checkpoint_date.replace(/^\$/, "");
+
+								let [wps_tofw_datePart, wps_tofw_timePart] = wps_tofw_ts.split("T");
+
+								wps_tofw_timePart = wps_tofw_timePart.split("-")[0];
+
+								let [wps_tofw_year, wps_tofw_month, wps_tofw_day] = wps_tofw_datePart.split("-");
+								let wps_tofw_formattedDate = `${wps_tofw_day}-${wps_tofw_month}-${wps_tofw_year}`;
+								let wps_tofw_formattedTime = wps_tofw_timePart;
+				
+								html += `<li class="active">
+								<img src="${tofw_public_param.mutlple_carrer_image.wps_in_way}" alt="in way" />
+								<div class="wps-tofw_tm-con">
+								<div class="h3">${item.tracking_detail}</div>
+								<div class="p">Date : ${wps_tofw_formattedDate}</div>
+								<div class="p">Time : ${wps_tofw_formattedTime}</div>
+								<div class="p">${item.location}</div>
+									</div>
+								</li>`;
+							});
+							html += '</ul>';
+							html += `<div class="wps-tofw_t-status delivered" id="wps-tofw_t-status">Current Status : ${(response.data.delivery_status).toUpperCase()}</div>`;
+							jQuery("#wps-tofw_t-main").html(html);
+						} else {
+							jQuery("#wps-tofw_t-main").html('<p class = "wps_tofw_error">No tracking information found.</p>');
+						}
+					}
+				},
+				error: function (xhr, status, error) {
+					console.error('AJAX Error:', status, error, xhr?.responseText);
+				},
+				complete: function () {
+					$('#wps-tofw_th-search-btn').prop('disabled', false).text('Search');
+				}
+			});
+		} else {
+			alert('Please enter a tracking number and select a courier.');
+		}
+  });
+});
+
+
+jQuery(window).load(function () {
+
+	document.body.classList.add("wps-tofw-tracking-modal");
 
 	jQuery(document).on('click','.wps_tofw_17track',function(e){
 		e.preventDefault();
@@ -389,6 +468,11 @@ jQuery(window).load(function () {
 	});
 });
 
-
-
-
+document.addEventListener('DOMContentLoaded', function() {
+    // Select the element with the standard WooCommerce class
+    const orderDetails = document.querySelector('.woocommerce-order-details');
+    // If the element exists, add your custom class
+    if (orderDetails) {
+        orderDetails.classList.add('wps-woocommerce-order-details');
+    }
+});
