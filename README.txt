@@ -319,6 +319,9 @@ Visit [**Community Forums for Track Orders**](https://forums.wpswings.com/topic-
 
 == Changelog ==
 
+= 1.2.8 =
+* Security Fix: Every track order template, including "Track order with Google Map", now renders an order only when the visitor owns it or has verified its billing email. The check is applied to the requested order before any template loads. Credit to Mustafa Ahmed / WPScan for the responsible disclosure.
+
 = 1.2.7 – Released on 05 October 2026 =
 * Security Fix: Hardened the guest order-export request so it requires both the Order Id and the billing email, verified with a constant-time comparison against that single order, instead of matching billing email alone against every order in the store. Credit to Pedro Pinho / WPScan for the responsible disclosure.
 * New: Compatibility with latest WP(7.1.2) & WC(11.1.2)
