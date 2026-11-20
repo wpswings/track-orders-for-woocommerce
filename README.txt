@@ -4,10 +4,10 @@ Contributors: wpswings
 Donate link: https://wpswings.com/
 Tags: woocommerce shipping, track orders, shipping, shipment tracking, order tracking
 Requires at least: 6.7.0
-Tested up to: 7.1.2
+Tested up to: 7.1.5
 WC requires at least: 6.5.0
-WC tested up to: 11.1.2
-Stable tag: 1.2.6
+WC tested up to: 11.3.1
+Stable tag: 1.2.8
 Requires PHP: 7.4
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -319,11 +319,11 @@ Visit [**Community Forums for Track Orders**](https://forums.wpswings.com/topic-
 
 == Changelog ==
 
-= 1.2.8 =
+= 1.2.8 – Released on 20 Nov 2026 =
 * Security Fix: Every track order template, including "Track order with Google Map", now renders an order only when the visitor owns it or has verified its billing email. The check is applied to the requested order before any template loads. Credit to Mustafa Ahmed / WPScan for the responsible disclosure.
 * New: Compatibility with latest WP(7.1.5) & WC(11.3.1)
 
-= 1.2.7 – Released on 05 October 2026 =
+= 1.2.6 – Released on 29 September 2026 =
 * Security Fix: Hardened the guest order-export request so it requires both the Order Id and the billing email, verified with a constant-time comparison against that single order, instead of matching billing email alone against every order in the store. Credit to Pedro Pinho / WPScan for the responsible disclosure.
 * New: Compatibility with latest WP(7.1.2) & WC(11.1.2)
 
@@ -454,6 +454,6 @@ Visit [**Community Forums for Track Orders**](https://forums.wpswings.com/topic-
 
 == Upgrade Notice == 
 
-= 1.2.7 – Released on 05 October 2026 =
-* Security Fix: Hardened the guest order-export request so it requires both the Order Id and the billing email, verified with a constant-time comparison against that single order, instead of matching billing email alone against every order in the store. Credit to Pedro Pinho / WPScan for the responsible disclosure.
-* New: Compatibility with latest WP(7.1.2) & WC(11.1.2)
+= 1.2.8 – Released on 20 Nov 2026 =
+* Security Fix: Every track order template, including "Track order with Google Map", now renders an order only when the visitor owns it or has verified its billing email. The check is applied to the requested order before any template loads. Credit to Mustafa Ahmed / WPScan for the responsible disclosure.
+* New: Compatibility with latest WP(7.1.5) & WC(11.3.1)
