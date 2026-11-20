@@ -100,18 +100,19 @@ class VersionCompatibilityTest extends PolyfillTestCase {
 	}
 
 	/**
-	 * Test WooCommerce 11.0.1 compatibility.
+	 * Test the WooCommerce tested up to version matches between the main file and README.
 	 */
-	public function testWooCommerce1101Compatibility() {
-		$main_file = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'track-orders-for-woocommerce.php';
-		$main_content = file_get_contents($main_file);
+	public function testWooCommerceTestedUpToMatchesReadme() {
+		$main_content   = file_get_contents(TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'track-orders-for-woocommerce.php');
+		$readme_content = file_get_contents(TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'README.txt');
 
-		$this->assertStringContainsString('WC tested up to:      11.0.1', $main_content);
+		$this->assertMatchesRegularExpression('/WC tested up to:\s*(\d+\.\d+(\.\d+)?)/', $main_content);
+		$this->assertMatchesRegularExpression('/WC tested up to:\s*(\d+\.\d+(\.\d+)?)/', $readme_content);
 
-		$readme_file = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'README.txt';
-		$readme_content = file_get_contents($readme_file);
+		preg_match('/WC tested up to:\s*(\S+)/', $main_content, $main_match);
+		preg_match('/WC tested up to:\s*(\S+)/', $readme_content, $readme_match);
 
-		$this->assertStringContainsString('WC tested up to: 11.0.1', $readme_content);
+		$this->assertSame($main_match[1], $readme_match[1]);
 	}
 
 	/**

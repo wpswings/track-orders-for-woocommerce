@@ -71,8 +71,10 @@ class SanitizationTest extends PolyfillTestCase {
 	public function testXssPrevention() {
 		$malicious_input = '<img src=x onerror="alert(1)">';
 		$sanitized = esc_html($malicious_input);
-		$this->assertStringNotContainsString('onerror=', $sanitized);
+		// The attribute text survives as inert, escaped text; the markup must not.
+		$this->assertStringNotContainsString('onerror="', $sanitized);
 		$this->assertStringNotContainsString('<img', $sanitized);
+		$this->assertStringContainsString('&lt;img', $sanitized);
 	}
 
 	/**

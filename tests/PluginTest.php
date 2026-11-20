@@ -28,8 +28,12 @@ class PluginTest extends PolyfillTestCase {
 	 * Test plugin version constant.
 	 */
 	public function testPluginVersion() {
-		$this->assertSame('1.2.7', TRACK_ORDERS_FOR_WOOCOMMERCE_VERSION);
 		$this->assertIsString(TRACK_ORDERS_FOR_WOOCOMMERCE_VERSION);
+		$this->assertMatchesRegularExpression('/^\d+\.\d+\.\d+$/', TRACK_ORDERS_FOR_WOOCOMMERCE_VERSION);
+
+		$main_content = file_get_contents(TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'track-orders-for-woocommerce.php');
+		preg_match("/'TRACK_ORDERS_FOR_WOOCOMMERCE_VERSION',\s*'([^']+)'/", $main_content, $match);
+		$this->assertSame($match[1], TRACK_ORDERS_FOR_WOOCOMMERCE_VERSION);
 	}
 
 	/**

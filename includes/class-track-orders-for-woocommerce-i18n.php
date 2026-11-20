@@ -12,6 +12,11 @@
  * @subpackage Track_Orders_For_Woocommerce/includes
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
+
 /**
  * Define the internationalization functionality.
  *

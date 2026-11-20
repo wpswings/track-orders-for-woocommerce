@@ -12,7 +12,9 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
 require_once dirname(__DIR__) . '/vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php';
 
 // Define constants.
-define('TRACK_ORDERS_FOR_WOOCOMMERCE_VERSION', '1.2.7');
+// Read the version from the main plugin file so the tests never go stale on a release.
+preg_match('/^\s*\*\s*Version:\s*(\S+)/m', (string) file_get_contents(dirname(__DIR__) . '/track-orders-for-woocommerce.php'), $tofw_version_match);
+define('TRACK_ORDERS_FOR_WOOCOMMERCE_VERSION', isset($tofw_version_match[1]) ? $tofw_version_match[1] : '0.0.0');
 define('TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH', dirname(__DIR__) . '/');
 define('TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL', 'http://example.org/wp-content/plugins/track-orders-for-woocommerce/');
 
@@ -68,7 +70,7 @@ if (!function_exists('esc_url_raw')) {
 
 if (!function_exists('sanitize_text_field')) {
 	function sanitize_text_field($str) {
-		return filter_var($str, FILTER_SANITIZE_STRING);
+		return trim(strip_tags((string) $str));
 	}
 }
 
