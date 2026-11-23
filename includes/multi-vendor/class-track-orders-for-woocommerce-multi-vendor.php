@@ -18,12 +18,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  * tracking details, including partial shipments, for their part of an order
  * and shows the per-vendor shipments to the customer.
  *
- * Storage format (order meta `wps_tofw_vendor_shipments`), on the Dokan
- * sub-order or on the parent order for WCFM / WC Vendors:
+ * Storage format (one order meta `wps_tofw_vendor_shipments_<vendor_id>` per
+ * vendor, so vendors of the same WCFM / WC Vendors parent order never
+ * overwrite each other's shipments), on the Dokan sub-order or on the parent
+ * order for WCFM / WC Vendors:
  *
  *     array(
- *         <vendor_id> => array(
- *             <shipment_id> => array(
+ *         <shipment_id> => array(
  *                 'id'              => string,
  *                 'carrier'         => string  carrier key (same keys as `wps_tofw_selected_shipping_service`),
  *                 'carrier_name'    => string,
@@ -32,25 +33,38 @@ if ( ! defined( 'ABSPATH' ) ) {
  *                 'date'            => string  Y-m-d,
  *                 'items'           => array( <order_item_id> => <qty> ),
  *                 'created'         => int     timestamp,
- *             ),
  *         ),
  *     )
  *
- * For Dokan the latest shipment is also mirrored to the existing
+ * The legacy combined meta `wps_tofw_vendor_shipments` (vendor_id =>
+ * shipments) is still read; a vendor's own key takes precedence over it and
+ * the vendor is moved out of the legacy meta on its next save.
+ *
+ * The latest shipment is also mirrored to the existing
  * `wps_tofw_selected_shipping_service` / `wps_tofw_package_tracking_number`
- * meta of the sub-order so the existing admin meta box, REST API and
- * tracking templates keep working for that sub-order.
+ * meta (Dokan sub-order, or WCFM parent order with a single shipment and no
+ * own tracking) so the existing admin meta box, REST API and tracking
+ * templates keep working, but only for carriers the base plugin supports.
  *
  * @since 1.3.0
  */
 class Track_Orders_For_Woocommerce_Multi_Vendor {
 
 	/**
-	 * Order meta key holding the vendor shipments.
+	 * Legacy order meta key holding all vendor shipments, and prefix of the
+	 * per-vendor meta keys (`wps_tofw_vendor_shipments_<vendor_id>`).
 	 *
 	 * @since 1.3.0
 	 */
 	const META_KEY = 'wps_tofw_vendor_shipments';
+
+	/**
+	 * Order meta flag set when the base tracking meta was mirrored from a
+	 * vendor shipment (so it may be updated / cleared again).
+	 *
+	 * @since 1.3.0
+	 */
+	const MIRRORED_META_KEY = '_wps_tofw_vendor_tracking_mirrored';
 
 	/**
 	 * Nonce action.
@@ -235,8 +249,66 @@ class Track_Orders_For_Woocommerce_Multi_Vendor {
 	 * @return array
 	 */
 	public function get_all_shipments( $order ) {
-		$shipments = $order->get_meta( self::META_KEY, true );
-		return is_array( $shipments ) ? $shipments : array();
+		$legacy = $order->get_meta( self::META_KEY, true );
+		$all    = is_array( $legacy ) ? $legacy : array();
+		$prefix = self::META_KEY . '_';
+
+		foreach ( $order->get_meta_data() as $meta ) {
+			$data = $meta->get_data();
+			if ( 0 !== strpos( $data['key'], $prefix ) ) {
+				continue;
+			}
+			$vendor_id = absint( substr( $data['key'], strlen( $prefix ) ) );
+			if ( $vendor_id && is_array( $data['value'] ) ) {
+				$all[ $vendor_id ] = $data['value'];
+			}
+		}
+
+		foreach ( $all as $vendor_id => $shipments ) {
+			if ( empty( $shipments ) || ! is_array( $shipments ) ) {
+				unset( $all[ $vendor_id ] );
+			}
+		}
+		return $all;
+	}
+
+	/**
+	 * Per-vendor order meta key.
+	 *
+	 * @since 1.3.0
+	 * @param int $vendor_id Vendor id.
+	 * @return string
+	 */
+	protected function get_vendor_meta_key( $vendor_id ) {
+		return self::META_KEY . '_' . absint( $vendor_id );
+	}
+
+	/**
+	 * Save the shipments of one vendor in its own meta key (does not save the
+	 * order). Moves the vendor out of the legacy combined meta if present.
+	 *
+	 * @since 1.3.0
+	 * @param WC_Order $order     Storage order.
+	 * @param int      $vendor_id Vendor id.
+	 * @param array    $shipments Shipments of the vendor.
+	 * @return void
+	 */
+	protected function set_vendor_shipments( $order, $vendor_id, $shipments ) {
+		if ( empty( $shipments ) ) {
+			$order->delete_meta_data( $this->get_vendor_meta_key( $vendor_id ) );
+		} else {
+			$order->update_meta_data( $this->get_vendor_meta_key( $vendor_id ), $shipments );
+		}
+
+		$legacy = $order->get_meta( self::META_KEY, true );
+		if ( is_array( $legacy ) && isset( $legacy[ $vendor_id ] ) ) {
+			unset( $legacy[ $vendor_id ] );
+			if ( empty( $legacy ) ) {
+				$order->delete_meta_data( self::META_KEY );
+			} else {
+				$order->update_meta_data( self::META_KEY, $legacy );
+			}
+		}
 	}
 
 	/**
@@ -606,10 +678,9 @@ class Track_Orders_For_Woocommerce_Multi_Vendor {
 		 */
 		$shipment = apply_filters( 'wps_tofw_vendor_shipment_data', $shipment, $order, $vendor_id, $integration->get_key() );
 
-		$all                                  = $this->get_all_shipments( $order );
-		$all[ $vendor_id ]                    = isset( $all[ $vendor_id ] ) && is_array( $all[ $vendor_id ] ) ? $all[ $vendor_id ] : array();
-		$all[ $vendor_id ][ $shipment['id'] ] = $shipment;
-		$order->update_meta_data( self::META_KEY, $all );
+		$shipments                    = $this->get_vendor_shipments( $order, $vendor_id );
+		$shipments[ $shipment['id'] ] = $shipment;
+		$this->set_vendor_shipments( $order, $vendor_id, $shipments );
 		$this->mirror_legacy_meta( $integration, $order, $vendor_id );
 		$order->save();
 
@@ -645,22 +716,15 @@ class Track_Orders_For_Woocommerce_Multi_Vendor {
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- verified in get_ajax_context().
 		$shipment_id = isset( $_POST['shipment_id'] ) ? sanitize_text_field( wp_unslash( $_POST['shipment_id'] ) ) : '';
-		$all         = $this->get_all_shipments( $order );
+		$shipments   = $this->get_vendor_shipments( $order, $vendor_id );
 
-		if ( '' === $shipment_id || ! isset( $all[ $vendor_id ][ $shipment_id ] ) ) {
+		if ( '' === $shipment_id || ! isset( $shipments[ $shipment_id ] ) ) {
 			wp_send_json_error( array( 'message' => __( 'Shipment not found.', 'track-orders-for-woocommerce' ) ), 404 );
 		}
 
-		$shipment = $all[ $vendor_id ][ $shipment_id ];
-		unset( $all[ $vendor_id ][ $shipment_id ] );
-		if ( empty( $all[ $vendor_id ] ) ) {
-			unset( $all[ $vendor_id ] );
-		}
-		if ( empty( $all ) ) {
-			$order->delete_meta_data( self::META_KEY );
-		} else {
-			$order->update_meta_data( self::META_KEY, $all );
-		}
+		$shipment = $shipments[ $shipment_id ];
+		unset( $shipments[ $shipment_id ] );
+		$this->set_vendor_shipments( $order, $vendor_id, $shipments );
 		$this->mirror_legacy_meta( $integration, $order, $vendor_id );
 		$order->save();
 
@@ -684,8 +748,29 @@ class Track_Orders_For_Woocommerce_Multi_Vendor {
 	}
 
 	/**
-	 * Mirror the latest shipment to the single-shipment tracking meta when the
-	 * storage order belongs to one vendor only (Dokan sub-order).
+	 * Carrier keys the base `wps_tofw_selected_shipping_service` meta
+	 * understands (see template/wps-order-tracking-page.php and the public
+	 * tracking info box).
+	 *
+	 * @since 1.3.0
+	 * @return string[]
+	 */
+	protected function get_legacy_carrier_keys() {
+		/**
+		 * Carrier keys that may be mirrored to `wps_tofw_selected_shipping_service`.
+		 *
+		 * @since 1.3.0
+		 * @param string[] $keys Carrier keys.
+		 */
+		return (array) apply_filters( 'wps_tofw_vendor_legacy_carrier_keys', array( 'fedex', 'usps', 'canada_post' ) );
+	}
+
+	/**
+	 * Mirror the latest shipment to the single-shipment tracking meta:
+	 * - Dokan: the sub-order belongs to one vendor only.
+	 * - WCFM: the parent order, when it holds a single vendor shipment and has
+	 *   no tracking of its own (or only tracking mirrored earlier).
+	 * Only carriers the base plugin supports are mirrored.
 	 *
 	 * @since 1.3.0
 	 * @param Track_Orders_For_Woocommerce_Vendor_Integration $integration Integration.
@@ -694,13 +779,36 @@ class Track_Orders_For_Woocommerce_Multi_Vendor {
 	 * @return void
 	 */
 	protected function mirror_legacy_meta( $integration, $order, $vendor_id ) {
-		if ( 'dokan' !== $integration->get_key() ) {
+		$key = $integration->get_key();
+		if ( 'dokan' === $key ) {
+			$shipments = $this->get_vendor_shipments( $order, $vendor_id );
+		} elseif ( 'wcfm' === $key ) {
+			$shipments = array();
+			foreach ( $this->get_all_shipments( $order ) as $vendor_shipments ) {
+				$shipments = array_merge( $shipments, array_values( (array) $vendor_shipments ) );
+			}
+			$mirrored = (bool) $order->get_meta( self::MIRRORED_META_KEY, true );
+			if ( ! $mirrored && '' !== (string) $order->get_meta( 'wps_tofw_package_tracking_number', true ) ) {
+				// The order has its own (admin) tracking, keep it.
+				return;
+			}
+			if ( count( $shipments ) > 1 ) {
+				$shipments = array();
+			}
+		} else {
 			return;
 		}
-		$shipments = $this->get_vendor_shipments( $order, $vendor_id );
-		$latest    = end( $shipments );
-		$order->update_meta_data( 'wps_tofw_selected_shipping_service', $latest ? $latest['carrier'] : '' );
-		$order->update_meta_data( 'wps_tofw_package_tracking_number', $latest ? $latest['tracking_number'] : '' );
+
+		$latest = end( $shipments );
+		if ( $latest && in_array( $latest['carrier'], $this->get_legacy_carrier_keys(), true ) ) {
+			$order->update_meta_data( 'wps_tofw_selected_shipping_service', $latest['carrier'] );
+			$order->update_meta_data( 'wps_tofw_package_tracking_number', $latest['tracking_number'] );
+			$order->update_meta_data( self::MIRRORED_META_KEY, 'yes' );
+		} elseif ( $order->get_meta( self::MIRRORED_META_KEY, true ) ) {
+			$order->update_meta_data( 'wps_tofw_selected_shipping_service', '' );
+			$order->update_meta_data( 'wps_tofw_package_tracking_number', '' );
+			$order->delete_meta_data( self::MIRRORED_META_KEY );
+		}
 	}
 
 	/**
