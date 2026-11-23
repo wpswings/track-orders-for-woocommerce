@@ -4,10 +4,10 @@ Contributors: wpswings
 Donate link: https://wpswings.com/
 Tags: order tracking, shipment tracking, track order, woocommerce order tracking, tracking number
 Requires at least: 6.7.0
-Tested up to: 7.1.4
+Tested up to: 7.1.5
 WC requires at least: 6.5.0
 WC tested up to: 11.3.1
-Stable tag: 1.2.8
+Stable tag: 1.2.9
 Requires PHP: 7.4
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
