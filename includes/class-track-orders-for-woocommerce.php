@@ -322,6 +322,7 @@ class Track_Orders_For_Woocommerce {
 		$this->loader->add_action( 'wp_ajax_wps_tofw_delete_vendor_shipment', $tofw_multi_vendor, 'wps_tofw_delete_vendor_shipment' );
 		$this->loader->add_action( 'woocommerce_order_details_after_order_table', $tofw_multi_vendor, 'wps_tofw_render_customer_vendor_shipments', 20, 1 );
 		$this->loader->add_action( 'wps_tofw_after_tracking_order_details', $tofw_multi_vendor, 'wps_tofw_render_customer_vendor_shipments', 10, 1 );
+		$this->loader->add_action( 'woocommerce_process_shop_order_meta', $tofw_multi_vendor, 'wps_tofw_release_mirrored_tracking', 20, 2 );
 	}
 
 	/**

@@ -812,6 +812,40 @@ class Track_Orders_For_Woocommerce_Multi_Vendor {
 	}
 
 	/**
+	 * Stop mirroring vendor tracking once an admin enters their own tracking
+	 * number in the order tracking meta box, so later vendor saves never
+	 * overwrite or clear it.
+	 *
+	 * @since 1.3.0
+	 * @param int      $order_id Order id.
+	 * @param WC_Order $order    Order (unused, may be a post object).
+	 * @return void
+	 */
+	public function wps_tofw_release_mirrored_tracking( $order_id, $order = null ) {
+		$nonce = isset( $_POST['wps_tofw_selected_shipping_services_nonce_name'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_selected_shipping_services_nonce_name'] ) ) : '';
+		if ( ! wp_verify_nonce( $nonce, 'wps_tofw_selected_shipping_services_nonce' ) || ! current_user_can( 'edit_shop_orders' ) ) {
+			return;
+		}
+		$tracking = isset( $_POST['wps_tofw_tracking_number'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_tracking_number'] ) ) : '';
+		if ( '' === $tracking ) {
+			return;
+		}
+		$order = wc_get_order( $order_id );
+		if ( ! $order || ! $order->get_meta( self::MIRRORED_META_KEY, true ) ) {
+			return;
+		}
+		foreach ( $this->get_all_shipments( $order ) as $vendor_shipments ) {
+			foreach ( (array) $vendor_shipments as $shipment ) {
+				if ( isset( $shipment['tracking_number'] ) && (string) $shipment['tracking_number'] === $tracking ) {
+					return; // Still the mirrored vendor tracking.
+				}
+			}
+		}
+		$order->delete_meta_data( self::MIRRORED_META_KEY );
+		$order->save();
+	}
+
+	/**
 	 * Add an order note for a new shipment (a customer note by default, which
 	 * also emails the customer).
 	 *
