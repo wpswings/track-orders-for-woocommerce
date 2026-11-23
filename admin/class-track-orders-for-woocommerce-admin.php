@@ -1562,7 +1562,7 @@ class Track_Orders_For_Woocommerce_Admin {
 
 				<div class="wps_tofw_shipping_service_wrapper">
 					<select name="wps_tofw_selected_shipping_services">
-						<option><?php esc_html_e( '---Select shipping Services---', 'track-orders-for-woocommerce' ); ?></option>
+						<option value=""><?php esc_html_e( '---Select shipping Services---', 'track-orders-for-woocommerce' ); ?></option>
 						<?php
 						if ( isset( $wps_diffrent_shipping_services ) && ! empty( $wps_diffrent_shipping_services ) ) {
 							foreach ( $wps_diffrent_shipping_services as $key => $value ) {
@@ -1659,174 +1659,13 @@ class Track_Orders_For_Woocommerce_Admin {
 			$value_check = isset( $_POST['wps_tofw_selected_shipping_services_nonce_name'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_tofw_selected_shipping_services_nonce_name'] ) ) : '';
 			wp_verify_nonce( $value_check, 'wps_tofw_selected_shipping_services_nonce' );
 			if ( isset( $_POST['wps_tofw_selected_shipping_services'] ) && isset( $_POST['wps_tofw_tracking_number'] ) && sanitize_text_field( wp_unslash( $_POST['wps_tofw_tracking_number'] ) ) != '' && ! empty( sanitize_text_field( wp_unslash( $_POST['wps_tofw_selected_shipping_services'] ) ) ) ) {
-
-				if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
-					$order_obj->update_meta_data( 'wps_tofw_selected_shipping_service', sanitize_text_field( wp_unslash( $_POST['wps_tofw_selected_shipping_services'] ) ) );
-					$order_obj->update_meta_data( 'wps_tofw_package_tracking_number', sanitize_text_field( wp_unslash( $_POST['wps_tofw_tracking_number'] ) ) );
-					$order_obj->save();
-				} else {
-					update_post_meta( $post_id, 'wps_tofw_selected_shipping_service', sanitize_text_field( wp_unslash( $_POST['wps_tofw_selected_shipping_services'] ) ) );
-					update_post_meta( $post_id, 'wps_tofw_package_tracking_number', sanitize_text_field( wp_unslash( $_POST['wps_tofw_tracking_number'] ) ) );
-				}
-
-				$headers = array();
-				$order = wc_get_order( $post_id );
-				if ( ! $order ) {
-					return;
-				}
-				$headers[] = 'Content-Type: text/html; charset=UTF-8';
-				$wps_tracking_url = get_post_meta( $order_id, 'wps_tofw_enhanced_order_company', true );
-				$wps_tracking_number = get_post_meta( $order_id, 'wps_tofw_enhanced_tracking_no', true );
-				if ( version_compare( WC()->version, '3.0.0', '<' ) ) {
-					$fname = get_post_meta( $post_id, '_billing_first_name', true );
-					$lname = get_post_meta( $post_id, '_billing_last_name', true );
-					$to = get_post_meta( $post_id, '_billing_email', true );
-				} else {
-					$wps_all_data = $order->get_data();
-					$billing_address = $wps_all_data['billing'];
-					$shipping_address = $wps_all_data['shipping'];
-					$to = $billing_address['email'];
-				}
-				$subject = __( 'Your Order Status for Order #', 'track-orders-for-woocommerce' ) . $post_id;
-				$message = __( 'Your Order Status is ', 'track-orders-for-woocommerce' ) . $statuses[ $new_status ];
-				$mail_header = __( 'Current Order Status is ', 'track-orders-for-woocommerce' ) . $statuses[ $new_status ];
-				$mail_footer = '';
-				$message = '<html>
-				<body>
-					<style>
-						body {
-							box-shadow: 2px 2px 10px #ccc;
-							color: #767676;
-							font-family: Arial,sans-serif;
-							margin: 80px auto;
-							max-width: 700px;
-							padding-bottom: 30px;
-							width: 100%;
-						}
-
-						h2 {
-							font-size: 30px;
-							margin-top: 0;
-							color: #fff;
-							padding: 40px;
-							background-color: #557da1;
-						}
-
-						h4 {
-							color: #557da1;
-							font-size: 20px;
-							margin-bottom: 10px;
-						}
-
-						.content {
-							padding: 0 40px;
-						}
-
-						.Customer-detail ul li p {
-							margin: 0;
-						}
-
-						.details .Shipping-detail {
-							width: 40%;
-							float: right;
-						}
-
-						.details .Billing-detail {
-							width: 60%;
-							float: left;
-						}
-
-						.details .Shipping-detail ul li,.details .Billing-detail ul li {
-							list-style-type: none;
-							margin: 0;
-						}
-
-						.details .Billing-detail ul,.details .Shipping-detail ul {
-							margin: 0;
-							padding: 0;
-						}
-
-						.clear {
-							clear: both;
-						}
-
-						table,td,th {
-							border: 2px solid #ccc;
-							padding: 15px;
-							text-align: left;
-						}
-
-						table {
-							border-collapse: collapse;
-							width: 100%;
-						}
-
-						.info {
-							display: inline-block;
-						}
-
-						.bold {
-							font-weight: bold;
-						}
-
-						.footer {
-							margin-top: 30px;
-							text-align: center;
-							color: #99B1D8;
-							font-size: 12px;
-						}
-						dl.variation dd {
-							font-size: 12px;
-							margin: 0;
-						}
-					</style>
-
-					<div style="padding: 36px 48px; background-color:#557DA1;color: #fff; font-size: 30px; font-weight: 300; font-family:helvetica;" class="header">
-						' . $mail_header . '
-					</div>		
-
-					<div class="content">
-
-						<div class="Order">
-							<h4>Order #' . $post_id . '</h4>
-							<table>
-								<tbody>
-									<tr>
-										<th>' . __( 'Order Id', 'track-orders-for-woocommerce' ) . '</th>
-										<th>' . __( 'Tracking Number ', 'track-orders-for-woocommerce' ) . '</th>
-									</tr>';
-				$wps_user_tracking_number = get_post_meta( $post_id, 'wps_tofw_package_tracking_number', true );
-				$message .= '<tr>
-									<td>' . $wps_user_tracking_number . '</td>
-								</tr>';
-				$message .= '</tbody>
-							</table>
-							<div>
-								<a href=' . $wps_tracking_url . '>' . $wps_tracking_number . '</a>
-							</div>
-						</div>
-					</div>
-					<div style="text-align: center; padding: 10px;" class="footer">
-						' . $mail_footer . '
-					</div>
-				</body>
-				</html>';
-
-				if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
-					$wps_mail_already_send = $order_obj->get_meta( 'wps_tofw_tracking_id_sent', true );
-				} else {
-					$wps_mail_already_send = get_post_meta( $post_id, 'wps_tofw_tracking_id_sent', true );
-				}
-
-				if ( 1 != $wps_mail_already_send ) {
-					wc_mail( $to, $subject, $message, $headers );
-
-					if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
-						$order_obj->update_meta_data( 'wps_tofw_tracking_id_sent', 1 );
-					} else {
-						update_post_meta( $post_id, 'wps_tofw_tracking_id_sent', 1 );
-					}
-				}
+				// Same code path as the shipping-plugin auto import (meta + tracking email).
+				WPS_TOFW_Tracking_Service::save_tracking(
+					$order_obj,
+					sanitize_text_field( wp_unslash( $_POST['wps_tofw_selected_shipping_services'] ) ),
+					sanitize_text_field( wp_unslash( $_POST['wps_tofw_tracking_number'] ) ),
+					array( 'source' => 'manual' )
+				);
 			} elseif ( isset( $_POST['wps_tofw_tracking_number'] ) && '' != $_POST['wps_tofw_tracking_number'] ) {
 
 				if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
