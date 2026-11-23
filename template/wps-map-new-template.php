@@ -135,6 +135,10 @@ if ($allowed) {
 		$wps_order_delivery_date = get_post_meta($order_id, 'wps_tofw_estimated_delivery_date', true);
 		$wps_order_delivery_time = get_post_meta($order_id, 'wps_tofw_estimated_delivery_time', true);
 	}
+	// Rules based estimated delivery date fallback when no manual date is set (since 1.3.0).
+	if ( class_exists( 'Track_Orders_For_Woocommerce_Estimated_Delivery' ) ) {
+		$wps_order_delivery_date = Track_Orders_For_Woocommerce_Estimated_Delivery::tracking_text_fallback( $tofw_order, $wps_order_delivery_date );
+	}
 ?>
 	<div class="wps-track-order-main-wrapper">
 		<div class="wps-track-order-content">

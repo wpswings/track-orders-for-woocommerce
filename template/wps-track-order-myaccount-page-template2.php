@@ -176,6 +176,10 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 			$expected_delivery_time = get_post_meta( $order_id, 'wps_tofw_estimated_delivery_time', true );
 			$order_delivered_date = get_post_meta( $order_id, '_completed_date', true );
 		}
+		// Rules based estimated delivery date fallback when no manual date is set (since 1.3.0).
+		if ( class_exists( 'Track_Orders_For_Woocommerce_Estimated_Delivery' ) ) {
+			$expected_delivery_date = Track_Orders_For_Woocommerce_Estimated_Delivery::tracking_date_fallback( $tofw_order, $expected_delivery_date );
+		}
 
 
 		if ( version_compare( WC()->version, '3.0.0', '<' ) ) {
