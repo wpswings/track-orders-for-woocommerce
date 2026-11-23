@@ -266,6 +266,25 @@ class Track_Orders_For_Woocommerce_Carrier_Sync {
 	 * @return void
 	 */
 	protected function increment_usage() {
+		global $wpdb;
+
+		// Short row lock (INSERT IGNORE is atomic) so parallel runners do not lose increments.
+		$lock     = self::USAGE_OPTION . '_lock';
+		$acquired = false;
+		for ( $attempt = 0; $attempt < 20; $attempt++ ) {
+			$acquired = (bool) $wpdb->query( $wpdb->prepare( "INSERT IGNORE INTO {$wpdb->options} (option_name, option_value, autoload) VALUES (%s, %s, 'no')", $lock, (string) time() ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			if ( $acquired ) {
+				break;
+			}
+			$locked_at = (int) $wpdb->get_var( $wpdb->prepare( "SELECT option_value FROM {$wpdb->options} WHERE option_name = %s", $lock ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			if ( $locked_at && $locked_at < time() - 30 ) {
+				// Stale lock left by a crashed request.
+				$wpdb->delete( $wpdb->options, array( 'option_name' => $lock ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+				continue;
+			}
+			usleep( 100000 );
+		}
+
 		update_option(
 			self::USAGE_OPTION,
 			array(
@@ -274,6 +293,10 @@ class Track_Orders_For_Woocommerce_Carrier_Sync {
 			),
 			false
 		);
+
+		if ( $acquired ) {
+			$wpdb->delete( $wpdb->options, array( 'option_name' => $lock ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		}
 	}
 
 	/**
@@ -369,6 +392,40 @@ class Track_Orders_For_Woocommerce_Carrier_Sync {
 		 */
 		$selected = apply_filters( 'wps_tofw_carrier_sync_provider_for_order', $selected, $carrier, $order );
 		return $selected instanceof Wps_Tofw_Tracking_Provider ? $selected : null;
+	}
+
+	/**
+	 * Other configured providers supporting the carrier, used when the chosen provider fails.
+	 *
+	 * @since 1.3.0
+	 * @param string                     $carrier Carrier slug.
+	 * @param WC_Order                   $order   Order.
+	 * @param Wps_Tofw_Tracking_Provider $failed  Provider that returned an error.
+	 * @return Wps_Tofw_Tracking_Provider[]
+	 */
+	public function get_fallback_providers( $carrier, $order, $failed ) {
+		$fallbacks = array();
+		foreach ( $this->get_providers() as $provider ) {
+			if ( $provider->get_id() !== $failed->get_id() && $provider->is_configured() && $provider->supports( $carrier ) ) {
+				$fallbacks[] = $provider;
+			}
+		}
+		/**
+		 * Filter the fallback providers tried when the chosen provider returns an error.
+		 *
+		 * @since 1.3.0
+		 * @param Wps_Tofw_Tracking_Provider[] $fallbacks Providers, in order.
+		 * @param string                       $carrier   Carrier slug.
+		 * @param WC_Order                     $order     Order.
+		 * @param Wps_Tofw_Tracking_Provider   $failed    Provider that failed.
+		 */
+		$fallbacks = (array) apply_filters( 'wps_tofw_carrier_sync_fallback_providers', $fallbacks, $carrier, $order, $failed );
+		return array_filter(
+			$fallbacks,
+			function ( $provider ) {
+				return $provider instanceof Wps_Tofw_Tracking_Provider;
+			}
+		);
 	}
 
 	/**
@@ -482,7 +539,6 @@ class Track_Orders_For_Woocommerce_Carrier_Sync {
 		if ( get_transient( 'wps_tofw_carrier_sync_lock' ) ) {
 			return 0;
 		}
-		set_transient( 'wps_tofw_carrier_sync_lock', 1, 5 * MINUTE_IN_SECONDS );
 
 		/**
 		 * Filter the number of orders processed per batch.
@@ -491,20 +547,36 @@ class Track_Orders_For_Woocommerce_Carrier_Sync {
 		 * @param int $size Batch size.
 		 */
 		$batch_size = max( 1, (int) apply_filters( 'wps_tofw_carrier_sync_batch_size', 20 ) );
-		$order_ids  = $this->get_orders_to_sync( $batch_size );
-		$processed  = 0;
 
-		foreach ( $order_ids as $order_id ) {
-			if ( ! $this->has_quota() ) {
-				update_option( 'wps_tofw_carrier_sync_limit_reached', $this->get_period(), false );
-				break;
+		/**
+		 * Filter the batch lock lifetime in seconds. Defaults to the worst case of the batch
+		 * (two lookups per order when falling back, 20 s HTTP timeout each) plus one minute.
+		 *
+		 * @since 1.3.0
+		 * @param int $ttl        Lock lifetime.
+		 * @param int $batch_size Batch size.
+		 */
+		$lock_ttl = (int) apply_filters( 'wps_tofw_carrier_sync_lock_ttl', $batch_size * 2 * 20 + MINUTE_IN_SECONDS, $batch_size );
+		set_transient( 'wps_tofw_carrier_sync_lock', 1, max( 5 * MINUTE_IN_SECONDS, $lock_ttl ) );
+
+		$order_ids = array();
+		$processed = 0;
+		try {
+			$order_ids = $this->get_orders_to_sync( $batch_size );
+
+			foreach ( $order_ids as $order_id ) {
+				if ( ! $this->has_quota() ) {
+					update_option( 'wps_tofw_carrier_sync_limit_reached', $this->get_period(), false );
+					break;
+				}
+				$this->sync_order( $order_id );
+				++$processed;
 			}
-			$this->sync_order( $order_id );
-			++$processed;
-		}
 
-		update_option( 'wps_tofw_carrier_sync_last_run', time(), false );
-		delete_transient( 'wps_tofw_carrier_sync_lock' );
+			update_option( 'wps_tofw_carrier_sync_last_run', time(), false );
+		} finally {
+			delete_transient( 'wps_tofw_carrier_sync_lock' );
+		}
 
 		/**
 		 * Filter the max number of chained batches per scheduled run.
@@ -643,6 +715,22 @@ class Track_Orders_For_Woocommerce_Carrier_Sync {
 
 		$this->increment_usage();
 		$result = $provider->get_status( $carrier, $number );
+
+		if ( is_wp_error( $result ) ) {
+			// Fall back to the next configured provider (e.g. 17TRACK when FedEx fails).
+			foreach ( $this->get_fallback_providers( $carrier, $order, $provider ) as $fallback ) {
+				if ( ! $this->has_quota() ) {
+					break;
+				}
+				$this->increment_usage();
+				$fallback_result = $fallback->get_status( $carrier, $number );
+				if ( ! is_wp_error( $fallback_result ) ) {
+					$provider = $fallback;
+					$result   = $fallback_result;
+					break;
+				}
+			}
+		}
 
 		if ( is_wp_error( $result ) ) {
 			$order->update_meta_data( self::META_PROVIDER, $provider->get_id() );
