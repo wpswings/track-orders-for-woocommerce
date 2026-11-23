@@ -412,7 +412,7 @@ class Track_Orders_For_Woocommerce_Wismo {
 		 */
 		$limit = (int) apply_filters( 'wps_tofw_wismo_verify_limit', 10 );
 		if ( $this->rate_limited( 'v', $limit ) ) {
-			$this->error( 'rate_limited', __( 'Too many attempts. Please wait a few minutes and try again.', 'track-orders-for-woocommerce' ), 429 );
+			$this->error( 'rate_limited', __( 'Too many attempts. Please wait a few minutes and try again.', 'track-orders-for-woocommerce' ), 429, $this->support_fallback() );
 		}
 
 		$generic  = __( 'We could not verify that order. Please check the order number and billing e-mail.', 'track-orders-for-woocommerce' );
@@ -423,15 +423,32 @@ class Track_Orders_For_Woocommerce_Wismo {
 		$order    = $order_id ? wc_get_order( $order_id ) : false;
 
 		if ( ! $order instanceof WC_Order ) {
-			$this->error( 'not_verified', $generic );
+			$this->error( 'not_verified', $generic, 200, $this->support_fallback() );
 		}
 
 		$user_id = get_current_user_id();
 		if ( 'account' === $mode ) {
 			$ok = $user_id > 0 && (int) $order->get_customer_id() === $user_id;
 		} else {
-			$billing = strtolower( trim( (string) $order->get_billing_email() ) );
-			$ok      = '' !== $email && '' !== $billing && hash_equals( $billing, strtolower( $email ) );
+			/**
+			 * Filter the per-order limit of failed e-mail verification attempts per window.
+			 *
+			 * @since 1.3.0
+			 * @param int $limit Failed attempts.
+			 */
+			$order_limit = (int) apply_filters( 'wps_tofw_wismo_verify_order_limit', 5 );
+			if ( $this->rate_limited( 'o', $order_limit, 'order_' . $order->get_id(), false ) ) {
+				$this->error( 'rate_limited', __( 'Too many attempts. Please wait a few minutes and try again.', 'track-orders-for-woocommerce' ), 429, $this->support_fallback() );
+			}
+
+			$billing     = strtolower( trim( (string) $order->get_billing_email() ) );
+			$customer_id = (int) $order->get_customer_id();
+			$ok          = '' !== $email && '' !== $billing && hash_equals( $billing, strtolower( $email ) );
+
+			// A logged-in user may not open another registered customer's order by e-mail.
+			if ( $ok && $user_id > 0 && $customer_id > 0 && $customer_id !== $user_id ) {
+				$ok = false;
+			}
 		}
 
 		/**
@@ -443,7 +460,11 @@ class Track_Orders_For_Woocommerce_Wismo {
 		 * @param string   $mode  'account' or 'email'.
 		 */
 		if ( ! apply_filters( 'wps_tofw_wismo_verify_order', $ok, $order, $mode ) ) {
-			$this->error( 'not_verified', $generic );
+			if ( 'email' === $mode ) {
+				// Count the failed attempt against this order.
+				$this->rate_limited( 'o', $order_limit, 'order_' . $order->get_id() );
+			}
+			$this->error( 'not_verified', $generic, 200, $this->support_fallback() );
 		}
 
 		$token   = $this->issue_token( $order->get_id(), $user_id );
@@ -520,7 +541,7 @@ class Track_Orders_For_Woocommerce_Wismo {
 		 */
 		$limit = (int) apply_filters( 'wps_tofw_wismo_ask_limit', 40 );
 		if ( $this->rate_limited( 'q', $limit ) ) {
-			$this->error( 'rate_limited', __( 'Too many questions. Please wait a few minutes and try again.', 'track-orders-for-woocommerce' ), 429 );
+			$this->error( 'rate_limited', __( 'Too many questions. Please wait a few minutes and try again.', 'track-orders-for-woocommerce' ), 429, $this->support_fallback() );
 		}
 
 		$token    = isset( $_POST['token'] ) ? sanitize_text_field( wp_unslash( $_POST['token'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- check_nonce().
@@ -585,21 +606,46 @@ class Track_Orders_For_Woocommerce_Wismo {
 	}
 
 	/**
+	 * Return a fresh widget nonce (uncached), so the widget keeps working on full page cached pages.
+	 *
+	 * @since 1.3.0
+	 */
+	public function ajax_nonce() {
+		nocache_headers();
+		if ( ! $this->is_enabled() ) {
+			$this->error( 'disabled', __( 'The order assistant is not available.', 'track-orders-for-woocommerce' ), 403 );
+		}
+		wp_send_json_success( array( 'nonce' => wp_create_nonce( self::NONCE ) ) );
+	}
+
+	/**
 	 * Send a JSON error and stop.
 	 *
 	 * @since 1.3.0
 	 * @param string $code    Code.
 	 * @param string $message Message.
 	 * @param int    $status  HTTP status.
+	 * @param array  $links   Optional fallback links.
 	 */
-	private function error( $code, $message, $status = 200 ) {
-		wp_send_json_error(
-			array(
-				'code'    => $code,
-				'message' => $message,
-			),
-			$status
+	private function error( $code, $message, $status = 200, $links = array() ) {
+		$data = array(
+			'code'    => $code,
+			'message' => $message,
 		);
+		if ( ! empty( $links ) ) {
+			$data['links'] = $links;
+		}
+		wp_send_json_error( $data, $status );
+	}
+
+	/**
+	 * Support links shown when the order cannot be verified or the visitor is rate limited.
+	 *
+	 * @since 1.3.0
+	 * @return array
+	 */
+	private function support_fallback() {
+		return $this->safe_links( Track_Orders_For_Woocommerce_Wismo_Answer_Engine::support_links( $this->support() ) );
 	}
 
 	/**
@@ -620,15 +666,17 @@ class Track_Orders_For_Woocommerce_Wismo {
 	}
 
 	/**
-	 * Fixed-window rate limiter backed by a transient per IP and bucket.
-	 * Counts the current attempt.
+	 * Fixed-window rate limiter backed by a transient per bucket and subject
+	 * (the client IP by default).
 	 *
 	 * @since 1.3.0
-	 * @param string $bucket Bucket name.
-	 * @param int    $limit  Max attempts per window.
-	 * @return bool True when the limit is exceeded.
+	 * @param string $bucket  Bucket name.
+	 * @param int    $limit   Max attempts per window.
+	 * @param string $subject Subject key; defaults to the client IP.
+	 * @param bool   $count   Whether to count the current attempt (false = only check).
+	 * @return bool True when the limit is exceeded (for a check only: when it is reached).
 	 */
-	private function rate_limited( $bucket, $limit ) {
+	private function rate_limited( $bucket, $limit, $subject = '', $count = true ) {
 		/**
 		 * Filter the WISMO rate limit window in seconds.
 		 *
@@ -636,7 +684,7 @@ class Track_Orders_For_Woocommerce_Wismo {
 		 * @param int $window Seconds.
 		 */
 		$window = max( 60, (int) apply_filters( 'wps_tofw_wismo_rate_window', 10 * MINUTE_IN_SECONDS ) );
-		$key    = 'wps_tofw_wismo_rl_' . $bucket . '_' . md5( $this->client_ip() );
+		$key    = 'wps_tofw_wismo_rl_' . $bucket . '_' . md5( '' !== $subject ? $subject : $this->client_ip() );
 		$now    = time();
 		$data   = get_transient( $key );
 
@@ -645,6 +693,9 @@ class Track_Orders_For_Woocommerce_Wismo {
 				'start' => $now,
 				'count' => 0,
 			);
+		}
+		if ( ! $count ) {
+			return $data['count'] >= max( 1, $limit );
 		}
 		++$data['count'];
 		set_transient( $key, $data, max( 1, $window - ( $now - (int) $data['start'] ) ) );
@@ -829,26 +880,51 @@ class Track_Orders_For_Woocommerce_Wismo {
 		}
 		$est_date = trim( (string) $order->get_meta( 'wps_tofw_estimated_delivery_date', true ) );
 		$est_time = trim( (string) $order->get_meta( 'wps_tofw_estimated_delivery_time', true ) );
+		$estimate = trim( $est_date . ' ' . $est_time );
+		if ( class_exists( 'Track_Orders_For_Woocommerce_Estimated_Delivery' ) && method_exists( 'Track_Orders_For_Woocommerce_Estimated_Delivery', 'get_order_edd' ) ) {
+			$edd = Track_Orders_For_Woocommerce_Estimated_Delivery::get_order_edd( $order );
+			if ( is_array( $edd ) && ! empty( $edd['text'] ) ) {
+				$estimate = wp_strip_all_tags( (string) $edd['text'] );
+			}
+		}
+
+		$carrier_status         = sanitize_key( (string) $order->get_meta( 'wps_tofw_carrier_status', true ) );
+		$carrier_status_label   = '';
+		$carrier_status_updated = '';
+		if ( '' !== $carrier_status ) {
+			if ( class_exists( 'Track_Orders_For_Woocommerce_Carrier_Sync' ) && method_exists( 'Track_Orders_For_Woocommerce_Carrier_Sync', 'get_status_label' ) ) {
+				$carrier_status_label = (string) Track_Orders_For_Woocommerce_Carrier_Sync::get_status_label( $carrier_status );
+			} else {
+				$carrier_status_label = ucwords( str_replace( '_', ' ', $carrier_status ) );
+			}
+			$updated_ts = (int) $order->get_meta( 'wps_tofw_carrier_status_updated', true );
+			if ( $updated_ts > 0 ) {
+				$carrier_status_updated = wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $updated_ts );
+			}
+		}
 
 		$ship_city    = $order->get_shipping_city() ? $order->get_shipping_city() : $order->get_billing_city();
 		$country_code = $order->get_shipping_country() ? $order->get_shipping_country() : $order->get_billing_country();
 		$countries    = ( function_exists( 'WC' ) && WC()->countries ) ? WC()->countries->get_countries() : array();
 
 		$context = array(
-			'order_number'       => (string) $order->get_order_number(),
-			'status'             => $status,
-			'status_label'       => wc_get_order_status_name( $status ),
-			'status_updated'     => $status_updated,
-			'date_created'       => $created ? wc_format_datetime( $created ) : '',
-			'date_completed'     => $completed ? wc_format_datetime( $completed ) : '',
-			'items'              => $items,
-			'ship_city'          => (string) $ship_city,
-			'ship_country'       => isset( $countries[ $country_code ] ) ? html_entity_decode( $countries[ $country_code ] ) : (string) $country_code,
-			'carrier'            => $this->carrier_name( $service ),
-			'tracking_number'    => $tracking_number,
-			'tracking_url'       => '' !== $tracking_number ? $this->tracking_url( $service, $tracking_number, $order ) : '',
-			'tracking_page_url'  => $this->tracking_page_url( $order ),
-			'estimated_delivery' => trim( $est_date . ' ' . $est_time ),
+			'order_number'           => (string) $order->get_order_number(),
+			'status'                 => $status,
+			'status_label'           => wc_get_order_status_name( $status ),
+			'status_updated'         => $status_updated,
+			'date_created'           => $created ? wc_format_datetime( $created ) : '',
+			'date_completed'         => $completed ? wc_format_datetime( $completed ) : '',
+			'items'                  => $items,
+			'ship_city'              => (string) $ship_city,
+			'ship_country'           => isset( $countries[ $country_code ] ) ? html_entity_decode( $countries[ $country_code ] ) : (string) $country_code,
+			'carrier'                => $this->carrier_name( $service ),
+			'tracking_number'        => $tracking_number,
+			'tracking_url'           => '' !== $tracking_number ? $this->tracking_url( $service, $tracking_number, $order ) : '',
+			'tracking_page_url'      => $this->tracking_page_url( $order ),
+			'estimated_delivery'     => $estimate,
+			'carrier_status'         => $carrier_status,
+			'carrier_status_label'   => $carrier_status_label,
+			'carrier_status_updated' => $carrier_status_updated,
 		);
 
 		/**
@@ -974,6 +1050,8 @@ class Track_Orders_For_Woocommerce_Wismo {
 			'tracking_number'    => $context['tracking_number'],
 			'tracking_url'       => $context['tracking_url'],
 			'estimated_delivery' => $context['estimated_delivery'],
+			'carrier_status'     => isset( $context['carrier_status_label'] ) ? $context['carrier_status_label'] : '',
+			'carrier_updated'    => isset( $context['carrier_status_updated'] ) ? $context['carrier_status_updated'] : '',
 			'support_email'      => $support['email'],
 			'support_url'        => $support['url'],
 		);

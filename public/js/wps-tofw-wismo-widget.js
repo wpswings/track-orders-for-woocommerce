@@ -28,7 +28,7 @@
 		return n;
 	}
 
-	function post( action, data ) {
+	function request( action, data ) {
 		var body = new URLSearchParams();
 		body.append( 'action', action );
 		body.append( 'nonce', cfg.nonce );
@@ -38,12 +38,36 @@
 		return fetch( cfg.ajaxurl, {
 			method: 'POST',
 			credentials: 'same-origin',
+			cache: 'no-store',
 			headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
 			body: body.toString()
 		} ).then( function ( r ) {
 			return r.json().catch( function () {
 				return { success: false, data: { message: t.error } };
 			} );
+		} );
+	}
+
+	/*
+	 * The localized nonce can be stale when the page comes from a full page cache,
+	 * so a fresh one is fetched from an uncached endpoint when the widget opens.
+	 */
+	function refreshNonce() {
+		return request( 'wps_tofw_wismo_nonce', {} ).then( function ( res ) {
+			if ( res && res.success && res.data && res.data.nonce ) {
+				cfg.nonce = res.data.nonce;
+			}
+		} ).catch( function () {} );
+	}
+
+	function post( action, data ) {
+		return request( action, data ).then( function ( res ) {
+			if ( res && ! res.success && res.data && res.data.code === 'bad_nonce' ) {
+				return refreshNonce().then( function () {
+					return request( action, data );
+				} );
+			}
+			return res;
 		} );
 	}
 
@@ -88,6 +112,10 @@
 
 	function errorMessage( res ) {
 		return ( res && res.data && res.data.message ) ? res.data.message : t.error;
+	}
+
+	function errorLinks( res ) {
+		return ( res && res.data && Array.isArray( res.data.links ) ) ? res.data.links : [];
 	}
 
 	/* ---------- Verification ---------- */
@@ -177,7 +205,7 @@
 				addMessage( 'bot', res.data.text, res.data.links );
 				showChat();
 			} else {
-				addMessage( 'bot', errorMessage( res ) );
+				addMessage( 'bot', errorMessage( res ), errorLinks( res ) );
 			}
 		} ).catch( function () {
 			wait.remove();
@@ -252,7 +280,7 @@
 				startVerification();
 				return;
 			}
-			addMessage( 'bot', errorMessage( res ) );
+			addMessage( 'bot', errorMessage( res ), errorLinks( res ) );
 		} ).catch( function () {
 			wait.remove();
 			state.busy = false;
@@ -269,7 +297,7 @@
 		if ( isOpen && ! els.started ) {
 			els.started = true;
 			addMessage( 'bot', cfg.welcome );
-			startVerification();
+			refreshNonce().then( startVerification );
 		}
 	}
 

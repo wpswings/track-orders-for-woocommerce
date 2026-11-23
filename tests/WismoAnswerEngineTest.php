@@ -142,4 +142,26 @@ class WismoAnswerEngineTest extends PolyfillTestCase {
 		$this->assertStringContainsString( 'being processed', $a['text'] );
 		$this->assertStringContainsString( 'help@shop.test', $a['text'] );
 	}
+
+	/**
+	 * Carrier status and estimated delivery.
+	 */
+	public function testCarrierStatus() {
+		$e = '\Track_Orders_For_Woocommerce_Wismo_Answer_Engine';
+		$c = $this->ctx(
+			array(
+				'carrier_status'       => 'in_transit',
+				'carrier_status_label' => 'In transit',
+				'estimated_delivery'   => 'Nov 25 - Nov 27',
+			)
+		);
+		$this->assertStringContainsString( 'in transit', $e::status_text( $c ) );
+		$this->assertStringContainsString( 'Nov 25 - Nov 27', $e::delivery_text( $c ) );
+
+		$c['carrier_status'] = 'delivered';
+		$this->assertStringContainsString( 'has been delivered', $e::delivery_text( $c ) );
+
+		$c['carrier_status'] = 'pending';
+		$this->assertSame( '', $e::carrier_status_text( $c ) );
+	}
 }

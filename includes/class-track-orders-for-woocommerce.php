@@ -373,6 +373,8 @@ class Track_Orders_For_Woocommerce {
 		$this->loader->add_action( 'wp_ajax_wps_tofw_wismo_ask', $tofw_wismo, 'ajax_ask' );
 		$this->loader->add_action( 'wp_ajax_nopriv_wps_tofw_wismo_ask', $tofw_wismo, 'ajax_ask' );
 		$this->loader->add_action( 'wp_ajax_wps_tofw_wismo_my_orders', $tofw_wismo, 'ajax_my_orders' );
+		$this->loader->add_action( 'wp_ajax_wps_tofw_wismo_nonce', $tofw_wismo, 'ajax_nonce' );
+		$this->loader->add_action( 'wp_ajax_nopriv_wps_tofw_wismo_nonce', $tofw_wismo, 'ajax_nonce' );
 	}
 
 	/**

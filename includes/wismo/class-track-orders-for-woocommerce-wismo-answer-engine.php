@@ -187,6 +187,12 @@ class Track_Orders_For_Woocommerce_Wismo_Answer_Engine {
 			/* translators: %s: date/time. */
 			$text .= ' ' . sprintf( __( 'Last update: %s.', 'track-orders-for-woocommerce' ), $c['status_updated'] );
 		}
+		if ( ! in_array( $status, array( 'cancelled', 'refunded', 'failed' ), true ) ) {
+			$carrier_text = self::carrier_status_text( $c );
+			if ( '' !== $carrier_text ) {
+				$text .= ' ' . $carrier_text;
+			}
+		}
 		if ( ! empty( $c['tracking_number'] ) && ! in_array( $status, array( 'cancelled', 'refunded', 'failed' ), true ) ) {
 			$text .= ' ' . __( 'A tracking number is available - ask me "tracking" to see it.', 'track-orders-for-woocommerce' );
 		}
@@ -247,14 +253,68 @@ class Track_Orders_For_Woocommerce_Wismo_Answer_Engine {
 		if ( in_array( $status, array( 'cancelled', 'refunded', 'failed' ), true ) ) {
 			return self::status_text( $c );
 		}
+		$carrier_status = isset( $c['carrier_status'] ) ? $c['carrier_status'] : '';
+		$carrier_text   = self::carrier_status_text( $c );
+		if ( in_array( $carrier_status, array( 'delivered', 'out_for_delivery', 'available_for_pickup' ), true ) ) {
+			return $carrier_text;
+		}
 		if ( ! empty( $c['estimated_delivery'] ) ) {
 			/* translators: %s: estimated delivery date. */
-			return sprintf( __( 'The estimated delivery for your order is %s.', 'track-orders-for-woocommerce' ), $c['estimated_delivery'] );
+			$text = sprintf( __( 'The estimated delivery for your order is %s.', 'track-orders-for-woocommerce' ), $c['estimated_delivery'] );
+			return '' !== $carrier_text ? $text . ' ' . $carrier_text : $text;
 		}
 		if ( 'completed' === $status ) {
 			return self::status_text( $c );
 		}
 		return __( 'An estimated delivery date has not been set for this order yet.', 'track-orders-for-woocommerce' ) . ' ' . self::status_text( $c );
+	}
+
+	/**
+	 * Carrier status sentence (from the automatic carrier status sync), or '' when unknown.
+	 *
+	 * @since 1.3.0
+	 * @param array $c Context.
+	 * @return string
+	 */
+	public static function carrier_status_text( $c ) {
+		$status = isset( $c['carrier_status'] ) ? (string) $c['carrier_status'] : '';
+		$label  = ! empty( $c['carrier_status_label'] ) ? (string) $c['carrier_status_label'] : ucwords( str_replace( '_', ' ', $status ) );
+		if ( '' === $status || 'pending' === $status ) {
+			return '';
+		}
+
+		switch ( $status ) {
+			case 'delivered':
+				$text = __( 'The carrier reports that your parcel has been delivered.', 'track-orders-for-woocommerce' );
+				break;
+			case 'out_for_delivery':
+				$text = __( 'The carrier reports that your parcel is out for delivery and should arrive soon.', 'track-orders-for-woocommerce' );
+				break;
+			case 'available_for_pickup':
+				$text = __( 'The carrier reports that your parcel is ready for pickup.', 'track-orders-for-woocommerce' );
+				break;
+			case 'in_transit':
+				$text = __( 'The carrier reports that your parcel is in transit.', 'track-orders-for-woocommerce' );
+				break;
+			case 'info_received':
+				$text = __( 'A shipping label has been created and the carrier is waiting to receive the parcel.', 'track-orders-for-woocommerce' );
+				break;
+			case 'exception':
+			case 'failed_attempt':
+				/* translators: %s: carrier status label. */
+				$text = sprintf( __( 'The carrier reported a delivery issue (%s). Please check the carrier tracking page or contact our support team.', 'track-orders-for-woocommerce' ), $label );
+				break;
+			default:
+				/* translators: %s: carrier status label. */
+				$text = sprintf( __( 'Latest carrier status: %s.', 'track-orders-for-woocommerce' ), $label );
+				break;
+		}
+
+		if ( ! empty( $c['carrier_status_updated'] ) ) {
+			/* translators: %s: date/time. */
+			$text .= ' ' . sprintf( __( 'Carrier update: %s.', 'track-orders-for-woocommerce' ), $c['carrier_status_updated'] );
+		}
+		return $text;
 	}
 
 	/**
