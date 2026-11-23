@@ -140,6 +140,9 @@ class Track_Orders_For_Woocommerce {
 
 			include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-track-orders-for-woocommerce-talk-to-expert-form.php';
 
+			// The class responsible for the admin review request notice.
+			include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-track-orders-for-woocommerce-review-notice.php';
+
 			if ( class_exists( 'Track_Orders_For_Woocommerce_Onboarding_Steps' ) ) {
 				$msp_onboard_steps = new Track_Orders_For_Woocommerce_Onboarding_Steps();
 			}
@@ -258,6 +261,15 @@ class Track_Orders_For_Woocommerce {
 		$this->loader->add_action('wp_ajax_wps_preview_wc_email', $tofw_plugin_admin, 'wps_preview_wc_email_callback');
 		$this->loader->add_action('wp_ajax_wps_save_delay_email_settings', $tofw_plugin_admin, 'wps_save_delay_email_settings_callback');
 		$this->loader->add_action( 'wps_check_delivery_delays_cron',$tofw_plugin_admin ,'wps_run_delay_cron_master' );
+
+		// Review request notice after tracking is added to enough orders.
+		if ( class_exists( 'Track_Orders_For_Woocommerce_Review_Notice' ) ) {
+			$tofw_review_notice = new Track_Orders_For_Woocommerce_Review_Notice();
+			$this->loader->add_action( 'admin_enqueue_scripts', $tofw_review_notice, 'wps_tofw_enqueue_scripts' );
+			$this->loader->add_action( 'admin_notices', $tofw_review_notice, 'wps_tofw_render_notice' );
+			$this->loader->add_action( 'wp_ajax_' . Track_Orders_For_Woocommerce_Review_Notice::AJAX_ACTION, $tofw_review_notice, 'wps_tofw_handle_ajax' );
+			$this->loader->add_action( 'woocommerce_process_shop_order_meta', $tofw_review_notice, 'wps_tofw_flush_tracked_count', 99 );
+		}
 
 	}
 
