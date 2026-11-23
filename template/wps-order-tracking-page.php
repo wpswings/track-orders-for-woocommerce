@@ -47,7 +47,7 @@ if ( isset( $_POST['wps_track_package'] ) ) {
 
 <?php
 if ( $flag ) {
-	$wps_tofw_selected_shipping_method = get_post_meta( $wps_user_order_id, 'wps_tofw_selected_shipping_service', true );
+	$wps_tofw_selected_shipping_method = wps_tofw_get_order_meta( $wps_user_order_id, 'wps_tofw_selected_shipping_service' );
 
 	if ( isset( $wps_tofw_selected_shipping_method ) && ( 'fedex' == $wps_tofw_selected_shipping_method ) ) {
 		include_once TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'integration/class-track-orders-for-woocommerce-with-fedex.php';

@@ -1675,8 +1675,8 @@ class Track_Orders_For_Woocommerce_Admin {
 					return;
 				}
 				$headers[] = 'Content-Type: text/html; charset=UTF-8';
-				$wps_tracking_url = get_post_meta( $order_id, 'wps_tofw_enhanced_order_company', true );
-				$wps_tracking_number = get_post_meta( $order_id, 'wps_tofw_enhanced_tracking_no', true );
+				$wps_tracking_url = $order->get_meta( 'wps_tofw_enhanced_order_company', true );
+				$wps_tracking_number = $order->get_meta( 'wps_tofw_enhanced_tracking_no', true );
 				if ( version_compare( WC()->version, '3.0.0', '<' ) ) {
 					$fname = get_post_meta( $post_id, '_billing_first_name', true );
 					$lname = get_post_meta( $post_id, '_billing_last_name', true );
@@ -1795,7 +1795,7 @@ class Track_Orders_For_Woocommerce_Admin {
 										<th>' . __( 'Order Id', 'track-orders-for-woocommerce' ) . '</th>
 										<th>' . __( 'Tracking Number ', 'track-orders-for-woocommerce' ) . '</th>
 									</tr>';
-				$wps_user_tracking_number = get_post_meta( $post_id, 'wps_tofw_package_tracking_number', true );
+				$wps_user_tracking_number = $order->get_meta( 'wps_tofw_package_tracking_number', true );
 				$message .= '<tr>
 									<td>' . $wps_user_tracking_number . '</td>
 								</tr>';
@@ -1823,6 +1823,7 @@ class Track_Orders_For_Woocommerce_Admin {
 
 					if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
 						$order_obj->update_meta_data( 'wps_tofw_tracking_id_sent', 1 );
+						$order_obj->save();
 					} else {
 						update_post_meta( $post_id, 'wps_tofw_tracking_id_sent', 1 );
 					}
@@ -1875,15 +1876,13 @@ class Track_Orders_For_Woocommerce_Admin {
 
 					$wps_tofw_all_selected_cities = get_option( 'wps_tofw_old_addresses', false );
 
-					if ( is_array( get_post_meta( $order->id, 'wps_tofw_track_custom_cities', true ) ) ) {
-						$wps_tofw_previous_saved_cities = get_post_meta( $order->id, 'wps_tofw_track_custom_cities', true );
-					} else {
+					$wps_tofw_previous_saved_cities = $order_obj->get_meta( 'wps_tofw_track_custom_cities', true );
+					if ( ! is_array( $wps_tofw_previous_saved_cities ) ) {
 						$wps_tofw_previous_saved_cities = array();
 					}
 
-					if ( is_array( get_post_meta( $order->id, 'wps_tofw_custom_change_time', true ) ) ) {
-						$wps_tofw_previous_saved_changed_time = get_post_meta( $order->id, 'wps_tofw_custom_change_time', true );
-					} else {
+					$wps_tofw_previous_saved_changed_time = $order_obj->get_meta( 'wps_tofw_custom_change_time', true );
+					if ( ! is_array( $wps_tofw_previous_saved_changed_time ) ) {
 						$wps_tofw_previous_saved_changed_time = array();
 					}
 

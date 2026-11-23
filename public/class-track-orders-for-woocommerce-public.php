@@ -383,7 +383,7 @@ class Track_Orders_For_Woocommerce_Public {
 		$wps_tofw_enable_track_order_api = get_option( 'wps_tofw_enable_third_party_tracking_api', 'no' );
 		if ( 'on' == $wps_tofw_enable_track_order_api ) {
 
-			$wps_shipping_service = get_post_meta( $order_id, 'wps_tofw_selected_shipping_service', true );
+			$wps_shipping_service = wps_tofw_get_order_meta( $order_id, 'wps_tofw_selected_shipping_service' );
 			if ( 'canada_post' === $wps_shipping_service ) {
 				$wps_shipping_service = 'Canada Post';
 			} else if ( 'fedex' === $wps_shipping_service ) {
@@ -391,9 +391,9 @@ class Track_Orders_For_Woocommerce_Public {
 			} else if ( 'usps' === $wps_shipping_service ) {
 				$wps_shipping_service = 'USPS';
 			}
-			$wps_est_delivery_date = get_post_meta( $order_id, 'wps_tofw_estimated_delivery_date', true );
-			$wps_est_delivery_time = get_post_meta( $order_id, 'wps_tofw_estimated_delivery_time', true );
-			$wps_tyo_tracking_number = get_post_meta( $order_id, 'wps_tofw_package_tracking_number', true );
+			$wps_est_delivery_date = wps_tofw_get_order_meta( $order_id, 'wps_tofw_estimated_delivery_date' );
+			$wps_est_delivery_time = wps_tofw_get_order_meta( $order_id, 'wps_tofw_estimated_delivery_time' );
+			$wps_tyo_tracking_number = wps_tofw_get_order_meta( $order_id, 'wps_tofw_package_tracking_number' );
 			?>
 			<div style="background-color: rgba(246,246,246,255);padding: 20px;">
 				<h3 style="font-weight:500"><?php esc_html_e( 'Tracking Info', 'track-orders-for-woocommerce' ); ?></h3>

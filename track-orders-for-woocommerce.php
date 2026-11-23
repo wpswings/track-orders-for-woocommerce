@@ -383,6 +383,43 @@ if (in_array('woocommerce/woocommerce.php', get_option('active_plugins', array()
 	}
 
 	/**
+	 * Read a single order meta value through the WooCommerce order object.
+	 *
+	 * HPOS-safe replacement for get_post_meta( $order_id, $key, true ) on orders:
+	 * works with both the custom order tables and the legacy posts storage.
+	 * Core order properties that used to live in post meta (billing/shipping
+	 * fields, completed date) are read through their getters.
+	 *
+	 * @since 1.3.0
+	 * @param int|WC_Order $order    Order id or order object.
+	 * @param string       $meta_key Meta key.
+	 * @return mixed Meta value, or an empty string when the order or value does not exist.
+	 */
+	function wps_tofw_get_order_meta($order, $meta_key)
+	{
+		if (! $order instanceof WC_Abstract_Order) {
+			$order = is_numeric($order) ? wc_get_order(absint($order)) : false;
+		}
+		if (! $order) {
+			return '';
+		}
+
+		if ('_completed_date' === $meta_key) {
+			$date_completed = $order->get_date_completed();
+			return $date_completed ? $date_completed->date('Y-m-d H:i:s') : '';
+		}
+
+		if (preg_match('/^_(billing|shipping)_[a-z0-9_]+$/', $meta_key)) {
+			$getter = 'get' . $meta_key;
+			if (is_callable(array($order, $getter))) {
+				return $order->{$getter}();
+			}
+		}
+
+		return $order->get_meta($meta_key, true);
+	}
+
+	/**
 	 * Fall back to the default template, which shows an access notice, when the
 	 * visitor may not view the requested order. Runs after every tracking template
 	 * filter so it applies to whichever template would render the order.
