@@ -1,11 +1,11 @@
 [![Build Status](https://img.shields.io/travis/twbs/bootstrap/v4-dev.svg)](https://travis-ci.org/twbs/bootstrap) ![Active installs](https://img.shields.io/badge/Active-4000%2B-brightgreen) ![License](https://img.shields.io/badge/License-GPLv3%20or%20later-yellowgreen) ![WP tested](https://img.shields.io/badge/WP%20tested-6.7.1-brightgreen) ![WC tested](https://img.shields.io/badge/WC%20tested-9.5.1-brightgreen) ![Requires PHP](https://img.shields.io/badge/Requires%20PHP-7.2.0-blue)
 
-# Track Orders for WooCommerce – Advance Shipment Tracking, Order Status, WooCommerce Shipping, Order Tracking Templates, Shipment Delivery Notifications
+# Track Orders for WooCommerce – Order Tracking & Shipment Tracking
 
 ![Return Refund and Exchange For WooCommerce - Create A Simple Refund System WooCommerce RMA with Exchange, Wallet & Cancel Order Features](https://ps.w.org/track-orders-for-woocommerce/assets/banner-772x250.png?rev=2672154)
 * Contributors: WP Swings
 * Author URI: [**WP Swings**](https://wpswings.com/?utm_source=wpswings-official&utm_medium=rma-github-page&utm_campaign=wpswings-official)
-* Tags: shipping, track shipped orders, status tracking, shipment tracking, order tracking
+* Tags: order tracking, shipment tracking, track order, woocommerce order tracking, tracking number
 * License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 

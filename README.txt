@@ -1,10 +1,10 @@
-=== Track Orders for WooCommerce – Multi Carrier WooCommerce Shipping === 
+=== Track Orders for WooCommerce – Order Tracking & Shipment Tracking ===
 
 Contributors: wpswings
 Donate link: https://wpswings.com/
-Tags: woocommerce shipping, track orders, shipping, shipment tracking, order tracking
+Tags: order tracking, shipment tracking, track order, woocommerce order tracking, tracking number
 Requires at least: 6.7.0
-Tested up to: 7.1.5
+Tested up to: 7.1.4
 WC requires at least: 6.5.0
 WC tested up to: 11.3.1
 Stable tag: 1.2.8
@@ -12,11 +12,11 @@ Requires PHP: 7.4
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Track Orders for WooCommerce –  WooCommerce Shipping Plugin with delivery notifications, tracking templates, and live updates.
+Order & shipment tracking for WooCommerce: tracking numbers, 1000+ carriers, branded tracking page, email alerts, WhatsApp share, partial shipments.
 
 == Description ==
 
-📦 Automate your Multi Carrier  [**WooCommerce Shipping**](https://wpswings.com/product/track-orders-for-woocommerce-pro/?utm_source=wpswings-ot-pro&utm_medium=ot-org-page&utm_campaign=ot-pro). Using this extension, you can enable customers to monitor the delivery process. They can track the shipment from order placement to doorstep delivery. 
+📦 Cut "where is my order?" (WISMO) support tickets and win repeat sales with [**WooCommerce order tracking**](https://wpswings.com/product/track-orders-for-woocommerce-pro/?utm_source=wpswings-ot-pro&utm_medium=ot-org-page&utm_campaign=ot-pro) that keeps customers informed and shows upsell offers on your tracking page. Add **shipment tracking** with tracking numbers and carrier links so customers can follow their parcel from order placement to doorstep delivery.
 
 It lets you optimize the custom WooCommerce shipping module to make waiting less boring for your customers. On top of that, you can tailor the tracking stages to your shipping process.
 

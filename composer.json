@@ -1,6 +1,6 @@
 {
   "name": "wpswings/track-orders-for-woocommerce",
-  "description": "Track Orders for WooCommerce - Multi Carrier WooCommerce Shipping",
+  "description": "Track Orders for WooCommerce - Order Tracking & Shipment Tracking",
   "type": "wordpress-plugin",
   "license": "GPL-3.0-or-later",
   "authors": [
