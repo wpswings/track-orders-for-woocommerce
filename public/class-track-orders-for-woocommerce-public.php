@@ -562,7 +562,8 @@ class Track_Orders_For_Woocommerce_Public {
 		?>
 		<script>
 			document.addEventListener("DOMContentLoaded", function() {
-				const wps_tofw_table = document.querySelector(".woocommerce-table--order-details");
+				// Classic order details table, or the Order Confirmation > Totals block table (block themes).
+				const wps_tofw_table = document.querySelector(".woocommerce-table--order-details, .wc-block-order-confirmation-totals__table");
 				if (!wps_tofw_table) return;
 
 				const wps_tofw_theadRow = wps_tofw_table.querySelector("thead tr");
@@ -578,7 +579,7 @@ class Track_Orders_For_Woocommerce_Public {
 				const wps_otfw_popup_tracking_page = <?php echo wp_json_encode( get_option( 'wps_tofwp_enable_track_order_popup' ) ); ?>;
 
 				wps_tofw_table.querySelectorAll("tbody tr.woocommerce-table__line-item").forEach(function(wps_tofw_row) {
-					const wps_tofw_productName = wps_tofw_row.querySelector(".woocommerce-table__product-name a")?.textContent.trim();
+					const wps_tofw_productName = wps_tofw_row.querySelector(".woocommerce-table__product-name a, .wc-block-order-confirmation-totals__product a")?.textContent.trim();
 					const wps_tofw_productId = wps_tofw_productMap[wps_tofw_productName] || null;
 
 					const wps_tofw_td = document.createElement("td");
