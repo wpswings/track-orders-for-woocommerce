@@ -93,6 +93,7 @@ class Track_Orders_For_Woocommerce {
 			$this->track_orders_for_woocommerce_public_hooks();
 		}
 		$this->track_orders_for_woocommerce_common_hooks();
+		$this->track_orders_for_woocommerce_block_hooks();
 
 		$this->track_orders_for_woocommerce_api_hooks();
 
@@ -161,6 +162,11 @@ class Track_Orders_For_Woocommerce {
 		 * of the plugin.
 		 */
 		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'common/class-track-orders-for-woocommerce-common.php';
+
+		/**
+		 * The class responsible for registering the Gutenberg blocks.
+		 */
+		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-track-orders-for-woocommerce-blocks.php';
 
 		$this->loader = new Track_Orders_For_Woocommerce_Loader();
 
@@ -326,6 +332,18 @@ class Track_Orders_For_Woocommerce {
 			$this->loader->add_action( 'woocommerce_thankyou', $tofw_plugin_public, 'wps_run_split_on_order', 10, 1 );
 		}
 			$this->loader->add_filter( 'body_class', $tofw_plugin_public, 'wps_tofw_add_body_class' );
+	}
+
+	/**
+	 * Register all of the hooks related to the Gutenberg blocks.
+	 *
+	 * @since 1.3.0
+	 */
+	private function track_orders_for_woocommerce_block_hooks() {
+
+		$tofw_plugin_blocks = new Track_Orders_For_Woocommerce_Blocks( $this->tofw_get_plugin_name(), $this->tofw_get_version() );
+
+		$this->loader->add_action( 'init', $tofw_plugin_blocks, 'wps_tofw_register_blocks' );
 	}
 
 	/**
