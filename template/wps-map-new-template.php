@@ -436,6 +436,8 @@ if ($allowed) {
 	<div id="map"></div>
 	<div id="directions-panel"></div>
 <?php
+	/** This action is documented in template/wps-track-order-myaccount-page-template1.php */
+	do_action( 'wps_tofw_render_return_button', $order_id );
 } else {
 	$return_request_not_send = __('Tracking Request can\'t be send. ', 'track-orders-for-woocommerce');
 
