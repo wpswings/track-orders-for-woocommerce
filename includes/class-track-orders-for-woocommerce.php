@@ -344,6 +344,13 @@ class Track_Orders_For_Woocommerce {
 		$tofw_plugin_blocks = new Track_Orders_For_Woocommerce_Blocks( $this->tofw_get_plugin_name(), $this->tofw_get_version() );
 
 		$this->loader->add_action( 'init', $tofw_plugin_blocks, 'wps_tofw_register_blocks' );
+
+		// Legacy "WPSwings Tracking Info" embed block must be registered on both admin and frontend.
+		if ( ! class_exists( 'Track_Orders_For_Woocommerce_Admin' ) ) {
+			include_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-track-orders-for-woocommerce-admin.php';
+		}
+		$tofw_plugin_embed_block = new Track_Orders_For_Woocommerce_Admin( $this->tofw_get_plugin_name(), $this->tofw_get_version() );
+		$this->loader->add_action( 'init', $tofw_plugin_embed_block, 'register_google_embed_blocks' );
 	}
 
 	/**

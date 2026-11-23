@@ -29,5 +29,17 @@ registerBlockType('wpswings/tofw-embed-block', {
     },
     save: function (props) {
         return wp.element.createElement('div', useBlockProps.save(), `[wps_tracking_info order_id="${props.attributes.id}" align="${props.attributes.alig}"]`);
-    }
+    },
+    deprecated: [
+        {
+            attributes: {
+                id: { type: 'string', default: 'Order ID' },
+                alig: { type: 'string', default: 'right' },
+            },
+            // Markup saved without block wrapper props (no generated class name).
+            save: function (props) {
+                return wp.element.createElement('div', {}, `[wps_tracking_info order_id="${props.attributes.id}" align="${props.attributes.alig}"]`);
+            }
+        }
+    ]
 });
