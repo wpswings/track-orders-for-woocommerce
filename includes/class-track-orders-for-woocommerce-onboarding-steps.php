@@ -216,6 +216,7 @@ class Track_Orders_For_Woocommerce_Onboarding_Steps {
 					'ajaxurl'       => admin_url( 'admin-ajax.php' ),
 					'msp_auth_nonce'    => wp_create_nonce( 'wps_msp_onboarding_nonce' ),
 					'msp_current_screen'    => $pagenow,
+					'select_placeholder'    => __( 'Select All Suitable Options...', 'track-orders-for-woocommerce' ),
 					'msp_current_supported_slug'    =>
 					// desc - filter for trial.
 					apply_filters( 'wps_msp_deactivation_supported_slug', array( $msp_current_slug ) ),

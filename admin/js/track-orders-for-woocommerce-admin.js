@@ -102,9 +102,9 @@ jQuery('.wps_tofw_other_setting_upload_logo').click(function(e) {
     
     // Create the media frame if it doesn't exist
     var frame = wp.media({
-        title: 'Select or Upload Image',
+        title: tofw_admin_param.media_title,
         button: {
-            text: 'Use this image'
+            text: tofw_admin_param.media_button
         },
         multiple: false  // Set to true to allow multiple files
     });
@@ -146,7 +146,7 @@ jQuery('.wps_tofw_other_setting_upload_logo').click(function(e) {
 		jQuery(this).val(tofw_admin_param.wps_tofw_close_button);
     }
     else {
-      jQuery(this).val('Create Custom Order Status');
+      jQuery(this).val(tofw_admin_param.create_custom_status);
     }
   });
 	
@@ -1284,7 +1284,7 @@ jQuery(function ($) {
 				notify_admin: $('#wps_send_admin_mail').is(':checked') ? 'yes' : 'no',
 				nonce: tofw_admin_param.wps_tofw_nonce,
 			}, function () {
-				alert('Settings Saved!');
+				alert(tofw_admin_param.settings_saved);
 				$('#wps-email-popup').fadeOut(150);
 			});
 
@@ -1413,7 +1413,7 @@ jQuery(function ($) {
 			},
 		}).done(function (response) {
 			if (!response || !response.success) {
-				const message = response && response.data && response.data.message ? response.data.message : 'Something went wrong while submitting the form. Please try again.';
+				const message = response && response.data && response.data.message ? response.data.message : tofw_admin_param.generic_error;
 				setStatus(message, 'error');
 				return;
 			}
@@ -1428,7 +1428,7 @@ jQuery(function ($) {
 			}, 2500);
 		}).fail(function (xhr) {
 			const response = xhr && xhr.responseJSON ? xhr.responseJSON : null;
-			const message = response && response.data && response.data.message ? response.data.message : 'Something went wrong while submitting the form. Please try again.';
+			const message = response && response.data && response.data.message ? response.data.message : tofw_admin_param.generic_error;
 			setStatus(message, 'error');
 		}).always(function () {
 			$submit.prop('disabled', false).text(submitLabel);

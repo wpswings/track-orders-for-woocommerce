@@ -1,9 +1,10 @@
 const { registerBlockType } = wp.blocks;
 const { TextControl, PanelBody } = wp.components;
 const { useState } = wp.element;
+const { __ } = wp.i18n;
 
 registerBlockType('wpswings/tofw-embed-block', {
-    title: 'WPSwings Tracking Info',
+    title: __( 'WPSwings Tracking Info', 'track-orders-for-woocommerce' ),
     icon: 'location-alt',
     category: 'widgets',
     attributes: {
@@ -13,18 +14,18 @@ registerBlockType('wpswings/tofw-embed-block', {
     edit: function (props) {
         return wp.element.createElement('div', useBlockProps(),
             wp.element.createElement(TextControl, {
-                label: 'Order ID',
+                label: __( 'Order ID', 'track-orders-for-woocommerce' ),
                 value: props.attributes.id,
                 onChange: function (id) { props.setAttributes({ id: id }) },
-                placeholder: 'Enter Order ID'
+                placeholder: __( 'Enter Order ID', 'track-orders-for-woocommerce' )
             }),
             wp.element.createElement(TextControl, {
-                label: 'Alignment',
+                label: __( 'Alignment', 'track-orders-for-woocommerce' ),
                 value: props.attributes.alig,
                 onChange: function (alig) { props.setAttributes({ alig: alig }) },
-                placeholder: 'Enter Alignment (e.g., right)'
+                placeholder: __( 'Enter Alignment (e.g., right)', 'track-orders-for-woocommerce' )
             }),
-            wp.element.createElement('p', {}, `Shortcode Output: [wps_tracking_info order_id="${props.attributes.id}" align="${props.attributes.alig}"]`)
+            wp.element.createElement('p', {}, __( 'Shortcode Output:', 'track-orders-for-woocommerce' ) + ` [wps_tracking_info order_id="${props.attributes.id}" align="${props.attributes.alig}"]`)
         );
     },
     save: function (props) {

@@ -431,7 +431,7 @@ jQuery(document).ready(function ($) {
 				}
 			});
 		} else {
-			alert('Please enter a tracking number and select a courier.');
+			alert(tofw_public_param.tracking_required_message);
 		}
   });
 });

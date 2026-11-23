@@ -73,6 +73,7 @@ class Track_Orders_For_Woocommerce_Common {
 			array(
 				'ajaxurl' => admin_url( 'admin-ajax.php' ),
 				'nonce'  => wp_create_nonce( 'tofw_common_param_nonce' ),
+				'order_mismatch_message' => __( 'The order id and email you provided do not match. Please try again.', 'track-orders-for-woocommerce' ),
 			)
 		);
 		wp_enqueue_script( $this->plugin_name . 'common' );

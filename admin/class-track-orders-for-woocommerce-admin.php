@@ -142,6 +142,11 @@ class Track_Orders_For_Woocommerce_Admin {
 					'talk_to_expert_nonce' => wp_create_nonce( 'wps_tofw_talk_to_expert_nonce' ),
 					'talk_to_expert_action' => 'wps_tofw_submit_talk_to_expert',
 					'talk_to_expert_success_fallback' => __( 'Thank you for submitting your request. Our team will contact you soon.', 'track-orders-for-woocommerce' ),
+					'media_title' => __( 'Select or Upload Image', 'track-orders-for-woocommerce' ),
+					'media_button' => __( 'Use this image', 'track-orders-for-woocommerce' ),
+					'create_custom_status' => __( 'Create Custom Order Status', 'track-orders-for-woocommerce' ),
+					'settings_saved' => __( 'Settings Saved!', 'track-orders-for-woocommerce' ),
+					'generic_error' => __( 'Something went wrong while submitting the form. Please try again.', 'track-orders-for-woocommerce' ),
 
 				)
 			);
@@ -1993,10 +1998,12 @@ class Track_Orders_For_Woocommerce_Admin {
 		wp_register_script(
 			'tofw-embed-block',
 			plugins_url( 'src/js/tofw-embed-block.js', __FILE__ ),
-			array( 'wp-blocks', 'wp-editor', 'wp-element', 'wp-components' ),
+			array( 'wp-blocks', 'wp-editor', 'wp-element', 'wp-components', 'wp-i18n' ),
 			filemtime( plugin_dir_path( __FILE__ ) . '/src/js/tofw-embed-block.js' ),
 			true
 		);
+
+		wp_set_script_translations( 'tofw-embed-block', 'track-orders-for-woocommerce' );
 
 		register_block_type(
 			'wpswings/tofw-embed-block',

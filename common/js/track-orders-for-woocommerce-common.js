@@ -92,7 +92,7 @@
 					   var encodedUri = encodeURI(csvContent);
 							download(filename, encodedUri);
 					} else {
-						alert('The order id and email you provided do not match. Please try again.');
+						alert(tofw_common_param.order_mismatch_message);
 					}
 				
 				}	
