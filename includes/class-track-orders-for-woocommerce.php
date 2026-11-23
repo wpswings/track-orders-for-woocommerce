@@ -96,6 +96,8 @@ class Track_Orders_For_Woocommerce {
 
 		$this->track_orders_for_woocommerce_api_hooks();
 
+		$this->track_orders_for_woocommerce_estimated_delivery_hooks();
+
 	}
 
 	/**
@@ -161,6 +163,13 @@ class Track_Orders_For_Woocommerce {
 		 * of the plugin.
 		 */
 		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'common/class-track-orders-for-woocommerce-common.php';
+
+		/**
+		 * The class responsible for the rules based estimated delivery date.
+		 *
+		 * @since 1.3.0
+		 */
+		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-track-orders-for-woocommerce-estimated-delivery.php';
 
 		$this->loader = new Track_Orders_For_Woocommerce_Loader();
 
@@ -344,6 +353,18 @@ class Track_Orders_For_Woocommerce {
 
 
 	/**
+	 * Register all of the hooks related to the estimated delivery date feature.
+	 *
+	 * @since 1.3.0
+	 */
+	private function track_orders_for_woocommerce_estimated_delivery_hooks() {
+
+		$tofw_plugin_edd = new Track_Orders_For_Woocommerce_Estimated_Delivery();
+		$tofw_plugin_edd->register_hooks( $this->loader );
+
+	}
+
+	/**
 	 * Run the loader to execute all of the hooks with WordPress.
 	 *
 	 * @since 1.0.0
@@ -481,6 +502,11 @@ class Track_Orders_For_Woocommerce {
 			'title'       => esc_html__( 'Shipping Services', 'track-orders-for-woocommerce' ),
 			'name'        => 'track-orders-for-woocommerce-shipping-services',
 			'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-shipping-services.php',
+		);
+		$tofw_default_tabs['track-orders-for-woocommerce-estimated-delivery'] = array(
+			'title'       => esc_html__( 'Estimated Delivery', 'track-orders-for-woocommerce' ),
+			'name'        => 'track-orders-for-woocommerce-estimated-delivery',
+			'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-estimated-delivery.php',
 		);
 		$tofw_default_tabs['track-orders-for-woocommerce-order-api']      = array(
 			'title'       => esc_html__( 'Order API', 'track-orders-for-woocommerce' ),
