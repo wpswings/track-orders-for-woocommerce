@@ -183,7 +183,8 @@ class Track_Orders_For_Woocommerce_Rest_Api {
 							'sanitize_callback' => 'sanitize_text_field',
 						),
 						'notify_customer' => array(
-							'type' => 'boolean',
+							'type'        => 'boolean',
+							'description' => esc_html__( 'false skips the tracking e-mail, true always sends it. Omit to send it once per order, like the order edit screen.', 'track-orders-for-woocommerce' ),
 						),
 					),
 				),

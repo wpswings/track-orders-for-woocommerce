@@ -18,7 +18,6 @@ if ( ! current_user_can( 'manage_woocommerce' ) ) {
 }
 
 $tofw_import_sample_url = wp_nonce_url( admin_url( 'admin-post.php?action=wps_tofw_tracking_import_sample' ), Track_Orders_For_Woocommerce_Tracking_Import::NONCE );
-$tofw_import_emails_on  = 'on' === get_option( 'wps_tofw_email_notifier', 'no' );
 ?>
 <div class="tofwp-license-tab__hero">
 	<div class="tofwp-license-tab__hero-copy">
@@ -98,6 +97,11 @@ $tofw_import_emails_on  = 'on' === get_option( 'wps_tofw_email_notifier', 'no' )
 					<td><?php esc_html_e( 'No', 'track-orders-for-woocommerce' ); ?></td>
 					<td><?php esc_html_e( 'New order status after adding tracking (e.g. completed, wc-completed or a custom status slug). Leave empty to keep the current status.', 'track-orders-for-woocommerce' ); ?></td>
 				</tr>
+				<tr>
+					<td><code>notify_customer</code></td>
+					<td><?php esc_html_e( 'No', 'track-orders-for-woocommerce' ); ?></td>
+					<td><?php esc_html_e( 'yes / no. "no" skips the tracking e-mail for this row, "yes" always sends it. Leave empty to send it once per order, like tracking added from the order edit screen.', 'track-orders-for-woocommerce' ); ?></td>
+				</tr>
 			</tbody>
 		</table>
 	</div>
@@ -140,15 +144,7 @@ $tofw_import_emails_on  = 'on' === get_option( 'wps_tofw_email_notifier', 'no' )
 		<div class="wps-tofw-import__row">
 			<label for="wps-tofw-import-notify"><?php esc_html_e( 'Customer tracking e-mail', 'track-orders-for-woocommerce' ); ?></label>
 			<select id="wps-tofw-import-notify">
-				<option value="settings">
-					<?php
-					echo esc_html(
-						$tofw_import_emails_on
-							? __( 'Follow plugin e-mail settings (currently: send)', 'track-orders-for-woocommerce' )
-							: __( 'Follow plugin e-mail settings (currently: do not send)', 'track-orders-for-woocommerce' )
-					);
-					?>
-				</option>
+				<option value="settings"><?php esc_html_e( 'Send once per order, unless the row sets notify_customer to no', 'track-orders-for-woocommerce' ); ?></option>
 				<option value="none"><?php esc_html_e( 'Do not send tracking e-mails', 'track-orders-for-woocommerce' ); ?></option>
 			</select>
 			<button type="button" class="button button-primary" id="wps-tofw-import-start"><?php esc_html_e( 'Import valid rows', 'track-orders-for-woocommerce' ); ?></button>

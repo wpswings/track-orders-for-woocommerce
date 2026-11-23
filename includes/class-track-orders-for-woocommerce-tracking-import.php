@@ -85,7 +85,14 @@ class Track_Orders_For_Woocommerce_Tracking_Import {
 	 *
 	 * @var array
 	 */
-	const COLUMNS = array( 'order_id', 'carrier', 'tracking_number', 'ship_date', 'items', 'status' );
+	const COLUMNS = array( 'order_id', 'carrier', 'tracking_number', 'ship_date', 'items', 'status', 'notify_customer' );
+
+	/**
+	 * Days after which a job that is still queued/processing is abandoned by the cleanup.
+	 *
+	 * @var int
+	 */
+	const MAX_JOB_AGE_DAYS = 3;
 
 	/**
 	 * Plugin version (asset versioning).
@@ -225,6 +232,7 @@ class Track_Orders_For_Woocommerce_Tracking_Import {
 			'ship_date'       => array( 'ship_date', 'ship date', 'shipped_date', 'date_shipped', 'shipping_date' ),
 			'items'           => array( 'items', 'item', 'products' ),
 			'status'          => array( 'status', 'order_status', 'order status' ),
+			'notify_customer' => array( 'notify_customer', 'notify customer', 'notify', 'send_email', 'send email' ),
 		);
 
 		$map = array();
@@ -470,6 +478,20 @@ class Track_Orders_For_Woocommerce_Tracking_Import {
 	}
 
 	/**
+	 * Read the optional notify_customer CSV cell.
+	 *
+	 * @param array $data Row data.
+	 * @return bool|null Null when the cell is empty or missing.
+	 */
+	private function row_notify( $data ) {
+		$value = isset( $data['notify_customer'] ) ? strtolower( trim( (string) $data['notify_customer'] ) ) : '';
+		if ( '' === $value ) {
+			return null;
+		}
+		return in_array( $value, array( '1', 'yes', 'y', 'true', 'on' ), true );
+	}
+
+	/**
 	 * Count summary of a job.
 	 *
 	 * @param array $job Job.
@@ -583,7 +605,6 @@ class Track_Orders_For_Woocommerce_Tracking_Import {
 		}
 
 		$job['status'] = 'processing';
-		$notify        = 'none' === $job['notify'] ? false : null;
 
 		if ( function_exists( 'wc_set_time_limit' ) ) {
 			wc_set_time_limit( 0 );
@@ -596,8 +617,14 @@ class Track_Orders_For_Woocommerce_Tracking_Import {
 		}
 
 		foreach ( $job['queue'][ $batch ] as $index ) {
-			$row  = $job['rows'][ $index ];
-			$args = array_merge(
+			$row = $job['rows'][ $index ];
+			if ( '' !== (string) $row['result'] ) {
+				continue; // Already handled by an earlier, interrupted run of this batch.
+			}
+
+			// "Do not send" in the import screen wins, otherwise the row's notify_customer cell (empty = default).
+			$notify = 'none' === $job['notify'] ? false : $this->row_notify( $row['data'] );
+			$args   = array_merge(
 				$this->row_to_args( $row['data'] ),
 				array(
 					'source'          => 'csv',
@@ -607,7 +634,7 @@ class Track_Orders_For_Woocommerce_Tracking_Import {
 
 			try {
 				$result = Track_Orders_For_Woocommerce_Tracking_Service::add_tracking( (int) $row['data']['order_id'], $args );
-			} catch ( Exception $e ) {
+			} catch ( \Throwable $e ) {
 				$result = new WP_Error( 'wps_tofw_import_exception', $e->getMessage() );
 			}
 
@@ -620,6 +647,9 @@ class Track_Orders_For_Woocommerce_Tracking_Import {
 				++$job['succeeded'];
 				$job['rows'][ $index ]['result'] = 'success';
 			}
+
+			// Persist after each row so a fatal error / timeout does not lose or repeat finished rows.
+			self::save_job( $job );
 		}
 
 		wp_set_current_user( $previous_user );
@@ -694,11 +724,27 @@ class Track_Orders_For_Woocommerce_Tracking_Import {
 	public function cleanup_job( $job_id ) {
 		$job = self::get_job( $job_id );
 		if ( $job && in_array( $job['status'], array( 'queued', 'processing' ), true ) ) {
-			// Still running: try again later.
-			if ( function_exists( 'as_schedule_single_action' ) ) {
-				as_schedule_single_action( time() + DAY_IN_SECONDS, self::CLEANUP_HOOK, array( 'job_id' => $job_id ), self::GROUP );
+			$created = isset( $job['created'] ) ? (int) $job['created'] : 0;
+			if ( $created > time() - self::MAX_JOB_AGE_DAYS * DAY_IN_SECONDS ) {
+				// Still running: try again later.
+				if ( function_exists( 'as_schedule_single_action' ) ) {
+					as_schedule_single_action( time() + DAY_IN_SECONDS, self::CLEANUP_HOOK, array( 'job_id' => $job_id ), self::GROUP );
+				}
+				return;
 			}
-			return;
+
+			// Stuck (e.g. a batch died with a fatal error): give up instead of rescheduling forever.
+			$job['status']   = 'failed';
+			$job['finished'] = time();
+			self::save_job( $job );
+
+			/**
+			 * Fires when a CSV tracking import is abandoned because it did not finish in time.
+			 *
+			 * @since 1.3.0
+			 * @param array $job Job data.
+			 */
+			do_action( 'wps_tofw_tracking_import_failed', $job );
 		}
 		delete_option( self::JOB_OPTION_PREFIX . preg_replace( '/[^a-z0-9]/', '', (string) $job_id ) );
 	}
@@ -727,10 +773,10 @@ class Track_Orders_For_Woocommerce_Tracking_Import {
 
 		$rows = array(
 			self::COLUMNS,
-			array( '1234', 'fedex', '794612345678', gmdate( 'Y-m-d' ), '', 'completed' ),
-			array( '1235', 'UPS', '1Z999AA10123456784', gmdate( 'Y-m-d' ), 'TSHIRT-RED-M:2|MUG-01:1', '' ),
-			array( '1235', 'UPS', '1Z999AA10123456785', gmdate( 'Y-m-d' ), 'TSHIRT-RED-M:1', 'completed' ),
-			array( '1236', 'DHL', 'JD014600006281230704', '', '#57:1', '' ),
+			array( '1234', 'fedex', '794612345678', gmdate( 'Y-m-d' ), '', 'completed', '' ),
+			array( '1235', 'UPS', '1Z999AA10123456784', gmdate( 'Y-m-d' ), 'TSHIRT-RED-M:2|MUG-01:1', '', 'yes' ),
+			array( '1235', 'UPS', '1Z999AA10123456785', gmdate( 'Y-m-d' ), 'TSHIRT-RED-M:1', 'completed', 'yes' ),
+			array( '1236', 'DHL', 'JD014600006281230704', '', '#57:1', '', 'no' ),
 		);
 
 		$this->output_csv( 'tracking-import-sample.csv', $rows );
@@ -756,7 +802,7 @@ class Track_Orders_For_Woocommerce_Tracking_Import {
 			}
 			$out = array( $row['line'] );
 			foreach ( self::COLUMNS as $column ) {
-				$out[] = $row['data'][ $column ];
+				$out[] = isset( $row['data'][ $column ] ) ? $row['data'][ $column ] : '';
 			}
 			$out[]  = implode( ' ', $row['errors'] );
 			$rows[] = $out;

@@ -365,6 +365,10 @@ class Track_Orders_For_Woocommerce {
 		$this->loader->add_action( Track_Orders_For_Woocommerce_Tracking_Import::BATCH_HOOK, $tofw_tracking_import, 'process_batch', 10, 2 );
 		$this->loader->add_action( Track_Orders_For_Woocommerce_Tracking_Import::CLEANUP_HOOK, $tofw_tracking_import, 'cleanup_job', 10, 1 );
 
+		// Keep every tracking number in the shipments list (manual / shipping plugin saves) and show it.
+		$this->loader->add_action( 'wps_tofw_tracking_saved', 'Track_Orders_For_Woocommerce_Tracking_Service', 'on_tracking_saved', 20, 4 );
+		$this->loader->add_action( 'wps_tofw_after_tracking_details', 'Track_Orders_For_Woocommerce_Tracking_Service', 'render_customer_shipments', 20, 1 );
+
 		if ( is_admin() ) {
 			$this->loader->add_filter( 'track_orders_for_woocmmerce_admin_settings_tabs', $tofw_tracking_import, 'add_settings_tab' );
 			$this->loader->add_action( 'admin_enqueue_scripts', $tofw_tracking_import, 'enqueue_scripts' );
@@ -374,6 +378,7 @@ class Track_Orders_For_Woocommerce {
 			$this->loader->add_action( 'wp_ajax_wps_tofw_tracking_import_progress', $tofw_tracking_import, 'ajax_progress' );
 			$this->loader->add_action( 'admin_post_wps_tofw_tracking_import_sample', $tofw_tracking_import, 'download_sample' );
 			$this->loader->add_action( 'admin_post_wps_tofw_tracking_import_report', $tofw_tracking_import, 'download_report' );
+			$this->loader->add_action( 'add_meta_boxes', 'Track_Orders_For_Woocommerce_Tracking_Service', 'add_shipments_meta_box', 30, 2 );
 		}
 	}
 

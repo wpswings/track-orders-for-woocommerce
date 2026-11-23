@@ -258,26 +258,42 @@ class Track_Orders_For_Woocommerce_Tracking_Service {
 		$shipments = $order->get_meta( self::META_SHIPMENTS, true );
 		$shipments = is_array( $shipments ) ? array_values( $shipments ) : array();
 
-		$legacy_number = (string) $order->get_meta( 'wps_tofw_package_tracking_number', true );
-		if ( '' !== $legacy_number && ! self::tracking_number_exists( $shipments, $legacy_number ) ) {
-			$legacy_carrier = self::normalize_carrier( (string) $order->get_meta( 'wps_tofw_selected_shipping_service', true ) );
-			array_unshift(
-				$shipments,
-				array(
-					'id'              => 'manual',
-					'carrier'         => $legacy_carrier['key'],
-					'carrier_label'   => $legacy_carrier['label'],
-					'tracking_number' => $legacy_number,
-					'ship_date'       => '',
-					'items'           => array(),
-					'source'          => 'manual',
-					'date_added'      => '',
-					'added_by'        => 0,
-				)
-			);
+		$legacy = self::get_legacy_shipment( $order, $shipments, 'manual' );
+		if ( $legacy ) {
+			array_unshift( $shipments, $legacy );
 		}
 
 		return $shipments;
+	}
+
+	/**
+	 * The single tracking number saved through the order edit screen (legacy keys), as a
+	 * shipment entry, when it is not already part of the shipments list.
+	 *
+	 * @since 1.3.0
+	 * @param WC_Order $order     Order.
+	 * @param array    $shipments Stored shipments.
+	 * @param string   $id        Shipment id to use.
+	 * @return array|null
+	 */
+	private static function get_legacy_shipment( $order, $shipments, $id ) {
+		$legacy_number = trim( (string) $order->get_meta( 'wps_tofw_package_tracking_number', true ) );
+		if ( '' === $legacy_number || self::tracking_number_exists( $shipments, $legacy_number ) ) {
+			return null;
+		}
+
+		$legacy_carrier = self::normalize_carrier( (string) $order->get_meta( 'wps_tofw_selected_shipping_service', true ) );
+		return array(
+			'id'              => $id,
+			'carrier'         => $legacy_carrier['key'],
+			'carrier_label'   => $legacy_carrier['label'],
+			'tracking_number' => $legacy_number,
+			'ship_date'       => '',
+			'items'           => array(),
+			'source'          => 'manual',
+			'date_added'      => '',
+			'added_by'        => 0,
+		);
 	}
 
 	/**
@@ -505,7 +521,8 @@ class Track_Orders_For_Woocommerce_Tracking_Service {
 	 * @param WC_Order|int $order Order or id.
 	 * @param array        $args See prepare(). Extra keys:
 	 *                           - `source`          string 'csv'|'rest'|'manual' (default 'manual').
-	 *                           - `notify_customer` null (follow plugin settings), true or false.
+	 *                           - `notify_customer` null (send once per order, like the order edit screen),
+	 *                             true (always send) or false (never send).
 	 * @return array|WP_Error The stored shipment or error.
 	 */
 	public static function add_tracking( $order, $args ) {
@@ -539,8 +556,15 @@ class Track_Orders_For_Woocommerce_Tracking_Service {
 		 */
 		$shipment = apply_filters( 'wps_tofw_tracking_shipment_data', $shipment, $order, $args );
 
-		$stored   = $order->get_meta( self::META_SHIPMENTS, true );
-		$stored   = is_array( $stored ) ? array_values( $stored ) : array();
+		$stored = $order->get_meta( self::META_SHIPMENTS, true );
+		$stored = is_array( $stored ) ? array_values( $stored ) : array();
+
+		// Keep the tracking number saved from the order edit screen before the legacy keys are overwritten.
+		$legacy = self::get_legacy_shipment( $order, $stored, 'shp_' . strtolower( wp_generate_password( 10, false, false ) ) );
+		if ( $legacy ) {
+			array_unshift( $stored, $legacy );
+		}
+
 		$stored[] = $shipment;
 
 		$order->update_meta_data( self::META_SHIPMENTS, $stored );
@@ -632,8 +656,9 @@ class Track_Orders_For_Woocommerce_Tracking_Service {
 	/**
 	 * Whether the tracking e-mail should be sent.
 	 *
-	 * Follows the plugin "Enable E-mail Notification Feature" setting (wps_tofw_email_notifier)
-	 * unless the caller explicitly passes true/false.
+	 * Same rule as the manual "Shipping Services" order metabox: the tracking e-mail is sent
+	 * once per order (flag `wps_tofw_tracking_id_sent`). Callers can pass false (CSV column /
+	 * REST `notify_customer`) to skip it, or true to send it even when it was already sent.
 	 *
 	 * @since 1.3.0
 	 * @param WC_Order  $order Order.
@@ -641,7 +666,11 @@ class Track_Orders_For_Woocommerce_Tracking_Service {
 	 * @return bool
 	 */
 	public static function should_send_email( $order, $notify = null ) {
-		$send = null === $notify ? ( 'on' === get_option( 'wps_tofw_email_notifier', 'no' ) ) : (bool) $notify;
+		if ( null === $notify ) {
+			$send = 1 !== (int) $order->get_meta( 'wps_tofw_tracking_id_sent', true );
+		} else {
+			$send = (bool) $notify;
+		}
 
 		/**
 		 * Filter whether the tracking added e-mail is sent to the customer.
@@ -655,7 +684,10 @@ class Track_Orders_For_Woocommerce_Tracking_Service {
 	}
 
 	/**
-	 * Send the tracking e-mail to the customer using the WooCommerce mailer template.
+	 * Send the tracking e-mail to the customer.
+	 *
+	 * Uses the same subject and markup as the e-mail sent when tracking is saved from the
+	 * order edit screen (Track_Orders_For_Woocommerce_Admin::wps_tofw_save_shipping_services_meta()).
 	 *
 	 * @since 1.3.0
 	 * @param WC_Order $order Order.
@@ -668,52 +700,351 @@ class Track_Orders_For_Woocommerce_Tracking_Service {
 			return false;
 		}
 
-		$mailer = WC()->mailer();
-
-		/* translators: %s: order number */
-		$subject = sprintf( __( 'Your order #%s has shipped', 'track-orders-for-woocommerce' ), $order->get_order_number() );
-		$heading = __( 'Your order is on its way', 'track-orders-for-woocommerce' );
-
-		$track_url = '';
-		$pages     = get_option( 'wps_tofw_tracking_page' );
-		if ( is_array( $pages ) && ! empty( $pages['pages']['wps_track_order_page'] ) ) {
-			$permalink = get_permalink( $pages['pages']['wps_track_order_page'] );
-			$track_url = $permalink ? $permalink . '?' . $order->get_id() : '';
-		}
-
-		$rows  = '<tr><th style="text-align:left;">' . esc_html__( 'Carrier', 'track-orders-for-woocommerce' ) . '</th><td>' . esc_html( $shipment['carrier_label'] ) . '</td></tr>';
-		$rows .= '<tr><th style="text-align:left;">' . esc_html__( 'Tracking number', 'track-orders-for-woocommerce' ) . '</th><td>' . esc_html( $shipment['tracking_number'] ) . '</td></tr>';
-		$rows .= '<tr><th style="text-align:left;">' . esc_html__( 'Ship date', 'track-orders-for-woocommerce' ) . '</th><td>' . esc_html( date_i18n( wc_date_format(), strtotime( $shipment['ship_date'] ) ) ) . '</td></tr>';
-		if ( ! empty( $shipment['items'] ) ) {
-			$list = array();
-			foreach ( $shipment['items'] as $item ) {
-				$list[] = esc_html( $item['name'] ) . ' &times; ' . absint( $item['qty'] );
-			}
-			$rows .= '<tr><th style="text-align:left;">' . esc_html__( 'Items in this shipment', 'track-orders-for-woocommerce' ) . '</th><td>' . implode( '<br>', $list ) . '</td></tr>';
-		}
-
-		$body  = '<p>' . sprintf(
-			/* translators: 1: customer first name, 2: order number */
-			esc_html__( 'Hi %1$s, good news: items from your order #%2$s have shipped.', 'track-orders-for-woocommerce' ),
-			esc_html( $order->get_billing_first_name() ),
-			esc_html( $order->get_order_number() )
-		) . '</p>';
-		$body .= '<table cellspacing="0" cellpadding="6" border="1" style="width:100%;border-collapse:collapse;">' . $rows . '</table>';
-		if ( $track_url ) {
-			$body .= '<p><a href="' . esc_url( $track_url ) . '">' . esc_html__( 'Track your order', 'track-orders-for-woocommerce' ) . '</a></p>';
-		}
+		$subject = __( 'Your Order Status for Order #', 'track-orders-for-woocommerce' ) . $order->get_id();
 
 		/**
-		 * Filter the tracking e-mail body (HTML, before the WooCommerce wrapper).
+		 * Filter the tracking e-mail body (full HTML document).
 		 *
 		 * @since 1.3.0
 		 * @param string   $body     Body HTML.
 		 * @param WC_Order $order    Order.
 		 * @param array    $shipment Shipment.
 		 */
-		$body = apply_filters( 'wps_tofw_tracking_added_email_body', $body, $order, $shipment );
+		$message = apply_filters( 'wps_tofw_tracking_added_email_body', self::get_tracking_email_html( $order, $shipment ), $order, $shipment );
 
-		return (bool) $mailer->send( $to, $subject, $mailer->wrap_message( $heading, $body ), array( 'Content-Type: text/html; charset=UTF-8' ) );
+		return (bool) WC()->mailer()->send( $to, $subject, $message, array( 'Content-Type: text/html; charset=UTF-8' ) );
+	}
+
+	/**
+	 * Tracking e-mail markup of the order edit screen flow, for one shipment.
+	 *
+	 * @since 1.3.0
+	 * @param WC_Order $order Order.
+	 * @param array    $shipment Shipment.
+	 * @return string
+	 */
+	public static function get_tracking_email_html( $order, $shipment ) {
+		$order_id            = $order->get_id();
+		$wps_tracking_url    = (string) $order->get_meta( 'wps_tofw_enhanced_order_company', true );
+		$wps_tracking_number = (string) $order->get_meta( 'wps_tofw_enhanced_tracking_no', true );
+		$mail_header         = __( 'Current Order Status is ', 'track-orders-for-woocommerce' ) . wc_get_order_status_name( $order->get_status() );
+		$mail_footer         = '';
+
+		$message = '<html>
+				<body>
+					<style>
+						body {
+							box-shadow: 2px 2px 10px #ccc;
+							color: #767676;
+							font-family: Arial,sans-serif;
+							margin: 80px auto;
+							max-width: 700px;
+							padding-bottom: 30px;
+							width: 100%;
+						}
+
+						h2 {
+							font-size: 30px;
+							margin-top: 0;
+							color: #fff;
+							padding: 40px;
+							background-color: #557da1;
+						}
+
+						h4 {
+							color: #557da1;
+							font-size: 20px;
+							margin-bottom: 10px;
+						}
+
+						.content {
+							padding: 0 40px;
+						}
+
+						.Customer-detail ul li p {
+							margin: 0;
+						}
+
+						.details .Shipping-detail {
+							width: 40%;
+							float: right;
+						}
+
+						.details .Billing-detail {
+							width: 60%;
+							float: left;
+						}
+
+						.details .Shipping-detail ul li,.details .Billing-detail ul li {
+							list-style-type: none;
+							margin: 0;
+						}
+
+						.details .Billing-detail ul,.details .Shipping-detail ul {
+							margin: 0;
+							padding: 0;
+						}
+
+						.clear {
+							clear: both;
+						}
+
+						table,td,th {
+							border: 2px solid #ccc;
+							padding: 15px;
+							text-align: left;
+						}
+
+						table {
+							border-collapse: collapse;
+							width: 100%;
+						}
+
+						.info {
+							display: inline-block;
+						}
+
+						.bold {
+							font-weight: bold;
+						}
+
+						.footer {
+							margin-top: 30px;
+							text-align: center;
+							color: #99B1D8;
+							font-size: 12px;
+						}
+						dl.variation dd {
+							font-size: 12px;
+							margin: 0;
+						}
+					</style>
+
+					<div style="padding: 36px 48px; background-color:#557DA1;color: #fff; font-size: 30px; font-weight: 300; font-family:helvetica;" class="header">
+						' . esc_html( $mail_header ) . '
+					</div>
+
+					<div class="content">
+
+						<div class="Order">
+							<h4>Order #' . esc_html( $order_id ) . '</h4>
+							<table>
+								<tbody>
+									<tr>
+										<th>' . esc_html__( 'Order Id', 'track-orders-for-woocommerce' ) . '</th>
+										<th>' . esc_html__( 'Tracking Number ', 'track-orders-for-woocommerce' ) . '</th>
+									</tr>';
+		$message .= '<tr>
+									<td>' . esc_html( $order_id ) . '</td>
+									<td>' . esc_html( $shipment['tracking_number'] ) . '</td>
+								</tr>';
+		$message .= '</tbody>
+							</table>';
+		if ( ! empty( $shipment['items'] ) ) {
+			$list = array();
+			foreach ( $shipment['items'] as $item ) {
+				$list[] = esc_html( $item['name'] ) . ' &times; ' . absint( $item['qty'] );
+			}
+			$message .= '<p>' . esc_html__( 'Items in this shipment', 'track-orders-for-woocommerce' ) . ': ' . implode( ', ', $list ) . '</p>';
+		}
+		$message .= '<div>
+								<a href="' . esc_url( $wps_tracking_url ) . '">' . esc_html( $wps_tracking_number ) . '</a>
+							</div>
+						</div>
+					</div>
+					<div style="text-align: center; padding: 10px;" class="footer">
+						' . $mail_footer . '
+					</div>
+				</body>
+				</html>';
+
+		return $message;
+	}
+
+	/**
+	 * Add tracking saved by another flow (manual metabox, shipping plugin auto import) to the
+	 * shipments list, so every tracking number of the order stays visible.
+	 *
+	 * Hooked to `wps_tofw_tracking_saved` ( WC_Order|int $order, string $service, string $tracking_number, array $args ).
+	 * Calls coming from add_tracking() carry `$args['shipment']` and are already stored.
+	 *
+	 * @since 1.3.0
+	 * @param WC_Order|int $order           Order or id.
+	 * @param string       $service         Shipping service key.
+	 * @param string       $tracking_number Tracking number.
+	 * @param array        $args            Context (source etc.).
+	 * @return void
+	 */
+	public static function on_tracking_saved( $order, $service = '', $tracking_number = '', $args = array() ) {
+		$args = is_array( $args ) ? $args : array();
+		if ( isset( $args['shipment'] ) ) {
+			return;
+		}
+
+		$order = $order instanceof WC_Order ? $order : wc_get_order( absint( $order ) );
+		if ( ! $order || 'shop_order_refund' === $order->get_type() ) {
+			return;
+		}
+
+		$tracking_number = trim( sanitize_text_field( (string) $tracking_number ) );
+		if ( '' === $tracking_number ) {
+			return;
+		}
+		$carrier = self::normalize_carrier( $service );
+
+		$stored = $order->get_meta( self::META_SHIPMENTS, true );
+		$stored = is_array( $stored ) ? array_values( $stored ) : array();
+		foreach ( $stored as $shipment ) {
+			if ( isset( $shipment['tracking_number'] ) && 0 === strcasecmp( (string) $shipment['tracking_number'], $tracking_number )
+				&& 0 === strcasecmp( (string) ( isset( $shipment['carrier'] ) ? $shipment['carrier'] : '' ), $carrier['key'] ) ) {
+				return;
+			}
+		}
+
+		$stored[] = array(
+			'id'              => 'shp_' . strtolower( wp_generate_password( 10, false, false ) ),
+			'carrier'         => $carrier['key'],
+			'carrier_label'   => $carrier['label'],
+			'tracking_number' => $tracking_number,
+			'ship_date'       => function_exists( 'current_time' ) ? current_time( 'Y-m-d' ) : gmdate( 'Y-m-d' ),
+			'items'           => array(),
+			'source'          => isset( $args['source'] ) ? sanitize_key( $args['source'] ) : 'manual',
+			'date_added'      => gmdate( 'c' ),
+			'added_by'        => get_current_user_id(),
+		);
+
+		$order->update_meta_data( self::META_SHIPMENTS, $stored );
+		$order->save();
+	}
+
+	/**
+	 * Register the read-only shipments meta box on the order edit screen.
+	 *
+	 * Hooked to `add_meta_boxes`.
+	 *
+	 * @since 1.3.0
+	 * @param string              $screen_id     Screen / post type.
+	 * @param WP_Post|WC_Order|null $post_or_order Post or order.
+	 * @return void
+	 */
+	public static function add_shipments_meta_box( $screen_id, $post_or_order = null ) {
+		$order_screen = 'shop_order';
+		if ( class_exists( '\Automattic\WooCommerce\Utilities\OrderUtil' ) && \Automattic\WooCommerce\Utilities\OrderUtil::custom_orders_table_usage_is_enabled() && function_exists( 'wc_get_page_screen_id' ) ) {
+			$order_screen = wc_get_page_screen_id( 'shop-order' );
+		}
+		if ( $screen_id !== $order_screen ) {
+			return;
+		}
+
+		$order = $post_or_order instanceof WP_Post ? wc_get_order( $post_or_order->ID ) : $post_or_order;
+		if ( ! $order instanceof WC_Order || empty( $order->get_meta( self::META_SHIPMENTS, true ) ) ) {
+			return;
+		}
+
+		add_meta_box( 'wps_tofw_tracking_shipments', __( 'Shipments', 'track-orders-for-woocommerce' ), array( __CLASS__, 'render_shipments_meta_box' ), $order_screen, 'side', 'default' );
+	}
+
+	/**
+	 * Meta box callback: list every shipment of the order.
+	 *
+	 * @since 1.3.0
+	 * @param WP_Post|WC_Order $post_or_order Post or order.
+	 * @return void
+	 */
+	public static function render_shipments_meta_box( $post_or_order ) {
+		$order = $post_or_order instanceof WP_Post ? wc_get_order( $post_or_order->ID ) : $post_or_order;
+		if ( ! $order instanceof WC_Order ) {
+			return;
+		}
+
+		echo '<ul class="wps-tofw-shipments">';
+		foreach ( self::get_shipments( $order ) as $shipment ) {
+			echo '<li style="border-bottom:1px solid #eee;padding:6px 0;margin:0;">';
+			echo '<strong>' . esc_html( isset( $shipment['carrier_label'] ) && '' !== $shipment['carrier_label'] ? $shipment['carrier_label'] : $shipment['carrier'] ) . '</strong>: ';
+			echo '<code>' . esc_html( $shipment['tracking_number'] ) . '</code>';
+			if ( ! empty( $shipment['ship_date'] ) ) {
+				/* translators: %s: ship date */
+				echo '<br />' . esc_html( sprintf( __( 'Shipped: %s', 'track-orders-for-woocommerce' ), date_i18n( wc_date_format(), strtotime( $shipment['ship_date'] ) ) ) );
+			}
+			if ( ! empty( $shipment['items'] ) ) {
+				echo '<br />';
+				foreach ( $shipment['items'] as $item ) {
+					echo esc_html( $item['name'] . ' x ' . absint( $item['qty'] ) ) . '<br />';
+				}
+			}
+			if ( ! empty( $shipment['source'] ) ) {
+				/* translators: %s: source (csv, rest, manual, integration id) */
+				echo '<small>' . esc_html( sprintf( __( 'Source: %s', 'track-orders-for-woocommerce' ), $shipment['source'] ) ) . '</small>';
+			}
+			echo '</li>';
+		}
+		echo '</ul>';
+	}
+
+	/**
+	 * Show all shipments on the customer tracking page.
+	 *
+	 * Hooked to `wps_tofw_after_tracking_details`, fired by the tracking templates.
+	 *
+	 * @since 1.3.0
+	 * @param int $order_id Order id.
+	 * @return void
+	 */
+	public static function render_customer_shipments( $order_id ) {
+		$order = wc_get_order( absint( $order_id ) );
+		if ( ! $order || empty( $order->get_meta( self::META_SHIPMENTS, true ) ) ) {
+			return;
+		}
+
+		/**
+		 * Filter whether the shipments list is shown on the tracking page.
+		 *
+		 * @since 1.3.0
+		 * @param bool     $show  Show.
+		 * @param WC_Order $order Order.
+		 */
+		if ( ! apply_filters( 'wps_tofw_show_tracking_shipments', true, $order ) ) {
+			return;
+		}
+
+		$shipments = self::get_shipments( $order );
+		?>
+		<div class="wps-tofw-shipments" style="margin:20px 0;">
+			<h3><?php esc_html_e( 'Shipments', 'track-orders-for-woocommerce' ); ?></h3>
+			<table class="shop_table">
+				<thead>
+					<tr>
+						<th><?php esc_html_e( 'Carrier', 'track-orders-for-woocommerce' ); ?></th>
+						<th><?php esc_html_e( 'Tracking number', 'track-orders-for-woocommerce' ); ?></th>
+						<th><?php esc_html_e( 'Ship date', 'track-orders-for-woocommerce' ); ?></th>
+						<th><?php esc_html_e( 'Items', 'track-orders-for-woocommerce' ); ?></th>
+					</tr>
+				</thead>
+				<tbody>
+				<?php foreach ( $shipments as $shipment ) : ?>
+					<tr>
+						<td><?php echo esc_html( isset( $shipment['carrier_label'] ) && '' !== $shipment['carrier_label'] ? $shipment['carrier_label'] : $shipment['carrier'] ); ?></td>
+						<td><?php echo esc_html( $shipment['tracking_number'] ); ?></td>
+						<td><?php echo esc_html( ! empty( $shipment['ship_date'] ) ? date_i18n( wc_date_format(), strtotime( $shipment['ship_date'] ) ) : '' ); ?></td>
+						<td>
+							<?php
+							if ( empty( $shipment['items'] ) ) {
+								esc_html_e( 'All items', 'track-orders-for-woocommerce' );
+							} else {
+								$names = array();
+								foreach ( $shipment['items'] as $item ) {
+									$names[] = $item['name'] . ' x ' . absint( $item['qty'] );
+								}
+								echo esc_html( implode( ', ', $names ) );
+							}
+							?>
+						</td>
+					</tr>
+				<?php endforeach; ?>
+				</tbody>
+			</table>
+		</div>
+		<?php
 	}
 
 	/**
