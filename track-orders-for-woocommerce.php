@@ -465,7 +465,7 @@ function wps_mult_carrier_data_tracking_callback()
 		$courier_code    = isset($_POST['courier_code']) ? sanitize_key(wp_unslash($_POST['courier_code'])) : '';
 
 		if ('' === $tracking_number || '' === $courier_code) {
-			wp_send_json_error(array('message' => 'Missing tracking_number or courier_code'), 400);
+			wp_send_json_error(array('message' => __('Missing tracking_number or courier_code', 'track-orders-for-woocommerce')), 400);
 		}
 
 		// Prepare the API URL.
@@ -506,7 +506,7 @@ function wps_mult_carrier_data_tracking_callback()
 			}
 			wp_send_json_success($result);
 		} else {
-			wp_send_json_error(array('message' => 'Tracking information not found'), 400);
+			wp_send_json_error(array('message' => __('Tracking information not found', 'track-orders-for-woocommerce')), 400);
 		}
 	}
 }

@@ -459,7 +459,7 @@ class Track_Orders_For_Woocommerce_Common {
 					</div>       
 					
 					<div class="content">
-						<h4>Order #' . $order_id . '</h4>
+						<h4>' . sprintf( /* translators: %s: order ID. */ esc_html__( 'Order #%s', 'track-orders-for-woocommerce' ), $order_id ) . '</h4>
 						<table>
 							<thead>
 								<tr>
@@ -605,7 +605,7 @@ class Track_Orders_For_Woocommerce_Common {
 								' . $mail_header . '
 							</div>
 							<div class="content">
-								<h4>Order #' . $order_id . '</h4>
+								<h4>' . sprintf( /* translators: %s: order ID. */ esc_html__( 'Order #%s', 'track-orders-for-woocommerce' ), $order_id ) . '</h4>
 								<div class="order-details">
 									<table>
 										<thead>
@@ -821,7 +821,7 @@ class Track_Orders_For_Woocommerce_Common {
 						' . $mail_header . '
 					</div>
 					<div class="content">
-						<h4>Order #' . $order_id . '</h4>
+						<h4>' . sprintf( /* translators: %s: order ID. */ esc_html__( 'Order #%s', 'track-orders-for-woocommerce' ), $order_id ) . '</h4>
 						<div class="order-details">
 							<table>
 								<thead>
@@ -990,7 +990,7 @@ class Track_Orders_For_Woocommerce_Common {
 						</div>
 						
 						<div class="content">
-							<h4>Order Confirmation: #' . $order_id . '</h4>';
+							<h4>' . sprintf( /* translators: %s: order ID. */ esc_html__( 'Order Confirmation: #%s', 'track-orders-for-woocommerce' ), $order_id ) . '</h4>';
 
 					foreach ( $order->get_items() as $item_id => $item ) {
 						$product = $item->get_product();
@@ -1009,15 +1009,15 @@ class Track_Orders_For_Woocommerce_Common {
 
 					$message .= '<div class="summary">
 								<div class="row">
-									<span class="label">Subtotal:</span>
+									<span class="label">' . esc_html__( 'Subtotal:', 'track-orders-for-woocommerce' ) . '</span>
 									<span class="value"> ' . wc_price( $order->get_subtotal() ) . '</span>
 								</div>
 								<div class="row">
-									<span class="label">Tax:</span>
+									<span class="label">' . esc_html__( 'Tax:', 'track-orders-for-woocommerce' ) . '</span>
 									<span class="value"> ' . wc_price( $order->get_total_tax() ) . '</span>
 								</div>
 								<div class="row">
-									<span class="label">Total:</span>
+									<span class="label">' . esc_html__( 'Total:', 'track-orders-for-woocommerce' ) . '</span>
 									<span class="value"> ' . wc_price( $order->get_total() ) . '</span>
 								</div>
 							</div>';
@@ -1131,7 +1131,7 @@ class Track_Orders_For_Woocommerce_Common {
 			<div class="content">
 
 				<div class="Order">
-					<h4>Order #' . $order_id . '</h4>
+					<h4>' . sprintf( /* translators: %s: order ID. */ esc_html__( 'Order #%s', 'track-orders-for-woocommerce' ), $order_id ) . '</h4>
 					<table>
 						<tbody>
 							<tr>

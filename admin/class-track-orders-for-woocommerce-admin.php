@@ -142,6 +142,8 @@ class Track_Orders_For_Woocommerce_Admin {
 					'talk_to_expert_nonce' => wp_create_nonce( 'wps_tofw_talk_to_expert_nonce' ),
 					'talk_to_expert_action' => 'wps_tofw_submit_talk_to_expert',
 					'talk_to_expert_success_fallback' => __( 'Thank you for submitting your request. Our team will contact you soon.', 'track-orders-for-woocommerce' ),
+					'talk_to_expert_submit_label' => __( 'Submit Request', 'track-orders-for-woocommerce' ),
+					'talk_to_expert_loading_label' => __( 'Sending...', 'track-orders-for-woocommerce' ),
 					'media_title' => __( 'Select or Upload Image', 'track-orders-for-woocommerce' ),
 					'media_button' => __( 'Use this image', 'track-orders-for-woocommerce' ),
 					'create_custom_status' => __( 'Create Custom Order Status', 'track-orders-for-woocommerce' ),
@@ -649,7 +651,7 @@ class Track_Orders_For_Woocommerce_Admin {
 				'type'  => 'text',
 				'description'  => __( 'Enter Text For Track Order Below Order details in My Account Section.', 'track-orders-for-woocommerce' ),
 				'id'    => 'tofw_enable_track_order_below_text',
-				'placeholder' => 'Text For Track Order',
+				'placeholder' => __( 'Text For Track Order', 'track-orders-for-woocommerce' ),
 				'value' => get_option( 'tofw_enable_track_order_below_text', __( 'Track Order', 'track-orders-for-woocommerce' ) ),
 				'class' => 'tofw-radio-switch-class',
 			),
@@ -658,7 +660,7 @@ class Track_Orders_For_Woocommerce_Admin {
 				'type'  => 'textarea',
 				'description'  => __( 'Enter Note For Track Order Below Order details in My Account Section.', 'track-orders-for-woocommerce' ),
 				'id'    => 'tofw_enable_track_order_below_textarea',
-				'placeholder' => 'Text For Track Order',
+				'placeholder' => __( 'Text For Track Order', 'track-orders-for-woocommerce' ),
 				'value' => get_option( 'tofw_enable_track_order_below_textarea', __( 'Click The Below To Track Your Order', 'track-orders-for-woocommerce' ) ),
 				'class' => 'tofw-radio-switch-class',
 			),
@@ -680,7 +682,7 @@ class Track_Orders_For_Woocommerce_Admin {
 				'type'  => 'text',
 				'description'  => __( 'Enter Text For Track Order as Action on Order details in My Account Section.', 'track-orders-for-woocommerce' ),
 				'id'    => 'tofw_enable_track_order_below_action_text',
-				'placeholder' => 'Text For Order Action',
+				'placeholder' => __( 'Text For Order Action', 'track-orders-for-woocommerce' ),
 				'value' => get_option( 'tofw_enable_track_order_below_action_text', __( 'Track Order', 'track-orders-for-woocommerce' ) ),
 				'class' => 'tofw-radio-switch-class',
 			),
@@ -921,7 +923,7 @@ class Track_Orders_For_Woocommerce_Admin {
 				'id'    => 'wps_tofw_selected_address',
 				'value' => get_option( 'wps_tofw_selected_address' ),
 				'class' => 'tofw-multiselect-class wps-defaut-multiselect',
-				'placeholder' => 'Select Your Hubpoint Addresses',
+				'placeholder' => __( 'Select Your Hubpoint Addresses', 'track-orders-for-woocommerce' ),
 				'options' => get_option( 'wps_tofw_old_addresses' ),
 			),
 		);
@@ -1793,7 +1795,7 @@ class Track_Orders_For_Woocommerce_Admin {
 					<div class="content">
 
 						<div class="Order">
-							<h4>Order #' . $post_id . '</h4>
+							<h4>' . sprintf( /* translators: %s: order ID. */ esc_html__( 'Order #%s', 'track-orders-for-woocommerce' ), $post_id ) . '</h4>
 							<table>
 								<tbody>
 									<tr>
@@ -1997,13 +1999,13 @@ class Track_Orders_For_Woocommerce_Admin {
 	public function register_google_embed_blocks() {
 		wp_register_script(
 			'tofw-embed-block',
-			plugins_url( 'src/js/tofw-embed-block.js', __FILE__ ),
+			plugins_url( 'js/tofw-embed-block.js', __FILE__ ),
 			array( 'wp-blocks', 'wp-editor', 'wp-element', 'wp-components', 'wp-i18n' ),
-			filemtime( plugin_dir_path( __FILE__ ) . '/src/js/tofw-embed-block.js' ),
+			filemtime( plugin_dir_path( __FILE__ ) . 'js/tofw-embed-block.js' ),
 			true
 		);
 
-		wp_set_script_translations( 'tofw-embed-block', 'track-orders-for-woocommerce' );
+		wp_set_script_translations( 'tofw-embed-block', 'track-orders-for-woocommerce', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'languages' );
 
 		register_block_type(
 			'wpswings/tofw-embed-block',
@@ -2031,7 +2033,7 @@ class Track_Orders_For_Woocommerce_Admin {
 		if ( 'on' !== $wps_enable_partila_shipement ) {
 			return;
 		}
-		echo '<th class="line-item-status">Status</th>';
+		echo '<th class="line-item-status">' . esc_html__( 'Status', 'track-orders-for-woocommerce' ) . '</th>';
 	}
 
 	/**
@@ -2107,7 +2109,7 @@ class Track_Orders_For_Woocommerce_Admin {
 						$order = wc_get_order( $value );
 						$order->update_status( $status );
 						$child_order = wc_get_order( $value );
-						$child_order->add_order_note( 'Status updated from parent order' );
+						$child_order->add_order_note( __( 'Status updated from parent order', 'track-orders-for-woocommerce' ) );
 					}
 				}
 
@@ -2551,11 +2553,11 @@ class Track_Orders_For_Woocommerce_Admin {
 			'wp-swings_page_track_orders_for_woocommerce_menu',
 		);
 		if ( in_array( $screen_id, $allowed_screens, true ) && 'on' === get_option( 'wps_tofw_enable_order_delay_notification' ) ) {
-			$customer_subject = get_option( 'wps_delay_email_customer_subject', 'Delivery Delay Notification - Order {order_id}' );
-			$customer_body    = get_option( 'wps_delay_email_customer_body', '<p>Your delivery has been delayed.</p>' );
+			$customer_subject = get_option( 'wps_delay_email_customer_subject', /* translators: {order_id} is a placeholder replaced with the order ID; keep it untranslated. */ __( 'Delivery Delay Notification - Order {order_id}', 'track-orders-for-woocommerce' ) );
+			$customer_body    = get_option( 'wps_delay_email_customer_body', '<p>' . esc_html__( 'Your delivery has been delayed.', 'track-orders-for-woocommerce' ) . '</p>' );
 
-			$admin_subject = get_option( 'wps_delay_email_admin_subject', 'Order Delay - {order_id}' );
-			$admin_body    = get_option( 'wps_delay_email_admin_body', '<p>An order has been delayed.</p>' );
+			$admin_subject = get_option( 'wps_delay_email_admin_subject', /* translators: {order_id} is a placeholder replaced with the order ID; keep it untranslated. */ __( 'Order Delay - {order_id}', 'track-orders-for-woocommerce' ) );
+			$admin_body    = get_option( 'wps_delay_email_admin_body', '<p>' . esc_html__( 'An order has been delayed.', 'track-orders-for-woocommerce' ) . '</p>' );
 
 			$notify_admin = get_option( 'wps_tofw_notify_admin_delay', 'no' );
 			?>
@@ -2569,7 +2571,7 @@ class Track_Orders_For_Woocommerce_Admin {
 			<div class="wps-popup-body">
 				<label class="wps-toggle">
 					<input type="checkbox" id="wps_send_admin_mail" <?php checked( $notify_admin, 'yes' ); ?>>
-					<span>Send Delay Email to Admin</span>
+					<span><?php echo esc_html__( 'Send Delay Email to Admin', 'track-orders-for-woocommerce' ); ?></span>
 				</label>
 				<hr>
 
@@ -2901,8 +2903,8 @@ LIMIT %d
 
 		$mailer = WC()->mailer();
 
-		$subject = get_option( 'wps_delay_email_customer_subject', 'Delivery Delay - Order {order_id}' );
-		$body    = get_option( 'wps_delay_email_customer_body', '<p>Your delivery is delayed.</p>' );
+		$subject = get_option( 'wps_delay_email_customer_subject', /* translators: {order_id} is a placeholder replaced with the order ID; keep it untranslated. */ __( 'Delivery Delay - Order {order_id}', 'track-orders-for-woocommerce' ) );
+		$body    = get_option( 'wps_delay_email_customer_body', '<p>' . esc_html__( 'Your delivery is delayed.', 'track-orders-for-woocommerce' ) . '</p>' );
 
 		// Placeholder replacement.
 		$placeholders = array(
@@ -2918,7 +2920,7 @@ LIMIT %d
 		$body    = str_replace( array_keys( $placeholders ), array_values( $placeholders ), $body );
 
 		// Wrap inside WooCommerce template.
-		$heading = 'Delivery Delay Notification';
+		$heading = __( 'Delivery Delay Notification', 'track-orders-for-woocommerce' );
 		$wrapped = $mailer->wrap_message( $heading, $body );
 		$headers = array( 'Content-Type: text/html; charset=UTF-8' );
 
@@ -2943,8 +2945,8 @@ LIMIT %d
 
 		$mailer = WC()->mailer();
 
-		$subject = get_option( 'wps_delay_email_admin_subject', 'Order Delay - {order_id}' );
-		$body    = get_option( 'wps_delay_email_admin_body', '<p>An order is delayed.</p>' );
+		$subject = get_option( 'wps_delay_email_admin_subject', /* translators: {order_id} is a placeholder replaced with the order ID; keep it untranslated. */ __( 'Order Delay - {order_id}', 'track-orders-for-woocommerce' ) );
+		$body    = get_option( 'wps_delay_email_admin_body', '<p>' . esc_html__( 'An order is delayed.', 'track-orders-for-woocommerce' ) . '</p>' );
 
 		// Placeholder replacement.
 		$placeholders = array(
@@ -2959,7 +2961,7 @@ LIMIT %d
 		$subject = str_replace( array_keys( $placeholders ), array_values( $placeholders ), $subject );
 		$body    = str_replace( array_keys( $placeholders ), array_values( $placeholders ), $body );
 
-		$heading = 'Order Delay Notice';
+		$heading = __( 'Order Delay Notice', 'track-orders-for-woocommerce' );
 		$wrapped = $mailer->wrap_message( $heading, $body );
 		$headers = array( 'Content-Type: text/html; charset=UTF-8' );
 

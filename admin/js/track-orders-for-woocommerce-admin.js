@@ -1304,8 +1304,8 @@ jQuery(function ($) {
 	const $thankYouPanel = $modal.find('[data-pgfw-expert-thank-you="true"]');
 	const $status = $modal.find('[data-pgfw-expert-state="true"]');
 	const $submit = $modal.find('[data-pgfw-expert-submit="true"]');
-	const submitLabel = $submit.data('pgfw-submit-label') || 'Submit Request';
-	const loadingLabel = $submit.data('pgfw-submit-loading-label') || 'Sending...';
+	const submitLabel = $submit.data('pgfw-submit-label') || tofw_admin_param.talk_to_expert_submit_label;
+	const loadingLabel = $submit.data('pgfw-submit-loading-label') || tofw_admin_param.talk_to_expert_loading_label;
 	let closeTimer = null;
 
 	function serializeForm(form) {
