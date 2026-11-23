@@ -190,6 +190,7 @@ $tofw_today = current_time( 'Y-m-d' );
 					</tbody>
 				</table>
 			<?php endif; ?>
+			<p class="description"><?php esc_html_e( 'Average delivery time only includes delivered orders with a known shipped time. Orders shipped before this feature was enabled that have no recorded shipped time (or shipped status change) are excluded.', 'track-orders-for-woocommerce' ); ?></p>
 		</section>
 
 		<section class="wps-tofw-insights__panel">

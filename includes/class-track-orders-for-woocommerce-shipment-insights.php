@@ -344,7 +344,7 @@ class Track_Orders_For_Woocommerce_Shipment_Insights {
 			array(
 				'title'       => __( 'Exception Order Statuses', 'track-orders-for-woocommerce' ),
 				'type'        => 'multiselect',
-				'description' => __( 'Order statuses (e.g. a custom "Delivery Failed" status) that mean the shipment is in Exception. The carrier status "exception" is always treated as Exception.', 'track-orders-for-woocommerce' ),
+				'description' => __( 'Order statuses (e.g. a custom "Delivery Failed" status) that mean the shipment is in Exception. The carrier statuses "exception", "failed attempt" and "expired" are always treated as Exception.', 'track-orders-for-woocommerce' ),
 				'id'          => 'wps_tofw_delivery_alerts_exception_statuses',
 				'value'       => $this->wps_tofw_get_exception_statuses(),
 				'class'       => 'tofw-multiselect-class wps-defaut-multiselect',
@@ -421,10 +421,13 @@ class Track_Orders_For_Woocommerce_Shipment_Insights {
 			$status = 'cancelled';
 		} elseif ( in_array( $wc_status, $this->wps_tofw_get_exception_statuses(), true ) ) {
 			$status = 'exception';
-		} elseif ( '' !== $carrier ) {
+		} elseif ( '' !== $carrier && 'not_shipped' !== $carrier ) {
 			$status = $carrier;
 		} elseif ( 'completed' === $order_status ) {
 			$status = 'delivered';
+		} elseif ( 'not_shipped' === $carrier ) {
+			// Carrier only has the label / no scan yet.
+			$status = 'not_shipped';
 		} elseif ( in_array( $wc_status, $this->wps_tofw_get_shipped_statuses(), true ) || $this->wps_tofw_get_shipped_timestamp( $order ) || '' !== (string) $order->get_meta( 'wps_tofw_package_tracking_number' ) ) {
 			$status = 'in_transit';
 		} else {
@@ -446,17 +449,44 @@ class Track_Orders_For_Woocommerce_Shipment_Insights {
 	}
 
 	/**
-	 * Read the normalized carrier status meta (from carrier sync), if any.
+	 * Read the carrier status meta (from carrier sync), mapped to a shipment status.
 	 *
 	 * @since 1.3.0
 	 * @param WC_Order $order Order.
-	 * @return string Empty string when unknown.
+	 * @return string Shipment status (in_transit, out_for_delivery, delivered, exception, not_shipped) or '' when unknown.
 	 */
 	public function wps_tofw_get_carrier_status( $order ) {
-		$carrier = strtolower( trim( (string) $order->get_meta( self::META_CARRIER_STATUS ) ) );
-		$carrier = str_replace( array( '-', ' ' ), '_', $carrier );
-		$known   = array( 'in_transit', 'out_for_delivery', 'delivered', 'exception' );
-		return in_array( $carrier, $known, true ) ? $carrier : '';
+		return $this->wps_tofw_map_carrier_status( (string) $order->get_meta( self::META_CARRIER_STATUS ) );
+	}
+
+	/**
+	 * Map a carrier sync status to a shipment status.
+	 *
+	 * @since 1.3.0
+	 * @param string $carrier Carrier sync status (e.g. failed_attempt, available_for_pickup).
+	 * @return string Shipment status or '' when unknown.
+	 */
+	public function wps_tofw_map_carrier_status( $carrier ) {
+		$carrier = str_replace( array( '-', ' ' ), '_', strtolower( trim( (string) $carrier ) ) );
+		$map     = array(
+			'in_transit'           => 'in_transit',
+			'out_for_delivery'     => 'out_for_delivery',
+			'available_for_pickup' => 'out_for_delivery',
+			'delivered'            => 'delivered',
+			'exception'            => 'exception',
+			'failed_attempt'       => 'exception',
+			'expired'              => 'exception',
+			'info_received'        => 'not_shipped',
+			'pending'              => 'not_shipped',
+		);
+		/**
+		 * Filter the carrier status => shipment status map.
+		 *
+		 * @since 1.3.0
+		 * @param array $map Map.
+		 */
+		$map = (array) apply_filters( 'wps_tofw_carrier_status_map', $map );
+		return isset( $map[ $carrier ] ) ? (string) $map[ $carrier ] : '';
 	}
 
 	/**
@@ -545,10 +575,16 @@ class Track_Orders_For_Woocommerce_Shipment_Insights {
 	 */
 	public function wps_tofw_get_estimated_timestamp( $order ) {
 		$date = trim( (string) $order->get_meta( 'wps_tofw_estimated_delivery_date' ) );
+		$time = trim( (string) $order->get_meta( 'wps_tofw_estimated_delivery_time' ) );
+		if ( '' === $date && class_exists( 'Track_Orders_For_Woocommerce_Estimated_Delivery' ) && method_exists( 'Track_Orders_For_Woocommerce_Estimated_Delivery', 'get_order_edd' ) ) {
+			// Computed estimate (latest date of the range) from the estimated delivery date feature.
+			$edd  = Track_Orders_For_Woocommerce_Estimated_Delivery::get_order_edd( $order );
+			$date = ( is_array( $edd ) && ! empty( $edd['to'] ) ) ? (string) $edd['to'] : '';
+			$time = '';
+		}
 		if ( '' === $date ) {
 			return 0;
 		}
-		$time = trim( (string) $order->get_meta( 'wps_tofw_estimated_delivery_time' ) );
 		try {
 			$dt = new DateTime( $date . ' ' . ( '' !== $time ? $time : '23:59' ), wp_timezone() );
 			return $dt->getTimestamp();
@@ -706,7 +742,7 @@ class Track_Orders_For_Woocommerce_Shipment_Insights {
 		if ( ! $order ) {
 			return;
 		}
-		$status  = str_replace( array( '-', ' ' ), '_', strtolower( (string) $status ) );
+		$status  = $this->wps_tofw_map_carrier_status( $status );
 		$changed = false;
 		if ( in_array( $status, array( 'in_transit', 'out_for_delivery', 'delivered', 'exception' ), true ) && ! $order->get_meta( self::META_SHIPPED_AT ) ) {
 			$order->update_meta_data( self::META_SHIPPED_AT, time() );
@@ -996,7 +1032,7 @@ class Track_Orders_For_Woocommerce_Shipment_Insights {
 	protected function wps_tofw_can_show_dashboard_alerts() {
 		return $this->wps_tofw_alerts_enabled()
 			&& 'on' === get_option( 'wps_tofw_delivery_alerts_dashboard_notice', 'on' )
-			&& current_user_can( 'manage_woocommerce' );
+			&& current_user_can( 'manage_options' );
 	}
 
 	/**
@@ -1061,7 +1097,7 @@ class Track_Orders_For_Woocommerce_Shipment_Insights {
 	 * @since 1.3.0
 	 */
 	public function wps_tofw_dismiss_notice() {
-		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_die( esc_html__( 'You are not allowed to do this.', 'track-orders-for-woocommerce' ) );
 		}
 		check_admin_referer( 'wps_tofw_dismiss_delivery_alerts' );
@@ -1239,6 +1275,10 @@ class Track_Orders_For_Woocommerce_Shipment_Insights {
 	 * @since 1.3.0
 	 */
 	public function wps_tofw_count_tracking_visit() {
+		if ( ! $this->wps_tofw_count_visits_server_side() ) {
+			// Counted by the JS beacon instead (works with full page caching, no double counting).
+			return;
+		}
 		if ( is_admin() || wp_doing_ajax() || is_preview() || ! $this->wps_tofw_is_tracking_page() ) {
 			return;
 		}
@@ -1258,7 +1298,25 @@ class Track_Orders_For_Woocommerce_Shipment_Insights {
 	}
 
 	/**
-	 * Enqueue the upsell click beacon on tracking pages.
+	 * Whether tracking page visits are counted server side (template_redirect)
+	 * instead of by the JS beacon.
+	 *
+	 * @since 1.3.0
+	 * @return bool
+	 */
+	protected function wps_tofw_count_visits_server_side() {
+		/**
+		 * Filter whether tracking page visits are counted server side instead of by the JS beacon.
+		 * Server side counting misses visits served from a full page cache.
+		 *
+		 * @since 1.3.0
+		 * @param bool $server_side Count server side. Default false (JS beacon).
+		 */
+		return (bool) apply_filters( 'wps_tofw_insights_count_visits_server_side', false );
+	}
+
+	/**
+	 * Enqueue the visit / upsell click beacon on tracking pages.
 	 *
 	 * @since 1.3.0
 	 */
@@ -1272,20 +1330,28 @@ class Track_Orders_For_Woocommerce_Shipment_Insights {
 			'wps_tofw_insights',
 			array(
 				'ajaxurl'   => admin_url( 'admin-ajax.php' ),
-				'nonce'     => wp_create_nonce( 'wps_tofw_insights_beacon' ),
+				'nonce'       => wp_create_nonce( 'wps_tofw_insights_beacon' ),
+				'count_visit' => $this->wps_tofw_count_visits_server_side() ? 0 : 1,
 				/**
 				 * Filter the CSS selectors whose clicks count as upsell clicks.
 				 *
 				 * @since 1.3.0
 				 * @param string $selectors Comma separated selectors.
 				 */
-				'selectors' => apply_filters( 'wps_tofw_upsell_click_selectors', '.wps-tofw-upsell-wrap a, .wps-tofw-upsell-wrap button, .wps-tofw-upsell-wrap input[type="submit"], [data-wps-tofw-upsell]' ),
+				'selectors'   => apply_filters( 'wps_tofw_upsell_click_selectors', '.wps-tofw-upsell-wrap a, .wps-tofw-upsell-wrap button, .wps-tofw-upsell-wrap input[type="submit"], .wps-tofw-upsell-wrap label, [data-wps-tofw-upsell]' ),
+				/**
+				 * Filter the CSS selectors of inputs whose change (accepting an offer) counts as an upsell click.
+				 *
+				 * @since 1.3.0
+				 * @param string $selectors Comma separated selectors.
+				 */
+				'inputs'      => apply_filters( 'wps_tofw_upsell_accept_selectors', '.wps-tofw-upsell-wrap input, .wps-tofw-upsell-wrap select' ),
 			)
 		);
 	}
 
 	/**
-	 * AJAX: record an upsell click (logged-in and guest).
+	 * AJAX: record an upsell click or a tracking page visit (logged-in and guest).
 	 *
 	 * @since 1.3.0
 	 */
@@ -1293,7 +1359,16 @@ class Track_Orders_For_Woocommerce_Shipment_Insights {
 		if ( ! check_ajax_referer( 'wps_tofw_insights_beacon', 'nonce', false ) ) {
 			wp_send_json_error( null, 403 );
 		}
-		if ( $this->wps_tofw_is_countable_request() ) {
+		$metric = isset( $_POST['metric'] ) && 'tracking_visit' === $_POST['metric'] ? 'tracking_visit' : 'upsell_click'; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- strict comparison only.
+		if ( ! $this->wps_tofw_is_countable_request() ) {
+			wp_send_json_success();
+		}
+		if ( 'tracking_visit' === $metric ) {
+			/** This filter is documented in includes/class-track-orders-for-woocommerce-shipment-insights.php */
+			if ( ! $this->wps_tofw_count_visits_server_side() && apply_filters( 'wps_tofw_count_tracking_visit', true ) ) {
+				$this->wps_tofw_increment_counter( 'tracking_visit' );
+			}
+		} else {
 			$this->wps_tofw_increment_counter( 'upsell_click' );
 		}
 		wp_send_json_success();
