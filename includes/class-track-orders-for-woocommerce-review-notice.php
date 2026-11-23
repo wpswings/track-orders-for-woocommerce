@@ -247,7 +247,8 @@ class Track_Orders_For_Woocommerce_Review_Notice {
 			return true;
 		}
 
-		if ( function_exists( 'wc_get_screen_ids' ) && in_array( $screen->id, wc_get_screen_ids(), true ) ) {
+		$order_screens = array( 'woocommerce_page_wc-orders', 'edit-shop_order', 'shop_order' );
+		if ( in_array( $screen->id, $order_screens, true ) ) {
 			return true;
 		}
 
