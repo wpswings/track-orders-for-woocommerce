@@ -438,7 +438,8 @@ class Track_Orders_For_Woocommerce_Wismo {
 			 */
 			$order_limit = (int) apply_filters( 'wps_tofw_wismo_verify_order_limit', 5 );
 			if ( $this->rate_limited( 'o', $order_limit, 'order_' . $order->get_id(), false ) ) {
-				$this->error( 'rate_limited', __( 'Too many attempts. Please wait a few minutes and try again.', 'track-orders-for-woocommerce' ), 429, $this->support_fallback() );
+				// Same response as a wrong e-mail so the lock does not reveal which order numbers exist.
+				$this->error( 'not_verified', $generic, 200, $this->support_fallback() );
 			}
 
 			$billing     = strtolower( trim( (string) $order->get_billing_email() ) );
