@@ -644,7 +644,7 @@ class Track_Orders_For_Woocommerce_Admin {
 				'type'  => 'radio-switch',
 				'id'    => 'wps_tofw_enable_rma_return_button',
 				'description'  => __( 'Show a button on the tracking page for delivered/completed orders that links to the return/exchange request (requires the Return Refund and Exchange for WooCommerce plugin).', 'track-orders-for-woocommerce' ),
-				'value' => get_option( 'wps_tofw_enable_rma_return_button', 'yes' ),
+				'value' => get_option( 'wps_tofw_enable_rma_return_button', 'on' ),
 				'class' => 'tofw-radio-switch-class',
 				'options' => array(
 					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
@@ -656,7 +656,7 @@ class Track_Orders_For_Woocommerce_Admin {
 				'type'  => 'text',
 				'description'  => __( 'Text shown on the return/exchange button.', 'track-orders-for-woocommerce' ),
 				'id'    => 'wps_tofw_rma_return_button_label',
-				'placeholder' => 'Return / Exchange',
+				'placeholder' => __( 'Return / Exchange', 'track-orders-for-woocommerce' ),
 				'value' => get_option( 'wps_tofw_rma_return_button_label', __( 'Return / Exchange', 'track-orders-for-woocommerce' ) ),
 			),
 			array(

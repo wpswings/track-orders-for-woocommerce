@@ -68,6 +68,9 @@ if ( $flag ) {
 			</div>
 		<?php
 	}
+
+	/** This action is documented in template/wps-track-order-myaccount-page-template1.php */
+	do_action( 'wps_tofw_render_return_button', absint( $wps_user_order_id ) );
 }
 
 
