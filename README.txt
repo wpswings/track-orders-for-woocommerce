@@ -70,8 +70,8 @@ With the WooCommerce order tracker, logged-in users and guest users can **export
 #### 12) Order Information:
 Show **customers information** crucial to the order fulfillment process, such as the delivery partner, estimated delivery date, and tracking code. Including the delivery partner's name.
 
-#### 13) Create WooCommerce Order Tracking Shortcode on the tracking Page:
-By utilizing the page short code, you can add an Order Tracking page anywhere on your WooCommerce store. Use the **form shortcode to implement a Track Order Form** anywhere on your site.
+#### 13) Order Tracking Shortcodes:
+Use the free **multi-carrier tracking form shortcode** `[WPS_MUTIPLE_CARRIER_TRACKING_FORM]` to let customers track a parcel by tracking number anywhere on your site. With Pro, add the order tracking page and **Track Order Form** shortcodes anywhere on your WooCommerce store.
 
 #### 14) Order API: 
 With the latest update our track orders for WooCommerce plugin includes a powerful Order API that helps you easily connect your store with third-party applications. With this API, you can fetch paginated orders with status labels, view details of a specific order, create new orders, and access all available order statuses. 
