@@ -383,13 +383,27 @@ class Track_Orders_For_Woocommerce_Public {
 		$wps_tofw_enable_track_order_api = get_option( 'wps_tofw_enable_third_party_tracking_api', 'no' );
 		if ( 'on' == $wps_tofw_enable_track_order_api ) {
 
-			$wps_shipping_service = get_post_meta( $order_id, 'wps_tofw_selected_shipping_service', true );
+			$wps_shipping_service = (string) $order->get_meta( 'wps_tofw_selected_shipping_service', true );
 			if ( 'canada_post' === $wps_shipping_service ) {
 				$wps_shipping_service = 'Canada Post';
 			} else if ( 'fedex' === $wps_shipping_service ) {
 				$wps_shipping_service = 'FedEx';
 			} else if ( 'usps' === $wps_shipping_service ) {
 				$wps_shipping_service = 'USPS';
+			} else if ( '' !== $wps_shipping_service ) {
+				/**
+				 * Add different shipping services.
+				 *
+				 * @since 1.0.0
+				 */
+				$wps_known_services = (array) apply_filters( 'wps_tofw_add_diffrent_shipping_services', array() );
+				$wps_service_label  = (string) $order->get_meta( 'wps_tofw_selected_shipping_service_label', true );
+				if ( isset( $wps_known_services[ $wps_shipping_service ] ) && '' !== trim( wp_strip_all_tags( (string) $wps_known_services[ $wps_shipping_service ] ) ) ) {
+					$wps_shipping_service = wp_strip_all_tags( (string) $wps_known_services[ $wps_shipping_service ] );
+				} elseif ( '' !== $wps_service_label ) {
+					// Carrier name stored with the tracking (e.g. carriers imported from shipping plugins).
+					$wps_shipping_service = $wps_service_label;
+				}
 			}
 			$wps_est_delivery_date = get_post_meta( $order_id, 'wps_tofw_estimated_delivery_date', true );
 			$wps_est_delivery_time = get_post_meta( $order_id, 'wps_tofw_estimated_delivery_time', true );

@@ -136,6 +136,8 @@ if ( ! class_exists( 'WPS_TOFW_Integrations_Manager' ) ) {
 			// Order note fallback (all integrations without a dedicated hook).
 			add_action( 'woocommerce_order_note_added', array( $this, 'handle_order_note_added' ), 20, 2 );
 			add_action( 'wp_insert_comment', array( $this, 'handle_insert_comment' ), 20, 2 );
+			// Notes created through the WooCommerce REST API (Shippo, Printful, Printify ...).
+			add_action( 'woocommerce_rest_insert_order_note', array( $this, 'handle_rest_insert_order_note' ), 20, 1 );
 
 			if ( $has_meta ) {
 				// CRUD saves (HPOS and posts storage).
@@ -187,8 +189,27 @@ if ( ! class_exists( 'WPS_TOFW_Integrations_Manager' ) ) {
 			}
 			$this->handled_notes[] = (int) $comment->comment_ID;
 
-			foreach ( $this->get_active_integrations() as $id => $integration ) {
-				$shipment = $integration->extract_from_note( $comment->comment_content );
+			$active      = $this->get_active_integrations();
+			$note_based  = array();
+			$attributed  = array();
+			$client_text = $this->get_rest_client_text();
+			foreach ( $active as $id => $integration ) {
+				if ( method_exists( $integration, 'uses_order_notes' ) && $integration->uses_order_notes() ) {
+					$note_based[ $id ] = true;
+					if ( method_exists( $integration, 'matches_brand' ) && $integration->matches_brand( $client_text ) ) {
+						$attributed[ $id ] = true;
+					}
+				}
+			}
+
+			foreach ( $active as $id => $integration ) {
+				$context  = array(
+					// Added through the REST API by this app's key / user (and no other app matches).
+					'attributed' => isset( $attributed[ $id ] ) && 1 === count( $attributed ),
+					// Only note-based integration enabled.
+					'single'     => isset( $note_based[ $id ] ) && 1 === count( $note_based ),
+				);
+				$shipment = $integration->extract_from_note( $comment->comment_content, $context );
 				if ( empty( $shipment['tracking_number'] ) ) {
 					continue;
 				}
@@ -199,6 +220,64 @@ if ( ! class_exists( 'WPS_TOFW_Integrations_Manager' ) ) {
 				$this->import_tracking( $order, $shipment['tracking_number'], isset( $shipment['carrier'] ) ? $shipment['carrier'] : '', $id );
 				return; // One integration per note.
 			}
+		}
+
+		/**
+		 * Handle an order note created through the WooCommerce REST API.
+		 *
+		 * Hooked to `woocommerce_rest_insert_order_note`.
+		 *
+		 * @param WP_Comment $note Note.
+		 * @return void
+		 */
+		public function handle_rest_insert_order_note( $note ) {
+			if ( $note instanceof WP_Comment ) {
+				$this->process_note( $note, null );
+			}
+		}
+
+		/**
+		 * Lowercase text identifying the current WooCommerce REST API client: API key
+		 * description and the API user's login, name and e-mail. Empty outside REST requests.
+		 *
+		 * @return string
+		 */
+		protected function get_rest_client_text() {
+			if ( ! defined( 'REST_REQUEST' ) || ! REST_REQUEST ) {
+				return '';
+			}
+
+			global $wpdb;
+			$parts = array();
+
+			// Consumer key of the current request (basic auth, query string or OAuth 1.0a).
+			$consumer_key = '';
+			if ( ! empty( $_SERVER['PHP_AUTH_USER'] ) ) {
+				$consumer_key = sanitize_text_field( wp_unslash( $_SERVER['PHP_AUTH_USER'] ) );
+			} elseif ( ! empty( $_GET['consumer_key'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				$consumer_key = sanitize_text_field( wp_unslash( $_GET['consumer_key'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			} elseif ( ! empty( $_REQUEST['oauth_consumer_key'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				$consumer_key = sanitize_text_field( wp_unslash( $_REQUEST['oauth_consumer_key'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			}
+			if ( '' !== $consumer_key && function_exists( 'wc_api_hash' ) ) {
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$parts[] = (string) $wpdb->get_var( $wpdb->prepare( "SELECT description FROM {$wpdb->prefix}woocommerce_api_keys WHERE consumer_key = %s", wc_api_hash( $consumer_key ) ) );
+			}
+
+			$user = wp_get_current_user();
+			if ( $user && $user->exists() ) {
+				$parts[] = $user->user_login;
+				$parts[] = $user->display_name;
+				$parts[] = $user->user_email;
+			}
+
+			/**
+			 * Filter the text used to attribute REST API notes to an integration.
+			 *
+			 * @since 1.3.0
+			 * @param string $text Client text (API key description, user names).
+			 */
+			return strtolower( (string) apply_filters( 'wps_tofw_auto_import_rest_client_text', implode( ' ', $parts ) ) );
 		}
 
 		/**

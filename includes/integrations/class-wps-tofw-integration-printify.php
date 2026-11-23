@@ -45,6 +45,15 @@ if ( ! class_exists( 'WPS_TOFW_Integration_Printify' ) ) {
 		}
 
 		/**
+		 * Plain tracking notes are accepted when this is the only note-based integration enabled.
+		 *
+		 * @return bool
+		 */
+		public function accepts_unsigned_notes() {
+			return true;
+		}
+
+		/**
 		 * Note signature.
 		 *
 		 * @return string

@@ -122,12 +122,66 @@ if ( ! class_exists( 'WPS_TOFW_Abstract_Shipping_Integration' ) ) {
 		}
 
 		/**
+		 * Whether this integration reads order notes at all.
+		 *
+		 * @return bool
+		 */
+		public function uses_order_notes() {
+			return '' !== $this->get_note_signature();
+		}
+
+		/**
+		 * Whether notes that do not name the brand may be accepted when this is the only
+		 * note-based integration enabled (apps that write plain "Tracking number ..." notes).
+		 *
+		 * @return bool
+		 */
+		public function accepts_unsigned_notes() {
+			return false;
+		}
+
+		/**
+		 * Names used to recognise this app as the REST API client (API key description,
+		 * API user login / name / e-mail).
+		 *
+		 * @return string[]
+		 */
+		public function get_brand_names() {
+			return array( $this->get_id(), $this->get_label() );
+		}
+
+		/**
+		 * Whether the given REST client text (API key description, user names) names this app.
+		 *
+		 * @param string $client_text Lowercase client text.
+		 * @return bool
+		 */
+		public function matches_brand( $client_text ) {
+			if ( '' === (string) $client_text ) {
+				return false;
+			}
+			foreach ( $this->get_brand_names() as $name ) {
+				$name = strtolower( trim( (string) $name ) );
+				if ( strlen( $name ) >= 3 && false !== strpos( $client_text, $name ) ) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		/**
 		 * Parse a note written by this integration.
 		 *
-		 * @param string $note Raw note content (may contain HTML links).
+		 * A note is accepted when it names the app (signature), when it was added through the
+		 * REST API by this app's API key / user (`$context['attributed']`), or, when this is the
+		 * only note-based integration enabled (`$context['single']`), when it holds a tracking
+		 * number with a recognisable carrier.
+		 *
+		 * @param string $note    Raw note content (may contain HTML links).
+		 * @param array  $context Optional. Keys: attributed (bool), single (bool).
 		 * @return array|null
 		 */
-		public function extract_from_note( $note ) {
+		public function extract_from_note( $note, $context = array() ) {
 			$signature = $this->get_note_signature();
 			if ( '' === $signature || ! is_string( $note ) || '' === $note ) {
 				return null;
@@ -140,35 +194,80 @@ if ( ! class_exists( 'WPS_TOFW_Abstract_Shipping_Integration' ) ) {
 			}
 			$text = trim( wp_strip_all_tags( $note ) . ' ' . implode( ' ', $hrefs ) );
 
-			if ( ! preg_match( $signature, $text ) ) {
+			$context = wp_parse_args(
+				(array) $context,
+				array(
+					'attributed' => false,
+					'single'     => false,
+				)
+			);
+			$context['signed'] = (bool) preg_match( $signature, $text );
+			$unsigned_ok       = $context['single'] && $this->accepts_unsigned_notes();
+
+			/**
+			 * Filter whether an order note is parsed for this integration.
+			 *
+			 * @since 1.3.0
+			 * @param bool                                   $accept      Accept the note.
+			 * @param string                                 $text        Note text (with link targets).
+			 * @param WPS_TOFW_Abstract_Shipping_Integration $integration Integration.
+			 * @param array                                  $context     signed, attributed, single.
+			 */
+			if ( ! apply_filters( 'wps_tofw_auto_import_accept_note', $context['signed'] || $context['attributed'] || $unsigned_ok, $text, $this, $context ) ) {
 				return null;
 			}
 
-			$from_url = $this->extract_from_tracking_url( $text );
-			if ( $from_url ) {
-				return $from_url;
-			}
-
-			foreach ( $this->get_note_patterns() as $pattern ) {
-				if ( preg_match( $pattern, $text, $match ) ) {
-					$tracking = isset( $match['tracking'] ) ? $match['tracking'] : '';
-					if ( ! $this->looks_like_tracking_number( $tracking ) ) {
-						continue;
+			$shipment = $this->extract_from_tracking_url( $text );
+			if ( ! $shipment ) {
+				foreach ( $this->get_note_patterns() as $pattern ) {
+					if ( preg_match( $pattern, $text, $match ) ) {
+						$tracking = isset( $match['tracking'] ) ? $match['tracking'] : '';
+						if ( ! $this->looks_like_tracking_number( $tracking ) ) {
+							continue;
+						}
+						$carrier = '';
+						if ( ! empty( $match['carrier'] ) ) {
+							$carrier = $match['carrier'];
+						} elseif ( ! empty( $match['carrier2'] ) ) {
+							$carrier = $match['carrier2'];
+						}
+						$shipment = array(
+							'tracking_number' => $tracking,
+							'carrier'         => trim( $carrier, " \t\n\r\0\x0B.,;:" ),
+						);
+						break;
 					}
-					$carrier = '';
-					if ( ! empty( $match['carrier'] ) ) {
-						$carrier = $match['carrier'];
-					} elseif ( ! empty( $match['carrier2'] ) ) {
-						$carrier = $match['carrier2'];
-					}
-					return array(
-						'tracking_number' => $tracking,
-						'carrier'         => trim( $carrier, " \t\n\r\0\x0B.,;:" ),
-					);
 				}
 			}
 
-			return null;
+			// Notes that neither name the app nor come from its API key need a known carrier.
+			if ( $shipment && ! $context['signed'] && ! $context['attributed'] && ! $this->is_known_carrier( $shipment['carrier'] ) ) {
+				$shipment = null;
+			}
+
+			/**
+			 * Filter the shipment parsed from an order note.
+			 *
+			 * @since 1.3.0
+			 * @param array|null                             $shipment    tracking_number + carrier, or null.
+			 * @param string                                 $text        Note text (with link targets).
+			 * @param WPS_TOFW_Abstract_Shipping_Integration $integration Integration.
+			 * @param array                                  $context     signed, attributed, single.
+			 */
+			return apply_filters( 'wps_tofw_auto_import_note_shipment', $shipment, $text, $this, $context );
+		}
+
+		/**
+		 * Whether a carrier name maps to a carrier of the carrier map.
+		 *
+		 * @param string $carrier Carrier name.
+		 * @return bool
+		 */
+		protected function is_known_carrier( $carrier ) {
+			if ( '' === trim( (string) $carrier ) || ! $this->manager ) {
+				return false;
+			}
+			return in_array( $this->manager->map_carrier( $carrier ), array_values( $this->manager->get_carrier_map() ), true );
 		}
 
 		/**

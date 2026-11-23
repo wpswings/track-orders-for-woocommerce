@@ -55,6 +55,12 @@ if ( ! class_exists( 'WPS_TOFW_Tracking_Service' ) ) {
 
 			if ( '' !== $service ) {
 				$order->update_meta_data( 'wps_tofw_selected_shipping_service', $service );
+				// Carrier display name (e.g. unknown carriers from shipping plugins); empty for manual saves.
+				if ( ! empty( $args['carrier_name'] ) ) {
+					$order->update_meta_data( 'wps_tofw_selected_shipping_service_label', sanitize_text_field( (string) $args['carrier_name'] ) );
+				} else {
+					$order->delete_meta_data( 'wps_tofw_selected_shipping_service_label' );
+				}
 			}
 			$order->update_meta_data( 'wps_tofw_package_tracking_number', $tracking_number );
 			$order->save();
