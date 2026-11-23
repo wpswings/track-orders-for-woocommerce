@@ -1,6 +1,6 @@
 const { registerBlockType } = wp.blocks;
 const { TextControl, PanelBody } = wp.components;
-const { useState } = wp.element;
+const { useBlockProps } = wp.blockEditor;
 
 registerBlockType('wpswings/tofw-embed-block', {
     title: 'WPSwings Tracking Info',

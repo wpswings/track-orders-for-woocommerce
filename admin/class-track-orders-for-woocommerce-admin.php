@@ -1991,9 +1991,9 @@ class Track_Orders_For_Woocommerce_Admin {
 	public function register_google_embed_blocks() {
 		wp_register_script(
 			'tofw-embed-block',
-			plugins_url( 'src/js/tofw-embed-block.js', __FILE__ ),
-			array( 'wp-blocks', 'wp-editor', 'wp-element', 'wp-components' ),
-			filemtime( plugin_dir_path( __FILE__ ) . '/src/js/tofw-embed-block.js' ),
+			plugins_url( 'js/tofw-embed-block.js', __FILE__ ),
+			array( 'wp-blocks', 'wp-block-editor', 'wp-element', 'wp-components' ),
+			filemtime( plugin_dir_path( __FILE__ ) . 'js/tofw-embed-block.js' ),
 			true
 		);
 
