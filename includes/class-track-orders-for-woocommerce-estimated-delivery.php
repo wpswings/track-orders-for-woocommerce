@@ -140,13 +140,29 @@ class Track_Orders_For_Woocommerce_Estimated_Delivery {
 		if ( 'on' !== get_option( 'wps_tofw_is_plugin_enable' ) ) {
 			return false;
 		}
-		$settings = self::get_settings();
-		if ( 'on' !== $settings['enable'] ) {
+		// Read the raw option here instead of get_settings(): get_defaults() translates
+		// the label, and this runs while hooks are registered at plugin load (before
+		// 'init'), which triggers the "_load_textdomain_just_in_time" notice in WP 6.7+.
+		$saved = get_option( self::OPTION, array() );
+		if ( ! is_array( $saved ) ) {
+			$saved = array();
+		}
+		$flags = wp_parse_args(
+			array_intersect_key( $saved, array_flip( array( 'enable', 'show_product', 'show_cart', 'show_email', 'show_tracking' ) ) ),
+			array(
+				'enable'        => 'off',
+				'show_product'  => 'on',
+				'show_cart'     => 'on',
+				'show_email'    => 'on',
+				'show_tracking' => 'on',
+			)
+		);
+		if ( 'on' !== $flags['enable'] ) {
 			return false;
 		}
 		if ( '' !== $location ) {
 			$key = 'show_' . $location;
-			return isset( $settings[ $key ] ) && 'on' === $settings[ $key ];
+			return isset( $flags[ $key ] ) && 'on' === $flags[ $key ];
 		}
 		return true;
 	}
@@ -463,11 +479,31 @@ class Track_Orders_For_Woocommerce_Estimated_Delivery {
 	 * @return string
 	 */
 	public static function tracking_date_fallback( $order, $manual_date ) {
-		if ( '' !== (string) $manual_date || ! self::is_enabled( 'tracking' ) ) {
+		if ( '' !== (string) $manual_date || ! self::is_enabled( 'tracking' ) || ! $order instanceof WC_Order || ! self::is_displayable_status( $order ) ) {
 			return (string) $manual_date;
 		}
 		$edd = self::get_order_edd( $order );
 		return ( $edd && ! $edd['manual'] ) ? $edd['to'] : (string) $manual_date;
+	}
+
+	/**
+	 * Tracking templates helper: formatted computed range (same text as product / cart / emails),
+	 * or an empty string when a manual date exists or nothing should be shown.
+	 *
+	 * Templates keep their own formatting for manual dates and print this text instead
+	 * of the single date when it is not empty.
+	 *
+	 * @since 1.3.0
+	 * @param WC_Order $order       Order.
+	 * @param string   $manual_date Manual date already read by the template.
+	 * @return string
+	 */
+	public static function tracking_range_text( $order, $manual_date ) {
+		if ( '' !== (string) $manual_date ) {
+			return '';
+		}
+		$text = self::tracking_text_fallback( $order, $manual_date );
+		return (string) $text;
 	}
 
 	/**
@@ -479,7 +515,7 @@ class Track_Orders_For_Woocommerce_Estimated_Delivery {
 	 * @return string
 	 */
 	public static function tracking_text_fallback( $order, $manual_date ) {
-		if ( '' !== (string) $manual_date || ! self::is_enabled( 'tracking' ) ) {
+		if ( '' !== (string) $manual_date || ! self::is_enabled( 'tracking' ) || ! $order instanceof WC_Order || ! self::is_displayable_status( $order ) ) {
 			return (string) $manual_date;
 		}
 		$edd = self::get_order_edd( $order );
@@ -772,15 +808,31 @@ class Track_Orders_For_Woocommerce_Estimated_Delivery {
 			$rate->add_meta_data( self::RATE_META_TO, $range['to'] );
 
 			$text = self::display_text( self::format_range( $range['from'], $range['to'] ) );
-			if ( method_exists( $rate, 'set_delivery_time' ) ) {
-				// WooCommerce 9.2+: shown by the Cart / Checkout blocks next to the rate.
+			/*
+			 * One display channel per WooCommerce version, never dependent on the request type
+			 * (rates are cached in the session and shared by classic and Store API requests):
+			 * - WooCommerce 9.2+: delivery_time, rendered by the Cart / Checkout blocks only;
+			 *   the classic cart / checkout prints it via wps_tofw_edd_after_shipping_rate().
+			 * - Older WooCommerce: the text is appended to the rate label, which both classic
+			 *   and block cart / checkout render, so wps_tofw_edd_after_shipping_rate() skips.
+			 */
+			if ( self::rates_support_delivery_time() ) {
 				$rate->set_delivery_time( $text );
-			} elseif ( WC()->is_rest_api_request() ) {
-				// Older WooCommerce: fall back to the label for block checkout.
+			} else {
 				$rate->set_label( $rate->get_label() . ' (' . $text . ')' );
 			}
 		}
 		return $rates;
+	}
+
+	/**
+	 * Does WC_Shipping_Rate support delivery_time (WooCommerce 9.2+)?
+	 *
+	 * @since 1.3.0
+	 * @return bool
+	 */
+	public static function rates_support_delivery_time() {
+		return method_exists( 'WC_Shipping_Rate', 'set_delivery_time' );
 	}
 
 	/**
@@ -793,6 +845,10 @@ class Track_Orders_For_Woocommerce_Estimated_Delivery {
 	 */
 	public function wps_tofw_edd_after_shipping_rate( $method, $index ) {
 		if ( ! $method instanceof WC_Shipping_Rate || ! self::is_enabled( 'cart' ) ) {
+			return;
+		}
+		// Older WooCommerce: the estimate is already part of the rate label.
+		if ( ! self::rates_support_delivery_time() ) {
 			return;
 		}
 		$meta = $method->get_meta_data();
@@ -848,7 +904,7 @@ class Track_Orders_For_Woocommerce_Estimated_Delivery {
 	 * @param WC_Order $order Order.
 	 * @return bool
 	 */
-	private function is_displayable_status( $order ) {
+	public static function is_displayable_status( $order ) {
 		$hidden = array( 'completed', 'cancelled', 'refunded', 'failed' );
 		/**
 		 * Filter order statuses for which the EDD is not shown.
@@ -871,7 +927,7 @@ class Track_Orders_For_Woocommerce_Estimated_Delivery {
 	 * @return void
 	 */
 	public function wps_tofw_edd_email( $order, $sent_to_admin = false, $plain_text = false, $email = null ) {
-		if ( ! $order instanceof WC_Order || ! self::is_enabled( 'email' ) || ! $this->is_displayable_status( $order ) ) {
+		if ( ! $order instanceof WC_Order || ! self::is_enabled( 'email' ) || ! self::is_displayable_status( $order ) ) {
 			return;
 		}
 		$edd = self::get_order_edd( $order );
@@ -894,7 +950,7 @@ class Track_Orders_For_Woocommerce_Estimated_Delivery {
 	 * @return void
 	 */
 	public function wps_tofw_edd_order_details( $order ) {
-		if ( ! $order instanceof WC_Order || ! self::is_enabled( 'tracking' ) || ! $this->is_displayable_status( $order ) ) {
+		if ( ! $order instanceof WC_Order || ! self::is_enabled( 'tracking' ) || ! self::is_displayable_status( $order ) ) {
 			return;
 		}
 		$edd = self::get_order_edd( $order );

@@ -393,19 +393,23 @@ class Track_Orders_For_Woocommerce_Public {
 			}
 			$wps_est_delivery_date = get_post_meta( $order_id, 'wps_tofw_estimated_delivery_date', true );
 			$wps_est_delivery_time = get_post_meta( $order_id, 'wps_tofw_estimated_delivery_time', true );
+			$wps_est_delivery_text = trim( $wps_est_delivery_date . ' ' . $wps_est_delivery_time );
+			// Manual date (formatted) or the rules based estimate, same text as emails / order details.
+			if ( class_exists( 'Track_Orders_For_Woocommerce_Estimated_Delivery' ) && $order instanceof WC_Order ) {
+				$wps_tofw_edd = Track_Orders_For_Woocommerce_Estimated_Delivery::get_order_edd( $order );
+				if ( ! empty( $wps_tofw_edd['text'] ) && ( $wps_tofw_edd['manual'] || ( Track_Orders_For_Woocommerce_Estimated_Delivery::is_enabled( 'tracking' ) && Track_Orders_For_Woocommerce_Estimated_Delivery::is_displayable_status( $order ) ) ) ) {
+					$wps_est_delivery_text = $wps_tofw_edd['text'];
+				}
+			}
 			$wps_tyo_tracking_number = get_post_meta( $order_id, 'wps_tofw_package_tracking_number', true );
 			?>
 			<div style="background-color: rgba(246,246,246,255);padding: 20px;">
 				<h3 style="font-weight:500"><?php esc_html_e( 'Tracking Info', 'track-orders-for-woocommerce' ); ?></h3>
 				<p>
 					<?php esc_html_e( 'Order picked up by ', 'track-orders-for-woocommerce' ); ?><b><?php echo esc_html( $wps_shipping_service ); ?></b><br>
-					<?php esc_html_e( 'Estimated Delivery Date : ', 'track-orders-for-woocommerce' ); ?><b>
-						<?php
-						echo esc_html( $wps_est_delivery_date );
-						echo ' ';
-						echo esc_html( $wps_est_delivery_time );
-						?>
-					</b><br>
+					<?php if ( '' !== $wps_est_delivery_text ) : ?>
+						<?php esc_html_e( 'Estimated Delivery Date : ', 'track-orders-for-woocommerce' ); ?><b><?php echo esc_html( $wps_est_delivery_text ); ?></b><br>
+					<?php endif; ?>
 					<?php esc_html_e( 'Tracking Code : ', 'track-orders-for-woocommerce' ); ?><b><?php echo esc_html( $wps_tyo_tracking_number ); ?></b>
 				</p>
 				<a href="<?php echo esc_attr( $track_order_url ) . '?' . esc_attr( $order_id ); ?>"><?php esc_html_e( 'track your order', 'track-orders-for-woocommerce' ); ?></a>

@@ -200,7 +200,10 @@ $wps_track_order_js = get_option('wps_tofw_custom_js_name');
 			$order_delivered_date = get_post_meta($order_id, '_completed_date', true);
 		}
 		// Rules based estimated delivery date fallback when no manual date is set (since 1.3.0).
+		// $wps_tofw_edd_text holds the formatted range shown instead of the single date.
+		$wps_tofw_edd_text = '';
 		if ( class_exists( 'Track_Orders_For_Woocommerce_Estimated_Delivery' ) ) {
+			$wps_tofw_edd_text      = Track_Orders_For_Woocommerce_Estimated_Delivery::tracking_range_text( $tofw_order, $expected_delivery_date );
 			$expected_delivery_date = Track_Orders_For_Woocommerce_Estimated_Delivery::tracking_date_fallback( $tofw_order, $expected_delivery_date );
 		}
 
@@ -950,11 +953,11 @@ $wps_track_order_js = get_option('wps_tofw_custom_js_name');
 				} else if ('' != $expected_delivery_date) {
 
 					if (('' != $order_delivered_date) && ('wc-cancelled' == $order_status)) {
-						$message_expected = __('Your order is expected to delivered by ', 'track-orders-for-woocommerce') . date_i18n('d F, Y H:i', strtotime($expected_delivery_date)) . $expected_delivery_time;
+						$message_expected = __('Your order is expected to delivered by ', 'track-orders-for-woocommerce') . ( '' !== $wps_tofw_edd_text ? $wps_tofw_edd_text : date_i18n( 'd F, Y H:i', strtotime( $expected_delivery_date ) ) ) . $expected_delivery_time;
 					} elseif ('wc-completed' == $order_status) {
 						$message_expected = __('Your order is Completed on ', 'track-orders-for-woocommerce') . date_i18n('d F, Y H:i', strtotime($order_delivered_date));
 					} else {
-						$message_expected = __('Your order is expected to delivered by ', 'track-orders-for-woocommerce') . date_i18n('F d, Y ', strtotime($expected_delivery_date)) . $expected_delivery_time;
+						$message_expected = __('Your order is expected to delivered by ', 'track-orders-for-woocommerce') . ( '' !== $wps_tofw_edd_text ? $wps_tofw_edd_text : date_i18n( 'F d, Y ', strtotime( $expected_delivery_date ) ) ) . $expected_delivery_time;
 					}
 				?>
 					<h3><?php esc_html_e('Delivered', 'track-orders-for-woocommerce'); ?></h3>
