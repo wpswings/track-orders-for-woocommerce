@@ -1094,6 +1094,17 @@ class Track_Orders_For_Woocommerce_Admin {
 				apply_filters( 'tofw_shipping_services_settings_array', array() );
 			$wps_settings_save_progress = true;
 		}
+		if ( isset( $_POST['wps_tofw_carrier_sync_settings_save'] ) ) {
+			$wps_msp_gen_flag     = false;
+			$tofw_genaral_settings =
+				/**
+				 * Carrier status sync settings.
+				 *
+				 * @since 1.3.0
+				 */
+				apply_filters( 'tofw_carrier_sync_settings_array', array() );
+			$wps_settings_save_progress = true;
+		}
 		if ( isset( $_POST['wps_tofp_enhance_tracking_save'] ) ) {
 			$wps_msp_gen_flag     = false;
 			$tofw_genaral_settings =
@@ -1115,7 +1126,7 @@ class Track_Orders_For_Woocommerce_Admin {
 						if ( isset( $tofw_genaral_setting['id'] ) && '' !== $tofw_genaral_setting['id'] ) {
 							if ( isset( $_POST[ $tofw_genaral_setting['id'] ] ) ) {
 								$tofw_sanitized_value = is_array( $_POST[ $tofw_genaral_setting['id'] ] ) ? map_deep( wp_unslash( $_POST[ $tofw_genaral_setting['id'] ] ), 'sanitize_text_field' ) : sanitize_text_field( wp_unslash( $_POST[ $tofw_genaral_setting['id'] ] ) );
-								if ( 'wps_tofw_google_api_key' === $tofw_genaral_setting['id'] && ! is_array( $tofw_sanitized_value ) ) {
+								if ( in_array( $tofw_genaral_setting['id'], array( 'wps_tofw_google_api_key', 'wps_tofw_carrier_sync_17track_api_key' ), true ) && ! is_array( $tofw_sanitized_value ) ) {
 									$tofw_sanitized_value = trim( $tofw_sanitized_value );
 								}
 								update_option( $tofw_genaral_setting['id'], $tofw_sanitized_value );

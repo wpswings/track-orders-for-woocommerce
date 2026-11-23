@@ -871,6 +871,13 @@ echo do_shortcode('[wps_bump_offer_shortcode]');
 			</div>
 			<?php
 		}
+		/**
+		 * Fires after the order tracking details (e.g. carrier status timeline).
+		 *
+		 * @since 1.3.0
+		 * @param int $order_id Order ID.
+		 */
+		do_action( 'wps_tofw_after_tracking_details', $order_id );
 	} else {
 		?>
 		<div>

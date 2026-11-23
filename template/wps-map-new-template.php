@@ -436,6 +436,13 @@ if ($allowed) {
 	<div id="map"></div>
 	<div id="directions-panel"></div>
 <?php
+	/**
+	 * Fires after the order tracking details (e.g. carrier status timeline).
+	 *
+	 * @since 1.3.0
+	 * @param int $order_id Order ID.
+	 */
+	do_action( 'wps_tofw_after_tracking_details', isset( $order_id ) ? $order_id : 0 );
 } else {
 	$return_request_not_send = __('Tracking Request can\'t be send. ', 'track-orders-for-woocommerce');
 

@@ -1,0 +1,101 @@
+/* Carrier status timeline (since 1.3.0). */
+.wps-tofw-carrier-timeline {
+	margin: 24px 0;
+	padding: 20px;
+	border: 1px solid #e2e4e7;
+	border-radius: 8px;
+	background: #fff;
+}
+
+.wps-tofw-carrier-timeline__header {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+}
+
+.wps-tofw-carrier-timeline__title {
+	margin: 0;
+}
+
+.wps-tofw-carrier-timeline__badge {
+	display: inline-block;
+	padding: 4px 12px;
+	border-radius: 999px;
+	background: #e7f0fa;
+	color: #1d4f8c;
+	font-weight: 600;
+	font-size: 0.9em;
+}
+
+.wps-tofw-carrier-timeline--delivered .wps-tofw-carrier-timeline__badge {
+	background: #e6f4ea;
+	color: #1e6b34;
+}
+
+.wps-tofw-carrier-timeline--out_for_delivery .wps-tofw-carrier-timeline__badge {
+	background: #fff4e0;
+	color: #8a5300;
+}
+
+.wps-tofw-carrier-timeline--exception .wps-tofw-carrier-timeline__badge,
+.wps-tofw-carrier-timeline--failed_attempt .wps-tofw-carrier-timeline__badge {
+	background: #fce8e8;
+	color: #a11d1d;
+}
+
+.wps-tofw-carrier-timeline__updated,
+.wps-tofw-carrier-timeline__empty {
+	margin: 8px 0 0;
+	color: #646970;
+	font-size: 0.9em;
+}
+
+.wps-tofw-carrier-timeline__events {
+	list-style: none;
+	margin: 16px 0 0;
+	padding: 0;
+}
+
+.wps-tofw-carrier-timeline__event {
+	position: relative;
+	margin: 0;
+	padding: 0 0 16px 24px;
+	border-left: 2px solid #e2e4e7;
+	margin-left: 6px;
+}
+
+.wps-tofw-carrier-timeline__event:last-child {
+	border-left-color: transparent;
+	padding-bottom: 0;
+}
+
+.wps-tofw-carrier-timeline__dot {
+	position: absolute;
+	top: 2px;
+	left: -7px;
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	background: #c3c4c7;
+}
+
+.wps-tofw-carrier-timeline__event.is-latest .wps-tofw-carrier-timeline__dot {
+	background: #2271b1;
+}
+
+.wps-tofw-carrier-timeline__description {
+	margin: 0;
+	font-weight: 600;
+}
+
+.wps-tofw-carrier-timeline__meta {
+	margin: 2px 0 0;
+	color: #646970;
+	font-size: 0.85em;
+}
+
+.wps-tofw-carrier-timeline__location::before {
+	content: " \2022 ";
+}
