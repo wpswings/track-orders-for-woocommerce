@@ -1,4 +1,4 @@
-[![Build Status](https://img.shields.io/travis/twbs/bootstrap/v4-dev.svg)](https://travis-ci.org/twbs/bootstrap) ![Active installs](https://img.shields.io/badge/Active-4000%2B-brightgreen) ![License](https://img.shields.io/badge/License-GPLv3%20or%20later-yellowgreen) ![WP tested](https://img.shields.io/badge/WP%20tested-6.7.1-brightgreen) ![WC tested](https://img.shields.io/badge/WC%20tested-9.5.1-brightgreen) ![Requires PHP](https://img.shields.io/badge/Requires%20PHP-7.2.0-blue)
+[![Build Status](https://img.shields.io/travis/twbs/bootstrap/v4-dev.svg)](https://travis-ci.org/twbs/bootstrap) ![Active installs](https://img.shields.io/badge/Active-4000%2B-brightgreen) ![License](https://img.shields.io/badge/License-GPLv3%20or%20later-yellowgreen) ![WP tested](https://img.shields.io/badge/WP%20tested-7.1-brightgreen) ![WC tested](https://img.shields.io/badge/WC%20tested-11.3.1-brightgreen) ![Requires PHP](https://img.shields.io/badge/Requires%20PHP-7.4-blue)
 
 # Track Orders for WooCommerce – Order Tracking & Shipment Tracking
 

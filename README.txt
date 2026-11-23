@@ -4,7 +4,7 @@ Contributors: wpswings
 Donate link: https://wpswings.com/
 Tags: order tracking, shipment tracking, track order, woocommerce order tracking, tracking number
 Requires at least: 6.7.0
-Tested up to: 7.1.5
+Tested up to: 7.1
 WC requires at least: 6.5.0
 WC tested up to: 11.3.1
 Stable tag: 1.2.9
@@ -12,7 +12,7 @@ Requires PHP: 7.4
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Order & shipment tracking for WooCommerce: tracking numbers, 1000+ carriers, branded tracking page, email alerts, WhatsApp share, partial shipments.
+Order & shipment tracking for WooCommerce: tracking numbers, 1000+ carriers, branded tracking page, email/WhatsApp alerts & partial shipments.
 
 == Description ==
 
@@ -28,7 +28,7 @@ Keep your customers updated with real-time tracking and grab their attention whi
 
 === Why Choose Our WooCommerce Shipping Plugin? ===
 
-> You can automate Multi Carrier WooCommerce Shipping with delivery notifications, tracking templates, and live updates.
+> Automate WooCommerce order tracking and shipment tracking with delivery notifications, tracking templates, and live updates.
 
 === WITH OUR WOOCOMMERCE SHIPPING PLUGIN YOU CAN: ===
 
