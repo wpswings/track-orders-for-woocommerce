@@ -367,6 +367,78 @@ class EstimatedDeliveryDisplayTest extends TestCase {
 		$this->assertSame( '', ( new Edd() )->get_product_html( $product ) );
 	}
 
+	/**
+	 * Shippable product double.
+	 *
+	 * @param int $id Product id.
+	 * @return Mockery\MockInterface
+	 */
+	private function shippableProduct( $id = 77 ) {
+		$product = Mockery::mock( 'WC_Product' );
+		$product->shouldReceive( 'get_id' )->andReturn( $id );
+		$product->shouldReceive( 'needs_shipping', 'is_in_stock' )->andReturn( true );
+		$product->shouldReceive( 'is_on_backorder' )->andReturn( false );
+		return $product;
+	}
+
+	public function test_classic_product_page_prints_the_estimate_once() {
+		$GLOBALS['product'] = $this->shippableProduct();
+		$edd                = new Edd();
+
+		$first  = $this->output( array( $edd, 'wps_tofw_edd_product_page' ) );
+		$second = $this->output( array( $edd, 'wps_tofw_edd_product_page' ) );
+		unset( $GLOBALS['product'] );
+
+		$this->assertStringContainsString( 'wps-tofw-edd--product', $first );
+		$this->assertSame( '', $second, 'Not printed twice (classic hook + block render).' );
+	}
+
+	public function test_block_product_page_appends_the_estimate_after_add_to_cart() {
+		Functions\when( 'is_product' )->justReturn( true );
+		Functions\when( 'get_the_ID' )->justReturn( 77 );
+		Functions\when( 'wc_get_product' )->justReturn( $this->shippableProduct() );
+		$edd = new Edd();
+
+		$this->assertSame( '<p>title</p>', $edd->wps_tofw_edd_render_product_block( '<p>title</p>', array( 'blockName' => 'core/post-title' ) ) );
+
+		$html = $edd->wps_tofw_edd_render_product_block( '<form>cart</form>', array( 'blockName' => 'woocommerce/add-to-cart-form' ) );
+		$this->assertStringStartsWith( '<form>cart</form><p class="wps-tofw-edd wps-tofw-edd--product">', $html );
+
+		$again = $edd->wps_tofw_edd_render_product_block( '<form>cart</form>', array( 'blockName' => 'woocommerce/add-to-cart-with-options' ) );
+		$this->assertSame( '<form>cart</form>', $again, 'Only once per product.' );
+	}
+
+	public function test_block_render_outside_product_pages_is_untouched() {
+		Functions\when( 'is_product' )->justReturn( false );
+
+		$this->assertSame( '<form>cart</form>', ( new Edd() )->wps_tofw_edd_render_product_block( '<form>cart</form>', array( 'blockName' => 'woocommerce/add-to-cart-form' ) ) );
+	}
+
+	public function test_shortcode_renders_the_estimate_for_a_product() {
+		Functions\when( 'shortcode_atts' )->alias(
+			static function ( $defaults, $atts ) {
+				return array_merge( $defaults, (array) $atts );
+			}
+		);
+		Functions\expect( 'wc_get_product' )->once()->with( 88 )->andReturn( $this->shippableProduct( 88 ) );
+
+		$html = ( new Edd() )->wps_tofw_edd_shortcode( array( 'product_id' => '88' ) );
+
+		$this->assertStringContainsString( 'Estimated delivery: ', $html );
+	}
+
+	public function test_checkout_hooks_store_the_range_on_the_order() {
+		$classic = $this->mockOrder( array( 'id' => 40, 'get_items' => array( $this->shippingItem( 5, '2026-03-06', '2026-03-10' ) ) ) );
+		$block   = $this->mockOrder( array( 'id' => 41, 'get_items' => array( $this->shippingItem( 5, '2026-03-09', '2026-03-11' ) ) ) );
+		$edd     = new Edd();
+
+		$edd->wps_tofw_edd_on_classic_order( 40, array(), null );
+		$edd->wps_tofw_edd_store_on_order( $block );
+
+		$this->assertSame( '2026-03-10', $this->getOrderMeta( 40, Edd::META_TO ), 'Classic checkout (order loaded by id).' );
+		$this->assertSame( '2026-03-11', $this->getOrderMeta( 41, Edd::META_TO ), 'Block checkout (Store API).' );
+	}
+
 	/*
 	 * Emails, order details and tracking pages.
 	 */
