@@ -359,7 +359,7 @@ if ( ! class_exists( 'WPS_TOFW_Integrations_Manager' ) ) {
 			}
 
 			// Cheap de-duplication on the object we were given (runs on every order save).
-			if ( in_array( $tracking_number, array_map( 'strtoupper', (array) $order->get_meta( self::IMPORTED_META, true ) ), true ) ) {
+			if ( in_array( $tracking_number, array_map( 'strtoupper', array_filter( (array) $order->get_meta( self::IMPORTED_META, true ), 'strlen' ) ), true ) ) {
 				return false;
 			}
 
@@ -369,7 +369,7 @@ if ( ! class_exists( 'WPS_TOFW_Integrations_Manager' ) ) {
 				return false;
 			}
 
-			$imported = array_map( 'strtoupper', (array) $order->get_meta( self::IMPORTED_META, true ) );
+			$imported = array_map( 'strtoupper', array_filter( (array) $order->get_meta( self::IMPORTED_META, true ), 'strlen' ) );
 			if ( in_array( $tracking_number, $imported, true ) ) {
 				return false;
 			}
