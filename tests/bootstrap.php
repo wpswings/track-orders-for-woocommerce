@@ -11,6 +11,16 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
 // Load Polyfills for PHPUnit.
 require_once dirname(__DIR__) . '/vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php';
 
+// Load Patchwork (via Brain Monkey) BEFORE any WordPress function stub is declared,
+// so tests can redefine those functions with Brain\Monkey\Functions\when()/expect().
+require_once dirname(__DIR__) . '/vendor/brain/monkey/inc/patchwork-loader.php';
+
+// Brain Monkey's hook API (add_action, apply_filters, do_action, ...) and small WP helpers
+// (absint, is_wp_error, wp_json_encode, trailingslashit, ...). apply_filters() returns the
+// filtered value unchanged unless a test sets an expectation with Brain\Monkey\Filters.
+require_once dirname(__DIR__) . '/vendor/brain/monkey/inc/wp-hook-functions.php';
+require_once dirname(__DIR__) . '/vendor/brain/monkey/inc/wp-helper-functions.php';
+
 // Define constants.
 // Read the version from the main plugin file so the tests never go stale on a release.
 preg_match('/^\s*\*\s*Version:\s*(\S+)/m', (string) file_get_contents(dirname(__DIR__) . '/track-orders-for-woocommerce.php'), $tofw_version_match);
@@ -31,156 +41,20 @@ if (!defined('WP_CONTENT_DIR')) {
 	define('WP_CONTENT_DIR', '/tmp/wordpress/wp-content');
 }
 
-// Mock WordPress functions for testing.
-if (!function_exists('__')) {
-	function __($text, $domain = 'default') {
-		return $text;
-	}
+if (!defined('OBJECT')) {
+	define('OBJECT', 'OBJECT');
 }
 
-if (!function_exists('esc_html__')) {
-	function esc_html__($text, $domain = 'default') {
-		return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
-	}
+if (!defined('ARRAY_A')) {
+	define('ARRAY_A', 'ARRAY_A');
 }
 
-if (!function_exists('esc_html')) {
-	function esc_html($text) {
-		return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
-	}
+if (!defined('DAY_IN_SECONDS')) {
+	define('DAY_IN_SECONDS', 86400);
 }
 
-if (!function_exists('esc_attr')) {
-	function esc_attr($text) {
-		return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
-	}
-}
-
-if (!function_exists('esc_url')) {
-	function esc_url($url) {
-		return $url;
-	}
-}
-
-if (!function_exists('esc_url_raw')) {
-	function esc_url_raw($url) {
-		return $url;
-	}
-}
-
-if (!function_exists('sanitize_text_field')) {
-	function sanitize_text_field($str) {
-		return trim(strip_tags((string) $str));
-	}
-}
-
-if (!function_exists('sanitize_key')) {
-	function sanitize_key($key) {
-		return preg_replace('/[^a-z0-9_\-]/', '', strtolower($key));
-	}
-}
-
-if (!function_exists('wp_unslash')) {
-	function wp_unslash($value) {
-		return stripslashes_deep($value);
-	}
-}
-
-if (!function_exists('stripslashes_deep')) {
-	function stripslashes_deep($value) {
-		return is_array($value) ? array_map('stripslashes_deep', $value) : stripslashes($value);
-	}
-}
-
-if (!function_exists('admin_url')) {
-	function admin_url($path = '', $scheme = 'admin') {
-		return 'http://example.org/wp-admin/' . $path;
-	}
-}
-
-if (!function_exists('plugin_dir_path')) {
-	function plugin_dir_path($file) {
-		return dirname($file) . '/';
-	}
-}
-
-if (!function_exists('plugin_dir_url')) {
-	function plugin_dir_url($file) {
-		return 'http://example.org/wp-content/plugins/' . basename(dirname($file)) . '/';
-	}
-}
-
-if (!function_exists('plugin_basename')) {
-	function plugin_basename($file) {
-		return basename(dirname($file)) . '/' . basename($file);
-	}
-}
-
-if (!function_exists('get_option')) {
-	function get_option($option, $default = false) {
-		return $default;
-	}
-}
-
-if (!function_exists('update_option')) {
-	function update_option($option, $value, $autoload = null) {
-		return true;
-	}
-}
-
-if (!function_exists('add_option')) {
-	function add_option($option, $value = '', $deprecated = '', $autoload = 'yes') {
-		return true;
-	}
-}
-
-if (!function_exists('delete_option')) {
-	function delete_option($option) {
-		return true;
-	}
-}
-
-if (!function_exists('wp_json_encode')) {
-	function wp_json_encode($data, $options = 0, $depth = 512) {
-		return json_encode($data, $options, $depth);
-	}
-}
-
-if (!function_exists('is_admin')) {
-	function is_admin() {
-		return false;
-	}
-}
-
-if (!function_exists('is_multisite')) {
-	function is_multisite() {
-		return false;
-	}
-}
-
-if (!function_exists('current_user_can')) {
-	function current_user_can($capability) {
-		return true;
-	}
-}
-
-if (!function_exists('wp_verify_nonce')) {
-	function wp_verify_nonce($nonce, $action = -1) {
-		return 1;
-	}
-}
-
-if (!function_exists('wp_create_nonce')) {
-	function wp_create_nonce($action = -1) {
-		return 'test_nonce';
-	}
-}
-
-if (!function_exists('apply_filters')) {
-	function apply_filters($hook_name, $value) {
-		return $value;
-	}
-}
+// Load WordPress function stubs (after Patchwork, so they stay redefinable).
+require_once __DIR__ . '/wp-function-stubs.php';
 
 // Initialize test environment.
 echo "PHPUnit Bootstrap loaded successfully.\n";
