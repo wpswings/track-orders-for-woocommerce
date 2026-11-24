@@ -383,7 +383,7 @@ class Track_Orders_For_Woocommerce_Public {
 		$wps_tofw_enable_track_order_api = get_option( 'wps_tofw_enable_third_party_tracking_api', 'no' );
 		if ( 'on' == $wps_tofw_enable_track_order_api ) {
 
-			$wps_shipping_service = wps_tofw_get_order_meta( $order_id, 'wps_tofw_selected_shipping_service' );
+			$wps_shipping_service = (string) $order->get_meta( 'wps_tofw_selected_shipping_service', true );
 			if ( 'canada_post' === $wps_shipping_service ) {
 				$wps_shipping_service = 'Canada Post';
 			} else if ( 'fedex' === $wps_shipping_service ) {
