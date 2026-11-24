@@ -190,15 +190,20 @@ test.describe.serial( 'WPS-8404 delivery alerts & shipping analytics', () => {
 		await expect( card( 'Upsell clicks' ) ).toContainText( '2' );
 		await expect( card( 'Upsell clicks' ) ).toContainText( '25.0%' );
 
-		const carrierRow = page.locator( '.wps-tofw-insights__table tr' ).filter( { hasText: carrierLabel } );
+		const panel = ( heading: string ) => page.locator( '.wps-tofw-insights__panel' ).filter( { has: page.locator( 'h3', { hasText: heading } ) } );
+		const carrierRow = panel( 'Average delivery time per carrier' ).locator( 'tbody tr' ).filter( { hasText: carrierLabel } );
 		await expect( carrierRow ).toHaveCount( 1 );
 		await expect( carrierRow.locator( 'td' ) ).toHaveText( [ carrierLabel, '2', '1', '1', /2\.0/ ] );
 
-		const statusRow = ( label: string ) => page.locator( '.wps-tofw-insights__table tr' ).filter( { has: page.locator( 'td', { hasText: new RegExp( `^${ label }$` ) } ) } );
+		const statusRow = ( label: string ) => panel( 'Orders by shipment status' ).locator( 'tr' ).filter( { has: page.locator( 'td', { hasText: new RegExp( `^${ label }$` ) } ) } );
 		await expect( statusRow( 'Delivered' ).locator( '.wps-tofw-insights__bar-value' ) ).toHaveText( '1' );
 		await expect( statusRow( 'In transit' ).locator( '.wps-tofw-insights__bar-value' ) ).toHaveText( '1' );
 
-		await expect( page.locator( `a[href*="${ lateShipment.id }"]` ).filter( { hasText: `#${ lateShipment.id }` } ) ).toBeVisible();
+		const lateRows = panel( 'Late shipments & exceptions' ).locator( 'tbody tr' );
+		await expect( lateRows ).toHaveCount( 1 );
+		await expect( lateRows.first() ).toContainText( `#${ lateShipment.id }` );
+		await expect( lateRows.first() ).toContainText( `ANL${ year }${ month }${ day }` );
+		await expect( lateRows.first() ).toContainText( carrierLabel );
 
 		// Change the range with the form: the next day has no orders and no activity.
 		const filters = page.locator( 'form.wps-tofw-insights__filters' );
