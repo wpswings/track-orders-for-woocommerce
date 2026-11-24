@@ -88,6 +88,7 @@ class Track_Orders_For_Woocommerce {
 		$this->track_orders_for_woocommerce_dependencies();
 		$this->track_orders_for_woocommerce_estimated_delivery_hooks();
 		$this->track_orders_for_woocommerce_locale();
+		$this->track_orders_for_woocommerce_block_hooks();
 		if ( is_admin() ) {
 			$this->track_orders_for_woocommerce_admin_hooks();
 		} else {
@@ -177,6 +178,10 @@ class Track_Orders_For_Woocommerce {
 		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/multi-vendor/class-track-orders-for-woocommerce-vendor-wcvendors.php';
 
 		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'package/rest-api/class-track-orders-for-woocommerce-rest-api.php';
+		/**
+		 * The class responsible for registering the Gutenberg blocks.
+		 */
+		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-track-orders-for-woocommerce-blocks.php';
 
 		// Reusable "add tracking to order" service and the CSV bulk tracking import (since 1.3.0).
 		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-track-orders-for-woocommerce-tracking-service.php';
@@ -254,6 +259,25 @@ class Track_Orders_For_Woocommerce {
 		$wps_plugin_name                            = ! empty( explode( '/', plugin_basename( __FILE__ ) ) ) ? explode( '/', plugin_basename( __FILE__ ) )[0] : '';
 		$wps_plugin_settings_saved_notice_hook_name = $wps_plugin_name . '_settings_saved_notice';
 		return $wps_plugin_settings_saved_notice_hook_name;
+	}
+
+	/**
+	 * Register all of the hooks related to the Gutenberg blocks.
+	 *
+	 * @since 1.3.0
+	 */
+	private function track_orders_for_woocommerce_block_hooks() {
+
+		$tofw_plugin_blocks = new Track_Orders_For_Woocommerce_Blocks( $this->tofw_get_plugin_name(), $this->tofw_get_version() );
+
+		$this->loader->add_action( 'init', $tofw_plugin_blocks, 'wps_tofw_register_blocks' );
+
+		// Legacy "WPSwings Tracking Info" embed block must be registered on both admin and frontend.
+		if ( ! class_exists( 'Track_Orders_For_Woocommerce_Admin' ) ) {
+			include_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-track-orders-for-woocommerce-admin.php';
+		}
+		$tofw_plugin_embed_block = new Track_Orders_For_Woocommerce_Admin( $this->tofw_get_plugin_name(), $this->tofw_get_version() );
+		$this->loader->add_action( 'init', $tofw_plugin_embed_block, 'register_google_embed_blocks' );
 	}
 
 	/**

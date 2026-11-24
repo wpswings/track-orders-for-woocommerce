@@ -41,7 +41,7 @@ if ( ! class_exists( 'Track_Orders_For_Woocommerce_With_FedEx' ) ) {
 			$path_to_wsdl = TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'integration/TrackService_v10.wsdl';
 			$wps_tofw_fedex_tracking_enable = get_option( 'wps_tofw_enable_third_party_tracking_api', 'no' );
 
-			$wps_fedex_track_number = get_post_meta( $order_id, 'wps_tofw_package_tracking_number', true );
+			$wps_fedex_track_number = wps_tofw_get_order_meta( $order_id, 'wps_tofw_package_tracking_number' );
 
 			if ( isset( $wps_tofw_fedex_tracking_enable ) && ( 'on' == $wps_tofw_fedex_tracking_enable ) ) {
 

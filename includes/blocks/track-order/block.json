@@ -1,0 +1,38 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "track-orders-for-woocommerce/track-order",
+	"version": "1.3.0",
+	"title": "Track Order",
+	"category": "woocommerce",
+	"icon": "location-alt",
+	"description": "Display the order tracking form so customers can look up the status of their order.",
+	"keywords": [ "track", "tracking", "order", "shipment", "carrier" ],
+	"textdomain": "track-orders-for-woocommerce",
+	"attributes": {
+		"formType": {
+			"type": "string",
+			"enum": [ "order", "carrier" ],
+			"default": "order"
+		},
+		"showTitle": {
+			"type": "boolean",
+			"default": true
+		},
+		"position": {
+			"type": "string",
+			"enum": [ "left", "center", "right" ],
+			"default": "left"
+		}
+	},
+	"supports": {
+		"html": false,
+		"multiple": true,
+		"align": [ "wide", "full" ],
+		"spacing": {
+			"margin": true,
+			"padding": true
+		}
+	},
+	"editorScript": "file:./index.js"
+}

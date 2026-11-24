@@ -33,6 +33,9 @@ Keep your customers updated with real-time tracking and grab their attention whi
 
 === ⭐ KEY FEATURES OF WOOCOMMERCE SHIPPING PLUGIN: ===
 
+* "Track Order" Gutenberg block to add the order tracking form to any page or post
+* Compatible with WooCommerce HPOS (High-Performance Order Storage) and the Cart & Checkout blocks
+
 
 ####1) Email Delay Notification:
 Our Order Tracking plugin now lets you send delay notification emails to customers when their delivery is running late. You can turn this feature on or off anytime, edit the email template, and add details like order ID, customer name, and expected delivery date using dynamic placeholders. You can also send the delay email to the admin if needed.
@@ -298,6 +301,9 @@ To enable third-party tracking APIs in WooCommerce, go to the Shipping Services 
 = How do I customize the appearance of my WooCommerce order tracking pages? = 
 You can customize the appearance of your WooCommerce order tracking pages by going to the Templates section. Here, you can select from three different templates.
 
+= Is it compatible with HPOS and block checkout? =
+Yes. The plugin is compatible with WooCommerce High-Performance Order Storage (HPOS) and with the Cart & Checkout blocks. Tracking details are also shown in the Order Confirmation block, and you can add the "Track Order" block to any page using the block editor.
+
 = How should I allow customers to export their WooCommerce order data? = 
 Firstly, enable the Logged-in User to export orders from the general settings. They can export their order data from my account > orders page. Complete order history will be downloaded in a CSV file.
 
@@ -319,6 +325,12 @@ Check out [**Knowledge Base**](https://support.wpswings.com/wordpress-plugins-kn
 Visit [**Community Forums for Track Orders**](https://forums.wpswings.com/topic-tag/track-orders/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=site_forums)
 
 == Changelog ==
+
+= 1.2.9 – Released on 23 Nov 2026 =
+* New: "Track Order" Gutenberg block with server-side rendered tracking form.
+* New: Partial shipment tracking links in the Order Confirmation block.
+* Fix: Order tracking meta is read through the WooCommerce order object for full HPOS compatibility.
+* Fix: Legacy "WPSwings Tracking Info" embed block now loads correctly in the block editor.
 
 = 1.2.8 – Released on 20 Nov 2026 =
 * Security Fix: Every track order template, including "Track order with Google Map", now renders an order only when the visitor owns it or has verified its billing email. The check is applied to the requested order before any template loads. Credit to Mustafa Ahmed / WPScan for the responsible disclosure.

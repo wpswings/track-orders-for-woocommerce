@@ -1740,15 +1740,13 @@ class Track_Orders_For_Woocommerce_Admin {
 
 					$wps_tofw_all_selected_cities = get_option( 'wps_tofw_old_addresses', false );
 
-					if ( is_array( get_post_meta( $order->id, 'wps_tofw_track_custom_cities', true ) ) ) {
-						$wps_tofw_previous_saved_cities = get_post_meta( $order->id, 'wps_tofw_track_custom_cities', true );
-					} else {
+					$wps_tofw_previous_saved_cities = $order_obj->get_meta( 'wps_tofw_track_custom_cities', true );
+					if ( ! is_array( $wps_tofw_previous_saved_cities ) ) {
 						$wps_tofw_previous_saved_cities = array();
 					}
 
-					if ( is_array( get_post_meta( $order->id, 'wps_tofw_custom_change_time', true ) ) ) {
-						$wps_tofw_previous_saved_changed_time = get_post_meta( $order->id, 'wps_tofw_custom_change_time', true );
-					} else {
+					$wps_tofw_previous_saved_changed_time = $order_obj->get_meta( 'wps_tofw_custom_change_time', true );
+					if ( ! is_array( $wps_tofw_previous_saved_changed_time ) ) {
 						$wps_tofw_previous_saved_changed_time = array();
 					}
 
@@ -1857,9 +1855,9 @@ class Track_Orders_For_Woocommerce_Admin {
 	public function register_google_embed_blocks() {
 		wp_register_script(
 			'tofw-embed-block',
-			plugins_url( 'src/js/tofw-embed-block.js', __FILE__ ),
-			array( 'wp-blocks', 'wp-editor', 'wp-element', 'wp-components' ),
-			filemtime( plugin_dir_path( __FILE__ ) . '/src/js/tofw-embed-block.js' ),
+			plugins_url( 'js/tofw-embed-block.js', __FILE__ ),
+			array( 'wp-blocks', 'wp-block-editor', 'wp-element', 'wp-components', 'wp-i18n' ),
+			filemtime( plugin_dir_path( __FILE__ ) . 'js/tofw-embed-block.js' ),
 			true
 		);
 
