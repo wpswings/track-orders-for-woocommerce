@@ -25,9 +25,17 @@ $wps_tofw_track_error = '';
 if ( isset( $_POST['wps_track_package'] ) ) {
 	$value_check = isset( $_POST['wps_track_package_nonce_name'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_track_package_nonce_name'] ) ) : '';
 	if ( wp_verify_nonce( $value_check, 'wps_track_package_nonce' ) ) {
-		$flag = true;
 		// The order id is only needed for this request: never store it in a site option.
 		$wps_user_order_id = isset( $_POST['wps_user_order_id'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_user_order_id'] ) ) : '';
+
+		// Only the order's customer, a guest who verified the billing email, or any visitor when
+		// "track using order id only" is enabled may see the shipment details of an order.
+		if ( function_exists( 'wps_tofw_can_view_order' ) && wps_tofw_can_view_order( $wps_user_order_id ) ) {
+			$flag = true;
+		} else {
+			// Same message for unknown and foreign orders so order ids cannot be probed.
+			$wps_tofw_track_error = __( 'No tracking details were found for this order. Please check the order id, or log in to the account that placed the order.', 'track-orders-for-woocommerce' );
+		}
 	} else {
 		$wps_tofw_track_error = __( 'Your session has expired. Please enter the order id and submit the form again.', 'track-orders-for-woocommerce' );
 	}
