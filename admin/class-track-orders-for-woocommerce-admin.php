@@ -1525,6 +1525,21 @@ class Track_Orders_For_Woocommerce_Admin {
 				<input type="text" class="wps_tofw_est_delivery_date" id="wps_tofw_est_delivery_date" name="wps_tofw_est_delivery_date" value="<?php echo esc_attr( $expected_delivery_date ); ?>" placeholder="<?php esc_attr_e( 'Enter Delivery Date', 'track-orders-for-woocommerce' ); ?>"></input>
 				<label for="wps_tofw_est_delivery_time"><?php esc_html_e( 'Delivery Time', 'track-orders-for-woocommerce' ); ?></label>
 				<input type="text" class="wps_tofw_est_delivery_time" name="wps_tofw_est_delivery_time" id="wps_tofw_est_delivery_time" value="<?php echo esc_attr( $expected_delivery_time ); ?>" placeholder="<?php esc_attr_e( 'Enter Delivery time', 'track-orders-for-woocommerce' ); ?>"></input>
+				<?php
+				// Show the rules based estimate (since 1.3.0); a manual date above overrides it.
+				$wps_tofw_edd_from = (string) $order->get_meta( 'wps_tofw_edd_from', true );
+				$wps_tofw_edd_to   = (string) $order->get_meta( 'wps_tofw_edd_to', true );
+				if ( '' !== $wps_tofw_edd_from && class_exists( 'Track_Orders_For_Woocommerce_Estimated_Delivery' ) ) {
+					?>
+					<p class="description">
+						<?php
+						/* translators: %s: calculated delivery date range. */
+						echo esc_html( sprintf( __( 'Calculated estimate: %s. Enter a delivery date above to override it.', 'track-orders-for-woocommerce' ), Track_Orders_For_Woocommerce_Estimated_Delivery::format_range( $wps_tofw_edd_from, $wps_tofw_edd_to ) ) );
+						?>
+					</p>
+					<?php
+				}
+				?>
 			</div>
 			<?php
 		}

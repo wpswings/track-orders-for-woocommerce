@@ -86,6 +86,7 @@ class Track_Orders_For_Woocommerce {
 		$this->plugin_name = 'track-orders-for-woocommerce';
 
 		$this->track_orders_for_woocommerce_dependencies();
+		$this->track_orders_for_woocommerce_estimated_delivery_hooks();
 		$this->track_orders_for_woocommerce_locale();
 		if ( is_admin() ) {
 			$this->track_orders_for_woocommerce_admin_hooks();
@@ -160,6 +161,12 @@ class Track_Orders_For_Woocommerce {
 			include_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-track-orders-for-woocommerce-public.php';
 
 		}
+		/**
+		 * The class responsible for the rules based estimated delivery date.
+		 *
+		 * @since 1.3.0
+		 */
+		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-track-orders-for-woocommerce-estimated-delivery.php';
 
 		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'package/rest-api/class-track-orders-for-woocommerce-rest-api.php';
 
@@ -215,6 +222,18 @@ class Track_Orders_For_Woocommerce {
 		$plugin_i18n = new Track_Orders_For_Woocommerce_I18n();
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
+
+	}
+
+	/**
+	 * Register all of the hooks related to the estimated delivery date feature.
+	 *
+	 * @since 1.3.0
+	 */
+	private function track_orders_for_woocommerce_estimated_delivery_hooks() {
+
+		$tofw_plugin_edd = new Track_Orders_For_Woocommerce_Estimated_Delivery();
+		$tofw_plugin_edd->register_hooks( $this->loader );
 
 	}
 
@@ -598,6 +617,11 @@ class Track_Orders_For_Woocommerce {
 			'title'       => esc_html__( 'Track Order with Google Maps', 'track-orders-for-woocommerce' ),
 			'name'        => 'track-orders-for-woocommerce-track-your-your-order-with-google-map',
 			'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-track-your-order-with-google-map.php',
+		);
+		$tofw_default_tabs['track-orders-for-woocommerce-estimated-delivery'] = array(
+			'title'       => esc_html__( 'Estimated Delivery', 'track-orders-for-woocommerce' ),
+			'name'        => 'track-orders-for-woocommerce-estimated-delivery',
+			'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-estimated-delivery.php',
 		);
 		$tofw_default_tabs['track-orders-for-woocommerce-shipping-services']      = array(
 			'title'       => esc_html__( 'Shipping Services', 'track-orders-for-woocommerce' ),

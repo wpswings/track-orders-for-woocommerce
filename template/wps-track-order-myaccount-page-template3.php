@@ -158,6 +158,13 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 			$expected_delivery_time = get_post_meta( $order_id, 'wps_tofw_estimated_delivery_time', true );
 			$order_delivered_date = get_post_meta( $order_id, '_completed_date', true );
 		}
+		// Rules based estimated delivery date fallback when no manual date is set (since 1.3.0).
+		// $wps_tofw_edd_text holds the formatted range shown instead of the single date.
+		$wps_tofw_edd_text = '';
+		if ( class_exists( 'Track_Orders_For_Woocommerce_Estimated_Delivery' ) ) {
+			$wps_tofw_edd_text      = Track_Orders_For_Woocommerce_Estimated_Delivery::tracking_range_text( $tofw_order, $expected_delivery_date );
+			$expected_delivery_date = Track_Orders_For_Woocommerce_Estimated_Delivery::tracking_date_fallback( $tofw_order, $expected_delivery_date );
+		}
 
 		if ( version_compare( WC()->version, '3.0.0', '<' ) ) {
 			$order_status = $tofw_order->post_status;
@@ -827,11 +834,11 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 												<?php
 												if ( ( '' != $order_delivered_date ) || ( 'wc-cancelled' == $order_status ) ) {
 													?>
-													<del><?php echo esc_html__( 'by ', 'track-orders-for-woocommerce' ) . esc_html( date_i18n( 'F d, Y', strtotime( $expected_delivery_date ) ) ) . esc_html( $expected_delivery_time ); ?>
+													<del><?php echo esc_html__( 'by ', 'track-orders-for-woocommerce' ) . esc_html( ( '' !== $wps_tofw_edd_text ? $wps_tofw_edd_text : date_i18n( 'F d, Y', strtotime( $expected_delivery_date ) ) ) ) . esc_html( $expected_delivery_time ); ?>
 													</del>
 													<?php
 												} else {
-													echo esc_html__( 'by ', 'track-orders-for-woocommerce' ) . esc_html( date_i18n( 'F d, Y', strtotime( $expected_delivery_date ) ) ) . esc_html( $expected_delivery_time );
+													echo esc_html__( 'by ', 'track-orders-for-woocommerce' ) . esc_html( ( '' !== $wps_tofw_edd_text ? $wps_tofw_edd_text : date_i18n( 'F d, Y', strtotime( $expected_delivery_date ) ) ) ) . esc_html( $expected_delivery_time );
 												}
 												?>
 											</span><?php } ?>
