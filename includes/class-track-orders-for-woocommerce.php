@@ -93,6 +93,7 @@ class Track_Orders_For_Woocommerce {
 		} else {
 			$this->track_orders_for_woocommerce_public_hooks();
 		}
+		$this->track_orders_for_woocommerce_multi_vendor_hooks();
 		$this->track_orders_for_woocommerce_common_hooks();
 
 		$this->track_orders_for_woocommerce_carrier_sync_hooks();
@@ -167,6 +168,13 @@ class Track_Orders_For_Woocommerce {
 		 * @since 1.3.0
 		 */
 		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-track-orders-for-woocommerce-estimated-delivery.php';
+
+		// Multi-vendor (Dokan, WCFM, WC Vendors) shipment tracking.
+		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/multi-vendor/class-track-orders-for-woocommerce-vendor-integration.php';
+		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/multi-vendor/class-track-orders-for-woocommerce-multi-vendor.php';
+		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/multi-vendor/class-track-orders-for-woocommerce-vendor-dokan.php';
+		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/multi-vendor/class-track-orders-for-woocommerce-vendor-wcfm.php';
+		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/multi-vendor/class-track-orders-for-woocommerce-vendor-wcvendors.php';
 
 		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'package/rest-api/class-track-orders-for-woocommerce-rest-api.php';
 
@@ -372,6 +380,30 @@ class Track_Orders_For_Woocommerce {
 			$this->loader->add_action( 'admin_init', $tofw_plugin_common, 'wps_tofw_register_custom_order_status' );
 			$this->loader->add_action( 'wc_order_statuses', $tofw_plugin_common, 'wps_tofw_add_custom_order_status', 10, 1 );
 		}
+	}
+
+	/**
+	 * Register the multi-vendor (Dokan, WCFM, WC Vendors) shipment tracking hooks.
+	 *
+	 * Marketplace integrations are only loaded when the marketplace plugin is
+	 * active (checked on `plugins_loaded`). Registered on both admin and front
+	 * end because vendor dashboards are front end pages saving through admin-ajax.
+	 *
+	 * @since 1.3.0
+	 */
+	private function track_orders_for_woocommerce_multi_vendor_hooks() {
+		if ( 'on' != get_option( 'wps_tofw_is_plugin_enable' ) ) {
+			return;
+		}
+
+		$tofw_multi_vendor = new Track_Orders_For_Woocommerce_Multi_Vendor( $this->tofw_get_version() );
+
+		$this->loader->add_action( 'plugins_loaded', $tofw_multi_vendor, 'wps_tofw_init_vendor_integrations', 20 );
+		$this->loader->add_action( 'wp_ajax_wps_tofw_save_vendor_shipment', $tofw_multi_vendor, 'wps_tofw_save_vendor_shipment' );
+		$this->loader->add_action( 'wp_ajax_wps_tofw_delete_vendor_shipment', $tofw_multi_vendor, 'wps_tofw_delete_vendor_shipment' );
+		$this->loader->add_action( 'woocommerce_order_details_after_order_table', $tofw_multi_vendor, 'wps_tofw_render_customer_vendor_shipments', 20, 1 );
+		$this->loader->add_action( 'wps_tofw_after_tracking_order_details', $tofw_multi_vendor, 'wps_tofw_render_customer_vendor_shipments', 10, 1 );
+		$this->loader->add_action( 'woocommerce_process_shop_order_meta', $tofw_multi_vendor, 'wps_tofw_release_mirrored_tracking', 20, 2 );
 	}
 
 	/**

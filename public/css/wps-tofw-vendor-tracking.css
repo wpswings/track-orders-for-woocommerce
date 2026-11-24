@@ -1,0 +1,80 @@
+/* Vendor shipment tracking (since 1.3.0). */
+.wps-tofw-vt-box,
+.wps-tofw-vt-customer {
+	margin: 20px 0;
+}
+
+.wps-tofw-vt-box {
+	padding: 16px;
+	border: 1px solid #e2e2e2;
+	border-radius: 4px;
+	background: #fff;
+	clear: both;
+}
+
+.wps-tofw-vt-box.wps-tofw-vt-loading {
+	opacity: 0.6;
+}
+
+.wps-tofw-vt-shipments,
+.wps-tofw-vt-items {
+	width: 100%;
+	margin: 0 0 16px;
+	border-collapse: collapse;
+}
+
+.wps-tofw-vt-shipments th,
+.wps-tofw-vt-shipments td,
+.wps-tofw-vt-items th,
+.wps-tofw-vt-items td {
+	padding: 6px 8px;
+	border-bottom: 1px solid #eee;
+	text-align: left;
+	vertical-align: top;
+}
+
+.wps-tofw-vt-field label {
+	display: inline-block;
+	margin-right: 12px;
+}
+
+.wps-tofw-vt-field input[type="text"],
+.wps-tofw-vt-field input[type="url"],
+.wps-tofw-vt-field input[type="date"],
+.wps-tofw-vt-field select {
+	display: block;
+	min-width: 220px;
+	max-width: 100%;
+}
+
+.wps-tofw-vt-item-qty {
+	width: 70px;
+}
+
+.wps-tofw-vt-notice:empty {
+	display: none;
+}
+
+.wps-tofw-vt-notice {
+	margin-bottom: 12px;
+	padding: 8px 12px;
+	border-left: 4px solid #46b450;
+	background: #f6fff6;
+}
+
+.wps-tofw-vt-notice.wps-tofw-vt-error {
+	border-left-color: #dc3232;
+	background: #fff6f6;
+}
+
+.wps-tofw-vt-group {
+	margin-bottom: 20px;
+}
+
+@media (max-width: 600px) {
+	.wps-tofw-vt-shipments,
+	.wps-tofw-vt-items {
+		display: block;
+		overflow-x: auto;
+	}
+}
