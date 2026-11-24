@@ -1,0 +1,24 @@
+# Files excluded from the distributable plugin zip (wp dist-archive / release packaging).
+/.git
+/.github
+/.wordpress-org
+/node_modules
+/vendor
+/tests
+/test-results
+/playwright-report
+/.auth
+/coverage
+.distignore
+.gitignore
+.wp-env.json
+.wp-env.override.json
+package.json
+package-lock.json
+playwright.config.ts
+composer.json
+composer.lock
+phpunit.xml
+phpunit.xml.dist
+phpcs.xml
+.phpunit.result.cache

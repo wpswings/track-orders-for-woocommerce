@@ -32,3 +32,9 @@ yarn-error.log
 
 # Logs
 *.log
+# E2E (Playwright / wp-env)
+test-results/
+playwright-report/
+.auth/
+blob-report/
+.wp-env.override.json

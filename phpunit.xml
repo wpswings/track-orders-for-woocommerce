@@ -10,8 +10,10 @@
     failOnRisky="true">
 
     <testsuites>
-        <testsuite name="Track Orders for WooCommerce Test Suite">
-            <directory>tests</directory>
+        <!-- Unit tests: the legacy tests in tests/*.php plus tests/unit/<Feature>/*Test.php. -->
+        <testsuite name="unit">
+            <directory suffix="Test.php">tests</directory>
+            <exclude>tests/e2e</exclude>
         </testsuite>
     </testsuites>
 
