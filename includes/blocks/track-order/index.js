@@ -19,7 +19,6 @@
 	var ToggleControl = components.ToggleControl;
 	var Disabled = components.Disabled;
 	var ServerSideRender = serverSideRender && serverSideRender.default ? serverSideRender.default : serverSideRender;
-	var TEXT_DOMAIN = 'track-orders-for-woocommerce';
 	var BLOCK_NAME = 'track-orders-for-woocommerce/track-order';
 
 	blocks.registerBlockType( BLOCK_NAME, {
@@ -31,11 +30,11 @@
 			var settings = [
 				el( SelectControl, {
 					key: 'formType',
-					label: __( 'Form type', TEXT_DOMAIN ),
+					label: __( 'Form type', 'track-orders-for-woocommerce' ),
 					value: attributes.formType,
 					options: [
-						{ label: __( 'Order tracking (order ID and email)', TEXT_DOMAIN ), value: 'order' },
-						{ label: __( 'Multi-carrier tracking (tracking number)', TEXT_DOMAIN ), value: 'carrier' }
+						{ label: __( 'Order tracking (order ID and email)', 'track-orders-for-woocommerce' ), value: 'order' },
+						{ label: __( 'Multi-carrier tracking (tracking number)', 'track-orders-for-woocommerce' ), value: 'carrier' }
 					],
 					onChange: function ( value ) {
 						setAttributes( { formType: value } );
@@ -48,12 +47,12 @@
 				settings.push(
 					el( SelectControl, {
 						key: 'position',
-						label: __( 'Position', TEXT_DOMAIN ),
+						label: __( 'Position', 'track-orders-for-woocommerce' ),
 						value: attributes.position,
 						options: [
-							{ label: __( 'Left', TEXT_DOMAIN ), value: 'left' },
-							{ label: __( 'Center', TEXT_DOMAIN ), value: 'center' },
-							{ label: __( 'Right', TEXT_DOMAIN ), value: 'right' }
+							{ label: __( 'Left', 'track-orders-for-woocommerce' ), value: 'left' },
+							{ label: __( 'Center', 'track-orders-for-woocommerce' ), value: 'center' },
+							{ label: __( 'Right', 'track-orders-for-woocommerce' ), value: 'right' }
 						],
 						onChange: function ( value ) {
 							setAttributes( { position: value } );
@@ -65,7 +64,7 @@
 				settings.push(
 					el( ToggleControl, {
 						key: 'showTitle',
-						label: __( 'Show heading', TEXT_DOMAIN ),
+						label: __( 'Show heading', 'track-orders-for-woocommerce' ),
 						checked: !! attributes.showTitle,
 						onChange: function ( value ) {
 							setAttributes( { showTitle: value } );
@@ -81,7 +80,7 @@
 				el(
 					InspectorControls,
 					null,
-					el( PanelBody, { title: __( 'Tracking form', TEXT_DOMAIN ), initialOpen: true }, settings )
+					el( PanelBody, { title: __( 'Tracking form', 'track-orders-for-woocommerce' ), initialOpen: true }, settings )
 				),
 				el(
 					'div',
