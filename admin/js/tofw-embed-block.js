@@ -1,7 +1,7 @@
 const { registerBlockType } = wp.blocks;
+const { __ } = wp.i18n;
 const { TextControl, PanelBody } = wp.components;
 const { useState } = wp.element;
-const { __ } = wp.i18n;
 
 registerBlockType('wpswings/tofw-embed-block', {
     title: __( 'WPSwings Tracking Info', 'track-orders-for-woocommerce' ),
