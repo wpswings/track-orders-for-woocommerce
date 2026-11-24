@@ -1795,7 +1795,7 @@ class Track_Orders_For_Woocommerce_Admin {
 					<div class="content">
 
 						<div class="Order">
-							<h4>' . sprintf( /* translators: %s: order ID. */ esc_html__( 'Order #%s', 'track-orders-for-woocommerce' ), $post_id ) . '</h4>
+							<h4>Order #' . $post_id . '</h4>
 							<table>
 								<tbody>
 									<tr>
@@ -2000,7 +2000,7 @@ class Track_Orders_For_Woocommerce_Admin {
 		wp_register_script(
 			'tofw-embed-block',
 			plugins_url( 'js/tofw-embed-block.js', __FILE__ ),
-			array( 'wp-blocks', 'wp-editor', 'wp-element', 'wp-components', 'wp-i18n' ),
+			array( 'wp-blocks', 'wp-block-editor', 'wp-element', 'wp-components', 'wp-i18n' ),
 			filemtime( plugin_dir_path( __FILE__ ) . 'js/tofw-embed-block.js' ),
 			true
 		);
