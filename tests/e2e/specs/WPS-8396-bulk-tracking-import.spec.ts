@@ -139,7 +139,7 @@ test.describe( 'WPS-8396 bulk tracking import and REST', () => {
 			.poll(
 				async () => {
 					runScheduledActions( 'wps_tofw_tracking_import_batch' );
-					return ( await progress.locator( '.wps-tofw-import__status' ).textContent() ) || '';
+					return ( ( await progress.locator( '.wps-tofw-import__status' ).textContent() ) || '' ).trim();
 				},
 				{ timeout: 60_000, intervals: [ 1_000, 2_000, 3_000 ] }
 			)
