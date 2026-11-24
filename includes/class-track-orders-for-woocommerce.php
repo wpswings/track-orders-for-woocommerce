@@ -179,6 +179,26 @@ class Track_Orders_For_Woocommerce {
 		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-track-orders-for-woocommerce-carrier-sync.php';
 
 		$this->loader = new Track_Orders_For_Woocommerce_Loader();
+		/**
+		 * Shared tracking save routine and shipping-plugin auto import integrations.
+		 *
+		 * @since 1.3.0
+		 */
+		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wps-tofw-tracking-service.php';
+		$integrations_dir = plugin_dir_path( dirname( __FILE__ ) ) . 'includes/integrations/';
+		include_once $integrations_dir . 'interface-wps-tofw-shipping-integration.php';
+		include_once $integrations_dir . 'abstract-class-wps-tofw-shipping-integration.php';
+		include_once $integrations_dir . 'class-wps-tofw-integrations-manager.php';
+		include_once $integrations_dir . 'class-wps-tofw-integration-shipstation.php';
+		include_once $integrations_dir . 'class-wps-tofw-integration-woocommerce-shipping.php';
+		include_once $integrations_dir . 'class-wps-tofw-integration-shipment-tracking.php';
+		include_once $integrations_dir . 'class-wps-tofw-integration-shippo.php';
+		include_once $integrations_dir . 'class-wps-tofw-integration-sendcloud.php';
+		include_once $integrations_dir . 'class-wps-tofw-integration-printful.php';
+		include_once $integrations_dir . 'class-wps-tofw-integration-printify.php';
+
+		// Register the shipping-plugin auto import hooks now that the loader exists.
+		$this->track_orders_for_woocommerce_shipping_integration_hooks();
 
 	}
 
@@ -284,6 +304,23 @@ class Track_Orders_For_Woocommerce {
 			$this->loader->add_action( 'woocommerce_process_shop_order_meta', $tofw_review_notice, 'wps_tofw_flush_tracked_count', 99 );
 		}
 
+	}
+
+	/**
+	 * Register the shipping-plugin tracking auto import hooks.
+	 *
+	 * Runs on every request type (admin, REST, WC API, cron) because label
+	 * plugins report shipments from webhooks / REST calls.
+	 *
+	 * @since 1.3.0
+	 */
+	private function track_orders_for_woocommerce_shipping_integration_hooks() {
+
+		$tofw_integrations_manager = new WPS_TOFW_Integrations_Manager();
+
+		$this->loader->add_action( 'init', $tofw_integrations_manager, 'init', 20 );
+		$this->loader->add_filter( 'tofw_shipping_services_settings_array_filter', $tofw_integrations_manager, 'add_settings', 20 );
+		$this->loader->add_filter( 'wps_tofw_add_diffrent_shipping_services', $tofw_integrations_manager, 'add_seen_carriers_to_services', 20 );
 	}
 
 	/**
