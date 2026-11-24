@@ -30,23 +30,6 @@ Keep your customers updated with real-time tracking and grab their attention whi
 
 > Automate WooCommerce order tracking and shipment tracking with delivery notifications, tracking templates, and live updates.
 
-=== WITH OUR WOOCOMMERCE SHIPPING PLUGIN YOU CAN: ===
-
-* Simplify your order processing with partial shipment tracking
-* Multi-Carrier Tracking On the Same Page with live updates
-* Track Orders with multiple tracking templates.
-* Quick order tracker button for customers 
-* Show the icon for order status in the order table
-* Track your orders using the unique order ID only
-* Third-party 3PL Shipment Tracking.
-* Enable Live Map Package Tracking Using Google Map
-* Let customers & guests export orders in a CSV file
-* Email notifications for order status in WooCommerce
-* Show additional order details with tracking
-* Create and use unlimited custom order status.
-* Share Tracking URL on WhatsApp. 
-* Create Custom Email Templates with Template Builder
-
 
 === ⭐ KEY FEATURES OF WOOCOMMERCE SHIPPING PLUGIN: ===
 
@@ -87,8 +70,8 @@ With the WooCommerce order tracker, logged-in users and guest users can **export
 #### 12) Order Information:
 Show **customers information** crucial to the order fulfillment process, such as the delivery partner, estimated delivery date, and tracking code. Including the delivery partner's name.
 
-#### 13) Create WooCommerce Order Tracking Shortcode on the tracking Page:
-By utilizing the page short code, you can add an Order Tracking page anywhere on your WooCommerce store. Use the **form shortcode to implement a Track Order Form** anywhere on your site.
+#### 13) Order Tracking Shortcodes:
+Use the free **multi-carrier tracking form shortcode** `[WPS_MUTIPLE_CARRIER_TRACKING_FORM]` to let customers track a parcel by tracking number anywhere on your site. With Pro, add the order tracking page and **Track Order Form** shortcodes anywhere on your WooCommerce store.
 
 #### 14) Order API: 
 With the latest update our track orders for WooCommerce plugin includes a powerful Order API that helps you easily connect your store with third-party applications. With this API, you can fetch paginated orders with status labels, view details of a specific order, create new orders, and access all available order statuses. 
@@ -104,45 +87,52 @@ For example, if you have a mobile app, you can use the API to display a customer
 
 
 
-=== 🤝 TRACK ORDERS FOR WOOCOMMERCE COMPATIBILITIES ===
+=== Works with ===
 
-Compatible with various themes and plugins that are suitable for any kind of WordPress project.
+* **WooCommerce HPOS (High-Performance Order Storage)** – declared compatible.
+* **WooCommerce Cart and Checkout Blocks** – declared compatible.
+* **[Upsell Funnel Builder for WooCommerce](https://wpswings.com/product/upsell-order-bump-offer-for-woocommerce-pro/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=upsell-order-bump-pro)** – show upsell offers on the order tracking page (enable "Upsell Tracking Page" while that plugin is active).
+* **[RMA – Return, Refund and Exchange](https://wordpress.org/plugins/woo-refund-and-exchange-lite/)** by WP Swings – tracking pages and the Order API read the order statuses registered in WooCommerce, so statuses added by other plugins are listed.
+* **Shipping carriers** – FedEx (Free), TrackingMore multi-carrier live tracking (Free, your own TrackingMore API key), and DHL, USPS, Canada Post and 17TRACK (Pro).
+* **Shipping and label plugins** – tracking numbers created by any shipping or label plugin can be added to the order's tracking meta box (carrier + tracking number) and are shown on the tracking page and in emails.
+* **Google Maps**, **Twilio** (SMS, Pro), **WhatsApp** (share tracking link) and the **Elementor** widget (Pro).
+* **[Coefficient](https://coefficient.io/)** – pull Order API data into spreadsheets.
 
-* Compatibility with [**Coefficient**](https://coefficient.io/) to display your API data in a clear, tabular format.
-* [**Upsell Funnel Builder**](https://wpswings.com/product/upsell-order-bump-offer-for-woocommerce-pro/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=upsell-order-bump-pro) – Display upsell offers on the order tracking page. 
-* [**RMA – Return, Refund and Exchange**](https://wordpress.org/plugins/woo-refund-and-exchange-lite/) – With this compatibility, you can now track the status of return, exchange, and refunded orders via the track orders plugin.
-* [**Visual Composer**](https://visualcomposer.com/) – Free WordPress Website Builder
-* [**Elementor**](https://elementor.com/) – Create, Design, and Host your Website
-* [**WC Vendors**](https://www.wcvendors.com/themes/) – A Modern WordPress Theme
-* [**DIVI Theme**](https://www.elegantthemes.com/gallery/divi/) – The Ultimate WordPress Theme
-* [**Event Ticket Manager For WooCommerce**](https://wordpress.org/plugins/event-tickets-manager-for-woocommerce/) & [**Event Ticket Manager For WooCommerce Pro**](https://wpswings.com/product/membership-for-woocommerce-pro/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=events-pro) – Events and Bookings Calendar, Registration, Event Check-in Using Emails, Edit Your Ticket Content by WP Swings 
-* [**PDF Generator For WordPress**](https://wordpress.org/plugins/pdf-generator-for-wp/) – Generate Invoice via PDF Plugin, embed the tracking button for users easily track their orders directly from the invoice.
+=== Free vs Pro ===
 
-=== 🏆 WHAT PREMIUM VERSION OF WOOCOMMERCE SHIPMENT TRACKER OFFERS ===
+Pro is an add-on: it includes everything in Free and adds the features listed under "Pro adds".
 
-**1. Send Text Message Notifications:** Our Pro plugin lets you send order-tracking updates to customers via text messages using Twilio’s API integration
+**Free includes:**
 
-**2. Payment Reminders Orders:** Automatically send payment reminders with the Pro plugin to boost conversions. These emails include payment links for pending transactions.
+* Order tracking for logged-in users (My Account)
+* Guest tracking form (order ID + email, or order ID only)
+* Partial shipment tracking
+* Three tracking templates
+* Custom order statuses and status icons
+* Order delay notification emails
+* Email notifications on order status change (four templates)
+* Google Maps package tracking
+* Share tracking link on WhatsApp
+* Order export as CSV (logged-in and guests)
+* Order API (REST)
+* Multi-carrier live tracking by tracking number (1000+ carriers via TrackingMore, your own API key) with the multi-carrier tracking form shortcode
+* FedEx tracking API
 
-**3. Custom JS and CSS:** Use the global settings to define wrapper classes for your theme, and easily customize the design. With custom CSS and JavaScript, you can adjust the page's look and feel.
+**Pro adds:**
 
-**4. Third-Party Shipment Tracking:** Our Pro plugin integrates with trusted shipment tracking systems like FedEx, USPS, and Canada Post. 
+* Five additional tracking templates
+* Custom email editor with live preview
+* DHL, USPS and Canada Post tracking APIs
+* 17TRACK integration
+* Custom carrier tracking links
+* SMS notifications (Twilio)
+* Payment reminder emails with pay link
+* QR code redirect to tracking page
+* "Track Your Order" popup
+* Tracking page and order tracking form shortcodes
+* Custom CSS and JavaScript
+* Elementor widget
 
-**5. Redirect to Tracking Page With QR Code:** WP Swings Shipment tracking plugin lets you include a QR code in order emails, redirecting customers to the tracking page.
-
-**6. Track Your Order Popup:** Set up a "Track Your Order" popup to make order tracking simple and quick for your customers.
-
-**7. DHL Shipping Integration:** With the tracking API, let your customers track their orders easily, no need to visit the carrier’s website. 
-
-**8. Carriers Supported 1000+:** WooCommerce Shipment Tracking plugin now supports over 1000+ carriers, like DHL, UPS, FedEx, and many more
-
-**9. Custom Email Template Builder:** Create custom email templates with a simple drag-and-drop builder. Select and organize elements like headers, footers, and custom HTML to match your style.
-
-
-
-=== Take Advantage of the Exclusive Features of the Track Orders For WooCommerce Pro Plugin ===
-
-This Pro enables the addition of multiple shipping services, customization of the tracking process to match specific business needs, and the sending of email reminders with payment links for pending orders, it offers features like tracking templates for engaging customers, shortcodes for creating custom tracking pages and forms, and a Track Your Order popup box for convenient order monitoring within the My Account section.
 
 >**Note**: Get [**Track Orders For WooCommerce Pro**](https://wpswings.com/product/track-orders-for-woocommerce-pro/?utm_source=ot-org-page&utm_medium=referral&utm_campaign=ot-pro)
 
@@ -310,6 +300,17 @@ You can customize the appearance of your WooCommerce order tracking pages by goi
 
 = How should I allow customers to export their WooCommerce order data? = 
 Firstly, enable the Logged-in User to export orders from the general settings. They can export their order data from my account > orders page. Complete order history will be downloaded in a CSV file.
+
+= How do customers track by tracking number or email? =
+* With an order ID and email: guests open the Guest Track Order page ([your-store-url]/guest-track-order-form/), enter the order ID and the billing email, and click "Track Order". If you enable "Enable Order Tracking Using Order Id Only" in General settings, the email is not required.
+* By tracking number: add the shortcode `[WPS_MUTIPLE_CARRIER_TRACKING_FORM]` to a page, enable "Enable Multi-Carrier Tracking" and enter your TrackingMore API key. Customers enter the tracking number, pick the carrier and see live updates on your site.
+* Logged-in customers use the "Track Order" button on My Account > Orders.
+
+= Is it HPOS compatible? =
+Yes. The plugin declares compatibility with WooCommerce High-Performance Order Storage (custom order tables) and with the Cart and Checkout Blocks.
+
+= Which carriers are supported? =
+Multi-carrier live tracking uses the TrackingMore service, so the carriers available are those TrackingMore supports (1000+); you need your own TrackingMore API key. The free plugin also includes a FedEx tracking integration. Pro adds DHL, USPS, Canada Post and 17TRACK, plus custom carrier tracking links.
 
 == My Question is not listed? ==
 
