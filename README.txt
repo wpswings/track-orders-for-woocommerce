@@ -46,11 +46,12 @@ Keep your customers updated with real-time tracking and grab their attention whi
 * Create and use unlimited custom order status.
 * Share Tracking URL on WhatsApp. 
 * Create Custom Email Templates with Template Builder
-* "Track Order" Gutenberg block to add the order tracking form to any page or post
-* Compatible with WooCommerce HPOS (High-Performance Order Storage) and the Cart & Checkout blocks
 
 
 === ⭐ KEY FEATURES OF WOOCOMMERCE SHIPPING PLUGIN: ===
+
+* "Track Order" Gutenberg block to add the order tracking form to any page or post
+* Compatible with WooCommerce HPOS (High-Performance Order Storage) and the Cart & Checkout blocks
 
 
 ####1) Email Delay Notification:
@@ -310,11 +311,11 @@ To enable third-party tracking APIs in WooCommerce, go to the Shipping Services 
 = How do I customize the appearance of my WooCommerce order tracking pages? = 
 You can customize the appearance of your WooCommerce order tracking pages by going to the Templates section. Here, you can select from three different templates.
 
-= How should I allow customers to export their WooCommerce order data? = 
-Firstly, enable the Logged-in User to export orders from the general settings. They can export their order data from my account > orders page. Complete order history will be downloaded in a CSV file.
-
 = Is it compatible with HPOS and block checkout? =
 Yes. The plugin is compatible with WooCommerce High-Performance Order Storage (HPOS) and with the Cart & Checkout blocks. Tracking details are also shown in the Order Confirmation block, and you can add the "Track Order" block to any page using the block editor.
+
+= How should I allow customers to export their WooCommerce order data? = 
+Firstly, enable the Logged-in User to export orders from the general settings. They can export their order data from my account > orders page. Complete order history will be downloaded in a CSV file.
 
 == My Question is not listed? ==
 
