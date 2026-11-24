@@ -93,10 +93,9 @@ class Track_Orders_For_Woocommerce {
 			$this->track_orders_for_woocommerce_public_hooks();
 		}
 		$this->track_orders_for_woocommerce_common_hooks();
+		$this->track_orders_for_woocommerce_wismo_hooks();
 
 		$this->track_orders_for_woocommerce_api_hooks();
-
-		$this->track_orders_for_woocommerce_wismo_hooks();
 
 	}
 
@@ -163,7 +162,6 @@ class Track_Orders_For_Woocommerce {
 		 * of the plugin.
 		 */
 		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'common/class-track-orders-for-woocommerce-common.php';
-
 		// "Where is my order?" assistant (frontend widget, AJAX endpoints, settings).
 		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wismo/class-track-orders-for-woocommerce-wismo-answer-engine.php';
 		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wismo/class-track-orders-for-woocommerce-wismo.php';
@@ -348,7 +346,6 @@ class Track_Orders_For_Woocommerce {
 
 	}
 
-
 	/**
 	 * Register the hooks of the "Where is my order?" assistant.
 	 * Registered outside the admin/public split because admin-ajax requests run in is_admin().
@@ -376,6 +373,7 @@ class Track_Orders_For_Woocommerce {
 		$this->loader->add_action( 'wp_ajax_wps_tofw_wismo_nonce', $tofw_wismo, 'ajax_nonce' );
 		$this->loader->add_action( 'wp_ajax_nopriv_wps_tofw_wismo_nonce', $tofw_wismo, 'ajax_nonce' );
 	}
+
 
 	/**
 	 * Run the loader to execute all of the hooks with WordPress.
