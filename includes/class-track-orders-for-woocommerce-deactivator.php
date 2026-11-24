@@ -36,6 +36,10 @@ class Track_Orders_For_Woocommerce_Deactivator {
 	public static function track_orders_for_woocommerce_deactivate() {
 		wp_clear_scheduled_hook( 'wps_tofw_daily_notification' );
 
+		if ( class_exists( 'Track_Orders_For_Woocommerce_Carrier_Sync' ) ) {
+			Track_Orders_For_Woocommerce_Carrier_Sync::unschedule_all();
+		}
+
 	}
 
 }

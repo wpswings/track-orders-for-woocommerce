@@ -94,6 +94,8 @@ class Track_Orders_For_Woocommerce {
 		}
 		$this->track_orders_for_woocommerce_common_hooks();
 
+		$this->track_orders_for_woocommerce_carrier_sync_hooks();
+
 		$this->track_orders_for_woocommerce_api_hooks();
 
 		$this->track_orders_for_woocommerce_tracking_import_hooks();
@@ -170,6 +172,11 @@ class Track_Orders_For_Woocommerce {
 		 * of the plugin.
 		 */
 		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'common/class-track-orders-for-woocommerce-common.php';
+
+		/**
+		 * The class responsible for the automatic carrier status sync.
+		 */
+		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-track-orders-for-woocommerce-carrier-sync.php';
 
 		$this->loader = new Track_Orders_For_Woocommerce_Loader();
 
@@ -344,6 +351,33 @@ class Track_Orders_For_Woocommerce {
 			$this->loader->add_action( 'woocommerce_thankyou', $tofw_plugin_public, 'wps_run_split_on_order', 10, 1 );
 		}
 			$this->loader->add_filter( 'body_class', $tofw_plugin_public, 'wps_tofw_add_body_class' );
+	}
+
+	/**
+	 * Register all of the hooks related to the automatic carrier status sync.
+	 *
+	 * @since 1.3.0
+	 */
+	private function track_orders_for_woocommerce_carrier_sync_hooks() {
+
+		$tofw_carrier_sync = new Track_Orders_For_Woocommerce_Carrier_Sync();
+
+		// Action Scheduler callbacks (run from WP-Cron or async admin-ajax requests).
+		$this->loader->add_action( Track_Orders_For_Woocommerce_Carrier_Sync::RECURRING_HOOK, $tofw_carrier_sync, 'run_scheduled' );
+		$this->loader->add_action( Track_Orders_For_Woocommerce_Carrier_Sync::BATCH_HOOK, $tofw_carrier_sync, 'run_batch', 10, 1 );
+
+		if ( is_admin() ) {
+			$this->loader->add_filter( 'tofw_carrier_sync_settings_array', $tofw_carrier_sync, 'settings_array', 10 );
+			$this->loader->add_action( 'admin_init', $tofw_carrier_sync, 'maybe_schedule' );
+			$this->loader->add_action( 'update_option_wps_tofw_carrier_sync_enable', $tofw_carrier_sync, 'maybe_schedule' );
+			$this->loader->add_action( 'update_option_wps_tofw_carrier_sync_interval', $tofw_carrier_sync, 'maybe_schedule' );
+			$this->loader->add_action( 'add_option_wps_tofw_carrier_sync_enable', $tofw_carrier_sync, 'maybe_schedule' );
+			$this->loader->add_action( 'admin_post_wps_tofw_carrier_sync_run_now', $tofw_carrier_sync, 'handle_run_now' );
+			$this->loader->add_action( 'admin_post_wps_tofw_carrier_sync_order', $tofw_carrier_sync, 'handle_sync_order' );
+			$this->loader->add_action( 'add_meta_boxes', $tofw_carrier_sync, 'add_order_metabox' );
+		} else {
+			$this->loader->add_action( 'wps_tofw_after_tracking_details', $tofw_carrier_sync, 'render_timeline', 10, 1 );
+		}
 	}
 
 	/**
@@ -532,6 +566,11 @@ class Track_Orders_For_Woocommerce {
 			'title'       => esc_html__( 'Shipping Services', 'track-orders-for-woocommerce' ),
 			'name'        => 'track-orders-for-woocommerce-shipping-services',
 			'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-shipping-services.php',
+		);
+		$tofw_default_tabs['track-orders-for-woocommerce-carrier-sync']      = array(
+			'title'       => esc_html__( 'Carrier Status Sync', 'track-orders-for-woocommerce' ),
+			'name'        => 'track-orders-for-woocommerce-carrier-sync',
+			'file_path'   => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . 'admin/partials/track-orders-for-woocommerce-carrier-sync.php',
 		);
 		$tofw_default_tabs['track-orders-for-woocommerce-order-api']      = array(
 			'title'       => esc_html__( 'Order API', 'track-orders-for-woocommerce' ),
