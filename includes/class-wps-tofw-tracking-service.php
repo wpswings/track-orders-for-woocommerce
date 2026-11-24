@@ -204,7 +204,7 @@ if ( ! class_exists( 'WPS_TOFW_Tracking_Service' ) ) {
 					<div class="content">
 
 						<div class="Order">
-							<h4>Order #' . esc_html( $post_id ) . '</h4>
+							<h4>' . esc_html( sprintf( /* translators: %s: order ID. */ __( 'Order #%s', 'track-orders-for-woocommerce' ), $post_id ) ) . '</h4>
 							<table>
 								<tbody>
 									<tr>
