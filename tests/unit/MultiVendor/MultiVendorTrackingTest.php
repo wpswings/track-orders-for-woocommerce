@@ -812,6 +812,96 @@ class MultiVendorTrackingTest extends TestCase {
 	}
 
 	/*
+	 * Vendor dashboards and customer groups per marketplace.
+	 */
+
+	public function test_dashboard_form_is_rendered_only_for_the_owning_vendor_once() {
+		$this->marketplaceOrder( 520 );
+		$manager = Mockery::mock( Manager::class );
+		$wcfm    = new \Track_Orders_For_Woocommerce_Vendor_Wcfm( $manager );
+		$manager->shouldReceive( 'render_vendor_form' )->once()->with( $wcfm, Mockery::type( 'WC_Order' ), self::VENDOR_A );
+
+		$this->current_user = 13;
+		Functions\when( 'wcfm_is_vendor' )->justReturn( true );
+		$wcfm->render_dashboard_form( 520 ); // Not the owner: nothing.
+
+		$this->current_user = self::VENDOR_A;
+		$wcfm->render_dashboard_form( 520 );
+		$wcfm->render_dashboard_form( wc_get_order( 520 ) ); // Second marketplace hook: not rendered twice.
+		$wcfm->render_dashboard_form( 999 ); // Unknown order.
+	}
+
+	public function test_wcfm_customer_groups_and_store_name_fallback() {
+		$order = $this->marketplaceOrder( 521 );
+		$wcfm  = new \Track_Orders_For_Woocommerce_Vendor_Wcfm( new Manager( '1' ) );
+
+		$groups = $wcfm->get_customer_groups( $order );
+		$this->assertSame( array( self::VENDOR_A, self::VENDOR_B ), wp_list_pluck_values( $groups, 'vendor_id' ) );
+		$this->assertSame( $order, $groups[0]['order'], 'WCFM keeps all vendors on the parent order.' );
+
+		Functions\when( 'wcfm_get_vendor_store_name' )->justReturn( '' );
+		Functions\when( 'get_userdata' )->justReturn( (object) array( 'display_name' => 'Alpha Owner' ) );
+		$this->assertSame( 'Alpha Owner', $wcfm->get_store_name( self::VENDOR_A ) );
+	}
+
+	public function test_dokan_customer_groups_use_sub_orders_and_skip_partial_shipment_children() {
+		Functions\when( 'dokan_get_seller_id_by_order' )->alias(
+			static function ( $order_id ) {
+				return array( 530 => array( self::VENDOR_A, self::VENDOR_B ), 531 => self::VENDOR_A, 532 => self::VENDOR_B, 533 => self::VENDOR_A )[ $order_id ];
+			}
+		);
+		$parent = $this->mockOrder( array( 'id' => 530 ) );
+		$sub_a  = $this->mockOrder( array( 'id' => 531 ) );
+		$sub_b  = $this->mockOrder( array( 'id' => 532 ) );
+		$child  = $this->mockOrder( array( 'id' => 533, 'meta' => array( '_wps_is_child_order' => 'yes' ) ) );
+		Functions\expect( 'wc_get_orders' )->once()->with( Mockery::subset( array( 'parent' => 530 ) ) )->andReturn( array( $sub_a, $sub_b, $child ) );
+		$dokan = new \Track_Orders_For_Woocommerce_Vendor_Dokan( new Manager( '1' ) );
+
+		$groups = $dokan->get_customer_groups( $parent );
+
+		$this->assertSame( array( self::VENDOR_A, self::VENDOR_B ), wp_list_pluck_values( $groups, 'vendor_id' ) );
+		$this->assertSame( $sub_a, $groups[0]['order'], 'Dokan shipments live on the vendor sub-order.' );
+	}
+
+	public function test_dokan_single_vendor_order_without_sub_orders_is_its_own_group() {
+		Functions\when( 'dokan_get_seller_id_by_order' )->justReturn( self::VENDOR_A );
+		Functions\when( 'wc_get_orders' )->justReturn( array() );
+		$order = $this->mockOrder( array( 'id' => 534 ) );
+
+		$groups = ( new \Track_Orders_For_Woocommerce_Vendor_Dokan( new Manager( '1' ) ) )->get_customer_groups( $order );
+
+		$this->assertSame( array( array( 'vendor_id' => self::VENDOR_A, 'order' => $order ) ), $groups );
+	}
+
+	public function test_dokan_current_vendor_must_be_a_seller() {
+		Functions\when( 'dokan_get_current_user_id' )->justReturn( self::VENDOR_A );
+		Functions\when( 'dokan_is_user_seller' )->justReturn( false );
+
+		$this->assertSame( 0, ( new \Track_Orders_For_Woocommerce_Vendor_Dokan( new Manager( '1' ) ) )->get_current_vendor_id() );
+	}
+
+	public function test_wc_vendors_order_action_and_groups() {
+		if ( ! class_exists( 'WCV_Vendors' ) ) {
+			eval( 'class WCV_Vendors { public static function is_vendor( $id ) { return in_array( (int) $id, array( 11, 12 ), true ); } public static function get_vendor_from_product( $id ) { return in_array( (int) $id, array( 1, 2 ), true ) ? 11 : 12; } }' ); // phpcs:ignore Squiz.PHP.Eval.Discouraged
+		}
+		Functions\when( 'add_query_arg' )->alias(
+			static function ( $key, $value ) {
+				return '/dashboard/?' . $key . '=' . $value;
+			}
+		);
+		$wcv   = new \Track_Orders_For_Woocommerce_Vendor_Wcvendors( new Manager( '1' ) );
+		$order = $this->marketplaceOrder( 540 );
+
+		$actions = $wcv->add_order_action( array( 'view' => array( 'label' => 'View', 'url' => '#' ) ), 540 );
+		$this->assertSame( '/dashboard/?wps_tofw_vendor_order=540', $actions['wps_tofw_tracking']['url'] );
+		$this->assertSame( array( 'legacy' ), $wcv->add_order_action( array( 'legacy' ), 540 ), 'Unknown action format left alone.' );
+
+		$this->assertSame( array( self::VENDOR_A, self::VENDOR_B ), wp_list_pluck_values( $wcv->get_customer_groups( $order ), 'vendor_id' ) );
+		$this->current_user = 5;
+		$this->assertSame( 0, $wcv->get_current_vendor_id(), 'Customers are not vendors.' );
+	}
+
+	/*
 	 * Notes and customer view.
 	 */
 
