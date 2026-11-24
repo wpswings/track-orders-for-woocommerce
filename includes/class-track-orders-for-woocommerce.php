@@ -145,6 +145,9 @@ class Track_Orders_For_Woocommerce {
 		 */
 		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-track-orders-for-woocommerce-i18n.php';
 
+		// RMA return/exchange button on tracking pages.
+		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wps-tofw-rma-return-link.php';
+
 		if ( is_admin() ) {
 
 			// The class responsible for defining all actions that occur in the admin area.
@@ -459,6 +462,9 @@ class Track_Orders_For_Woocommerce {
 		$this->loader->add_action( 'wp_enqueue_scripts', $tofw_plugin_public, 'tofw_public_enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $tofw_plugin_public, 'tofw_public_enqueue_scripts' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $tofw_plugin_public, 'tofw_public_enqueue_scripts' );
+
+		$wps_tofw_rma_link = new Wps_Tofw_Rma_Return_Link();
+		$this->loader->add_action( 'wps_tofw_render_return_button', $wps_tofw_rma_link, 'render_button', 10, 1 );
 
 		if ( 'on' == get_option( 'wps_tofw_is_plugin_enable' ) ) {
 			$this->loader->add_action( 'woocommerce_order_details_after_order_table', $tofw_plugin_public, 'wps_tofw_track_order_button' );

@@ -1025,6 +1025,12 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 	?>
 </div>
 <?php
+/**
+ * Render the RMA return/exchange button (above the upsell block).
+ *
+ * @since 1.3.0
+ */
+do_action( 'wps_tofw_render_return_button', $order_id );
 $wps_tofw_enable_upsell_tracking_page = get_option( 'wps_tofw_enable_upsell_tracking_page', false );
 if('on' == $wps_tofw_enable_upsell_tracking_page){
 echo '<div class="wps-tofw-upsell-wrap">' . do_shortcode('[wps_bump_offer_shortcode]') . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- shortcode output.

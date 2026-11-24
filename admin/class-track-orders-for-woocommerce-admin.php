@@ -640,6 +640,26 @@ class Track_Orders_For_Woocommerce_Admin {
 				),
 			),
 			array(
+				'title' => __( 'Show Return / Exchange Button', 'track-orders-for-woocommerce' ),
+				'type'  => 'radio-switch',
+				'id'    => 'wps_tofw_enable_rma_return_button',
+				'description'  => __( 'Show a button on the tracking page for delivered/completed orders that links to the return/exchange request (requires the Return Refund and Exchange for WooCommerce plugin).', 'track-orders-for-woocommerce' ),
+				'value' => get_option( 'wps_tofw_enable_rma_return_button', 'on' ),
+				'class' => 'tofw-radio-switch-class',
+				'options' => array(
+					'yes' => __( 'YES', 'track-orders-for-woocommerce' ),
+					'no' => __( 'NO', 'track-orders-for-woocommerce' ),
+				),
+			),
+			array(
+				'title' => __( 'Return / Exchange Button Label', 'track-orders-for-woocommerce' ),
+				'type'  => 'text',
+				'description'  => __( 'Text shown on the return/exchange button.', 'track-orders-for-woocommerce' ),
+				'id'    => 'wps_tofw_rma_return_button_label',
+				'placeholder' => __( 'Return / Exchange', 'track-orders-for-woocommerce' ),
+				'value' => get_option( 'wps_tofw_rma_return_button_label', __( 'Return / Exchange', 'track-orders-for-woocommerce' ) ),
+			),
+			array(
 				'title' => __( 'Enter Track Order Text Below Order Details', 'track-orders-for-woocommerce' ),
 				'type'  => 'text',
 				'description'  => __( 'Enter Text For Track Order Below Order details in My Account Section.', 'track-orders-for-woocommerce' ),
