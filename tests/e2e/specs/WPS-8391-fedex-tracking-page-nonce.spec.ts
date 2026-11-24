@@ -23,7 +23,6 @@ function createTrackedOrder(): void {
 	const order = createOrder( { status: 'completed', billing_email: 'fedex8391@example.com' } );
 	orderId = order.id;
 	trackingNumber = `1Z8391E2E${ orderId }`;
-	updateOrderMeta( orderId, { wps_tofw_selected_shipping_service: 'usps' } );
 	const stored = wpEvalJson< boolean >( `
 		$result = Track_Orders_For_Woocommerce_Tracking_Service::add_tracking(
 			${ orderId },
@@ -32,6 +31,8 @@ function createTrackedOrder(): void {
 		return ! is_wp_error( $result );
 	` );
 	expect( stored ).toBe( true );
+	// add_tracking() syncs the legacy service meta to the shipment carrier; set it afterwards.
+	updateOrderMeta( orderId, { wps_tofw_selected_shipping_service: 'usps' } );
 }
 
 async function openForm( page: Page ): Promise< void > {
