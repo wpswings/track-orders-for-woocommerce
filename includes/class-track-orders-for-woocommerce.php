@@ -96,6 +96,7 @@ class Track_Orders_For_Woocommerce {
 		}
 		$this->track_orders_for_woocommerce_multi_vendor_hooks();
 		$this->track_orders_for_woocommerce_common_hooks();
+		$this->track_orders_for_woocommerce_wismo_hooks();
 
 		$this->track_orders_for_woocommerce_carrier_sync_hooks();
 
@@ -192,6 +193,9 @@ class Track_Orders_For_Woocommerce {
 		 * of the plugin.
 		 */
 		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'common/class-track-orders-for-woocommerce-common.php';
+		// "Where is my order?" assistant (frontend widget, AJAX endpoints, settings).
+		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wismo/class-track-orders-for-woocommerce-wismo-answer-engine.php';
+		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wismo/class-track-orders-for-woocommerce-wismo.php';
 
 		/**
 		 * The class responsible for the automatic carrier status sync.
@@ -506,6 +510,34 @@ class Track_Orders_For_Woocommerce {
 		// Allow WooCommerce REST API keys to authenticate requests to the plugin namespace.
 		$this->loader->add_filter( 'woocommerce_rest_is_request_to_rest_api', $tofw_plugin_api, 'wps_tofw_allow_wc_rest_authentication' );
 
+	}
+
+	/**
+	 * Register the hooks of the "Where is my order?" assistant.
+	 * Registered outside the admin/public split because admin-ajax requests run in is_admin().
+	 *
+	 * @since 1.3.0
+	 */
+	private function track_orders_for_woocommerce_wismo_hooks() {
+
+		$tofw_wismo = new Track_Orders_For_Woocommerce_Wismo( $this->tofw_get_plugin_name(), $this->tofw_get_version() );
+
+		// Admin settings tab.
+		$this->loader->add_filter( 'track_orders_for_woocmmerce_admin_settings_tabs', $tofw_wismo, 'add_settings_tab', 20 );
+		$this->loader->add_filter( 'wps_tofw_wismo_settings_array', $tofw_wismo, 'settings_fields', 10 );
+		$this->loader->add_action( 'wps_tofw_settings_saved_notice', $tofw_wismo, 'save_settings' );
+
+		// Storefront widget.
+		$this->loader->add_action( 'wp_enqueue_scripts', $tofw_wismo, 'enqueue_assets' );
+
+		// AJAX endpoints (guest + logged in).
+		$this->loader->add_action( 'wp_ajax_wps_tofw_wismo_verify', $tofw_wismo, 'ajax_verify' );
+		$this->loader->add_action( 'wp_ajax_nopriv_wps_tofw_wismo_verify', $tofw_wismo, 'ajax_verify' );
+		$this->loader->add_action( 'wp_ajax_wps_tofw_wismo_ask', $tofw_wismo, 'ajax_ask' );
+		$this->loader->add_action( 'wp_ajax_nopriv_wps_tofw_wismo_ask', $tofw_wismo, 'ajax_ask' );
+		$this->loader->add_action( 'wp_ajax_wps_tofw_wismo_my_orders', $tofw_wismo, 'ajax_my_orders' );
+		$this->loader->add_action( 'wp_ajax_wps_tofw_wismo_nonce', $tofw_wismo, 'ajax_nonce' );
+		$this->loader->add_action( 'wp_ajax_nopriv_wps_tofw_wismo_nonce', $tofw_wismo, 'ajax_nonce' );
 	}
 
 

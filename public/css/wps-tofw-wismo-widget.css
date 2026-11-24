@@ -1,0 +1,151 @@
+/* "Where is my order?" assistant widget. @since 1.3.0 */
+#wps-tofw-wismo {
+	--wps-wismo-primary: #2271b1;
+	--wps-wismo-on-primary: #ffffff;
+	--wps-wismo-bg: #ffffff;
+	--wps-wismo-fg: #1e1e1e;
+	--wps-wismo-muted: #f1f3f5;
+	--wps-wismo-border: #dcdfe3;
+	position: fixed;
+	bottom: 20px;
+	z-index: 99999;
+	font-size: 14px;
+	line-height: 1.45;
+	color: var(--wps-wismo-fg);
+}
+#wps-tofw-wismo.wps-tofw-wismo--right { right: 20px; }
+#wps-tofw-wismo.wps-tofw-wismo--left { left: 20px; }
+#wps-tofw-wismo *,
+#wps-tofw-wismo *::before,
+#wps-tofw-wismo *::after { box-sizing: border-box; }
+
+.wps-tofw-wismo__launcher {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 56px;
+	height: 56px;
+	padding: 0;
+	border: 0;
+	border-radius: 50%;
+	background: var(--wps-wismo-primary);
+	color: var(--wps-wismo-on-primary);
+	box-shadow: 0 4px 14px rgba(0, 0, 0, .25);
+	cursor: pointer;
+}
+.wps-tofw-wismo--left .wps-tofw-wismo__launcher { margin-right: auto; }
+.wps-tofw-wismo--right .wps-tofw-wismo__launcher { margin-left: auto; }
+.wps-tofw-wismo__launcher:focus-visible,
+.wps-tofw-wismo__btn:focus-visible,
+.wps-tofw-wismo__chip:focus-visible,
+.wps-tofw-wismo__close:focus-visible { outline: 2px solid var(--wps-wismo-fg); outline-offset: 2px; }
+
+.wps-tofw-wismo__panel {
+	display: flex;
+	flex-direction: column;
+	width: 360px;
+	max-width: calc(100vw - 32px);
+	height: 520px;
+	max-height: calc(100vh - 110px);
+	margin-bottom: 12px;
+	overflow: hidden;
+	background: var(--wps-wismo-bg);
+	border: 1px solid var(--wps-wismo-border);
+	border-radius: 12px;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, .2);
+}
+.wps-tofw-wismo__panel[hidden] { display: none; }
+
+.wps-tofw-wismo__head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 12px 14px;
+	background: var(--wps-wismo-primary);
+	color: var(--wps-wismo-on-primary);
+}
+.wps-tofw-wismo__title { font-weight: 600; font-size: 15px; }
+.wps-tofw-wismo__close {
+	padding: 0 6px;
+	border: 0;
+	background: transparent;
+	color: inherit;
+	font-size: 22px;
+	line-height: 1;
+	cursor: pointer;
+}
+
+.wps-tofw-wismo__log {
+	flex: 1 1 auto;
+	padding: 12px;
+	overflow-y: auto;
+	background: var(--wps-wismo-bg);
+}
+.wps-tofw-wismo__msg { display: flex; flex-direction: column; margin-bottom: 10px; }
+.wps-tofw-wismo__msg--user { align-items: flex-end; }
+.wps-tofw-wismo__msg--bot { align-items: flex-start; }
+.wps-tofw-wismo__bubble {
+	max-width: 85%;
+	padding: 8px 12px;
+	border-radius: 12px;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+}
+.wps-tofw-wismo__msg--bot .wps-tofw-wismo__bubble { background: var(--wps-wismo-muted); border-bottom-left-radius: 4px; }
+.wps-tofw-wismo__msg--user .wps-tofw-wismo__bubble { background: var(--wps-wismo-primary); color: var(--wps-wismo-on-primary); border-bottom-right-radius: 4px; }
+.wps-tofw-wismo__links { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.wps-tofw-wismo__link { color: var(--wps-wismo-primary); text-decoration: underline; word-break: break-all; }
+
+.wps-tofw-wismo__footer { padding: 10px 12px; border-top: 1px solid var(--wps-wismo-border); background: var(--wps-wismo-bg); }
+.wps-tofw-wismo__form { display: flex; flex-direction: column; gap: 8px; }
+.wps-tofw-wismo__label { display: flex; flex-direction: column; gap: 4px; font-size: 12px; font-weight: 600; }
+.wps-tofw-wismo__input {
+	width: 100%;
+	min-width: 0;
+	padding: 8px 10px;
+	border: 1px solid var(--wps-wismo-border);
+	border-radius: 8px;
+	background: #fff;
+	color: var(--wps-wismo-fg);
+	font-size: 14px;
+	font-weight: 400;
+}
+.wps-tofw-wismo__btn {
+	padding: 8px 14px;
+	border: 0;
+	border-radius: 8px;
+	background: var(--wps-wismo-primary);
+	color: var(--wps-wismo-on-primary);
+	font-weight: 600;
+	cursor: pointer;
+}
+.wps-tofw-wismo__ask { display: flex; gap: 6px; margin-top: 8px; }
+.wps-tofw-wismo__chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.wps-tofw-wismo__chip {
+	padding: 5px 10px;
+	border: 1px solid var(--wps-wismo-primary);
+	border-radius: 999px;
+	background: transparent;
+	color: var(--wps-wismo-primary);
+	font-size: 12px;
+	cursor: pointer;
+	text-align: left;
+}
+.wps-tofw-wismo__chip--ghost { border-style: dashed; }
+.wps-tofw-wismo__switch {
+	margin-top: 8px;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	color: var(--wps-wismo-primary);
+	font-size: 12px;
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+@media (max-width: 480px) {
+	#wps-tofw-wismo { bottom: 12px; }
+	#wps-tofw-wismo.wps-tofw-wismo--right { right: 12px; }
+	#wps-tofw-wismo.wps-tofw-wismo--left { left: 12px; }
+	.wps-tofw-wismo__panel { width: calc(100vw - 24px); max-width: none; }
+}

@@ -176,5 +176,11 @@ if (!function_exists('wp_create_nonce')) {
 	}
 }
 
+if (!function_exists('apply_filters')) {
+	function apply_filters($hook_name, $value) {
+		return $value;
+	}
+}
+
 // Initialize test environment.
 echo "PHPUnit Bootstrap loaded successfully.\n";
