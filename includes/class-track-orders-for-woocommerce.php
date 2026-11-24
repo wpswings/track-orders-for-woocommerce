@@ -96,6 +96,8 @@ class Track_Orders_For_Woocommerce {
 
 		$this->track_orders_for_woocommerce_api_hooks();
 
+		$this->track_orders_for_woocommerce_tracking_import_hooks();
+
 	}
 
 	/**
@@ -158,6 +160,10 @@ class Track_Orders_For_Woocommerce {
 		}
 
 		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'package/rest-api/class-track-orders-for-woocommerce-rest-api.php';
+
+		// Reusable "add tracking to order" service and the CSV bulk tracking import (since 1.3.0).
+		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-track-orders-for-woocommerce-tracking-service.php';
+		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-track-orders-for-woocommerce-tracking-import.php';
 
 		/**
 		 * This class responsible for defining common functionality
@@ -351,9 +357,42 @@ class Track_Orders_For_Woocommerce {
 		$tofw_plugin_api = new Track_Orders_For_Woocommerce_Rest_Api( $this->tofw_get_plugin_name(), $this->tofw_get_version() );
 
 		$this->loader->add_action( 'rest_api_init', $tofw_plugin_api, 'wps_tofw_add_endpoint' );
+		// Allow WooCommerce REST API keys to authenticate requests to the plugin namespace.
+		$this->loader->add_filter( 'woocommerce_rest_is_request_to_rest_api', $tofw_plugin_api, 'wps_tofw_allow_wc_rest_authentication' );
 
 	}
 
+
+	/**
+	 * Register hooks of the CSV bulk tracking import.
+	 *
+	 * Batch hooks are registered in every context because Action Scheduler runs them from
+	 * WP-Cron / async requests, not only from wp-admin.
+	 *
+	 * @since 1.3.0
+	 */
+	private function track_orders_for_woocommerce_tracking_import_hooks() {
+		$tofw_tracking_import = new Track_Orders_For_Woocommerce_Tracking_Import( $this->tofw_get_version() );
+
+		$this->loader->add_action( Track_Orders_For_Woocommerce_Tracking_Import::BATCH_HOOK, $tofw_tracking_import, 'process_batch', 10, 2 );
+		$this->loader->add_action( Track_Orders_For_Woocommerce_Tracking_Import::CLEANUP_HOOK, $tofw_tracking_import, 'cleanup_job', 10, 1 );
+
+		// Keep every tracking number in the shipments list (manual / shipping plugin saves) and show it.
+		$this->loader->add_action( 'wps_tofw_tracking_saved', 'Track_Orders_For_Woocommerce_Tracking_Service', 'on_tracking_saved', 20, 4 );
+		$this->loader->add_action( 'wps_tofw_after_tracking_details', 'Track_Orders_For_Woocommerce_Tracking_Service', 'render_customer_shipments', 20, 1 );
+
+		if ( is_admin() ) {
+			$this->loader->add_filter( 'track_orders_for_woocmmerce_admin_settings_tabs', $tofw_tracking_import, 'add_settings_tab' );
+			$this->loader->add_action( 'admin_enqueue_scripts', $tofw_tracking_import, 'enqueue_scripts' );
+			$this->loader->add_action( 'wp_ajax_wps_tofw_tracking_import_upload', $tofw_tracking_import, 'ajax_upload' );
+			$this->loader->add_action( 'wp_ajax_wps_tofw_tracking_import_validate', $tofw_tracking_import, 'ajax_validate' );
+			$this->loader->add_action( 'wp_ajax_wps_tofw_tracking_import_start', $tofw_tracking_import, 'ajax_start' );
+			$this->loader->add_action( 'wp_ajax_wps_tofw_tracking_import_progress', $tofw_tracking_import, 'ajax_progress' );
+			$this->loader->add_action( 'admin_post_wps_tofw_tracking_import_sample', $tofw_tracking_import, 'download_sample' );
+			$this->loader->add_action( 'admin_post_wps_tofw_tracking_import_report', $tofw_tracking_import, 'download_report' );
+			$this->loader->add_action( 'add_meta_boxes', 'Track_Orders_For_Woocommerce_Tracking_Service', 'add_shipments_meta_box', 30, 2 );
+		}
+	}
 
 	/**
 	 * Run the loader to execute all of the hooks with WordPress.

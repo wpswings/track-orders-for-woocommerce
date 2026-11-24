@@ -20,6 +20,18 @@ $tofw_sample_list_endpoint = $tofw_api_base_url . '/orders?page=1&per_page=20&in
 $tofw_sample_order_endpoint = $tofw_api_base_url . '/orders/123?include_items=true';
 $tofw_sample_create_endpoint = $tofw_api_base_url . '/orders';
 $tofw_sample_status_endpoint = $tofw_api_base_url . '/order-statuses';
+$tofw_sample_tracking_endpoint = $tofw_api_base_url . '/orders/123/tracking';
+$tofw_sample_tracking_payload_json = wp_json_encode(
+	array(
+		'carrier'         => 'fedex',
+		'tracking_number' => '794612345678',
+		'ship_date'       => '2026-11-23',
+		'items'           => 'TSHIRT-RED-M:2|MUG-01:1',
+		'status'          => 'completed',
+		'notify_customer' => true,
+	),
+	JSON_PRETTY_PRINT
+);
 $tofw_sample_create_payload = array(
 	'status' => 'processing',
 	'customer_id' => 1,
@@ -346,6 +358,29 @@ $tofw_sample_create_payload_json = wp_json_encode( $tofw_sample_create_payload, 
 					<div class="tofw-api-code-wrap">
 						<pre class="tofw-api-code-block"><?php echo esc_html( $tofw_sample_status_endpoint ); ?></pre>
 						<button type="button" class="tofw-api-copy-btn" data-copy="<?php echo esc_attr( $tofw_sample_status_endpoint ); ?>"><?php esc_html_e( 'Copy', 'track-orders-for-woocommerce' ); ?></button>
+					</div>
+				</div>
+			</div>
+			<div class="tofw-api-endpoint">
+				<span class="tofw-api-method get">GET</span>
+				<div>
+					<h4><code><?php echo esc_html( '/orders/{id}/tracking' ); ?></code></h4>
+					<p><?php esc_html_e( 'Lists the tracking shipments (carrier, tracking number, ship date, items) of an order.', 'track-orders-for-woocommerce' ); ?></p>
+					<div class="tofw-api-code-wrap">
+						<pre class="tofw-api-code-block"><?php echo esc_html( $tofw_sample_tracking_endpoint ); ?></pre>
+						<button type="button" class="tofw-api-copy-btn" data-copy="<?php echo esc_attr( $tofw_sample_tracking_endpoint ); ?>"><?php esc_html_e( 'Copy', 'track-orders-for-woocommerce' ); ?></button>
+					</div>
+				</div>
+			</div>
+
+			<div class="tofw-api-endpoint">
+				<span class="tofw-api-method post">POST</span>
+				<div>
+					<h4><code><?php echo esc_html( '/orders/{id}/tracking' ); ?></code></h4>
+					<p><?php esc_html_e( 'Adds tracking to an order. carrier and tracking_number are required; ship_date (YYYY-MM-DD), items (partial shipment), status and notify_customer are optional. WooCommerce REST API keys (consumer key/secret) are accepted for authentication.', 'track-orders-for-woocommerce' ); ?></p>
+					<div class="tofw-api-code-wrap">
+						<pre class="tofw-api-code-block"><?php echo esc_html( $tofw_sample_tracking_payload_json ); ?></pre>
+						<button type="button" class="tofw-api-copy-btn" data-copy="<?php echo esc_attr( $tofw_sample_tracking_payload_json ); ?>"><?php esc_html_e( 'Copy', 'track-orders-for-woocommerce' ); ?></button>
 					</div>
 				</div>
 			</div>

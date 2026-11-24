@@ -148,6 +148,51 @@ class Track_Orders_For_Woocommerce_Rest_Api {
 
 		register_rest_route(
 			'tofw-route/v1',
+			'/orders/(?P<id>\d+)/tracking',
+			array(
+				array(
+					'methods'             => WP_REST_Server::READABLE,
+					'callback'            => array( $this, 'wps_tofw_get_order_tracking_callback' ),
+					'permission_callback' => array( $this, 'wps_tofw_read_permission_check' ),
+				),
+				array(
+					'methods'             => WP_REST_Server::CREATABLE,
+					'callback'            => array( $this, 'wps_tofw_add_order_tracking_callback' ),
+					'permission_callback' => array( $this, 'wps_tofw_write_permission_check' ),
+					'args'                => array(
+						'carrier'         => array(
+							'required'          => true,
+							'type'              => 'string',
+							'sanitize_callback' => 'sanitize_text_field',
+						),
+						'tracking_number' => array(
+							'required'          => true,
+							'type'              => 'string',
+							'sanitize_callback' => 'sanitize_text_field',
+						),
+						'ship_date'       => array(
+							'type'              => 'string',
+							'sanitize_callback' => 'sanitize_text_field',
+						),
+						'items'           => array(
+							'type'        => array( 'string', 'array' ),
+							'description' => esc_html__( 'Partial shipment items: "sku:qty|sku:qty" or an array of {sku|item_id, qty}.', 'track-orders-for-woocommerce' ),
+						),
+						'status'          => array(
+							'type'              => 'string',
+							'sanitize_callback' => 'sanitize_text_field',
+						),
+						'notify_customer' => array(
+							'type'        => 'boolean',
+							'description' => esc_html__( 'false skips the tracking e-mail, true always sends it. Omit to send it once per order, like the order edit screen.', 'track-orders-for-woocommerce' ),
+						),
+					),
+				),
+			)
+		);
+
+		register_rest_route(
+			'tofw-route/v1',
 			'/order-statuses',
 			array(
 				'methods'  => WP_REST_Server::READABLE,
@@ -664,6 +709,124 @@ class Track_Orders_For_Woocommerce_Rest_Api {
 	}
 
 	/**
+	 * GET /orders/{id}/tracking - list the tracking shipments of an order.
+	 *
+	 * @since 1.3.0
+	 * @param WP_REST_Request $request Request.
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public function wps_tofw_get_order_tracking_callback( $request ) {
+		$order = wc_get_order( absint( $request->get_param( 'id' ) ) );
+		if ( ! $order || 'shop_order_refund' === $order->get_type() ) {
+			return new WP_Error( 'tofw_order_not_found', esc_html__( 'Order not found.', 'track-orders-for-woocommerce' ), array( 'status' => 404 ) );
+		}
+
+		return new WP_REST_Response(
+			array(
+				'success'  => true,
+				'order_id' => $order->get_id(),
+				'status'   => $order->get_status(),
+				'tracking' => array_map( array( 'Track_Orders_For_Woocommerce_Tracking_Service', 'format_for_response' ), Track_Orders_For_Woocommerce_Tracking_Service::get_shipments( $order ) ),
+			),
+			200
+		);
+	}
+
+	/**
+	 * POST /orders/{id}/tracking - add tracking to an order.
+	 *
+	 * @since 1.3.0
+	 * @param WP_REST_Request $request Request.
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public function wps_tofw_add_order_tracking_callback( $request ) {
+		$order = wc_get_order( absint( $request->get_param( 'id' ) ) );
+		if ( ! $order || 'shop_order_refund' === $order->get_type() ) {
+			return new WP_Error( 'tofw_order_not_found', esc_html__( 'Order not found.', 'track-orders-for-woocommerce' ), array( 'status' => 404 ) );
+		}
+
+		$items = $request->get_param( 'items' );
+		if ( null !== $items && ! is_array( $items ) ) {
+			$items = sanitize_text_field( (string) $items );
+		}
+
+		$notify = $request->get_param( 'notify_customer' );
+
+		$result = Track_Orders_For_Woocommerce_Tracking_Service::add_tracking(
+			$order,
+			array(
+				'carrier'         => (string) $request->get_param( 'carrier' ),
+				'tracking_number' => (string) $request->get_param( 'tracking_number' ),
+				'ship_date'       => (string) $request->get_param( 'ship_date' ),
+				'items'           => null === $items ? '' : $items,
+				'status'          => (string) $request->get_param( 'status' ),
+				'source'          => 'rest',
+				'notify_customer' => null === $notify ? null : rest_sanitize_boolean( $notify ),
+			)
+		);
+
+		if ( is_wp_error( $result ) ) {
+			$code   = $result->get_error_code();
+			$status = 'wps_tofw_invalid_order' === $code ? 404 : ( 'wps_tofw_duplicate_tracking' === $code ? 409 : 400 );
+			return new WP_Error(
+				'tofw_tracking_invalid',
+				implode( ' ', $result->get_error_messages() ),
+				array(
+					'status' => $status,
+					'errors' => $result->get_error_codes(),
+				)
+			);
+		}
+
+		$order = wc_get_order( $order->get_id() );
+
+		return new WP_REST_Response(
+			array(
+				'success'  => true,
+				'message'  => esc_html__( 'Tracking added successfully.', 'track-orders-for-woocommerce' ),
+				'order_id' => $order->get_id(),
+				'status'   => $order->get_status(),
+				'shipment' => Track_Orders_For_Woocommerce_Tracking_Service::format_for_response( $result ),
+				'tracking' => array_map( array( 'Track_Orders_For_Woocommerce_Tracking_Service', 'format_for_response' ), Track_Orders_For_Woocommerce_Tracking_Service::get_shipments( $order ) ),
+			),
+			201
+		);
+	}
+
+	/**
+	 * Let WooCommerce REST API keys (consumer key/secret, Basic auth or OAuth 1.0a) authenticate
+	 * requests to this plugin's namespace. WooCommerce only does so for "wc/" and "wc-" routes by default.
+	 *
+	 * @since 1.3.0
+	 * @param bool $is_request_to_rest_api Whether WooCommerce treats the request as a WC REST request.
+	 * @return bool
+	 */
+	public function wps_tofw_allow_wc_rest_authentication( $is_request_to_rest_api ) {
+		if ( $is_request_to_rest_api ) {
+			return $is_request_to_rest_api;
+		}
+
+		$namespace = 'tofw-route/';
+
+		if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
+			$request_uri = esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) );
+			if ( false !== strpos( $request_uri, trailingslashit( rest_get_url_prefix() ) . $namespace ) ) {
+				return true;
+			}
+		}
+
+		// Plain permalinks: /?rest_route=/tofw-route/v1/...
+		if ( ! empty( $_GET['rest_route'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$rest_route = sanitize_text_field( wp_unslash( $_GET['rest_route'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			if ( 0 === strpos( ltrim( $rest_route, '/' ), $namespace ) ) {
+				return true;
+			}
+		}
+
+		return $is_request_to_rest_api;
+	}
+
+	/**
 	 * Verify the current user capability.
 	 *
 	 * @param array $capabilities Capabilities list.
@@ -788,6 +951,7 @@ class Track_Orders_For_Woocommerce_Rest_Api {
 			'estimated_delivery_date' => $order->get_meta( 'wps_tofw_estimated_delivery_date', true ),
 			'estimated_delivery_time' => $order->get_meta( 'wps_tofw_estimated_delivery_time', true ),
 			'tracking_id_sent'        => $order->get_meta( 'wps_tofw_tracking_id_sent', true ),
+			'shipments'               => array_map( array( 'Track_Orders_For_Woocommerce_Tracking_Service', 'format_for_response' ), Track_Orders_For_Woocommerce_Tracking_Service::get_shipments( $order ) ),
 			'child_order_ids'         => (array) $order->get_meta( '_wps_child_order_ids', true ),
 			'is_child_order'          => $order->get_meta( '_wps_is_child_order', true ),
 			'parent_order_id'         => $order->get_meta( '_wps_parent_order_id', true ),
