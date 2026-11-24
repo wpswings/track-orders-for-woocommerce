@@ -1,0 +1,120 @@
+/**
+ * Shipping analytics & delivery alerts admin styles.
+ *
+ * @since 1.3.0
+ */
+.wps-tofw-insights-meta,
+.wps-tofw-insights__note {
+	color: #50575e;
+	font-size: 13px;
+	margin: 8px 0 16px;
+}
+
+.wps-tofw-insights__filters {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 10px 14px;
+	margin: 0 0 8px;
+}
+
+.wps-tofw-insights__filters label {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-weight: 600;
+}
+
+.wps-tofw-insights__presets a,
+.wps-tofw-insights__refresh {
+	margin-right: 10px;
+	text-decoration: none;
+}
+
+.wps-tofw-insights__cards {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+	gap: 12px;
+	margin-bottom: 20px;
+}
+
+.wps-tofw-insights__card {
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 8px;
+	padding: 14px 16px;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.wps-tofw-insights__card.is-warning {
+	border-left: 4px solid #dba617;
+}
+
+.wps-tofw-insights__card-label {
+	color: #50575e;
+	font-size: 12px;
+	text-transform: uppercase;
+	letter-spacing: 0.03em;
+}
+
+.wps-tofw-insights__card-value {
+	font-size: 22px;
+	font-weight: 700;
+	color: #1d2327;
+}
+
+.wps-tofw-insights__card-value small {
+	font-size: 12px;
+	font-weight: 400;
+	color: #50575e;
+}
+
+.wps-tofw-insights__grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+	gap: 16px;
+}
+
+.wps-tofw-insights__panel {
+	margin-bottom: 20px;
+}
+
+.wps-tofw-insights__panel h3 {
+	margin: 0 0 10px;
+	font-size: 15px;
+}
+
+.wps-tofw-insights__table td,
+.wps-tofw-insights__table th {
+	vertical-align: middle;
+}
+
+.wps-tofw-insights__bar-col {
+	min-width: 160px;
+	white-space: nowrap;
+}
+
+.wps-tofw-insights__bar {
+	display: inline-block;
+	height: 10px;
+	max-width: calc(100% - 50px);
+	border-radius: 5px;
+	background: #2271b1;
+	vertical-align: middle;
+}
+
+.wps-tofw-insights__bar.is-delivered { background: #00a32a; }
+.wps-tofw-insights__bar.is-exception { background: #d63638; }
+.wps-tofw-insights__bar.is-out_for_delivery { background: #72aee6; }
+.wps-tofw-insights__bar.is-not_shipped { background: #a7aaad; }
+.wps-tofw-insights__bar.is-cancelled { background: #c3c4c7; }
+.wps-tofw-insights__bar.is-upsell { background: #8c5fbf; }
+
+.wps-tofw-insights__bar-value {
+	display: inline-block;
+	margin-left: 6px;
+	vertical-align: middle;
+	font-variant-numeric: tabular-nums;
+}

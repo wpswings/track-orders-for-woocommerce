@@ -35,6 +35,12 @@ class Track_Orders_For_Woocommerce_Deactivator {
 	 */
 	public static function track_orders_for_woocommerce_deactivate() {
 		wp_clear_scheduled_hook( 'wps_tofw_daily_notification' );
+		if ( function_exists( 'as_unschedule_all_actions' ) ) {
+			as_unschedule_all_actions( 'wps_tofw_delivery_alerts_daily_check', array(), 'wps-tofw-delivery-alerts' );
+			// No args/group: batch actions carry a page argument, so cancel every action of the hook.
+			as_unschedule_all_actions( 'wps_tofw_delivery_alerts_process_batch' );
+		}
+		delete_transient( 'wps_tofw_delivery_alerts_schedule_checked' );
 
 		if ( class_exists( 'Track_Orders_For_Woocommerce_Carrier_Sync' ) ) {
 			Track_Orders_For_Woocommerce_Carrier_Sync::unschedule_all();

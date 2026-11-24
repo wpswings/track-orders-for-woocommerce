@@ -67,6 +67,14 @@ class Track_Orders_For_Woocommerce {
 	protected $msp_onboard;
 
 	/**
+	 * Delivery alerts & shipping analytics handler.
+	 *
+	 * @since 1.3.0
+	 * @var   Track_Orders_For_Woocommerce_Shipment_Insights|null
+	 */
+	protected $shipment_insights;
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -101,6 +109,7 @@ class Track_Orders_For_Woocommerce {
 		$this->track_orders_for_woocommerce_carrier_sync_hooks();
 
 		$this->track_orders_for_woocommerce_api_hooks();
+		$this->track_orders_for_woocommerce_shipment_insights_hooks();
 
 		$this->track_orders_for_woocommerce_tracking_import_hooks();
 
@@ -223,6 +232,9 @@ class Track_Orders_For_Woocommerce {
 
 		// Register the shipping-plugin auto import hooks now that the loader exists.
 		$this->track_orders_for_woocommerce_shipping_integration_hooks();
+
+		// Delivery alerts & shipping analytics.
+		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-track-orders-for-woocommerce-shipment-insights.php';
 
 	}
 
@@ -579,6 +591,57 @@ class Track_Orders_For_Woocommerce {
 	 */
 	public function tofw_run() {
 		$this->loader->tofw_run();
+	}
+
+	/**
+	 * Register hooks for delivery exception / late shipment alerts and shipping analytics.
+	 *
+	 * @since 1.3.0
+	 */
+	private function track_orders_for_woocommerce_shipment_insights_hooks() {
+		$insights                = new Track_Orders_For_Woocommerce_Shipment_Insights( $this->tofw_get_plugin_name(), $this->tofw_get_version() );
+		$this->shipment_insights = $insights;
+
+		// Settings tabs + settings fields (rendered and saved through the existing settings framework).
+		$this->loader->add_filter( 'track_orders_for_woocmmerce_admin_settings_tabs', $insights, 'wps_tofw_add_settings_tabs', 20 );
+		$this->loader->add_filter( 'tofw_delivery_alerts_settings_array', $insights, 'wps_tofw_alert_settings_fields', 10 );
+
+		// Schedule handling.
+		$this->loader->add_action( 'add_option_wps_tofw_delivery_alerts_enable', $insights, 'wps_tofw_on_enable_option_change' );
+		$this->loader->add_action( 'update_option_wps_tofw_delivery_alerts_enable', $insights, 'wps_tofw_on_enable_option_change' );
+		$this->loader->add_action( Track_Orders_For_Woocommerce_Shipment_Insights::DAILY_HOOK, $insights, 'wps_tofw_run_daily_check' );
+		$this->loader->add_action( Track_Orders_For_Woocommerce_Shipment_Insights::BATCH_HOOK, $insights, 'wps_tofw_process_alert_batch', 10, 1 );
+
+		// Shipped / delivered timestamps.
+		$this->loader->add_action( 'woocommerce_order_status_changed', $insights, 'wps_tofw_record_status_timestamps', 30, 4 );
+		$this->loader->add_action( 'woocommerce_process_shop_order_meta', $insights, 'wps_tofw_record_tracking_added', 50, 1 );
+		$this->loader->add_action( 'wps_tofw_carrier_status_updated', $insights, 'wps_tofw_record_carrier_status', 10, 2 );
+
+		// Upsell click beacon (logged-in and guest).
+		$this->loader->add_action( 'wp_ajax_wps_tofw_record_upsell_click', $insights, 'wps_tofw_ajax_record_upsell_click' );
+		$this->loader->add_action( 'wp_ajax_nopriv_wps_tofw_record_upsell_click', $insights, 'wps_tofw_ajax_record_upsell_click' );
+
+		if ( is_admin() ) {
+			$this->loader->add_action( 'admin_init', $insights, 'wps_tofw_maybe_upgrade_db' );
+			$this->loader->add_action( 'admin_init', $insights, 'wps_tofw_maybe_schedule' );
+			$this->loader->add_action( 'admin_enqueue_scripts', $insights, 'wps_tofw_admin_enqueue_styles' );
+			$this->loader->add_action( 'admin_notices', $insights, 'wps_tofw_admin_notice' );
+			$this->loader->add_action( 'wp_dashboard_setup', $insights, 'wps_tofw_register_dashboard_widget' );
+			$this->loader->add_action( 'admin_post_wps_tofw_dismiss_delivery_alerts', $insights, 'wps_tofw_dismiss_notice' );
+		} elseif ( 'on' === get_option( 'wps_tofw_is_plugin_enable' ) ) {
+			$this->loader->add_action( 'template_redirect', $insights, 'wps_tofw_count_tracking_visit' );
+			$this->loader->add_action( 'wp_enqueue_scripts', $insights, 'wps_tofw_enqueue_beacon' );
+		}
+	}
+
+	/**
+	 * Delivery alerts & shipping analytics handler.
+	 *
+	 * @since  1.3.0
+	 * @return Track_Orders_For_Woocommerce_Shipment_Insights|null
+	 */
+	public function tofw_get_shipment_insights() {
+		return $this->shipment_insights;
 	}
 
 	/**

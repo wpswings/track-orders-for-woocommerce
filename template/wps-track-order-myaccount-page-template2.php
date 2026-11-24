@@ -1027,7 +1027,7 @@ if ( ! empty( $wps_tofw_enhanced_customer_note ) ) {
 <?php
 $wps_tofw_enable_upsell_tracking_page = get_option( 'wps_tofw_enable_upsell_tracking_page', false );
 if('on' == $wps_tofw_enable_upsell_tracking_page){
-echo do_shortcode('[wps_bump_offer_shortcode]');
+echo '<div class="wps-tofw-upsell-wrap">' . do_shortcode('[wps_bump_offer_shortcode]') . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- shortcode output.
 }
 
 
