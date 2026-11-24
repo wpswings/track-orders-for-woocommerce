@@ -92,8 +92,8 @@ class Track_Orders_For_Woocommerce {
 		} else {
 			$this->track_orders_for_woocommerce_public_hooks();
 		}
-		$this->track_orders_for_woocommerce_common_hooks();
 		$this->track_orders_for_woocommerce_multi_vendor_hooks();
+		$this->track_orders_for_woocommerce_common_hooks();
 
 		$this->track_orders_for_woocommerce_api_hooks();
 
@@ -155,6 +155,13 @@ class Track_Orders_For_Woocommerce {
 
 		}
 
+		// Multi-vendor (Dokan, WCFM, WC Vendors) shipment tracking.
+		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/multi-vendor/class-track-orders-for-woocommerce-vendor-integration.php';
+		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/multi-vendor/class-track-orders-for-woocommerce-multi-vendor.php';
+		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/multi-vendor/class-track-orders-for-woocommerce-vendor-dokan.php';
+		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/multi-vendor/class-track-orders-for-woocommerce-vendor-wcfm.php';
+		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/multi-vendor/class-track-orders-for-woocommerce-vendor-wcvendors.php';
+
 		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'package/rest-api/class-track-orders-for-woocommerce-rest-api.php';
 
 		/**
@@ -162,13 +169,6 @@ class Track_Orders_For_Woocommerce {
 		 * of the plugin.
 		 */
 		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'common/class-track-orders-for-woocommerce-common.php';
-
-		// Multi-vendor (Dokan, WCFM, WC Vendors) shipment tracking.
-		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/multi-vendor/class-track-orders-for-woocommerce-vendor-integration.php';
-		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/multi-vendor/class-track-orders-for-woocommerce-multi-vendor.php';
-		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/multi-vendor/class-track-orders-for-woocommerce-vendor-dokan.php';
-		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/multi-vendor/class-track-orders-for-woocommerce-vendor-wcfm.php';
-		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/multi-vendor/class-track-orders-for-woocommerce-vendor-wcvendors.php';
 
 		$this->loader = new Track_Orders_For_Woocommerce_Loader();
 

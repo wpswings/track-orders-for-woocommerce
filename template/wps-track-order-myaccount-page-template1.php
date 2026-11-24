@@ -1151,6 +1151,15 @@ $wps_track_order_js = get_option('wps_tofw_custom_js_name');
 				</div>
 			</div>
 		</div>
+		<?php
+		/**
+		 * Fires after the order tracking details, e.g. per-vendor shipments.
+		 *
+		 * @since 1.3.0
+		 * @param int $order_id Order id.
+		 */
+		do_action( 'wps_tofw_after_tracking_order_details', absint( $order_id ) );
+		?>
 		<?php if (! empty($wps_tofw_enhanced_customer_note)) { ?>
 			<div class="wps-tofw-order-tracking-section " id="wps_notice">
 				<section class="wps_tofw_order_tracker_content">
@@ -1162,13 +1171,6 @@ $wps_track_order_js = get_option('wps_tofw_custom_js_name');
 			</div>
 	<?php
 		}
-		/**
-		 * Fires after the order tracking details, e.g. per-vendor shipments.
-		 *
-		 * @since 1.3.0
-		 * @param int $order_id Order id.
-		 */
-		do_action( 'wps_tofw_after_tracking_order_details', absint( $order_id ) );
 	} else {
 		$return_request_not_send = __('Tracking Request can\'t be send. ', 'track-orders-for-woocommerce');
 
