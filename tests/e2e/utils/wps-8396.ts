@@ -50,8 +50,15 @@ export function capturedMails(): LoggedMail[] {
 }
 
 /** Run the due Action Scheduler actions of a group (what WP-Cron / the async runner would do). */
-export function runScheduledActions( group: string ): void {
-	wpCli( [ 'action-scheduler', 'run', `--group=${ group }`, '--force' ] );
+export function runScheduledActions( hook: string ): void {
+	// Run pending actions of the hook directly. Filtering by --group fails with
+	// "group does not exist" when the async runner already claimed the action,
+	// so match on the hook and treat "nothing to run" as a no-op.
+	try {
+		wpCli( [ 'action-scheduler', 'run', `--hooks=${ hook }`, '--force' ] );
+	} catch ( error ) {
+		// Nothing pending (or already being processed) – the caller polls the result.
+	}
 }
 
 /** Create a user if missing and return its ID. */

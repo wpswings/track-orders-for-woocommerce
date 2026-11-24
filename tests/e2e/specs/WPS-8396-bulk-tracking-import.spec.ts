@@ -134,8 +134,16 @@ test.describe( 'WPS-8396 bulk tracking import and REST', () => {
 
 		const progress = page.locator( '#wps-tofw-import-progress' );
 		await expect( progress ).toBeVisible();
-		runScheduledActions( 'wps-tofw-tracking-import' );
-		await expect( progress.locator( '.wps-tofw-import__status' ) ).toHaveText( 'Import completed.', { timeout: 30_000 } );
+		// Drive the chained batches until the screen reports completion.
+		await expect
+			.poll(
+				async () => {
+					runScheduledActions( 'wps_tofw_tracking_import_batch' );
+					return ( await progress.locator( '.wps-tofw-import__status' ).textContent() ) || '';
+				},
+				{ timeout: 60_000, intervals: [ 1_000, 2_000, 3_000 ] }
+			)
+			.toBe( 'Import completed.' );
 		await expect( progress.locator( '.wps-tofw-import__summary' ) ).toContainText( 'Imported: 2' );
 		await expect( progress.locator( '.wps-tofw-import__summary' ) ).toContainText( 'Failed: 0' );
 		await expect( page.locator( '#wps-tofw-import-final-report' ) ).toBeVisible();
