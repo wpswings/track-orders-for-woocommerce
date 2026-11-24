@@ -1,7 +1,8 @@
 <?php
 /**
- * WPS-8391 FedEx tracking page: the nonce is printed and enforced, and the submitted
- * order id is never written to a site option.
+ * WPS-8391 FedEx tracking page: the nonce is printed and enforced, the submitted
+ * order id is never written to a site option, and only visitors allowed to view the
+ * order (wps_tofw_can_view_order) get its shipment details.
  *
  * The template is included for real with WordPress stubbed and its output captured.
  *
@@ -80,6 +81,7 @@ class FedexTrackingPageTest extends TestCase {
 			'wps_user_order_id'            => '42',
 			'wps_track_package_nonce_name' => self::VALID_NONCE,
 		);
+		Functions\expect( 'wps_tofw_can_view_order' )->once()->with( '42' )->andReturn( true );
 		Functions\expect( 'update_option' )->never();
 		Functions\expect( 'add_option' )->never();
 		Functions\expect( 'wps_tofw_get_order_meta' )->once()->with( '42', 'wps_tofw_selected_shipping_service' )->andReturn( '' );
@@ -127,6 +129,34 @@ class FedexTrackingPageTest extends TestCase {
 		$this->assertStringContainsString( 'wps_tofw_track_package_error', $html );
 		$this->assertStringContainsString( 'Please enter the order id and submit the form again.', $html );
 		$this->assertNull( $this->getOption( 'wps_tofw_user_order_id' ) );
+	}
+
+	public function test_valid_nonce_but_no_access_shows_no_order_data() {
+		$_POST = array(
+			'wps_track_package'            => '',
+			'wps_user_order_id'            => '42',
+			'wps_track_package_nonce_name' => self::VALID_NONCE,
+		);
+		Functions\expect( 'wps_tofw_can_view_order' )->once()->with( '42' )->andReturn( false );
+		Functions\expect( 'wps_tofw_get_order_meta' )->never();
+		Actions\expectDone( 'wps_tofw_render_return_button' )->never();
+		Actions\expectDone( 'wps_track_orders_canada_post' )->never();
+		Actions\expectDone( 'wps_track_orders_usps' )->never();
+		Actions\expectDone( 'wps_tofw_after_tracking_details' )->never();
+
+		$html = $this->render();
+
+		$this->assertStringContainsString( 'wps_tofw_track_package_error', $html );
+		$this->assertStringContainsString( 'No tracking details were found for this order.', $html );
+	}
+
+	public function test_source_checks_order_access_before_any_lookup() {
+		$source = (string) file_get_contents( TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_PATH . self::TEMPLATE );
+		$check  = strpos( $source, 'wps_tofw_can_view_order(' );
+		$lookup = strpos( $source, 'wps_tofw_get_order_meta(' );
+		$this->assertNotFalse( $check, 'The template must call wps_tofw_can_view_order().' );
+		$this->assertLessThan( $lookup, $check, 'Access must be checked before the order is looked up.' );
+		$this->assertMatchesRegularExpression( "/function_exists\\(\\s*'wps_tofw_can_view_order'\\s*\\)\\s*&&\\s*wps_tofw_can_view_order\\(/", $source, 'Without the shared check the page must deny (fail closed).' );
 	}
 
 	public function test_page_without_submit_shows_no_error_and_no_tracking() {

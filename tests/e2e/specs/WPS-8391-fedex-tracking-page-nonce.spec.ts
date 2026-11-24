@@ -12,6 +12,7 @@ import { createOrder, deleteOption, getOption, GUEST_STORAGE_STATE, phpValue, se
 
 const BASE_URL = process.env.WP_BASE_URL || 'http://localhost:8888';
 const OPTION = 'wps_tofw_user_order_id';
+const ORDER_ID_ONLY = 'wps_tofw_enable_track_order_using_order_id';
 const NONCE_FIELD = 'input[name="wps_track_package_nonce_name"]';
 const ERROR = '.wps_tofw_track_package_error';
 
@@ -132,19 +133,35 @@ test.describe.serial( 'WPS-8391 FedEx tracking page nonce', () => {
 		} );
 
 		test( 'a visitor submit does not create the wps_tofw_user_order_id option', async ( { page } ) => {
-			deleteOption( OPTION );
-			await openForm( page );
-			await submit( page, orderId );
-			await expectTracked( page );
-			expect( getOption( OPTION ) ).toBe( false );
+			// Guests may only view orders when "track using order id only" is on (access check),
+			// so enable it to make sure the submit is fully processed.
+			const orderIdOnly = getOption( ORDER_ID_ONLY );
+			setOption( ORDER_ID_ONLY, 'on' );
+			try {
+				deleteOption( OPTION );
+				await openForm( page );
+				await submit( page, orderId );
+				await expectTracked( page );
+				expect( getOption( OPTION ) ).toBe( false );
+			} finally {
+				setOption( ORDER_ID_ONLY, orderIdOnly === false ? 'no' : orderIdOnly );
+			}
 		} );
 
 		test( 'a visitor submit does not change an existing wps_tofw_user_order_id option', async ( { page } ) => {
-			setOption( OPTION, 'untouched-8391' );
-			await openForm( page );
-			await submit( page, orderId );
-			await expectTracked( page );
-			expect( getOption( OPTION ) ).toBe( 'untouched-8391' );
+			// Guests may only view orders when "track using order id only" is on (access check),
+			// so enable it to make sure the submit is fully processed.
+			const orderIdOnly = getOption( ORDER_ID_ONLY );
+			setOption( ORDER_ID_ONLY, 'on' );
+			try {
+				setOption( OPTION, 'untouched-8391' );
+				await openForm( page );
+				await submit( page, orderId );
+				await expectTracked( page );
+				expect( getOption( OPTION ) ).toBe( 'untouched-8391' );
+			} finally {
+				setOption( ORDER_ID_ONLY, orderIdOnly === false ? 'no' : orderIdOnly );
+			}
 		} );
 	} );
 } );
