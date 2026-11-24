@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-24T07:18:50+00:00\n"
+"POT-Creation-Date: 2026-11-24T12:48:43+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: track-orders-for-woocommerce\n"
@@ -2061,7 +2061,7 @@ msgstr ""
 #: includes/class-track-orders-for-woocommerce-activator.php:54
 #: includes/multi-vendor/class-track-orders-for-woocommerce-multi-vendor.php:420
 #: includes/multi-vendor/class-track-orders-for-woocommerce-vendor-wcvendors.php:105
-#: template/wps-order-tracking-page.php:33
+#: template/wps-order-tracking-page.php:46
 msgid "Shipment Tracking"
 msgstr ""
 
@@ -3770,19 +3770,27 @@ msgstr ""
 msgid "Tracking Request can't be send. "
 msgstr ""
 
-#: template/wps-order-tracking-page.php:38
+#: template/wps-order-tracking-page.php:37
+msgid "No tracking details were found for this order. Please check the order id, or log in to the account that placed the order."
+msgstr ""
+
+#: template/wps-order-tracking-page.php:40
+msgid "Your session has expired. Please enter the order id and submit the form again."
+msgstr ""
+
+#: template/wps-order-tracking-page.php:54
 msgid " Enter Order Id "
 msgstr ""
 
-#: template/wps-order-tracking-page.php:39
+#: template/wps-order-tracking-page.php:55
 msgid "Enter Order id"
 msgstr ""
 
-#: template/wps-order-tracking-page.php:42
+#: template/wps-order-tracking-page.php:58
 msgid "Submit"
 msgstr ""
 
-#: template/wps-order-tracking-page.php:70
+#: template/wps-order-tracking-page.php:86
 msgid "Service Not Available"
 msgstr ""
 
@@ -4156,39 +4164,39 @@ msgstr ""
 msgid "Shortcode Output:"
 msgstr ""
 
-#: includes/blocks/track-order/index.js:34
+#: includes/blocks/track-order/index.js:33
 msgid "Form type"
 msgstr ""
 
-#: includes/blocks/track-order/index.js:37
+#: includes/blocks/track-order/index.js:36
 msgid "Order tracking (order ID and email)"
 msgstr ""
 
-#: includes/blocks/track-order/index.js:38
+#: includes/blocks/track-order/index.js:37
 msgid "Multi-carrier tracking (tracking number)"
 msgstr ""
 
-#: includes/blocks/track-order/index.js:51
+#: includes/blocks/track-order/index.js:50
 msgid "Position"
 msgstr ""
 
-#: includes/blocks/track-order/index.js:54
+#: includes/blocks/track-order/index.js:53
 msgid "Left"
 msgstr ""
 
-#: includes/blocks/track-order/index.js:55
+#: includes/blocks/track-order/index.js:54
 msgid "Center"
 msgstr ""
 
-#: includes/blocks/track-order/index.js:56
+#: includes/blocks/track-order/index.js:55
 msgid "Right"
 msgstr ""
 
-#: includes/blocks/track-order/index.js:68
+#: includes/blocks/track-order/index.js:67
 msgid "Show heading"
 msgstr ""
 
-#: includes/blocks/track-order/index.js:84
+#: includes/blocks/track-order/index.js:83
 msgid "Tracking form"
 msgstr ""
 
