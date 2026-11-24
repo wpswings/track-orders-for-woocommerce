@@ -44,7 +44,7 @@ jQuery(document).ready(function () {
                 var summaryPanel = jQuery('#directions-panel')['0'];
                 summaryPanel.innerHTML = '';
             } else {
-                window.alert('Directions request failed due to ' + status);
+                window.alert(wps_public_param.directions_error.replace('%s', status));
             }
         });
 

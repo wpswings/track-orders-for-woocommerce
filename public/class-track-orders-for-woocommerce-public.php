@@ -76,6 +76,7 @@ class Track_Orders_For_Woocommerce_Public {
 				'ajaxurl' => admin_url( 'admin-ajax.php' ),
 				'wps_activated_template' => $selected_template,
 				'carrier_auth_nonce' => wp_create_nonce( 'wps_muilt_carrier' ),
+				'tracking_required_message' => __( 'Please enter a tracking number and select a courier.', 'track-orders-for-woocommerce' ),
 				'mutlple_carrer_image' => array(
 					'wps_packed' => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'public/image/packed.svg',
 					'wps_in_way' => TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'public/image/in-way.svg',
@@ -100,7 +101,15 @@ class Track_Orders_For_Woocommerce_Public {
 				wp_enqueue_script( 'wps_new_road_map_script', $wps_tofw_google_maps_url, array(), $this->version, true );
 
 				wp_register_script( 'wps-public', TRACK_ORDERS_FOR_WOOCOMMERCE_DIR_URL . 'public/js/wps-public.js', array( 'jquery' ), $this->version, false );
-				wp_localize_script( 'wps-public', 'wps_public_param', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
+				wp_localize_script(
+					'wps-public',
+					'wps_public_param',
+					array(
+						'ajaxurl'              => admin_url( 'admin-ajax.php' ),
+						/* translators: %s: status returned by the Google Directions service. */
+						'directions_error'     => __( 'Directions request failed due to %s', 'track-orders-for-woocommerce' ),
+					)
+				);
 				wp_enqueue_script( 'wps-public' );
 			}
 		}
@@ -609,11 +618,11 @@ class Track_Orders_For_Woocommerce_Public {
 						if ('on' === wps_otfw_popup_tracking_page) {
 							wps_tofw_td.innerHTML = '<a href="<?php echo esc_url( home_url( '/track-your-order/?' ) ); ?>' +
 								wps_tofw_trackingLinks[wps_tofw_productId] +
-								'&TB_iframe=true&popup_type=track_order" target="_blank" class="wps-tofw-track-btn thickbox">Track Order</a>';
+								'&TB_iframe=true&popup_type=track_order" target="_blank" class="wps-tofw-track-btn thickbox">' + <?php echo wp_json_encode( esc_html__( 'Track Order', 'track-orders-for-woocommerce' ) ); ?> + '</a>';
 						} else {
 							wps_tofw_td.innerHTML = '<a href="<?php echo esc_url( home_url( '/track-your-order/?' ) ); ?>' +
 								wps_tofw_trackingLinks[wps_tofw_productId] +
-								'" target="_blank" class="wps-tofw-track-btn">Track Order</a>';
+								'" target="_blank" class="wps-tofw-track-btn">' + <?php echo wp_json_encode( esc_html__( 'Track Order', 'track-orders-for-woocommerce' ) ); ?> + '</a>';
 						}
 					} else {
 						wps_tofw_td.textContent = '-';
