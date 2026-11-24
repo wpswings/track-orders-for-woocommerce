@@ -96,8 +96,6 @@ class Track_Orders_For_Woocommerce {
 
 		$this->track_orders_for_woocommerce_api_hooks();
 
-		$this->track_orders_for_woocommerce_shipping_integration_hooks();
-
 	}
 
 	/**
@@ -164,6 +162,7 @@ class Track_Orders_For_Woocommerce {
 		 */
 		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'common/class-track-orders-for-woocommerce-common.php';
 
+		$this->loader = new Track_Orders_For_Woocommerce_Loader();
 		/**
 		 * Shared tracking save routine and shipping-plugin auto import integrations.
 		 *
@@ -182,7 +181,8 @@ class Track_Orders_For_Woocommerce {
 		include_once $integrations_dir . 'class-wps-tofw-integration-printful.php';
 		include_once $integrations_dir . 'class-wps-tofw-integration-printify.php';
 
-		$this->loader = new Track_Orders_For_Woocommerce_Loader();
+		// Register the shipping-plugin auto import hooks now that the loader exists.
+		$this->track_orders_for_woocommerce_shipping_integration_hooks();
 
 	}
 
@@ -282,6 +282,23 @@ class Track_Orders_For_Woocommerce {
 	}
 
 	/**
+	 * Register the shipping-plugin tracking auto import hooks.
+	 *
+	 * Runs on every request type (admin, REST, WC API, cron) because label
+	 * plugins report shipments from webhooks / REST calls.
+	 *
+	 * @since 1.3.0
+	 */
+	private function track_orders_for_woocommerce_shipping_integration_hooks() {
+
+		$tofw_integrations_manager = new WPS_TOFW_Integrations_Manager();
+
+		$this->loader->add_action( 'init', $tofw_integrations_manager, 'init', 20 );
+		$this->loader->add_filter( 'tofw_shipping_services_settings_array_filter', $tofw_integrations_manager, 'add_settings', 20 );
+		$this->loader->add_filter( 'wps_tofw_add_diffrent_shipping_services', $tofw_integrations_manager, 'add_seen_carriers_to_services', 20 );
+	}
+
+	/**
 	 * Register all of the hooks related to the common functionality
 	 * of the plugin.
 	 *
@@ -362,23 +379,6 @@ class Track_Orders_For_Woocommerce {
 
 	}
 
-
-	/**
-	 * Register the shipping-plugin tracking auto import hooks.
-	 *
-	 * Runs on every request type (admin, REST, WC API, cron) because label
-	 * plugins report shipments from webhooks / REST calls.
-	 *
-	 * @since 1.3.0
-	 */
-	private function track_orders_for_woocommerce_shipping_integration_hooks() {
-
-		$tofw_integrations_manager = new WPS_TOFW_Integrations_Manager();
-
-		$this->loader->add_action( 'init', $tofw_integrations_manager, 'init', 20 );
-		$this->loader->add_filter( 'tofw_shipping_services_settings_array_filter', $tofw_integrations_manager, 'add_settings', 20 );
-		$this->loader->add_filter( 'wps_tofw_add_diffrent_shipping_services', $tofw_integrations_manager, 'add_seen_carriers_to_services', 20 );
-	}
 
 	/**
 	 * Run the loader to execute all of the hooks with WordPress.
