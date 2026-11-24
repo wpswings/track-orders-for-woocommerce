@@ -61,6 +61,10 @@ class RmaReturnLinkTest extends TestCase {
 
 		$this->user_id     = 0;
 		$this->post_status = array();
+		// No real PHP session in unit tests: provide the superglobal the guest check reads.
+		if ( ! isset( $_SESSION ) || ! is_array( $_SESSION ) ) {
+			$_SESSION = array(); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+		}
 		unset( $_SESSION['wps_tofw_email'] );
 
 		$user_id     = &$this->user_id;
@@ -112,7 +116,9 @@ class RmaReturnLinkTest extends TestCase {
 	 * Clean the session state shared with the guest tracking form.
 	 */
 	protected function tear_down() {
-		unset( $_SESSION['wps_tofw_email'] );
+		if ( isset( $_SESSION ) && is_array( $_SESSION ) ) {
+			unset( $_SESSION['wps_tofw_email'] );
+		}
 		parent::tear_down();
 	}
 
