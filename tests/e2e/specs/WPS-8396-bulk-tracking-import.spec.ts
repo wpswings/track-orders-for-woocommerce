@@ -93,9 +93,14 @@ test.describe( 'WPS-8396 bulk tracking import and REST', () => {
 
 		const rows = preview.locator( 'tbody tr' );
 		await expect( rows ).toHaveCount( 5 );
-		await expect( rows.filter( { hasText: 'FORMULA1' } ) ).toContainText( 'Order ID must be a number.' );
-		await expect( rows.filter( { hasText: 'NOORDER1' } ) ).toContainText( 'Order not found.' );
-		await expect( rows.filter( { hasText: trackA.toLowerCase() } ) ).toContainText( 'Duplicate of line 2' );
+		// hasText is case-insensitive, so rows are picked by their CSV line number (first cell).
+		const rowAtLine = ( line: number ) =>
+			rows.filter( { has: page.locator( 'td:first-child', { hasText: new RegExp( `^${ line }$` ) } ) } );
+		await expect( rowAtLine( 2 ).locator( 'td.is-valid' ) ).toBeVisible();
+		await expect( rowAtLine( 3 ).locator( 'td.is-valid' ) ).toBeVisible();
+		await expect( rowAtLine( 4 ) ).toContainText( 'Order ID must be a number.' );
+		await expect( rowAtLine( 5 ) ).toContainText( 'Order not found.' );
+		await expect( rowAtLine( 6 ) ).toContainText( 'Duplicate of line 2' );
 
 		// The preview is a dry run: nothing is written yet.
 		expect( getOrderMeta( orderA.id, 'wps_tofw_package_tracking_number' ) ).toBe( '' );
