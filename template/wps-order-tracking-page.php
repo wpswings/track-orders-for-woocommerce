@@ -19,18 +19,26 @@ get_header( 'shop' );
  * @since 1.0.0
  */
 do_action( 'woocommerce_before_main_content' );
-$flag = false;
-$value_check = isset( $_POST['wps_track_package_nonce_name'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_track_package_nonce_name'] ) ) : '';
-wp_verify_nonce( $value_check, 'wps_track_package_nonce' );
+$flag                 = false;
+$wps_user_order_id    = '';
+$wps_tofw_track_error = '';
 if ( isset( $_POST['wps_track_package'] ) ) {
-	$flag = true;
-	$wps_user_order_id = isset( $_POST['wps_user_order_id'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_user_order_id'] ) ) : '';
-	update_option( 'wps_tofw_user_order_id', $wps_user_order_id );
+	$value_check = isset( $_POST['wps_track_package_nonce_name'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_track_package_nonce_name'] ) ) : '';
+	if ( wp_verify_nonce( $value_check, 'wps_track_package_nonce' ) ) {
+		$flag = true;
+		// The order id is only needed for this request: never store it in a site option.
+		$wps_user_order_id = isset( $_POST['wps_user_order_id'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_user_order_id'] ) ) : '';
+	} else {
+		$wps_tofw_track_error = __( 'Your session has expired. Please enter the order id and submit the form again.', 'track-orders-for-woocommerce' );
+	}
 }
 
 ?>
 <div>
 	<legend><h3><?php esc_html_e( 'Shipment Tracking', 'track-orders-for-woocommerce' ); ?></h3></legend>
+	<?php if ( '' !== $wps_tofw_track_error ) : ?>
+		<div class="woocommerce-error wps_tofw_track_package_error" role="alert"><?php echo esc_html( $wps_tofw_track_error ); ?></div>
+	<?php endif; ?>
 	
 	<form action="" method="POST" role="form">
 		
@@ -38,7 +46,7 @@ if ( isset( $_POST['wps_track_package'] ) ) {
 			<label for=""><?php esc_html_e( ' Enter Order Id ', 'track-orders-for-woocommerce' ); ?></label>
 			<input type="text" class="form-control" id="wps_tofw_order_id" name="wps_user_order_id"  placeholder=<?php esc_attr_e( 'Enter Order id', 'track-orders-for-woocommerce' ); ?> >
 		</div>
-		<input type="hidden" name="wps_track_package_nonce_name" value="<?php wp_create_nonce( 'wps_track_package_nonce' ); ?>">
+		<?php wp_nonce_field( 'wps_track_package_nonce', 'wps_track_package_nonce_name' ); ?>
 		<button type="submit" class="btn btn-primary wps_tofw_button_track" name="wps_track_package"><?php esc_html_e( 'Submit', 'track-orders-for-woocommerce' ); ?></button>
 	</form>
 </div>
